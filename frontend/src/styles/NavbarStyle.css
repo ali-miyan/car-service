@@ -1,0 +1,55 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+  }
+  
+  .navbar-contact {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar-contact span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .navbar-logo .logo {
+    height: 50px;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar-links span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .navbar-links a {
+    color: red;
+  }
+  
+  .navbar-menu {
+    display: flex;
+    justify-content: center;
+    background-color: #d9d9d9;
+    padding: 10px;
+  }
+  
+  .navbar-menu a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .navbar-menu a:hover {
+    text-decoration: underline;
+  }

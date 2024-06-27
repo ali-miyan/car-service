@@ -1,0 +1,26 @@
+version: '3.8'  # Use the latest version of Docker Compose syntax
+
+services:
+  backend:
+    build:
+      context: ./backend/user-service  # Specify the path to your backend Dockerfile
+    ports:
+      - "3000:3000"  # Expose port 8000 on the host and container
+    networks:
+      - my-network  # Attach the backend service to the custom network
+
+  frontend:
+    build:
+      context: ./frontend  # Specify the path to your frontend Dockerfile
+    ports:
+      - "8080:8080"  # Expose port 3000 on the host and container
+    depends_on:
+      - backend  # Ensure backend service starts before frontend
+    networks:
+      - my-network  # Attach the frontend service to the custom network
+  
+  
+
+networks:
+  my-network:
+    driver: bridge
