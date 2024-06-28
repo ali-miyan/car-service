@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box, Modal, IconButton } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai"; // Importing close icon from react-icons
 import { ModalProps } from "../../schema/component";
-import Button from "./Button";
 
 const defaultStyle = {
   position: "absolute",
@@ -20,6 +19,7 @@ const CustomModal: React.FC<ModalProps> = ({
   width = 400,
   height,
   title = "Modal Title",
+  buttonLabel = "REGISTER", // Add buttonLabel prop with default value
   children,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -34,15 +34,12 @@ const CustomModal: React.FC<ModalProps> = ({
 
   return (
     <div>
-      <Button
-        width="w-5/5"
-        height="50px"
-        bgColor="#bf0000"
-        hoverColor="#9A1A1A"
+      <button
         onClick={handleOpen}
+        className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12"
       >
-        Login
-      </Button>
+        {buttonLabel} {/* Use buttonLabel prop */}
+      </button>
 
       <Modal
         open={open}
