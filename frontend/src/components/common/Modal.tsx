@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Modal, IconButton } from "@mui/material";
+import { Box, Modal, IconButton, Backdrop } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai"; // Importing close icon from react-icons
 import { ModalProps } from "../../schema/component";
 
@@ -20,6 +20,7 @@ const CustomModal: React.FC<ModalProps> = ({
   height,
   title = "Modal Title",
   buttonLabel = "REGISTER", // Add buttonLabel prop with default value
+  disableClose = false, // Add disableClose prop with default value
   children,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -30,6 +31,10 @@ const CustomModal: React.FC<ModalProps> = ({
     ...defaultStyle,
     width: width,
     ...(height && { height: height }),
+  };
+
+  const backdropProps = {
+    onClick: disableClose ? undefined : handleClose,
   };
 
   return (
@@ -47,20 +52,24 @@ const CustomModal: React.FC<ModalProps> = ({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="mt-6"
+        BackdropComponent={Backdrop}
+        BackdropProps={backdropProps}
       >
         <Box sx={customStyle} className="bg-white rounded-lg p-6 relative">
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <AiOutlineClose size={24} />
-          </IconButton>
+          {!disableClose && (
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <AiOutlineClose size={24} />
+            </IconButton>
+          )}
           <div
             id="modal-modal-title"
             className="text-2xl font-bai-bold text-center uppercase mb-4"

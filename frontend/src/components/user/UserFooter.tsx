@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const UserFooter = () => {
-  return (
-    <div>UserFooter</div>
-  )
-}
+  return <div>UserFooter</div>;
+};
 
-export default UserFooter
+export default UserFooter;

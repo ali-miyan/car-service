@@ -1,41 +1,159 @@
-// import Input from "../common/Input"
+import React, { useState } from "react";
+import Input from "../common/Input";
+import { validateInput } from "../../helpers/userValidation";
+import { useRegisterPostMutation } from "../../store/slices/userApiSlice";
 
-// const UserSignup = () => {
-//   return (
-//     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-//       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-//         <div className="flex justify-center mb-6">
-//           <button className="px-4 py-2 border rounded-l bg-gray-200">Login</button>
-//           <button className="px-4 py-2 border rounded-r bg-gray-400 text-white">Register</button>
-//         </div>
-//         <h2 className="text-2xl mb-4">Create your account</h2>
-//         <form>
-//           <div className="mb-4">
-//             <Input type="text" placeholder="username" width="10" label="Username" />
-//           </div>
-//           <div className="mb-4">
-//             <Input type="text"  placeholder="email" width="10" label="Email" />
-//           </div>
-//           <div className="mb-4">
-//             <Input type="number" placeholder="phone" width="10" label="phone" />
-//           </div>
-//           <div className="mb-4">
-//             <Input type="password" placeholder="password" width="10" label="Password" />
-//           </div>
-//           <button className="w-full bg-black text-white py-2 rounded">REGISTER</button>
-//         </form>
-//         <div className="flex justify-center items-center mt-4">
-//           <span className="mr-2">OR</span>
-//         </div>
-//         <div className="flex justify-center items-center mt-4">
-//           <button className="flex items-center border w-full px-4 py-2 rounded shadow">
-//             <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" className="w-6  h-6 mr-2" />
-//             <span>Sign up with Google</span>
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
+interface SignupFormProps {
+  onOtpRequest: () => void;
+}
 
-// export default UserSignup
+const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
+  const [registerPost, { isLoading, isError }] = useRegisterPostMutation();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [errorFields, setErrorFields] = useState<Record<string, boolean>>({
+    username: false,
+    email: false,
+    phone: false,
+    password: false,
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    const error = validateInput(name, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
+    setErrorFields((prevErrorFields) => ({
+      ...prevErrorFields,
+      [name]: false,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+
+    const newErrors = {
+      username: validateInput("username", formData.username),
+      email: validateInput("email", formData.email),
+      phone: validateInput("phone", formData.phone),
+      password: validateInput("password", formData.password),
+    };
+
+    setErrors(newErrors);
+
+    const hasError = Object.keys(newErrors).some(
+      (key) => newErrors[key] !== ""
+    );
+    const isEmpty = Object.values(formData).some((field) => field === "");
+
+    if (!hasError && !isEmpty) {
+      try {
+        const res = await registerPost(formData).unwrap();
+        console.log(res);
+        if (res.status === 200) {
+          onOtpRequest(); 
+        }
+      } catch (error) {
+        console.log("Error occurred:", error);
+      }
+    } else {
+      console.log("Form contains errors or is incomplete");
+      setErrorFields({
+        username: newErrors.username !== "",
+        email: newErrors.email !== "",
+        phone: newErrors.phone !== "",
+        password: newErrors.password !== "",
+      });
+    }
+  };
+
+  return (
+    <form
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full"
+      onSubmit={handleSubmit}
+    >
+      <div>
+        <Input
+          type="text"
+          width="w-full"
+          placeholder="username"
+          label="Username"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+          error={errorFields.username}
+        />
+        {errors.username && (
+          <p className="text-red-500 text-xs">{errors.username}</p>
+        )}
+      </div>
+      <div>
+        <Input
+          type="text"
+          width="w-full"
+          placeholder="email"
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          error={errorFields.email}
+        />
+        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+      </div>
+      <div>
+        <Input
+          type="tel"
+          width="w-full"
+          placeholder="phone"
+          label="Phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          error={errorFields.phone} 
+        />
+        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+      </div>
+      <div>
+        <Input
+          type="password"
+          width="w-full"
+          placeholder="password"
+          label="Password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          error={errorFields.password} 
+        />
+        {errors.password && (
+          <p className="text-red-500 text-xs">{errors.password}</p>
+        )}
+      </div>
+      <div className="col-span-2">
+        <button className="bg-red-800 hover:bg-red-900 font-bai-regular text-white font-bold py-2 px-4 rounded w-full h-12">
+          REGISTER
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default SignupForm;

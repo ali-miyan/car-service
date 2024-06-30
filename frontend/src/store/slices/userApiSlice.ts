@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from '../../constants/api';
+import { baseUserUrl } from '../../constants/api';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+  baseQuery: fetchBaseQuery({ baseUrl: baseUserUrl }),
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: () => '/data',

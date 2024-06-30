@@ -1,1 +1,2 @@
-export const baseUrl = 'http://localhost/api/user'
+export const baseUserUrl = 'http://localhost/api/user'
+export const baseCompanyUrl = 'http://localhost/api/company'

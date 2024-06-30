@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UserController } from "../../adapters/controllers/userController";
-import { SignupUseCase } from "../../usecases/registerUseCase";
-import { UserRepository } from "../../adapters/repositories/implementaion/userRepository";
+import { SignupUseCase } from "../../usecases/signupUseCase";
+import { UserRepository } from "../../infrastructure/db/repositories/implementaion/userRepository";
 
 const userRepository = new UserRepository();
 const signupUseCase = new SignupUseCase(userRepository);
