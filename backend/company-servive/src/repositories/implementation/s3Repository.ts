@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { IS3Service } from '../interfaces/s3Interface';
+import { IS3Service } from '../interfaces';
 require('dotenv').config()
 
 export class S3Service implements IS3Service {

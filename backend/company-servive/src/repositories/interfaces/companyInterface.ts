@@ -1,4 +1,4 @@
-import { Company } from "../../entities/companyEntity";
+import { Company } from "../../entities";
 
 export interface ICompanyRepository {
   findByEmail(email: string): Promise<boolean | null>;

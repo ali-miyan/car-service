@@ -1,11 +1,9 @@
 import { Router } from "express";
-import { AdminController } from "../../adapters/controllers/adminController";
-import { RegisterUseCase } from "../../usecases/adminUseCase";
-// import { AdminRepository } from "../../repositories/implementation/adminRepository";
-import { ConfigService } from "../../repositories/implementation/validateRepository";
+import { AdminController } from "../../adapters/controllers";
+import { RegisterUseCase } from "../../usecases";
+import { ConfigService } from "../../repositories/implementation";
 
 
-// const userRepository = new AdminRepository();
 const configRepository = new ConfigService();
 const signupUseCase = new RegisterUseCase(configRepository);
 const adminController = new AdminController(signupUseCase);

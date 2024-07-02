@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { generateOtp } from '../../utils/generateOtp';
-import { IOtpService } from '../interfaces/otpInterface';
+import { generateOtp } from '../../utils';
+import { IOtpService } from '../interfaces';
 require('dotenv').config()
 
 export class OtpService implements IOtpService {

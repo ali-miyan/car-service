@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { IConfigService } from '../interfaces/validateCredintials';
+import { IConfigService } from '../interfaces';
 
 dotenv.config();
 

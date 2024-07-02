@@ -1,5 +1,5 @@
-import { IUserRepository } from "../repositories/interfaces/userInterface";
-import { verifyPassword } from "../utils/bcrypt";
+import { IUserRepository } from "../repositories/interfaces";
+import { verifyPassword } from "../utils";
 
 export class LoginUseCase {
   constructor(private loginRepository:IUserRepository ) {}

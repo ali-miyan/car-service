@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { SignupUseCase } from "../../usecases/signupUseCase";
-import { VerifyOtpUseCase } from "../../usecases/verifyOtpUseCase";
-import { LoginUseCase } from "../../usecases/loginUseCase";
+import { SignupUseCase,LoginUseCase,VerifyOtpUseCase } from "../../usecases/index";
 
 export class UserController {
   constructor(

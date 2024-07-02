@@ -1,8 +1,6 @@
 import { User } from "../entities/userEntity";
-import { IOtpService } from "../repositories/interfaces/otpInterface";
-import { IUserRepository } from "../repositories/interfaces/userInterface";
-import { IRedisRepository } from "../repositories/interfaces/redisInterface";
-import { hashPassword } from '../utils/bcrypt';
+import { IOtpService,IRedisRepository,IUserRepository } from "../repositories/interfaces";
+import { hashPassword } from '../utils';
 
 
 export class SignupUseCase {

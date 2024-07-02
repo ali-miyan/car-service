@@ -1,4 +1,4 @@
-import { IRedisRepository } from "../interfaces/redisInterface";
+import { IRedisRepository } from "../interfaces";
 import Redis, { Redis as RedisClient } from "ioredis";
 
 

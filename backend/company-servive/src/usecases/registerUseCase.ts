@@ -1,7 +1,7 @@
 import { Company } from "../entities/companyEntity";
-import { ICompanyRepository } from '../repositories/interfaces/companyInterface';
+import { ICompanyRepository } from '../repositories/interfaces';
 import { isLicenseExpired } from "../utils/dateUtil";
-import { IS3Service } from "../repositories/interfaces/s3Interface";
+import { IS3Service } from "../repositories/interfaces";
 
 export class RegisterUseCase {
     constructor(

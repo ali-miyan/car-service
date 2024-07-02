@@ -1,11 +1,7 @@
 import { Router } from "express";
-import { UserController } from "../../adapters/controllers/userController";
-import { SignupUseCase } from "../../usecases/signupUseCase";
-import { LoginUseCase } from "../../usecases/loginUseCase";
-import { VerifyOtpUseCase } from "../../usecases/verifyOtpUseCase";
-import { UserRepository } from "../../repositories/implementaion/userRepository";
-import { OtpService } from "../../repositories/implementaion/otpRepository";
-import { RedisOtpRepository } from "../../repositories/implementaion/redisRepository";
+import { UserController } from "../../adapters/controllers";
+import { VerifyOtpUseCase,LoginUseCase,SignupUseCase } from "../../usecases";
+import { RedisOtpRepository,OtpService,UserRepository } from "../../repositories/implementaion";
 
 const userRepository = new UserRepository();
 const otpRepository = new OtpService();

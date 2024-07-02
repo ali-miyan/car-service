@@ -1,4 +1,4 @@
-import { IRedisRepository } from "../repositories/interfaces/redisInterface";
+import { IRedisRepository } from "../repositories/interfaces";
 
 export class VerifyOtpUseCase {
   constructor(private verfyOtpRepository: IRedisRepository) {}

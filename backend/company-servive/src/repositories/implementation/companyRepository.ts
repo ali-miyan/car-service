@@ -1,5 +1,5 @@
 import { Company } from "../../entities/companyEntity";
-import { ICompanyRepository } from "../interfaces/companyInterface";
+import { ICompanyRepository } from "../interfaces";
 import companyModel from "../../infrastructure/db/models/companyModel";
 
 export class CompanyRepository implements ICompanyRepository {
