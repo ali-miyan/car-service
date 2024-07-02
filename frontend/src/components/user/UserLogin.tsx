@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import Input from "../common/Input";
 import { validateInput } from "../../helpers/userValidation";
+import { useLoginUserMutation } from "../../store/slices/userApiSlice";
+import { CustomError } from "../../schema/error";
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
+
+  const [loginUser, { isLoading, isError }] = useLoginUserMutation();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,15 +33,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       ...prevData,
       [name]: value,
     }));
+    setErrorFields((prevErrorFields) => ({
+      ...prevErrorFields,
+      [name]: true,
+    }));
     const error = validateInput(name, value);
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
     }));
-    setErrorFields((prevErrorFields) => ({
-      ...prevErrorFields,
-      [name]: false,
-    }));
+    if (error === "") {
+      setErrorFields((prevErrorFields) => ({
+        ...prevErrorFields,
+        [name]: false,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +67,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
 
     if (!hasError && !isEmpty) {
       try {
-        console.log("logg");
+        try {
+          const res = await loginUser(formData).unwrap();
+          if (res.success) {
+            // onOtpRequest();
+
+            console.log(res,'ssssssssssssss');
+          }
+          
+        } catch (err) {
+          const error = err as CustomError;
+          console.log("Error occurred:", error);
+          if (error.status === 400) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              global: error.data.error,
+            }));
+          }
+        }
       } catch (error) {
         console.log("Error occurred:", error);
       }

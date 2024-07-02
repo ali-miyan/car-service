@@ -56,7 +56,7 @@ const Page1: React.FC = () => {
     const valid = Object.values(newErrors).every((error) => !error);
 
     if (valid) {
-        navigate("/register-2");
+        navigate("/company/register-2");
     }
   };
 

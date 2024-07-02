@@ -236,7 +236,7 @@ const Page3: React.FC = () => {
         </div>
 
         <div className="form-submit">
-          <button className="mr-3" onClick={() => navigate("/register-2")}>
+          <button className="mr-3" onClick={() => navigate("/company/register-2")}>
             Back
           </button>
           <button onClick={handleSubmit}>Submit</button>

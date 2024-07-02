@@ -1,11 +1,12 @@
 import { Company } from "../entities/companyEntity";
-import { ICompanyRepository } from '../infrastructure/db/respositories/interfaces/companyInterface';
-import { S3Service } from "../infrastructure/aws/s3Service";
+import { ICompanyRepository } from '../repositories/interfaces/companyInterface';
+import { isLicenseExpired } from "../utils/dateUtil";
+import { IS3Service } from "../repositories/interfaces/s3Interface";
 
 export class RegisterUseCase {
     constructor(
         private companyRepository: ICompanyRepository,
-        private s3ServiceRepository: S3Service
+        private s3ServiceRepository: IS3Service
     ) {}
 
     async execute(
@@ -27,11 +28,8 @@ export class RegisterUseCase {
             throw new Error("This Email is already registered");
         }
 
-        const expiredLisence = await this.companyRepository.lisenceExpiry(licenseExpiry);
-        console.log(expiredLisence, 'lisence expiry');
-
-        if (!expiredLisence) {
-            throw new Error("Your Lisence has expired, please renew");
+        if (isLicenseExpired(licenseExpiry)) {
+            throw new Error("Your License has expired, please renew");
         }
 
         const [licenseImgFile, approvedImgFile, logo] = files;

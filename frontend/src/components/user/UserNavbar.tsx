@@ -7,7 +7,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import BasicModal from "./RegisterModal";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const UserNavbar = () => {
   return (
@@ -47,15 +47,15 @@ const UserNavbar = () => {
         </div>
       </div>
 
-      <nav className="bg-gray p-4 mx-4 mr-4 mt-5 rounded">
+      <nav className="bg-gray p-4 mt-5 mb-2 ">
             <div className="flex justify-center space-x-16 font-bai-bold">
                 <Link to="/" className="hover:text-gray-700">
                     HOME
                 </Link>
-                <Link to="/services" className="hover:text-gray-700">
+                <Link to="/company/services" className="hover:text-gray-700">
                     SERVICES
                 </Link>
-                <Link to="/register" className="hover:text-gray-700">
+                <Link to="/company/register-1" className="hover:text-gray-700">
                     FOR BUSINESS
                 </Link>
                 <Link to="/about-us" className="hover:text-gray-700">

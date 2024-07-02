@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Input from "../common/Input";
 import { validateInput } from "../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../store/slices/userApiSlice";
+import { CustomError } from "../../schema/error";
 
 interface SignupFormProps {
   onOtpRequest: () => void;
+  getEmail:(email:string)=>void;
 }
 
-const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
+const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
   const [registerPost, { isLoading, isError }] = useRegisterPostMutation();
   const [formData, setFormData] = useState({
     username: "",
@@ -21,6 +23,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
     email: "",
     phone: "",
     password: "",
+    global: "",
   });
 
   const [errorFields, setErrorFields] = useState<Record<string, boolean>>({
@@ -36,26 +39,35 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
       ...prevData,
       [name]: value,
     }));
+    setErrorFields((prevErrorFields) => ({
+      ...prevErrorFields,
+      [name]: true,
+    }));
     const error = validateInput(name, value);
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
     }));
-    setErrorFields((prevErrorFields) => ({
-      ...prevErrorFields,
-      [name]: false,
-    }));
+    console.log("sa", error, ">.");
+    if (error === "") {
+      setErrorFields((prevErrorFields) => ({
+        ...prevErrorFields,
+        [name]: false,
+      }));
+    }
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
+    getEmail(formData.email)
+
 
     const newErrors = {
       username: validateInput("username", formData.username),
       email: validateInput("email", formData.email),
       phone: validateInput("phone", formData.phone),
       password: validateInput("password", formData.password),
+      global: "",
     };
 
     setErrors(newErrors);
@@ -68,12 +80,20 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
     if (!hasError && !isEmpty) {
       try {
         const res = await registerPost(formData).unwrap();
-        console.log(res);
-        if (res.status === 200) {
-          onOtpRequest(); 
+        if (res.success) {
+          onOtpRequest();
         }
-      } catch (error) {
+        console.log(res,'ssssssssssssss');
+        
+      } catch (err) {
+        const error = err as CustomError;
         console.log("Error occurred:", error);
+        if (error.status === 400) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            global: error.data.error,
+          }));
+        }
       }
     } else {
       console.log("Form contains errors or is incomplete");
@@ -128,7 +148,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
           name="phone"
           value={formData.phone}
           onChange={handleInputChange}
-          error={errorFields.phone} 
+          error={errorFields.phone}
         />
         {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
       </div>
@@ -141,16 +161,46 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest }) => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
-          error={errorFields.password} 
+          error={errorFields.password}
         />
         {errors.password && (
           <p className="text-red-500 text-xs">{errors.password}</p>
         )}
       </div>
-      <div className="col-span-2">
-        <button className="bg-red-800 hover:bg-red-900 font-bai-regular text-white font-bold py-2 px-4 rounded w-full h-12">
-          REGISTER
-        </button>
+        {errors.global && (
+      <div className="text-center relative left-28">
+          <p className="text-red-500 text-center text-xs">{errors.global}</p>
+      </div>
+        )}
+      <div className="col-span-2 flex items-center justify-center text-center">
+        {isLoading ? (
+          <button className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center">
+            <svg
+              className="animate-spin h-5 w-5 mr-3 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V2.5"
+              ></path>
+            </svg>
+          </button>
+        ) : (
+          <button className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12">
+            REGISTER
+          </button>
+        )}
       </div>
     </form>
   );

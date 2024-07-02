@@ -3,21 +3,52 @@ import CustomModal from "../common/Modal";
 import SignupForm from "./UserSignup";
 import LoginForm from "./UserLogin";
 import OtpForm from "./UserOtp";
+import { useVerifyOtpMutation } from "../../store/slices/userApiSlice";
+import { CustomError } from "../../schema/error";
 
 const App: React.FC = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [allowClose, setAllowClose] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
   const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
+  const [otpError, setOtpError] = useState("");
+
+  const getEmail = (email:string) => {
+    console.log(email,'ddddddddddddd'); 
+    setEmail(email) 
+  }
+
+  const [verifyOtp, { isLoading, isError }] = useVerifyOtpMutation();
+
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOtp(e.target.value);
   };
 
-  const handleSubmitOtp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitOtp = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Submitted OTP:", otp);
-    // Verify OTP logic here
+
+    try {
+      const res = await verifyOtp({otp,email}).unwrap();
+      console.log(res,'hkjhhjkkj');
+
+      if(res.success){
+        location.reload()
+      }
+      
+    } catch (err) {
+      const error = err as CustomError;
+
+      if(error.status === 400){
+        console.log('4000000000000');
+        
+        setOtpError(error.data.error)
+      }
+      
+    }
+
   };
 
   const handleClose = () => {
@@ -29,7 +60,7 @@ const App: React.FC = () => {
   return (
     <CustomModal
       width={500}
-      height={isOtpSent ? 370 : isLogin ? 400 : 480}
+      height={isOtpSent ? 320 : isLogin ? 400 : 480}
       buttonLabel={isOtpSent ? "Signup" : "Signup"}
       title={
         isOtpSent ? "Enter OTP" : isLogin ? "Login" : "Create your account"
@@ -39,44 +70,56 @@ const App: React.FC = () => {
     >
       <div className="flex flex-col items-center mt-10">
         {!isOtpSent && !isLogin && (
-          <SignupForm onOtpRequest={() => setIsOtpSent(true)} />
+          <SignupForm onOtpRequest={() => setIsOtpSent(true)} getEmail={getEmail} />
         )}
         {!isOtpSent && isLogin && (
           <LoginForm onSwitchToSignup={() => setIsLogin(false)} />
         )}
         {isOtpSent && (
+          <>
+          {otpError && (
+            <p className="text-red-500 relative top-24 text-xs">{otpError}</p>
+          )}
           <OtpForm
             otp={otp}
+            isLoading={isLoading}
             onOtpChange={handleOtpChange}
             onSubmit={handleSubmitOtp}
           />
+          </>
         )}
+        
         {!isOtpSent && !isLogin && (
           <div className="flex justify-center w-full mt-2">
             <button onClick={() => setIsLogin(true)}>
               <span className="text-black text-sm font-bai-regular">
                 Don't have an account?
               </span>
-              <span className="hover:underline text-red-800 font-bai-regular">Register</span>
+              <span className="hover:underline text-red-800 font-bai-regular">
+                Register
+              </span>
             </button>
           </div>
         )}
-        <div className="flex justify-center items-center mt-2">
-          <span className="mr-2 font-bai-extra-light">OR</span>
-        </div>
-        <div className="flex justify-center w-full mt-2">
-          <button className="flex items-center justify-center border px-5 py-3 rounded shadow-md bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-            <img
-              src="https://img.icons8.com/color/48/000000/google-logo.png"
-              alt="Google"
-              className="w-6 h-6 mr-3"
-            />
-            <span className="font-bai-semi-bold uppercase">
-              Sign up with Google
-            </span>
-          </button>
-        </div>
-        
+        {!isOtpSent&& (
+          <>
+            <div className="flex justify-center items-center mt-2">
+              <span className="mr-2 font-bai-extra-light">OR</span>
+            </div>
+            <div className="flex justify-center w-full mt-2">
+              <button className="flex items-center justify-center border px-5 py-3 rounded shadow-md bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                <img
+                  src="https://img.icons8.com/color/48/000000/google-logo.png"
+                  alt="Google"
+                  className="w-6 h-6 mr-3"
+                />
+                <span className="font-bai-semi-bold uppercase">
+                  Sign up with Google
+                </span>
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </CustomModal>
   );

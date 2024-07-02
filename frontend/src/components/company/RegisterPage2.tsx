@@ -33,7 +33,7 @@ const Page2: React.FC = () => {
     const valid = Object.values(newErrors).every((error) => !error);
 
     if (valid) {
-        navigate("/register-3");
+        navigate("/company/register-3");
     }
   };
 
@@ -99,7 +99,7 @@ const Page2: React.FC = () => {
         </div>
 
         <div className="form-submit">
-          <button className="mr-4" onClick={() => navigate("/register-1")}>BACK</button>
+          <button className="mr-4" onClick={() => navigate("/company/register-1")}>BACK</button>
           <button onClick={handleNext}>NEXT</button>
         </div>
       </div>

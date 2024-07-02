@@ -1,8 +1,16 @@
 import { User } from "../entities/userEntity";
-import { IUserRepository } from "../infrastructure/db/repositories/interfaces/userInterface";
+import { IOtpService } from "../repositories/interfaces/otpInterface";
+import { IUserRepository } from "../repositories/interfaces/userInterface";
+import { IRedisRepository } from "../repositories/interfaces/redisInterface";
+import { hashPassword } from '../utils/bcrypt';
+
 
 export class SignupUseCase {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(
+    private userRepository: IUserRepository,
+    private otpRepository: IOtpService,
+    private redisRepository:IRedisRepository
+  ) {}
 
   async execute(
     username: string,
@@ -10,7 +18,6 @@ export class SignupUseCase {
     phone: number,
     password: string
   ): Promise<User> {
-    
     if (!username || !email || !password) {
       throw new Error("Invalid input");
     }
@@ -24,10 +31,19 @@ export class SignupUseCase {
     const existingPhone = await this.userRepository.findByPhone(phone);
 
     if (existingPhone) {
-      throw new Error("User already registered");
+      throw new Error("User Phone is already registered");
     }
 
-    const user = new User({ username, email, phone, password });
+    const hashedPassword = await hashPassword(password);
+
+    const user = new User({ username, email, phone, password:hashedPassword });
+
+    const otp = this.otpRepository.generateOtp(4)
+
+    
+    await this.otpRepository.sendOtp(email,otp)
+    await this.redisRepository.storeOtp(email,otp,300)
+
     return await this.userRepository.save(user);
   }
 }

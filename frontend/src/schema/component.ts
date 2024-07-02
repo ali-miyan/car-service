@@ -30,4 +30,4 @@ export interface ButtonProps {
     hoverColor?: string;
     bgColor?: string;
     onClick?: () => void;
-  }
+}
