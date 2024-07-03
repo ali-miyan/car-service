@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
@@ -46,7 +46,7 @@ const Page2: React.FC = () => {
         </p>
         <div className="w-8/12 mx-auto">
           <div className="progress-bar">
-            <div className="progress-step">1</div>
+          <Link to={'/company/register-1'}><div className="progress-step active">1</div></Link>
             <div className="progress-line"></div>
             <div className="progress-step active">2</div>
             <div className="progress-line"></div>
@@ -65,7 +65,7 @@ const Page2: React.FC = () => {
               name="contact1"
             />
             {errors.contact1 && (
-              <p className="text-red-500 text-xs">{errors.contact1}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.contact1}</p>
             )}
           </div>
           <div className="form-group">
@@ -79,7 +79,7 @@ const Page2: React.FC = () => {
               placeholder="Type here"
             />
             {errors.contact2 && (
-              <p className="text-red-500 text-xs">{errors.contact2}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.contact2}</p>
             )}
           </div>
           <div className="form-group">
@@ -93,7 +93,7 @@ const Page2: React.FC = () => {
               placeholder="Type here"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs">{errors.email}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.email}</p>
             )}
           </div>
         </div>

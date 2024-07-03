@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
@@ -76,7 +76,7 @@ const Page1: React.FC = () => {
             <div className="progress-step">3</div>
           </div>
         </div>
-        <div className="form-grid">
+        <div className="form-grid text-start">
           <div className="form-group">
             <label>Company Owner Name</label>
             <input
@@ -88,7 +88,7 @@ const Page1: React.FC = () => {
               name="ownerName"
             />
             {errors.ownerName && (
-              <p className="text-red-500 text-xs">{errors.ownerName}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.ownerName}</p>
             )}
           </div>
           <div className="form-group">
@@ -102,7 +102,7 @@ const Page1: React.FC = () => {
               placeholder="Type here"
             />
             {errors.companyName && (
-              <p className="text-red-500 text-xs">{errors.companyName}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.companyName}</p>
             )}
           </div>
           <div className="form-group">
@@ -116,7 +116,7 @@ const Page1: React.FC = () => {
               placeholder="Type here"
             />
             {errors.year && (
-              <p className="text-red-500 text-xs">{errors.year}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.year}</p>
             )}
           </div>
           <div className="form-group">
@@ -130,7 +130,7 @@ const Page1: React.FC = () => {
               placeholder="Type here"
             />
             {errors.description && (
-              <p className="text-red-500 text-xs">{errors.description}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.description}</p>
             )}
           </div>
 
@@ -148,7 +148,7 @@ const Page1: React.FC = () => {
             ) : (
               <img src={img} alt="Company Logo"  className="w-48"/>
             )}
-            {errors.logoImg && <p className="text-red-500 text-xs">{errors.logoImg}</p>}
+            {errors.logoImg && <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.logoImg}</p>}
           </div>
         </div>
 

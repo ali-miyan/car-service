@@ -21,6 +21,8 @@ export interface ModalProps {
   buttonLabel?: string;
   title?: string;
   children: React.ReactNode;
+  disableClose?:boolean
+  onClose?: () => void;
 }
 
 export interface ButtonProps {

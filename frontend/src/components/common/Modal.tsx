@@ -19,8 +19,8 @@ const CustomModal: React.FC<ModalProps> = ({
   width = 400,
   height,
   title = "Modal Title",
-  buttonLabel = "REGISTER", // Add buttonLabel prop with default value
-  disableClose = false, // Add disableClose prop with default value
+  buttonLabel = "REGISTER",
+  disableClose = false,
   children,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -43,7 +43,7 @@ const CustomModal: React.FC<ModalProps> = ({
         onClick={handleOpen}
         className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12"
       >
-        {buttonLabel} {/* Use buttonLabel prop */}
+        {buttonLabel}
       </button>
 
       <Modal

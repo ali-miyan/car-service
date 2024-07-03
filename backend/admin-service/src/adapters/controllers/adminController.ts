@@ -13,7 +13,6 @@ export class AdminController {
 
     console.log(req.body);
     
-    
     try {
       const company = await this.registerCompany.execute(
         email,

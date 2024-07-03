@@ -47,7 +47,7 @@ const UserNavbar = () => {
         </div>
       </div>
 
-      <nav className="bg-gray p-4 mt-5 mb-2 ">
+      <nav className="bg-white mx-28 p-4 mt-5">
             <div className="flex justify-center space-x-16 font-bai-bold">
                 <Link to="/" className="hover:text-gray-700">
                     HOME

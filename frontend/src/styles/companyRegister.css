@@ -21,10 +21,7 @@
     margin-bottom: 1rem;
   }
   
-  .register-box p {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+
   
   .progress-bar {
     display: flex;
@@ -137,3 +134,7 @@
     }
   }
   
+.error-msg{
+  text-align: justify;
+  font-size: 1px;
+}

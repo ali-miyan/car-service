@@ -12,7 +12,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: #efefef;
+  background: rgb(222 232 241 / 50%);
 }
 
 @media (max-width: 768px) {

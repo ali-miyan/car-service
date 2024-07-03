@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
@@ -124,9 +124,9 @@ const Page3: React.FC = () => {
         </p>
         <div className="w-8/12 mx-auto">
           <div className="progress-bar">
-            <div className="progress-step">1</div>
+          <Link to={'/company/register-1'}><div className="progress-step active">1</div></Link>
             <div className="progress-line"></div>
-            <div className="progress-step">2</div>
+            <Link to={'/company/register-2'}><div className="progress-step active">2</div></Link>
             <div className="progress-line"></div>
             <div className="progress-step active">3</div>
           </div>
@@ -143,7 +143,7 @@ const Page3: React.FC = () => {
               name="lisenceNumber"
             />
             {errors.lisenceNumber && (
-              <p className="text-red-500 text-xs">{errors.lisenceNumber}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.lisenceNumber}</p>
             )}
           </div>
           <div className="form-group">
@@ -156,7 +156,7 @@ const Page3: React.FC = () => {
               className="h-12  font-bai-regular"
             />
             {errors.lisenceExpiry && (
-              <p className="text-red-500 text-xs">{errors.lisenceExpiry}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.lisenceExpiry}</p>
             )}
           </div>
           <div className="form-group">
@@ -170,7 +170,7 @@ const Page3: React.FC = () => {
               placeholder="Type here"
             />
             {errors.password && (
-              <p className="text-red-500 text-xs">{errors.password}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.password}</p>
             )}
           </div>
           <div className="form-group">
@@ -184,7 +184,7 @@ const Page3: React.FC = () => {
               placeholder="Type here"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.confirmPassword}</p>
             )}
           </div>
           <div className="form-group logo-upload">
@@ -207,7 +207,7 @@ const Page3: React.FC = () => {
               />
             )}
             {errors.lisenceImg && (
-              <p className="text-red-500 text-xs">{errors.lisenceImg}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.lisenceImg}</p>
             )}
           </div>
           <div className="form-group logo-upload">
@@ -230,7 +230,7 @@ const Page3: React.FC = () => {
               />
             )}
             {errors.approvedImg && (
-              <p className="text-red-500 text-xs">{errors.approvedImg}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.approvedImg}</p>
             )}
           </div>
         </div>

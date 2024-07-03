@@ -1,14 +1,14 @@
 export interface IUserData {
   username: string;
   email: string;
-  phone: number;
+  phone: number | null;
   password: string;
 }
 
 export class User {
   username: string;
   email: string;
-  phone: number;
+  phone: number | null;
   password: string;
 
   constructor({ username, email, phone, password }: IUserData) {

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import Input from "../common/Input";
-import { validateInput } from "../../helpers/userValidation";
+import { hasFormErrors, isFormEmpty, validateInput } from "../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../store/slices/userApiSlice";
 import { CustomError } from "../../schema/error";
+import { notifyError } from "../common/Toast";
+import { errMessage } from "../../constants/errorMessage";
 
 interface SignupFormProps {
   onOtpRequest: () => void;
-  getEmail:(email:string)=>void;
+  getEmail: (email: string) => void;
 }
 
-const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
-  const [registerPost, { isLoading, isError }] = useRegisterPostMutation();
+const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
+  const [registerPost, { isLoading }] = useRegisterPostMutation();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -59,8 +61,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    getEmail(formData.email)
-
+    getEmail(formData.email);
 
     const newErrors = {
       username: validateInput("username", formData.username),
@@ -72,10 +73,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
 
     setErrors(newErrors);
 
-    const hasError = Object.keys(newErrors).some(
-      (key) => newErrors[key] !== ""
-    );
-    const isEmpty = Object.values(formData).some((field) => field === "");
+    const hasError = hasFormErrors(newErrors);
+    const isEmpty = isFormEmpty(formData)
 
     if (!hasError && !isEmpty) {
       try {
@@ -83,8 +82,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
         if (res.success) {
           onOtpRequest();
         }
-        console.log(res,'ssssssssssssss');
-        
+        console.log(res, "ssssssssssssss");
       } catch (err) {
         const error = err as CustomError;
         console.log("Error occurred:", error);
@@ -93,6 +91,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
             ...prevErrors,
             global: error.data.error,
           }));
+        } else {
+          notifyError(errMessage);
         }
       }
     } else {
@@ -123,7 +123,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
           error={errorFields.username}
         />
         {errors.username && (
-          <p className="text-red-500 text-xs">{errors.username}</p>
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.username}
+          </p>
         )}
       </div>
       <div>
@@ -137,7 +139,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
           onChange={handleInputChange}
           error={errorFields.email}
         />
-        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+        {errors.email && (
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.email}
+          </p>
+        )}
       </div>
       <div>
         <Input
@@ -150,7 +156,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
           onChange={handleInputChange}
           error={errorFields.phone}
         />
-        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+        {errors.phone && (
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.phone}
+          </p>
+        )}
       </div>
       <div>
         <Input
@@ -164,17 +174,19 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
           error={errorFields.password}
         />
         {errors.password && (
-          <p className="text-red-500 text-xs">{errors.password}</p>
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.password}
+          </p>
         )}
       </div>
-        {errors.global && (
-      <div className="text-center relative left-28">
+      {errors.global && (
+        <div className="text-center relative left-28">
           <p className="text-red-500 text-center text-xs">{errors.global}</p>
-      </div>
-        )}
+        </div>
+      )}
       <div className="col-span-2 flex items-center justify-center text-center">
         {isLoading ? (
-          <button className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center">
+          <button className="bg-red-800  text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
             <svg
               className="animate-spin h-5 w-5 mr-3 text-white"
               xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +209,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest ,getEmail}) => {
             </svg>
           </button>
         ) : (
-          <button className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12">
+          <button className="bg-red-800 hover:bg-red-900 text-white font-bai-regular font-bold py-2 px-4 rounded w-full h-12">
             REGISTER
           </button>
         )}

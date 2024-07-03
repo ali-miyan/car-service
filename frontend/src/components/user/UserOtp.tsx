@@ -29,7 +29,7 @@ const OtpForm: React.FC<OtpFormProps> = ({ otp, onOtpChange, onSubmit,isLoading 
         </div>
         <div className="col-span-2 flex items-center justify-center text-center">
         {isLoading ? (
-          <button className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center">
+          <button className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
             <svg
               className="animate-spin h-5 w-5 mr-3 text-white"
               xmlns="http://www.w3.org/2000/svg"

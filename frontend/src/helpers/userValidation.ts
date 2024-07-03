@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { emailRegex, phoneRegex } from "../constants/regex";
 
 export const validateInput = (name: string, value: any | undefined) => {
@@ -98,4 +99,21 @@ export const validateInput = (name: string, value: any | undefined) => {
       break;
   }
   return error;
+};
+
+
+interface FormErrors {
+  username?: string;
+  email: string;
+  phone?: string;
+  password: string;
+  global?: string;
+}
+
+export const hasFormErrors = (errors: FormErrors): boolean => {
+  return Object.values(errors).some((error) => error !== "");
+};
+
+export const isFormEmpty = (formData: Record<string, string>): boolean => {
+  return Object.values(formData).some((field) => field === "");
 };
