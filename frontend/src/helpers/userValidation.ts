@@ -76,16 +76,16 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "Contact-2 must be 10";
       }
       break;
-    case "lisenceNumber":
+    case "licenseNumber":
       if (!value) {
-        error = "Lisence number is required";
+        error = "license number is required";
       } else if (value.length !== 12) {
-        error = "Lisence number 12";
+        error = "license number 12";
       }
       break;
-    case "lisenceExpiry":
+    case "licenseExpiry":
       if (!value) {
-        error = "Lisence Expiry Date is required";
+        error = "license Expiry Date is required";
       }
       break;
     case "confirmPassword":
@@ -93,6 +93,31 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "contact-2 is required";
       } else if (value.length < 10) {
         error = "At least 10 characters long";
+      }
+      break;
+    case "address":
+      if (!value) {
+        error = "address is required";
+      }
+      break;
+    case "city":
+      if (!value) {
+        error = "city is required";
+      }
+      break;
+    case "streetRegion":
+      if (!value) {
+        error = "street/region is required";
+      }
+      break;
+    case "postcode":
+      if (!value) {
+        error = "postcode is required";
+      }
+      break;
+    case "country":
+      if (!value) {
+        error = "country is required";
       }
       break;
     default:

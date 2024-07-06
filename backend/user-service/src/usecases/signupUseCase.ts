@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import { User } from "../entities/userEntity";
 import { IOtpService,IRedisRepository,IUserRepository } from "../repositories/interfaces";
 import { hashPassword } from '../utils';
@@ -17,19 +18,19 @@ export class SignupUseCase {
     password: string
   ): Promise<User> {
     if (!username || !email || !password) {
-      throw new Error("Invalid input");
+      throw new BadRequestError("Invalid input");
     }
 
     const existingEmail = await this.userRepository.findByEmail(email);
 
     if (existingEmail) {
-      throw new Error("User Email already registered");
+      throw new BadRequestError("User Email already registered");
     }
 
     const existingPhone = await this.userRepository.findByPhone(phone);
 
     if (existingPhone) {
-      throw new Error("User Phone is already registered");
+      throw new BadRequestError("User Phone is already registered");
     }
 
     const hashedPassword = await hashPassword(password);

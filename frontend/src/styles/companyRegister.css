@@ -21,6 +21,11 @@
     margin-bottom: 1rem;
   }
   
+  .register-box h6 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
 
   
   .progress-bar {
@@ -43,7 +48,7 @@
   }
   
   .progress-step.active {
-    background-color: #C30000;
+    background-color: #ff0000;
   }
   
   .progress-line {

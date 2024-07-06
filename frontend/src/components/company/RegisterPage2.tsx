@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import CustomModal from "../common/Modal";
+import LocationModal from "./LocationModal";
 
 const Page2: React.FC = () => {
+
   const { formData, setFormData, errors, setErrors } = useForm();
   const navigate = useNavigate();
 
+
+  const [openModal, setOpenModal] = useState(false);
+  const [isAddressFilled, setIsAddressFilled] = useState(false);
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -26,6 +34,7 @@ const Page2: React.FC = () => {
       contact1: validateInput("contact1", formData.contact1),
       contact2: validateInput("contact2", formData.contact2),
       email: validateInput("email", formData.email),
+      location: isAddressFilled ? "" : 'please give a location',
     };
 
     setErrors(newErrors);
@@ -33,20 +42,22 @@ const Page2: React.FC = () => {
     const valid = Object.values(newErrors).every((error) => !error);
 
     if (valid) {
-        navigate("/company/register-3");
+      navigate("/company/register-3");
     }
   };
 
   return (
     <div className="register-container">
-      <div className="register-box font-bai-bold text-sm uppercase">
-        <h2 className="">REGISTER YOUR BUSINESS</h2>
-        <p>
+      <div className="register-box font-bai-regular text-sm lowercase">
+        <h2 className="font-bai-bold uppercase">REGISTER YOUR BUSINESS</h2>
+        <h6>
           PLEASE PROVIDE ALL REQUIRED DETAILS TO REGISTER YOUR BUSINESS WITH US
-        </p>
+        </h6>
         <div className="w-8/12 mx-auto">
           <div className="progress-bar">
-          <Link to={'/company/register-1'}><div className="progress-step active">1</div></Link>
+            <Link to={"/company/register-1"}>
+              <div className="progress-step active">1</div>
+            </Link>
             <div className="progress-line"></div>
             <div className="progress-step active">2</div>
             <div className="progress-line"></div>
@@ -65,7 +76,9 @@ const Page2: React.FC = () => {
               name="contact1"
             />
             {errors.contact1 && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.contact1}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.contact1}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -75,11 +88,13 @@ const Page2: React.FC = () => {
               onChange={handleInputChange}
               value={formData.contact2}
               name="contact2"
-              className="h-12  font-bai-regular"
+              className="h-12 font-bai-regular"
               placeholder="Type here"
             />
             {errors.contact2 && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.contact2}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.contact2}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -93,18 +108,57 @@ const Page2: React.FC = () => {
               placeholder="Type here"
             />
             {errors.email && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.email}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.email}
+              </p>
+            )}
+          </div>
+          <div className="form-group">
+            <label className="block text-gray-700 font-bai-regular mb-2">
+              YOUR LOCATION
+            </label>
+            <button
+              type="button"
+              className="flex items-center justify-between h-12 w-full px-4 bg-white border border-gray-300 rounded shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-red-100"
+              onClick={() => setOpenModal(true)}
+            >
+              <span className="font-bai-regular">
+                {formData.location || "Pick a location"}
+              </span>
+              <FaMapMarkerAlt className="text-gray-500" />
+            </button>
+            {errors.location && (
+              <p className="text-red-500 font-bai-regular lowercase text-xs mt-1">
+                {errors.location}
+              </p>
             )}
           </div>
         </div>
 
         <div className="form-submit">
-          <button className="mr-4" onClick={() => navigate("/company/register-1")}>BACK</button>
+          <button
+            className="mr-4"
+            onClick={() => navigate("/company/register-1")}
+          >
+            BACK
+          </button>
           <button onClick={handleNext}>NEXT</button>
         </div>
+
+        <CustomModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          width={800}
+          height={600}
+          disableClose={false}
+          title={"CHOOSE YOUR LOCATION"}
+        >
+          <LocationModal onClose={() => setOpenModal(false)} setIsAddressFilled= {()=>setIsAddressFilled(true)}/>
+        </CustomModal>
       </div>
     </div>
   );
 };
+
 
 export default Page2;

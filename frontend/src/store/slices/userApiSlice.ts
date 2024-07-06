@@ -29,6 +29,13 @@ export const apiSlice = createApi({
         body: postData,
       }),
     }),
+    googleRegister: builder.mutation({
+      query: (postData) => ({
+        url: "/google-register",
+        method: "POST",
+        body: postData,
+      }),
+    }),
   }),
 });
 
@@ -36,5 +43,6 @@ export const {
   useGetPostsQuery,
   useRegisterPostMutation,
   useVerifyOtpMutation,
-  useLoginUserMutation
+  useLoginUserMutation,
+  useGoogleRegisterMutation
 } = apiSlice;

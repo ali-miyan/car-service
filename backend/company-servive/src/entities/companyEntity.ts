@@ -6,11 +6,12 @@ export interface ICompanyData {
   contact1: number;
   contact2: number;
   email: string;
-  licenseNumber: number;
+  licenseNumber: string;
   licenseExpiry: string;
   password: string;
   licenseImg: string;
   approvedImg: string;
+  address:object
 }
 
 export class Company {
@@ -21,11 +22,12 @@ export class Company {
   contact1: number;
   contact2: number;
   email: string;
-  licenseNumber: number;
+  licenseNumber: string;
   licenseExpiry: string;
   password: string;
   licenseImg: string;
   approvedImg: string;
+  address:object;
 
   constructor({
     ownerName,
@@ -40,6 +42,7 @@ export class Company {
     password,
     licenseImg,
     approvedImg,
+    address
   }: ICompanyData) {
     this.ownerName = ownerName;
     this.companyName = companyName;
@@ -53,5 +56,6 @@ export class Company {
     this.password = password;
     this.licenseImg = licenseImg;
     this.approvedImg = approvedImg;
+    this.address = address;
   }
 }

@@ -16,6 +16,7 @@ export class CompanyController {
       licenseNumber,
       licenseExpiry,
       password,
+      address,
     } = req.body;
 
     const { files } = req as any
@@ -33,9 +34,10 @@ export class CompanyController {
         licenseNumber,
         licenseExpiry,
         password,
-        files
+        files,
+        address
       );
-      res.status(201).json(company);
+      res.status(201).json({success:true,company});
     } catch (error) {
       next(error);
     }

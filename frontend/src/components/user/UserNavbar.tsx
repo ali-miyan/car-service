@@ -1,68 +1,62 @@
 import "../../styles/NavbarStyle.css";
-import "../../App.css";
-import {
-  FaPhone,
-  FaUser,
-  FaMapMarkerAlt,
-  FaExclamationTriangle,
-} from "react-icons/fa";
-import BasicModal from "./RegisterModal";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import BasicModal from "./RegisterModal";
+import { FaRegCircleUser, FaLocationDot } from "react-icons/fa6";
 
 const UserNavbar = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <>
-      <div className="flex justify-between items-center mr-4 ml-4 mb-4">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center mt-5 w-44 border p-2 space-x-2">
-            <FaPhone className="text-2xl" />
-            <span className="font-bai-regular">call us: +</span>
-          </div>
-          <div className="flex items-center mt-5 w-44 border p-2 space-x-2">
-            <FaMapMarkerAlt className="text-3xl" />
-            <span className="font-bai-regular">service center near me!</span>
-          </div>
-        </div>
-        <img
-          src="./src/assets/_f91ac4f4-f43a-4549-9339-b2d9e4be63d9.jpeg"
-          className="w-32"
-          alt=""
-        />
-        <div className="flex items-center space-x-4">
-          <div className="border p-2 font-bai-extra-light flex items-center w-44 space-x-2 mt-5">
-            <FaExclamationTriangle className="text-4xl" />
-            <span className="font-bai-light text-sm">
-              need emergency services?{" "}
-              <a href="#" className="text-red-500">
-                click here!
-              </a>
-            </span>
-          </div>
-          <div className="flex items-center w-44 border p-2 space-x-2 mt-5">
-            <FaUser className="text-3xl" />
-            <span className="font-bai-regular">
-              <BasicModal />
-            </span>
-          </div>
+    <div className="w-full">
+    <div className="flex w-full">
+      <div className="w-1/12">
+        <div className="mt-8 ml-8">
+          <FaLocationDot className="w-8 h-8 cursor-pointer" />
         </div>
       </div>
+      <nav className="navbar font-bai-regular w-10/12">
+        <div className="navbar-toggle" onClick={handleMenuToggle}>
+          &#9776;
+        </div>
+        <div className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
+          <Link to="/" className="navbar-link">
+            HOME
+          </Link>
+          <Link to="/company/services" className="navbar-link">
+            SERVICES
+          </Link>
+          <Link to="/company/register-1" className="navbar-link">
+            FOR BUSINESS
+          </Link>
+          <Link to="/about-us" className="navbar-link">
+            ABOUT US
+          </Link>
+        </div>
+      </nav>
+        <div className="w-1/12 mt-8">
+          <FaRegCircleUser className="w-8 h-8 cursor-pointer" onClick={handleModalOpen} />
+        </div>
+      </div>
+      </div>
 
-      <nav className="bg-white mx-28 p-4 mt-5">
-            <div className="flex justify-center space-x-16 font-bai-bold">
-                <Link to="/" className="hover:text-gray-700">
-                    HOME
-                </Link>
-                <Link to="/company/services" className="hover:text-gray-700">
-                    SERVICES
-                </Link>
-                <Link to="/company/register-1" className="hover:text-gray-700">
-                    FOR BUSINESS
-                </Link>
-                <Link to="/about-us" className="hover:text-gray-700">
-                    ABOUT US
-                </Link>
-            </div>
-        </nav>
+      {isModalOpen && (
+        <BasicModal isOpen={isModalOpen} onClose={handleModalClose} />
+      )}
     </>
   );
 };

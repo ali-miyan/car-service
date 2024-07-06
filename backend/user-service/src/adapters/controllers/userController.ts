@@ -49,6 +49,14 @@ export class UserController {
     const { email, password } = req.body;
     try {
       const user = await this.loginUseCase.execute(email, password);
+
+      if(user){
+        console.log('coookie setted');
+        
+        res.cookie("token",user.token)
+      }
+      
+
       res.status(200).json(user);
     } catch (error) {
       next(error);

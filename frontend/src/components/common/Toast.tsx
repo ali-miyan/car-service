@@ -1,24 +1,25 @@
 // Toast.tsx
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster, toast } from "react-hot-toast";
+import '../../styles/Toast.css'
 
-const notifySuccess = (message: string) => toast.success(message);
+const notifySuccess = (message: string) => toast.success(message,{className:'custom-toast-success'});
 
-const notifyError = (message: string) => toast.error(message);
+const notifyError = (message: string) => toast.error(message,{className:'custom-toast-error'});
 
 const Toast: React.FC = () => {
   return (
-    <ToastContainer
+    <Toaster
       position="top-center"
-      autoClose={3000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
+      reverseOrder={false}
+      toastOptions={{
+        duration: 3000,
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: '#713200',
+        },
+      }}
     />
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface FormData {
@@ -5,16 +6,18 @@ interface FormData {
   companyName?: string;
   year?: string;
   description?: string;
-  logoImg?: string | undefined | File;
+  logoImg?: any ;
   contact1?: number | string;
   contact2?: number | string;
   email?: string;
-  lisenceNumber?: number | string;
-  lisenceExpiry?: number | string;
-  lisenceImg?: string | undefined | File;
-  approvedImg?: string | undefined | File;
-  password?:string
-  confirmPassword?:string
+  licenseNumber?: number | string;
+  licenseExpiry?: number | string;
+  licenseImg?: any;
+  approvedImg?: any;
+  password?: string;
+  confirmPassword?: string;
+  location?: string;
+  address?: object;
 }
 
 interface FormErrors {
@@ -26,12 +29,13 @@ interface FormErrors {
   contact1?: string;
   contact2?: string;
   email?: string;
-  lisenceNumber?: string;
-  lisenceExpiry?: string;
-  lisenceImg?: string;
+  licenseNumber?: string;
+  licenseExpiry?: string;
+  licenseImg?: string;
   approvedImg?: string;
-  password?:string
-  confirmPassword?:string
+  password?: string;
+  confirmPassword?: string;
+  location?: string;
 }
 
 interface FormContextProps {
@@ -50,10 +54,14 @@ const defaultFormData: FormData = {
   contact1: "",
   contact2: "",
   email: "",
-  lisenceNumber: "",
-  lisenceExpiry: "",
-  lisenceImg: undefined,
+  licenseNumber: "",
+  licenseExpiry: "",
+  licenseImg: undefined,
   approvedImg: undefined,
+  location: "",
+  password:"",
+  confirmPassword:"",
+  address:{}
 };
 
 const defaultFormErrors: FormErrors = {
@@ -65,10 +73,13 @@ const defaultFormErrors: FormErrors = {
   contact1: "",
   contact2: "",
   email: "",
-  lisenceNumber: "",
-  lisenceExpiry: "",
-  lisenceImg: "",
+  licenseNumber: "",
+  licenseExpiry: "",
+  licenseImg: "",
   approvedImg: "",
+  confirmPassword:"",
+  password:"",
+  location: "",
 };
 
 const FormContext = createContext<FormContextProps | undefined>(undefined);

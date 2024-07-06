@@ -50,7 +50,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       ...prevErrors,
       [name]: error,
     }));
-    console.log("sa", error, ">.");
     if (error === "") {
       setErrorFields((prevErrorFields) => ({
         ...prevErrorFields,

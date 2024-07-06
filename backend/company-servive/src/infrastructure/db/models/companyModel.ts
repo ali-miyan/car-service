@@ -8,12 +8,13 @@ export interface CompanyDocument extends Document {
   contact1: number;
   contact2: number;
   email: string;
-  licenseNumber: number;
+  licenseNumber: string;
   licenseExpiry: string;
   password: string;
   licenseImg: string;
   approvedImg: string;
   isBlocked: boolean;
+  address: object;
 }
 
 const companySchema = new Schema<CompanyDocument>({
@@ -23,9 +24,10 @@ const companySchema = new Schema<CompanyDocument>({
   logo: { type: String, required: true },
   contact1: { type: Number, required: true },
   contact2: { type: Number, required: true },
-  email: { type: String, required: true, unique: true },
-  licenseNumber: { type: Number },
-  licenseExpiry: { type: String },
+  email: { type: String, required: true },
+  licenseNumber: { type: String, required: true },
+  licenseExpiry: { type: String, required: true },
+  address: { type: Object },
   password: { type: String, required: true },
   licenseImg: { type: String, required: true },
   approvedImg: { type: String, required: true },

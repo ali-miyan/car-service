@@ -1,19 +1,19 @@
+import { BadRequestError, TokenService } from "tune-up-library";
 import { IUserRepository } from "../repositories/interfaces";
 import { verifyPassword } from "../utils";
 
 export class LoginUseCase {
-  constructor(private loginRepository:IUserRepository ) {}
+  constructor(private loginRepository: IUserRepository) {}
 
-  async execute(email: string, password: string): Promise<{ }> {
-
+  async execute(email: string, password: string): Promise<any> {
     if (!email || !password) {
-      throw new Error("Invalid input");
+      throw new BadRequestError("Invalid input");
     }
 
-    const user = await this.loginRepository.findByEmail(email)
+    const user = await this.loginRepository.findByEmail(email);
 
-    if(!user){
-        throw new Error("User not found")
+    if (!user) {
+      throw new BadRequestError("User not found");
     }
 
     const isPasswordValid = await verifyPassword(password, user.password);
@@ -22,6 +22,14 @@ export class LoginUseCase {
       return { success: false, message: "Invalid password" };
     }
 
-    return { success: true };
+    const token = TokenService.generateToken({
+      username:user.username,
+      email:user.email
+    });
+
+    console.log(token,'token');
+    
+
+    return { success: true ,token:token };
   }
 }

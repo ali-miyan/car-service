@@ -1,3 +1,4 @@
+import { BadRequestError, TokenService } from "tune-up-library";
 import { IUserRepository } from "../repositories/interfaces";
 import { getUserFromGoogle } from "../utils/googleUser";
 
@@ -6,10 +7,13 @@ export class GoogleUseCase {
 
   async execute(access_token: string, token_type: string): Promise<{}> {
     if (!access_token || !access_token) {
-      throw new Error("Failed to fetch");
+      throw new BadRequestError("Failed to fetch");
     }
 
-    const { name, email, id } = await getUserFromGoogle( access_token ,token_type );
+    const { name, email, id } = await getUserFromGoogle(
+      access_token,
+      token_type
+    );
     console.log(name, email);
 
     const user = await this.googleRepositry.findByEmail(email);
@@ -22,7 +26,11 @@ export class GoogleUseCase {
         password: id,
       });
     }
+    const token = TokenService.generateToken({
+      username: name,
+      email: email,
+    });
 
-    return { success: true };
+    return { success: true, token };
   }
 }

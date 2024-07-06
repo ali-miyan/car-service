@@ -16,13 +16,14 @@ export interface MainLayoutProps {
 }
 
 export interface ModalProps {
+  open?:boolean;
   width?: number;
   height?: number;
   buttonLabel?: string;
   title?: string;
   children: React.ReactNode;
   disableClose?:boolean
-  onClose?: () => void;
+  onClose?: () => void | undefined | void;
 }
 
 export interface ButtonProps {

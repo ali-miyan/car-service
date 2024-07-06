@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import Input from "../common/Input";
-import { hasFormErrors, isFormEmpty, validateInput } from "../../helpers/userValidation";
+import {
+  hasFormErrors,
+  isFormEmpty,
+  validateInput,
+} from "../../helpers/userValidation";
 import { useLoginUserMutation } from "../../store/slices/userApiSlice";
 import { CustomError } from "../../schema/error";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../store/auth/authSlice";
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
@@ -12,6 +18,8 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
+
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -58,41 +66,41 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     const newErrors = {
       email: validateInput("email", formData.email),
       password: validateInput("password", formData.password),
-      global:''
+      global: "",
     };
 
     setErrors(newErrors);
 
-    const hasError = hasFormErrors(newErrors)
-    const isEmpty = isFormEmpty(formData)
+    const hasError = hasFormErrors(newErrors);
+    const isEmpty = isFormEmpty(formData);
 
     if (!hasError && !isEmpty) {
-        try {
-          const res = await loginUser(formData).unwrap();
-          console.log(res);
-          
-          if (res.success) {
-            // onOtpRequest();
-            notifySuccess("you have logged in");
-            console.log(res, "ssssssssssssss");
-          } else {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              global: res.message,
-            }));
-          }
-        } catch (err) {
-          const error = err as CustomError;
-          console.log("Error occurred:", error);
-          if (error.status === 400) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              global: error.data.error,
-            }));
-          }else{
-            notifyError(errMessage)
-          }
+      try {
+        const res = await loginUser(formData).unwrap();
+        console.log(res,'dfdfdfdfdfdfdfd');
+
+        if (res.success) {
+          notifySuccess("you have logged in");
+          dispatch(setToken(res.token));
+          console.log(res, "ssssssssssssss");
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            global: res.message,
+          }));
         }
+      } catch (err) {
+        const error = err as CustomError;
+        console.log("Error occurred:", error);
+        if (error.status === 400) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            global: error.data.error,
+          }));
+        } else {
+          notifyError(errMessage);
+        }
+      }
     } else {
       console.log("Form contains errors or is incomplete");
       setErrorFields({
@@ -139,13 +147,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
         )}
       </div>
       {errors.global && (
-          <p className="text-red-500 font-bai-regular text-center relative left-28  lowercase text-sm">
-            {errors.global}
-          </p>
-        )}
+        <p className="text-red-500 font-bai-regular text-center relative left-28  lowercase text-sm">
+          {errors.global}
+        </p>
+      )}
       <div className="col-span-2">
-      {isLoading ? (
-          <button className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
+        {isLoading ? (
+          <button
+            className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center"
+            disabled
+          >
             <svg
               className="animate-spin h-5 w-5 mr-3 text-white"
               xmlns="http://www.w3.org/2000/svg"
