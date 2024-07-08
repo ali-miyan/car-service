@@ -24,6 +24,8 @@ export class UserController {
         phone,
         password
       );
+
+
       res.status(200).json({ success: true, user });
     } catch (error) {
       next(error);
@@ -67,13 +69,13 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body);
+    console.log(req.body,'accessed');
     const { access_token, token_type } = req.body;
-    try {
-      const user = await this.googleUseCase.execute(access_token, token_type);
-      res.status(200).json(user);
-    } catch (error) {
-      next(error);
-    }
+    // try {
+    //   const user = await this.googleUseCase.execute(access_token, token_type);
+    //   res.status(200).json(user);
+    // } catch (error) {
+    //   next(error);
+    // }
   }
 }

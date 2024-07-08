@@ -19,12 +19,13 @@ export class LoginUseCase {
     const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
-      return { success: false, message: "Invalid password" };
+      
+      throw new BadRequestError("invalid password")
     }
 
     const token = TokenService.generateToken({
-      username:user.username,
-      email:user.email
+      user:user.username,
+      role:'user'
     });
 
     console.log(token,'token');

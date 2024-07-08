@@ -6,6 +6,8 @@ import { validateInput } from "../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../store/slices/companyApiSlice";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
+import { useDispatch } from "react-redux";
+import { setCompanyToken } from "../../store/auth/companyAuthSlice";
 
 const Page3: React.FC = () => {
   const { formData, setFormData, errors, setErrors } = useForm();
@@ -15,6 +17,8 @@ const Page3: React.FC = () => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -110,7 +114,8 @@ const Page3: React.FC = () => {
         console.log(res);
 
         if(res.success){
-          notifySuccess('registered succesfully')
+          dispatch(setCompanyToken(res.token));
+          notifySuccess('registered succesfully');
         }
         console.log("Form submitted successfully:");
       } catch (error) {
@@ -124,7 +129,7 @@ const Page3: React.FC = () => {
   };
 
   return (
-    <div className="register-container">
+    <div className="register-container pb-5">
       <div className="register-box mt-16 font-bai-regular text-sm lowercase">
         <h2 className="uppercase font-bai-bold">REGISTER YOUR BUSINESS - Step 3</h2>
         <h6>

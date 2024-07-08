@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUserUrl } from "../../constants/api";
 
-export const apiSlice = createApi({
-  reducerPath: "api",
+export const userApiSlice = createApi({
+  reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: baseUserUrl }),
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -45,4 +45,4 @@ export const {
   useVerifyOtpMutation,
   useLoginUserMutation,
   useGoogleRegisterMutation
-} = apiSlice;
+} = userApiSlice;

@@ -1,12 +1,18 @@
 import "../../styles/NavbarStyle.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import BasicModal from "./RegisterModal";
 import { FaRegCircleUser, FaLocationDot } from "react-icons/fa6";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navigate = useNavigate()
+
+  const token = useSelector((state: RootState) => state.userAuth.user);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -40,7 +46,7 @@ const UserNavbar = () => {
           <Link to="/company/services" className="navbar-link">
             SERVICES
           </Link>
-          <Link to="/company/register-1" className="navbar-link">
+          <Link to="/for-business" className="navbar-link">
             FOR BUSINESS
           </Link>
           <Link to="/about-us" className="navbar-link">
@@ -49,12 +55,16 @@ const UserNavbar = () => {
         </div>
       </nav>
         <div className="w-1/12 mt-8">
+        {token ?   (
+          <FaRegCircleUser className="w-8 h-8 cursor-pointer" onClick={()=>navigate('/profile')} />
+        ):(
           <FaRegCircleUser className="w-8 h-8 cursor-pointer" onClick={handleModalOpen} />
+        )}
         </div>
       </div>
       </div>
 
-      {isModalOpen && (
+      {isModalOpen &&   (
         <BasicModal isOpen={isModalOpen} onClose={handleModalClose} />
       )}
     </>

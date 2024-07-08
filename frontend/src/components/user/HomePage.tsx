@@ -1,12 +1,10 @@
-// src/HomePage.js
-import React from 'react';
 
 const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center ">
       <div className="w-full">
         <img
-          src="https://images.alphacoders.com/854/854152.jpg" // Replace with your banner image URL
+          src="" 
           alt="Banner"
           className="w-full  object-cover"
         />

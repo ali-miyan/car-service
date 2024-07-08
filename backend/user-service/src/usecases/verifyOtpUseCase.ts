@@ -26,8 +26,8 @@ export class VerifyOtpUseCase {
     }
 
     const token = TokenService.generateToken({
-      username: user.username,
-      email: user.email,
+      user: user.username,
+      role: 'user',
     });
 
     return { success: true, token: token };

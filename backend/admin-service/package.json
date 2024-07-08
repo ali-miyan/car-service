@@ -14,7 +14,7 @@
     "express": "^4.19.2",
     "mongoose": "^8.4.4",
     "ts-node": "^10.9.2",
-    "tune-up-library": "^1.0.11"
+    "tune-up-library": "^1.1.14"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

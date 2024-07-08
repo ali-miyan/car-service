@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
+import { useDispatch } from "react-redux";
+import { setAdminToken } from "../../store/auth/adminAuthSlice";
 
 const Login: React.FC = () => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -49,8 +53,10 @@ const Login: React.FC = () => {
       const res = await registerPost({ email, password }).unwrap();
       console.log(res);
 
-      if (res) {
+      if (res.success) {
+
         notifySuccess("you have logged in");
+        dispatch(setAdminToken(res.token))
         navigate("/admin/home");
       }
 
@@ -75,13 +81,13 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen font-bai-medium">
+    <div className="flex items-center bg-gray-100 justify-center lowercase min-h-screen font-bai-medium">
       <form
-        className="bg-white p-5 rounded-lg shadow-md w-full max-w-sm"
+        className=" p-5 rounded-lg font-bai-regular w-full max-w-lg"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold mb-2 text-center font-bai-bold text-black">
-          LOGIN
+        <h2 className="text-2xl mb-5 font-bold uppercase text-center font-bai-bold text-black">
+        LOGIN TO ADMINSTRATIVE
         </h2>
         <div>
           <label htmlFor="email" className="block text-gray-700 mb-2">
@@ -93,9 +99,7 @@ const Login: React.FC = () => {
             name="email"
             value={email}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            } rounded focus:outline-none`}
+            className={`w-full px-3 py-2 border rounded focus:outline-none`}
           />
           {errors.email && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -113,9 +117,7 @@ const Login: React.FC = () => {
             name="password"
             value={password}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            } rounded focus:outline-none`}
+            className={`w-full px-3 py-2 border rounded focus:outline-none`}
           />
           {errors.password && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -147,7 +149,7 @@ const Login: React.FC = () => {
             </svg>
           </button>
         ) : (
-          <button className="bg-red-800 hover:bg-red-900 text-white font-bai-regular font-bold py-2 px-4 rounded w-full h-12">
+          <button className="bg-black hover:bg-black text-white font-bai-regular lowercase py-2 px-4 rounded w-full h-12">
             LOGIN
           </button>
         )}

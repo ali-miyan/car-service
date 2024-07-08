@@ -27,8 +27,8 @@ export class GoogleUseCase {
       });
     }
     const token = TokenService.generateToken({
-      username: name,
-      email: email,
+      user: name,
+      role: 'user',
     });
 
     return { success: true, token };

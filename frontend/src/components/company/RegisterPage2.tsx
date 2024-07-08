@@ -47,7 +47,7 @@ const Page2: React.FC = () => {
   };
 
   return (
-    <div className="register-container">
+    <div className="register-container pb-6">
       <div className="register-box font-bai-regular text-sm lowercase">
         <h2 className="font-bai-bold uppercase">REGISTER YOUR BUSINESS</h2>
         <h6>

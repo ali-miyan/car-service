@@ -1,16 +1,28 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { apiSlice } from './slices/userApiSlice';
-import auth  from './auth/authSlice';
+import { userApiSlice } from './slices/userApiSlice';
+import { companyApiSlice } from './slices/companyApiSlice';
+import { adminApiSlice } from './slices/adminApiSlice';
+import userAuth  from './auth/userAuthSlice';
+import companyAuth  from './auth/companyAuthSlice';
+import adminAuth  from './auth/adminAuthSlice';
 
 const rootReducer = combineReducers({
-  auth: auth,
-  [apiSlice.reducerPath]: apiSlice.reducer,
+  userAuth: userAuth,
+  adminAuth: adminAuth,
+  companyAuth: companyAuth,
+  [userApiSlice.reducerPath]: userApiSlice.reducer,
+  [companyApiSlice.reducerPath]: companyApiSlice.reducer,
+  [adminApiSlice.reducerPath]: adminApiSlice.reducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(
+      userApiSlice.middleware,
+      companyApiSlice.middleware,
+      adminApiSlice.middleware
+    ),
 });
 
 export default store;

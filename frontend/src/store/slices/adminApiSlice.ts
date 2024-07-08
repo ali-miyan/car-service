@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+  import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseAdminUrl } from "../../constants/api";
 
-export const apiSlice = createApi({
-  reducerPath: "api",
+export const adminApiSlice = createApi({
+  reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({ baseUrl: baseAdminUrl }),
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -18,4 +18,4 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useGetPostsQuery, useRegisterPostMutation } = apiSlice;
+export const { useGetPostsQuery, useRegisterPostMutation } = adminApiSlice;

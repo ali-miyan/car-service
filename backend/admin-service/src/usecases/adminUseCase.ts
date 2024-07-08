@@ -1,5 +1,4 @@
-import { BadRequestError } from "tune-up-library";
-import { Admin } from "../entities/adminEntity";
+import { BadRequestError, TokenService } from "tune-up-library";
 import { IConfigService } from "../repositories/interfaces/validateCredintials";
 
 export class RegisterUseCase {
@@ -7,7 +6,7 @@ export class RegisterUseCase {
     private configService:IConfigService
   ) {}
 
-  async execute(email: string, password: string): Promise<boolean> {
+  async execute(email: string, password: string): Promise<any> {
 
     const isVerified = this.configService.validateCredentials(email,password)
     
@@ -15,12 +14,12 @@ export class RegisterUseCase {
       throw new BadRequestError('Invalid email or password')
     }
 
-    const admin = new Admin({
-      email,
-      password,
+    const token = TokenService.generateToken({
+      user: "admin",
+      role: "company",
     });
 
-    return true
+    return {success:true,token:token}
 
   }
 }
