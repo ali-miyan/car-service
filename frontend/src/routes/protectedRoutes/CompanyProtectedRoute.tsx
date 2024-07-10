@@ -15,7 +15,7 @@ const CompanyProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   useEffect(() => {
     if (!token) {
-      navigate('/company/home');
+      navigate('/company/login');
     }
   }, [token, navigate]);
 

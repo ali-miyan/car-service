@@ -5,13 +5,15 @@ import {
   VerifyOtpUseCase,
   GoogleUseCase,
 } from "../../usecases/index";
+import { ResendOtpUseCase } from "../../usecases/resendOtpUseCase";
 
 export class UserController {
   constructor(
     private signupUseCase: SignupUseCase,
     private verifyOtpUseCase: VerifyOtpUseCase,
     private loginUseCase: LoginUseCase,
-    private googleUseCase: GoogleUseCase
+    private googleUseCase: GoogleUseCase,
+    private resendOtpUseCase:ResendOtpUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -27,6 +29,16 @@ export class UserController {
 
 
       res.status(200).json({ success: true, user });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
+    console.log(req.body);
+    const { email } = req.body;
+    try {
+      res.status(200).json({ success: true });
+      await this.resendOtpUseCase.execute(email)
     } catch (error) {
       next(error);
     }
@@ -51,14 +63,6 @@ export class UserController {
     const { email, password } = req.body;
     try {
       const user = await this.loginUseCase.execute(email, password);
-
-      if(user){
-        console.log('coookie setted');
-        
-        res.cookie("token",user.token)
-      }
-      
-
       res.status(200).json(user);
     } catch (error) {
       next(error);
@@ -71,11 +75,11 @@ export class UserController {
   ): Promise<void> {
     console.log(req.body,'accessed');
     const { access_token, token_type } = req.body;
-    // try {
-    //   const user = await this.googleUseCase.execute(access_token, token_type);
-    //   res.status(200).json(user);
-    // } catch (error) {
-    //   next(error);
-    // }
+    try {
+      const user = await this.googleUseCase.execute(access_token, token_type);
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
   }
 }

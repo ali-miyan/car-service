@@ -1,5 +1,5 @@
 import { BadRequestError, TokenService } from "tune-up-library";
-import { IConfigService } from "../repositories/interfaces/validateCredintials";
+import { IConfigService } from "../repositories/interfaces/validateInterface";
 
 export class RegisterUseCase {
   constructor(
@@ -16,7 +16,7 @@ export class RegisterUseCase {
 
     const token = TokenService.generateToken({
       user: "admin",
-      role: "company",
+      role: "admin",
     });
 
     return {success:true,token:token}

@@ -1,12 +1,12 @@
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex flex-col py-10 items-center justify-center ">
       <div className="w-full">
         <img
-          src="" 
+          src="https://www.hdwallpapers.in/download/white_car_in_white_background_hd_white_background-HD.jpg" 
           alt="Banner"
-          className="w-full  object-cover"
+          className="w-auto object-cover"
         />
       </div>
       <div className="p-4 mt-16 bg-white z-50 max-w-md mx-auto shadow-lg rounded-lg">

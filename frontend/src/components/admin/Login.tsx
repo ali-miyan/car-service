@@ -7,6 +7,7 @@ import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 import { useDispatch } from "react-redux";
 import { setAdminToken } from "../../store/auth/adminAuthSlice";
+import LoadingButton from "../common/Loading";
 
 const Login: React.FC = () => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
@@ -54,9 +55,8 @@ const Login: React.FC = () => {
       console.log(res);
 
       if (res.success) {
-
         notifySuccess("you have logged in");
-        dispatch(setAdminToken(res.token))
+        dispatch(setAdminToken(res.token));
         navigate("/admin/home");
       }
 
@@ -87,7 +87,7 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl mb-5 font-bold uppercase text-center font-bai-bold text-black">
-        LOGIN TO ADMINSTRATIVE
+          LOGIN TO ADMINSTRATIVE
         </h2>
         <div>
           <label htmlFor="email" className="block text-gray-700 mb-2">
@@ -125,34 +125,13 @@ const Login: React.FC = () => {
             </p>
           )}
         </div>
-        {isLoading ? (
-          <button className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
-            <svg
-              className="animate-spin h-5 w-5 mr-3 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V2.5"
-              ></path>
-            </svg>
-          </button>
-        ) : (
-          <button className="bg-black hover:bg-black text-white font-bai-regular lowercase py-2 px-4 rounded w-full h-12">
-            LOGIN
-          </button>
-        )}
+        <LoadingButton
+          buttonText="submit"
+          isLoading={isLoading}
+          onClick={handleSubmit}
+          width="w-full"
+          height="h-10"
+        />
       </form>
     </div>
   );

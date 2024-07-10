@@ -1,8 +1,11 @@
-import Dashboard from "../../components/admin/Home";
+import Wrapper from "../../components/admin/AdminWrapper";
+import Dashboard from "../../components/admin/Dashboard";
 
 const RegisterPage2 = () => {
   return (
-        <Dashboard />
+        <Wrapper>
+          <Dashboard />
+        </Wrapper>
   );
 };
 

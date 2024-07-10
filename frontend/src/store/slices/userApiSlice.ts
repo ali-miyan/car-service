@@ -15,6 +15,13 @@ export const userApiSlice = createApi({
         body: postData,
       }),
     }),
+    resendOtp: builder.mutation({
+      query: (postData) => ({
+        url: "/resend-otp",
+        method: "POST",
+        body: postData,
+      }),
+    }),
     verifyOtp: builder.mutation({
       query: (postData) => ({
         url: "/verify-otp",
@@ -44,5 +51,6 @@ export const {
   useRegisterPostMutation,
   useVerifyOtpMutation,
   useLoginUserMutation,
-  useGoogleRegisterMutation
+  useGoogleRegisterMutation,
+  useResendOtpMutation
 } = userApiSlice;

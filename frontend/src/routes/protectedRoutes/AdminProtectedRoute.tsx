@@ -15,7 +15,7 @@ const AdminProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   useEffect(() => {
     if (!token) {
-      navigate('/admin/home');
+      navigate('/admin/login');
     }
   }, [token, navigate]);
 

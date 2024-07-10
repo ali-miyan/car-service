@@ -109,6 +109,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
               isLoading={isLoading}
               onOtpChange={handleOtpChange}
               onSubmit={handleSubmitOtp}
+              email ={email}
             />
           </>
         )}

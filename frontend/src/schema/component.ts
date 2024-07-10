@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { FormEvent, MouseEventHandler, ReactNode } from "react";
 
 export interface InputProps {
   placeholder: string;
@@ -33,4 +33,19 @@ export interface ButtonProps {
     hoverColor?: string;
     bgColor?: string;
     onClick?: () => void;
+}
+
+export interface FormState {
+  serviceName: string;
+  description: string;
+  logo: File | null;
+  subServices: string[];
+}
+
+export interface LoadingButtonProps {
+  isLoading: boolean;
+  buttonText: string;
+  onClick?: (e: FormEvent<HTMLFormElement>) => Promise<void> | (()=>void) | MouseEventHandler<HTMLButtonElement>;
+  width: string;
+  height: string;
 }

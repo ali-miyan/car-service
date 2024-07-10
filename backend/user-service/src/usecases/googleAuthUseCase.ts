@@ -10,10 +10,7 @@ export class GoogleUseCase {
       throw new BadRequestError("Failed to fetch");
     }
 
-    const { name, email, id } = await getUserFromGoogle(
-      access_token,
-      token_type
-    );
+    const { name, email, id } = await getUserFromGoogle(access_token,token_type);
     console.log(name, email);
 
     const user = await this.googleRepositry.findByEmail(email);

@@ -11,7 +11,7 @@ const Input: React.FC<InputProps & { error?: boolean }> = ({ placeholder, width,
         name={name}
         value={value}
         onChange={onChange}
-        className={`bg-white text-gray-600 font-bai-regular p-2 border ${error ? 'border-red-500' : 'border-gray-300'} rounded focus:outline-none `}
+        className={`bg-white text-gray-600 font-bai-regular p-2 border ${error ? 'border-red-500' : 'border-gray-500'} rounded focus:outline-none `}
       />
     </div>
   );

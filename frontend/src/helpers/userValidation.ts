@@ -20,6 +20,13 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "At least 3 characters";
       }
       break;
+    case "serviceName":
+      if (!value) {
+        error = "servicename is required";
+      } else if (value.length < 3) {
+        error = "At least 3 characters";
+      }
+      break;
     case "year":
       if (!value) {
         error = "Year is required";
