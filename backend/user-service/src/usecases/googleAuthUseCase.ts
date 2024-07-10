@@ -5,7 +5,7 @@ import { getUserFromGoogle } from "../utils/googleUser";
 export class GoogleUseCase {
   constructor(private googleRepositry: IUserRepository) {}
 
-  async execute(access_token: string, token_type: string): Promise<{}> {
+  async execute(access_token: string, token_type: string): Promise<any> {
     if (!access_token || !access_token) {
       throw new BadRequestError("Failed to fetch");
     }

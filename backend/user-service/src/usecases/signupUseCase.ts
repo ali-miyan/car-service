@@ -39,9 +39,10 @@ export class SignupUseCase {
 
     const otp = this.otpRepository.generateOtp(4)
 
-    
-    await this.otpRepository.sendOtp(email,otp)
-    await this.redisRepository.storeOtp(email,otp,300)
+    const subject = 'Your OTP Code';
+    const message = `Your OTP code is ${otp}`;
+    await this.otpRepository.sendMail(email,subject,message);
+    await this.redisRepository.storeOtp(email,otp,300);
 
     return await this.userRepository.save(user);
   }

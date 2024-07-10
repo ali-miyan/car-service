@@ -5,14 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
-import { useDispatch } from "react-redux";
-import { setCompanyToken } from "../../store/auth/companyAuthSlice";
 
 const Login: React.FC = () => {
   const [loginPost, { isLoading }] = useLoginPostMutation();
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -57,7 +54,6 @@ const Login: React.FC = () => {
 
       if (res.success) {
         notifySuccess("you have logged in");
-        dispatch(setCompanyToken(res.token));
         navigate("/admin/home");
       }
 

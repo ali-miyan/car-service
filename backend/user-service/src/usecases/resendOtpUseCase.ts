@@ -17,7 +17,9 @@ export class ResendOtpUseCase {
 
     const otp = this.otpRepository.generateOtp(4);
 
-    await this.otpRepository.sendOtp(email,otp);
+    const subject = 'Your OTP Code';
+    const message = `Your OTP code is ${otp}`;
+    await this.otpRepository.sendMail(email,subject,message);
     
     await this.redisRepository.storeOtp(email,otp,300);
 

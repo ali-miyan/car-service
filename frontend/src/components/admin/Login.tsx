@@ -6,15 +6,14 @@ import { notifyError, notifySuccess } from "../common/Toast";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 import { useDispatch } from "react-redux";
-import { setAdminToken } from "../../store/auth/adminAuthSlice";
 import LoadingButton from "../common/Loading";
 
 const Login: React.FC = () => {
+
   const [registerPost, { isLoading }] = useRegisterPostMutation();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
+  
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState({
@@ -52,11 +51,8 @@ const Login: React.FC = () => {
 
     try {
       const res = await registerPost({ email, password }).unwrap();
-      console.log(res);
-
       if (res.success) {
         notifySuccess("you have logged in");
-        dispatch(setAdminToken(res.token));
         navigate("/admin/home");
       }
 

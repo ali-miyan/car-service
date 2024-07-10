@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { getInitialToken } from "../../helpers/getToken";
 
 interface ProtectedRouteProps {
   element: React.ComponentType;
@@ -11,11 +10,11 @@ const CompanyVerifyRoute: React.FC<ProtectedRouteProps> = ({
   element: Component,
 }) => {
   const navigate = useNavigate();
-  const token = useSelector((state: RootState) => state.companyAuth.company);
+  const token = getInitialToken("companyToken");
 
   useEffect(() => {
     if (token) {
-      navigate('/company/home');
+      navigate("/company/home");
     }
   }, [token, navigate]);
 

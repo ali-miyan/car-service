@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { getInitialToken } from "../../helpers/getToken";
 
 interface ProtectedRouteProps {
   element: React.ComponentType;
@@ -11,11 +10,11 @@ const UserVerifyRoute: React.FC<ProtectedRouteProps> = ({
   element: Component,
 }) => {
   const navigate = useNavigate();
-  const token = useSelector((state: RootState) => state.userAuth.user);
+  const token = getInitialToken("userToken");
 
   useEffect(() => {
     if (token) {
-      navigate('/home');
+      navigate("/home");
     }
   }, [token, navigate]);
 

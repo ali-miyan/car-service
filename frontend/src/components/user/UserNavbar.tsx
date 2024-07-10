@@ -3,17 +3,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import BasicModal from "./RegisterModal";
 import { FaRegCircleUser, FaLocationDot } from "react-icons/fa6";
-import { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
 import extractToken from "../../helpers/extractToken";
+import { getInitialToken } from "../../helpers/getToken";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const token: string | null = useSelector(
-    (state: RootState) => state.userAuth.user
-  );
+  const token = getInitialToken("userToken");
+
 
   const userName = extractToken(token);
 

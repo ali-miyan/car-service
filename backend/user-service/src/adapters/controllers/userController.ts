@@ -27,7 +27,6 @@ export class UserController {
         password
       );
 
-
       res.status(200).json({ success: true, user });
     } catch (error) {
       next(error);
@@ -52,8 +51,15 @@ export class UserController {
     console.log(req.body);
     const { otp, email } = req.body;
     try {
-      const user = await this.verifyOtpUseCase.execute(otp, email);
-      res.status(200).json(user);
+      const response = await this.verifyOtpUseCase.execute(otp, email);
+
+      if(response.success){
+        res.cookie('userToken', response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+      }
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -62,8 +68,15 @@ export class UserController {
     console.log(req.body);
     const { email, password } = req.body;
     try {
-      const user = await this.loginUseCase.execute(email, password);
-      res.status(200).json(user);
+      const response = await this.loginUseCase.execute(email, password);
+
+      if(response.success){
+        res.cookie('userToken', response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+      }
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -76,8 +89,14 @@ export class UserController {
     console.log(req.body,'accessed');
     const { access_token, token_type } = req.body;
     try {
-      const user = await this.googleUseCase.execute(access_token, token_type);
-      res.status(200).json(user);
+      const response = await this.googleUseCase.execute(access_token, token_type);
+
+      if(response.success){
+        res.cookie('userToken', response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+      }
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }

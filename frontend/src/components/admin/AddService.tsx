@@ -3,15 +3,14 @@ import { validateInput } from "../../helpers/userValidation";
 import { FormState } from "../../schema/component";
 import { useAddServicePostMutation } from "../../store/slices/adminApiSlice";
 import { notifyError, notifySuccess } from "../common/Toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoadingButton from "../common/Loading";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 
-const AddYourService = () => {
-  const [addServicePost, { isLoading }] = useAddServicePostMutation();
+const AddYourService: React.FC = () => {
 
-  const navigate = useNavigate();
+  const [addServicePost, { isLoading }] = useAddServicePostMutation();
 
   const [formData, setFormData] = useState<FormState>({
     serviceName: "",
@@ -20,8 +19,7 @@ const AddYourService = () => {
     subServices: [],
   });
 
-  const [subServiceInput, setSubServiceInput] = useState("");
-
+  const [subServiceInput, setSubServiceInput] = useState<string>("");
   const [errors, setErrors] = useState({
     serviceName: "",
     description: "",
@@ -78,9 +76,7 @@ const AddYourService = () => {
     }));
   };
 
-  const handleSubServiceInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSubServiceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubServiceInput(e.target.value);
   };
 
@@ -91,10 +87,9 @@ const AddYourService = () => {
     const serviceNameError = validateInput("serviceName", formData.serviceName);
     const descriptionError = validateInput("description", formData.description);
     const logoError = formData.logo ? "" : "Please provide a logo";
-    const subServicesError =
-      formData.subServices.length < 2
-        ? "Please add at least two sub-service"
-        : "";
+    const subServicesError = formData.subServices.length < 2
+      ? "Please add at least two sub-service"
+      : "";
 
     setErrors({
       serviceName: serviceNameError,
@@ -118,23 +113,21 @@ const AddYourService = () => {
 
     try {
       const res = await addServicePost(data).unwrap();
-
       if (res.success) {
-        notifySuccess("successfully added");
-        window.location.href = "/admin/services"
+        notifySuccess("Successfully added");
+        window.location.href = "/admin/services";
       }
-
       console.log(res, "response");
     } catch (err) {
       console.log(err);
       const error = err as CustomError;
-      if (error.status === (400 || 401)) {
+      if (error.status === 400 || error.status === 401) {
         setErrors((prev) => ({
           ...prev,
           global: error.data?.message,
         }));
-    } else {
-          notifyError(errMessage)
+      } else {
+        notifyError(errMessage);
       }
     }
   };
@@ -245,11 +238,11 @@ const AddYourService = () => {
         <div className="text-center mt-5 flex justify-center space-x-3">
           <Link to={"/admin/service"}>
             <button className="bg-black h-10  px-4 text-white rounded">
-              back
+              Back
             </button>
           </Link>
           <LoadingButton
-            buttonText="submit"
+            buttonText="Submit"
             isLoading={isLoading}
             onClick={handleSubmit}
             width="w-2/12"

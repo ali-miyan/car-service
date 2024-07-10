@@ -6,31 +6,37 @@ import serviceModel, {
 
 export class ServiceRepository implements IServiceRepository {
   async getAll(): Promise<any> {
-    const service = await serviceModel.find();
-    return service;
+    try {
+      const service = await serviceModel.find();
+      return service;
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
   async getById(id: string): Promise<Service | null> {
-    const service = await serviceModel.findOne({ _id: id });
-    return service;
+    try {
+      const service = await serviceModel.findOne({ _id: id });
+      return service;
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
   async deleteOne(id: string): Promise<any> {
-    const user = await serviceModel.deleteOne({ _id: id });
-    return user;
+    try {
+      const user = await serviceModel.deleteOne({ _id: id });
+      return user;
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
   async updateStatus(id: string, data: object): Promise<void> {
     try {
-      
-      const service = await serviceModel.findByIdAndUpdate(
-        id,
-        data ,
-        { new: true }
-      );
-
+      const service = await serviceModel.findByIdAndUpdate(id, data, {
+        new: true,
+      });
       console.log(service);
-      
     } catch (error) {
-      console.log(error);
-      
+      throw new Error("error in db");
     }
   }
 
@@ -39,7 +45,7 @@ export class ServiceRepository implements IServiceRepository {
       const newServices = new serviceModel(services);
       return await newServices.save();
     } catch (error) {
-      console.log(error);
+      throw new Error("error in db");
     }
   }
 }

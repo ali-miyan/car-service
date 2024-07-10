@@ -1,35 +1,50 @@
 import { IRedisRepository } from "../interfaces";
 import Redis, { Redis as RedisClient } from "ioredis";
 
-
 export class RedisOtpRepository implements IRedisRepository {
-    private client: RedisClient;
+  private client: RedisClient;
 
   constructor() {
     this.client = new Redis({
-        host: process.env.REDIS_HOST,
-        port: Number(process.env.REDIS_PORT),
-        password: process.env.REDIS_PASSWORD,
-      });
-  
-      this.client.on("connect", () => {
-        console.log("Connected to Redis");
-      });
-  
-      this.client.on("error", (err) => {
-        console.error("Redis error:", err);
-      });
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT),
+      password: process.env.REDIS_PASSWORD,
+    });
+
+    this.client.on("connect", () => {
+      console.log("Connected to Redis");
+    });
+
+    this.client.on("error", (err) => {
+      console.error("Redis error:", err);
+    });
   }
 
-  async storeOtp(email: string, otp: string, ttlSeconds: number): Promise<void> {
-    await this.client.set(email, otp, 'EX', ttlSeconds);
+  async storeOtp(
+    email: string,
+    otp: string,
+    ttlSeconds: number
+  ): Promise<void> {
+    try {
+      await this.client.set(email, otp, "EX", ttlSeconds);
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
 
   async getOtp(email: string): Promise<string | null> {
-    return await this.client.get(email);
+    try {
+      return await this.client.get(email);
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
 
   async deleteOtp(email: string): Promise<void> {
-    await this.client.del(email);
+    try {
+      await this.client.del(email);
+    } catch (error) {
+      throw new Error("error in db");
+    }
   }
 }

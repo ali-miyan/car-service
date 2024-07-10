@@ -7,7 +7,7 @@ export class VerifyOtpUseCase {
     private userRepository: IUserRepository
   ) {}
 
-  async execute(otp: string, email: string): Promise<{}> {
+  async execute(otp: string, email: string): Promise<any> {
     if (!otp) {
       throw new BadRequestError("Invalid input");
     }

@@ -28,7 +28,7 @@ export class CompanyController {
     console.log(req.body,files);
     
     try {
-      const company = await this.registerCompany.execute(
+      const response = await this.registerCompany.execute(
         ownerName,
         companyName,
         year,
@@ -41,7 +41,14 @@ export class CompanyController {
         files,
         address
       );
-      res.status(201).json({success:true,company});
+
+      if(response.success){
+        res.cookie('companyToken', response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+      }
+
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
@@ -54,11 +61,17 @@ export class CompanyController {
 
     
     try {
-      const company = await this.loginCompany.execute(
+      const response = await this.loginCompany.execute(
         email,
         password,
       );
-      res.status(201).json({success:true,company});
+
+      if(response.success){
+        res.cookie('companyToken', response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+      }
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }

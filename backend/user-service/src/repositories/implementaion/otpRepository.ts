@@ -1,12 +1,12 @@
 import nodemailer from 'nodemailer';
-import { generateOtp } from '../../utils';
+import { generateOtp, generateToken } from '../../utils';
 import { IOtpService } from '../interfaces';
-require('dotenv').config()
+require('dotenv').config();
 
 export class OtpService implements IOtpService {
   private transporter: nodemailer.Transporter;
 
-  constructor() {
+  constructor() { 
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -16,16 +16,19 @@ export class OtpService implements IOtpService {
     });
   }
 
-  generateOtp(length:number = 4): string {
-    return generateOtp(length)
+  generateOtp(length: number = 4): string {
+    return generateOtp(length);
+  }
+  generateToken(): string {
+    return generateToken();
   }
 
-  async sendOtp(email: string, otp: string): Promise<void> {
+  async sendMail(email: string, subject: string, message: string): Promise<void> {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Your OTP Code',
-      text: `Your OTP code is ${otp}`,
+      subject: subject,
+      text: message,
     };
 
     await this.transporter.sendMail(mailOptions);

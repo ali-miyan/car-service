@@ -1,21 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseAdminUrl } from "../../constants/api";
-import { RootState } from "../store";
+import { HttpMethod } from "../../schema/httpMethods";
 
 export const adminApiSlice = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseAdminUrl,
     credentials:'include',
-    prepareHeaders: (headers,{ getState }) => {
-      
-      const state = getState() as RootState;
-      const token = state.adminAuth.admin;
-      if (token) {
-        headers.set("Authorization",`Bearer ${token}`);
-      }
-      return headers;
-    },
   }),
   endpoints: (builder) => ({
     getService: builder.query({
@@ -24,27 +15,27 @@ export const adminApiSlice = createApi({
     registerPost: builder.mutation({
       query: (postData) => ({
         url: "/login",
-        method: "POST",
+        method: HttpMethod.POST,
         body: postData,
       }),
     }),
     addServicePost: builder.mutation({
       query: (postData) => ({
         url: "/add-service",
-        method: "POST",
+        method: HttpMethod.POST,
         body: postData,
       }),
     }),
     deleteServicePost: builder.mutation({
       query: (id:string) => ({
         url: `/delete-service/${id}`,
-        method: "DELETE",
+        method:HttpMethod.DELETE,
       }),
     }),
     updateServiceStatus: builder.mutation({
       query: ({ id, isBlocked }) => ({
         url: `/services-status/${id}`,
-        method: 'PUT',
+        method:HttpMethod.PUT,
         body:{isBlocked} ,
       }),
     }),

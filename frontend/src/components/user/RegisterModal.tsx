@@ -8,7 +8,6 @@ import { CustomError } from "../../schema/error";
 import { useGoogleLogin } from "@react-oauth/google";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { useDispatch } from "react-redux";
-import { setUserToken } from "../../store/auth/userAuthSlice";
 
 interface BasicModalProps {
   isOpen: boolean;
@@ -22,8 +21,6 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [otpError, setOtpError] = useState("");
-
-  const dispatch = useDispatch();
 
   const getEmail = (email: string) => {
     setEmail(email);
@@ -42,7 +39,6 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
       const res = await verifyOtp({ otp, email }).unwrap();
       if (res.success) {
         notifySuccess("registered successfully");
-        dispatch(setUserToken(res.token))
         console.log(res);
         
         // location.reload();
@@ -66,7 +62,6 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
       const res = await googleRegister(codeResponse).unwrap();
       console.log(res);
       if (res.success) {
-        dispatch(setUserToken(res.token));
         notifySuccess("Successfully logged");
       } else {
         notifyError("Something went wrong");

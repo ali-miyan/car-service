@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export const generateOtp = (length: number = 4): string => {
     const digits = '0123456789';
     let otp = '';
@@ -6,3 +8,9 @@ export const generateOtp = (length: number = 4): string => {
     }
     return otp;
 };
+
+export const generateToken = (): string => {
+    const token = crypto.randomBytes(32).toString('hex');
+    return token;
+};
+

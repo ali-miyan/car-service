@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { getInitialToken } from "../../helpers/getToken";
 
 interface ProtectedRouteProps {
   element: React.ComponentType;
@@ -11,11 +10,13 @@ const AdminProtectedRoute: React.FC<ProtectedRouteProps> = ({
   element: Component,
 }) => {
   const navigate = useNavigate();
-  const token = useSelector((state: RootState) => state.adminAuth.admin);
+  const token = getInitialToken("admintoken");
+
+  console.log(token, "tokentokentoken");
 
   useEffect(() => {
     if (!token) {
-      navigate('/admin/login');
+      navigate("/admin/login");
     }
   }, [token, navigate]);
 
