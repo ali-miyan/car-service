@@ -18,8 +18,12 @@ export class RegisterUseCase {
       user: "admin",
       role: "admin",
     });
+    const refreshToken = TokenService.generateRefreshToken({
+      user: "admin",
+      role: "admin",
+    });
 
-    return {success:true,token:token}
+    return {success:true,token:token,refreshToken}
 
   }
 }

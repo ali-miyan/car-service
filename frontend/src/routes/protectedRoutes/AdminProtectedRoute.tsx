@@ -10,7 +10,7 @@ const AdminProtectedRoute: React.FC<ProtectedRouteProps> = ({
   element: Component,
 }) => {
   const navigate = useNavigate();
-  const token = getInitialToken("admintoken");
+  const token = getInitialToken("adminToken");
 
   console.log(token, "tokentokentoken");
 

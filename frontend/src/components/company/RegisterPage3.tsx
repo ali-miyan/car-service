@@ -6,12 +6,14 @@ import { validateInput } from "../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../store/slices/companyApiSlice";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
+import { CustomError } from "../../schema/error";
+import LoadingButton from "../common/Loading";
 
 const Page3: React.FC = () => {
   const { formData, setFormData, errors, setErrors } = useForm();
 
-  console.log(formData,'formdatatata in  333333');
-  
+  console.log(formData, "formdatatata in  333333");
+
   const [registerPost, { isLoading }] = useRegisterPostMutation();
 
   const navigate = useNavigate();
@@ -29,9 +31,7 @@ const Page3: React.FC = () => {
     }));
   };
 
-  const handleImage = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     if (e.target.files?.[0]) {
       const file = e.target.files[0];
@@ -71,16 +71,20 @@ const Page3: React.FC = () => {
       email: validateInput("email", formData.email),
       logoImg: formData.logoImg ? "" : "Please upload a company logo.",
       address: formData.address ? "" : "Add your address please.",
-      confirmPassword: validateInput("confirmPassword",formData.confirmPassword),
+      confirmPassword: validateInput(
+        "confirmPassword",
+        formData.confirmPassword
+      ),
       licenseImg: formData.licenseImg ? "" : "Please upload a license image.",
-      approvedImg: formData.approvedImg? "": "Please upload an approved image.",};
-      
+      approvedImg: formData.approvedImg
+        ? ""
+        : "Please upload an approved image.",
+    };
+
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-    console.log(newErrors,'errororos');
-
-    
+    console.log(newErrors, "errororos");
 
     setErrors(newErrors);
     const valid = Object.values(newErrors).every((error) => !error);
@@ -96,8 +100,8 @@ const Page3: React.FC = () => {
           formDatas.append("image", value as File);
         } else if (key === "logoImg") {
           formDatas.append("image", value as File);
-        } else if(key === "address"){
-          const jsonAddress = JSON.stringify(value)
+        } else if (key === "address") {
+          const jsonAddress = JSON.stringify(value);
           formDatas.append(key, jsonAddress);
         } else {
           formDatas.append(key, value);
@@ -109,32 +113,44 @@ const Page3: React.FC = () => {
         const res = await registerPost(formDatas).unwrap();
         console.log(res);
 
-        if(res.success){
-          notifySuccess('registered succesfully');
+        if (res.success) {
+          notifySuccess("registered succesfully");
         }
         console.log("Form submitted successfully:");
-      } catch (error) {
-        notifyError(errMessage)
-        console.error("Error submitting form:", error);
+      } catch (err) {
+        console.log(err);
+
+        const error = err as CustomError;
+        if (error.status === 400) {
+          notifyError(error.data.error);
+        } else {
+          notifyError(errMessage);
+        }
       }
     } else {
       console.log("Form contains validation errors.");
-      notifyError('Fill all required fields')
+      notifyError("Fill all required fields");
     }
   };
 
   return (
     <div className="register-container pb-5">
       <div className="register-box mt-16 font-bai-regular text-sm lowercase">
-        <h2 className="uppercase font-bai-bold">REGISTER YOUR BUSINESS - Step 3</h2>
+        <h2 className="uppercase font-bai-bold">
+          REGISTER YOUR BUSINESS - Step 3
+        </h2>
         <h6>
           PLEASE PROVIDE ALL REQUIRED DETAILS TO REGISTER YOUR BUSINESS WITH US
         </h6>
         <div className="w-8/12 mx-auto">
           <div className="progress-bar">
-          <Link to={'/company/register-1'}><div className="progress-step active">1</div></Link>
+            <Link to={"/company/register-1"}>
+              <div className="progress-step active">1</div>
+            </Link>
             <div className="progress-line"></div>
-            <Link to={'/company/register-2'}><div className="progress-step active">2</div></Link>
+            <Link to={"/company/register-2"}>
+              <div className="progress-step active">2</div>
+            </Link>
             <div className="progress-line"></div>
             <div className="progress-step active">3</div>
           </div>
@@ -151,7 +167,9 @@ const Page3: React.FC = () => {
               name="licenseNumber"
             />
             {errors.licenseNumber && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.licenseNumber}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.licenseNumber}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -164,7 +182,9 @@ const Page3: React.FC = () => {
               className="h-12  font-bai-regular"
             />
             {errors.licenseExpiry && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.licenseExpiry}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.licenseExpiry}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -178,7 +198,9 @@ const Page3: React.FC = () => {
               placeholder="Type here"
             />
             {errors.password && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.password}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.password}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -192,7 +214,9 @@ const Page3: React.FC = () => {
               placeholder="Type here"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.confirmPassword}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
           <div className="form-group logo-upload">
@@ -215,7 +239,9 @@ const Page3: React.FC = () => {
               />
             )}
             {errors.licenseImg && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.licenseImg}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.licenseImg}
+              </p>
             )}
           </div>
           <div className="form-group logo-upload">
@@ -238,43 +264,27 @@ const Page3: React.FC = () => {
               />
             )}
             {errors.approvedImg && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.approvedImg}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs">
+                {errors.approvedImg}
+              </p>
             )}
           </div>
         </div>
 
         <div className="form-submit">
-          <button className="mr-3" onClick={() => navigate("/company/register-2")}>
+          <button
+            className="mr-3"
+            onClick={() => navigate("/company/register-2")}
+          >
             Back
           </button>
-          {isLoading ? (
-          <button className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
-            <svg
-              className="animate-spin h-5 w-5 mr-3 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V2.5"
-              ></path>
-            </svg>
-          </button>
-        ) : (
-          <button onClick={handleSubmit} className="bg-red-800 hover:bg-red-900 text-white rounded  h-12">
-            REGISTER
-          </button>
-        )}
+          <LoadingButton
+            buttonText="Submit"
+            isLoading={isLoading}
+            onClick={handleSubmit}
+            width="w-2/12"
+            height="h-11"
+          />
         </div>
       </div>
     </div>

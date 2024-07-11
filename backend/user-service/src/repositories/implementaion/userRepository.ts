@@ -21,6 +21,19 @@ export class UserRepository implements IUserRepository {
       throw new Error("error in db");
     }
   }
+
+  async updatePassword(email: string, newPassword: string): Promise<boolean> {
+    try {
+      const user = await userModel.findOne({ email });
+      if (!user) return false;
+      user.password = newPassword;
+      await user.save();
+      return true;
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
+
   async save(user: User): Promise<User> {
     try {
       const newUser = new userModel(user);

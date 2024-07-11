@@ -20,9 +20,13 @@ export class LoginUseCase {
 
     const token = TokenService.generateToken({
       user: company.ownerName,
-      role: 'company',
+      role: "company",
+    });
+    const refreshToken = TokenService.generateRefreshToken({
+      user: company.ownerName,
+      role: "company",
     });
 
-    return { success: true, token: token };
+    return { success: true, token, refreshToken };
   }
 }

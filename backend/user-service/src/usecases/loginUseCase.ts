@@ -27,10 +27,14 @@ export class LoginUseCase {
       user:user.username,
       role:'user'
     });
+    const refreshToken = TokenService.generateRefreshToken({
+      user:user.username,
+      role:'user'
+    });
 
     console.log(token,'token');
     
 
-    return { success: true ,token:token };
+    return { success: true ,token,refreshToken };
   }
 }

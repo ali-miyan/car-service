@@ -47,7 +47,21 @@ export const userApiSlice = createApi({
         body: postData,
       }),
     }),
-  }),
+    resetRequest: builder.mutation({
+      query: (postData) => ({
+        url: "/reset-request",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: (postData) => ({
+        url: "/change-password",
+        method: HttpMethod.PATCH,
+        body: postData,
+      }),
+    })
+  })
 });
 
 export const {
@@ -57,4 +71,6 @@ export const {
   useLoginUserMutation,
   useGoogleRegisterMutation,
   useResendOtpMutation,
+  useResetRequestMutation,
+  useResetPasswordMutation
 } = userApiSlice;

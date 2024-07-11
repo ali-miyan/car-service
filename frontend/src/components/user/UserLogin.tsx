@@ -9,7 +9,7 @@ import { useLoginUserMutation } from "../../store/slices/userApiSlice";
 import { CustomError } from "../../schema/error";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
@@ -181,6 +181,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             LOGIN
           </button>
         )}
+      <Link to={'/change-password'}><span className="text-gray-600 text-sm text-end justify-end flex  font-bai-regular hover:underline cursor-pointer">
+            forget password?
+          </span></Link>
       </div>
       <div className="col-span-2 text-center mb-1">
         <button
@@ -192,6 +195,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             Don't have an account?
           </span>
           <span className="hover:underline">Register</span>
+      
         </button>
       </div>
     </form>

@@ -10,9 +10,9 @@ const AdminVerifyRoute: React.FC<ProtectedRouteProps> = ({
   element: Component,
 }) => {
   const navigate = useNavigate();
-  const token = getInitialToken("admintoken");
+  const token = getInitialToken("adminToken");
 
-  console.log(token, "admintoken");
+  console.log(token, "admintokesan");
 
   useEffect(() => {
     if (token) {

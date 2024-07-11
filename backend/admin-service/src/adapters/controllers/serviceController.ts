@@ -45,6 +45,8 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      console.log((req as any).user,'useruseuseruser');
+      
       const company = await this.getServiceRepository.execute();
       res.status(201).json(company);
     } catch (error) {

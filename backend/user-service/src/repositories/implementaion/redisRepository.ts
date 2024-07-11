@@ -20,7 +20,7 @@ export class RedisOtpRepository implements IRedisRepository {
     });
   }
 
-  async storeOtp(
+  async store(
     email: string,
     otp: string,
     ttlSeconds: number
@@ -32,7 +32,7 @@ export class RedisOtpRepository implements IRedisRepository {
     }
   }
 
-  async getOtp(email: string): Promise<string | null> {
+  async get(email: string): Promise<string | null> {
     try {
       return await this.client.get(email);
     } catch (error) {
@@ -40,7 +40,7 @@ export class RedisOtpRepository implements IRedisRepository {
     }
   }
 
-  async deleteOtp(email: string): Promise<void> {
+  async delete(email: string): Promise<void> {
     try {
       await this.client.del(email);
     } catch (error) {

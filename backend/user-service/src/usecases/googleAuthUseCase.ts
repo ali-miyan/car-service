@@ -27,7 +27,11 @@ export class GoogleUseCase {
       user: name,
       role: 'user',
     });
+    const refreshToken = TokenService.generateRefreshToken({
+      user:name,
+      role:'user'
+    });
 
-    return { success: true, token };
+    return { success: true, token,refreshToken };
   }
 }

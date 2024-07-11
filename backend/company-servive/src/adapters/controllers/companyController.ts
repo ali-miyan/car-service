@@ -44,6 +44,9 @@ export class CompanyController {
 
       if(response.success){
         res.cookie('companyToken', response.token, {
+          maxAge:60 * 60 * 1000, 
+        });
+        res.cookie('companyRefreshToken', response.refreshToken, {
           maxAge: 7 * 24 * 60 * 60 * 1000, 
         });
       }
@@ -68,9 +71,13 @@ export class CompanyController {
 
       if(response.success){
         res.cookie('companyToken', response.token, {
+          maxAge:60 * 60 * 1000, 
+        });
+        res.cookie('companyRefreshToken', response.refreshToken, {
           maxAge: 7 * 24 * 60 * 60 * 1000, 
         });
       }
+      
       res.status(201).json(response);
     } catch (error) {
       next(error);

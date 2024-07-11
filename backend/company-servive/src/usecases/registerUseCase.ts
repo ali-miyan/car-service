@@ -28,7 +28,7 @@ export class RegisterUseCase {
     }
 
     const [licenseImgFile, approvedImgFile, logo] = files;
-    console.log(licenseImgFile, "->>", approvedImgFile);
+    console.log(licenseImgFile, "--->>", approvedImgFile);
 
     const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
       "tune-up",
@@ -65,9 +65,13 @@ export class RegisterUseCase {
       user: company.ownerName,
       role: "company",
     });
+    const refreshToken = TokenService.generateRefreshToken({
+      user: company.ownerName,
+      role: "company",
+    });
 
     await this.companyRepository.save(company);
 
-    return { success: true, token: token };
+    return { success: true, token, refreshToken };
   }
 }

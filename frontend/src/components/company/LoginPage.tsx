@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { validateInput } from "../../helpers/userValidation"; // Adjust the import path as necessary
+import { validateInput } from "../../helpers/userValidation";
 import { useLoginPostMutation } from "../../store/slices/companyApiSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { notifyError, notifySuccess } from "../common/Toast";

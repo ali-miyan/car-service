@@ -97,7 +97,7 @@ export const validateInput = (name: string, value: any | undefined) => {
       break;
     case "confirmPassword":
       if (!value) {
-        error = "contact-2 is required";
+        error = "confirm password is required";
       } else if (value.length < 10) {
         error = "At least 10 characters long";
       }

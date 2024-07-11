@@ -12,12 +12,12 @@ export class VerifyOtpUseCase {
       throw new BadRequestError("Invalid input");
     }
 
-    const userOtp = await this.verifyOtpRepository.getOtp(email);
+    const userOtp = await this.verifyOtpRepository.get(email);
 
     if (userOtp !== otp) {
       throw new BadRequestError("invalid Otp");
     }
-    await this.verifyOtpRepository.deleteOtp(email);
+    await this.verifyOtpRepository.delete(email);
 
     const user = await this.userRepository.findByEmail(email);
 
@@ -30,6 +30,11 @@ export class VerifyOtpUseCase {
       role: 'user',
     });
 
-    return { success: true, token: token };
-  }
+    const refreshToken = TokenService.generateRefreshToken({
+      user:user.username,
+      role:'user'
+    });
+
+    return { success: true, token, refreshToken };
+  } 
 }

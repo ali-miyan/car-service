@@ -16,14 +16,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    phone: "",
+    confirmPassword: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
     username: "",
     email: "",
-    phone: "",
+    confirmPassword: "",
     password: "",
     global: "",
   });
@@ -31,7 +31,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const [errorFields, setErrorFields] = useState<Record<string, boolean>>({
     username: false,
     email: false,
-    phone: false,
+    confirmPassword: false,
     password: false,
   });
 
@@ -65,9 +65,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
     const newErrors = {
       username: validateInput("username", formData.username),
       email: validateInput("email", formData.email),
-      phone: validateInput("phone", formData.phone),
       password: validateInput("password", formData.password),
       global: "",
+      confirmPassword: formData.confirmPassword !== formData.password ? 'password not matching' : '',
+
     };
 
     setErrors(newErrors);
@@ -99,7 +100,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       setErrorFields({
         username: newErrors.username !== "",
         email: newErrors.email !== "",
-        phone: newErrors.phone !== "",
+        confirmPassword: newErrors.confirmPassword !== "",
         password: newErrors.password !== "",
       });
     }
@@ -146,23 +147,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       </div>
       <div>
         <Input
-          type="tel"
-          width="w-full"
-          placeholder="phone"
-          label="Phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleInputChange}
-          error={errorFields.phone}
-        />
-        {errors.phone && (
-          <p className="text-red-500 font-bai-regular lowercase text-xs">
-            {errors.phone}
-          </p>
-        )}
-      </div>
-      <div>
-        <Input
           type="password"
           width="w-full"
           placeholder="password"
@@ -175,6 +159,23 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         {errors.password && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.password}
+          </p>
+        )}
+      </div>
+      <div>
+        <Input
+          type="password"
+          width="w-full"
+          placeholder="confirm password"
+          label="confirm"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleInputChange}
+          error={errorFields.confirmPassword}
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.confirmPassword}
           </p>
         )}
       </div>

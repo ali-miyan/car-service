@@ -22,7 +22,7 @@ export class ResendOtpUseCase {
     const message = `Your OTP code is ${otp}`;
     await this.otpRepository.sendMail(email,subject,message);
     
-    await this.redisRepository.storeOtp(email,otp,300);
+    await this.redisRepository.store(email,otp,300);
 
   }
 }

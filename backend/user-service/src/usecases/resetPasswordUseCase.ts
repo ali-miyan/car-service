@@ -1,26 +1,30 @@
-// import { BadRequestError } from "tune-up-library";
-// import { IUserRepository, IRedisRepository } from "../repositories";
-// import { hashPassword } from '../utils';
+import { BadRequestError } from "tune-up-library";
+import { IUserRepository, IRedisRepository } from "../repositories";
+import { hashPassword } from '../utils';
 
-// export class ResetPasswordUseCase {
-//   constructor(
-//     private userRepository: IUserRepository,
-//     private redisRepository: IRedisRepository
-//   ) {}
+export class ResetPasswordUseCase {
+  constructor(
+    private userRepository: IUserRepository,
+    private redisRepository: IRedisRepository
+  ) {}
 
-//   async resetPassword(token: string, newPassword: string): Promise<void> {
-//     if (!token || !newPassword) {
-//       throw new BadRequestError("Invalid input");
-//     }
+  async execute(token: string, newPassword: string): Promise<{}> {
+    if (!token || !newPassword) {
+      throw new BadRequestError("Invalid input");
+    }
 
-//     const email = await this.redisRepository.getOtp(token);
-//     if (!email) {
-//       throw new BadRequestError("Invalid or expired token");
-//     }
+    const email = await this.redisRepository.get(token);
 
-//     const hashedPassword = await hashPassword(newPassword);
-//     await this.userRepository.updatePassword(email, hashedPassword);
+    if (!email) {
+      throw new BadRequestError("Invalid or expired token");
+    }
 
-//     await this.redisRepository.deleteToken(token);
-//   }
-// }
+    const hashedPassword = await hashPassword(newPassword);
+
+    await this.userRepository.updatePassword(email, hashedPassword);
+
+    await this.redisRepository.delete(token);
+
+    return {success:true}
+  }
+}

@@ -7,7 +7,7 @@ import { useVerifyOtpMutation,useGoogleRegisterMutation } from "../../store/slic
 import { CustomError } from "../../schema/error";
 import { useGoogleLogin } from "@react-oauth/google";
 import { notifyError, notifySuccess } from "../common/Toast";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface BasicModalProps {
   isOpen: boolean;
@@ -21,6 +21,8 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [otpError, setOtpError] = useState("");
+
+  const navigate = useNavigate();
 
   const getEmail = (email: string) => {
     setEmail(email);
@@ -40,8 +42,8 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
       if (res.success) {
         notifySuccess("registered successfully");
         console.log(res);
+        navigate('/home')
         
-        // location.reload();
       }
     } catch (err) {
       const error = err as CustomError;
@@ -63,6 +65,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
       console.log(res);
       if (res.success) {
         notifySuccess("Successfully logged");
+        navigate('/home')
       } else {
         notifyError("Something went wrong");
       }
@@ -81,7 +84,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
     <CustomModal
       open={isOpen}
       width={500}
-      height={isOtpSent ? 320 : isLogin ? 420 : 480}
+      height={isOtpSent ? 320 : isLogin ? 440 : 480}
       buttonLabel={isOtpSent ? "Signup" : "Signup"}
       title={isOtpSent ? "Enter OTP" : isLogin ? "Login" : "Create your account"}
       onClose={handleClose}
