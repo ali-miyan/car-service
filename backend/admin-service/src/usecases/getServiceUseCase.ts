@@ -1,5 +1,5 @@
 import { BadRequestError } from "tune-up-library";
-import { S3Service, ServiceRepository } from "../repositories";
+import { ServiceRepository } from "../repositories";
 
 export class GetServiceUseCase {
   constructor(

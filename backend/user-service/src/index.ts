@@ -1,6 +1,6 @@
 import express from "express";
 import userRoute from "./infrastructure/express/routes";
-import connectDB from "./infrastructure/db/mongoConfig";
+import {connectDB} from "./infrastructure/db";
 import { errorHandler } from 'tune-up-library'
 require('dotenv').config()
 

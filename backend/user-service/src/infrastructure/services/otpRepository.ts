@@ -1,9 +1,8 @@
 import nodemailer from 'nodemailer';
 import { generateOtp, generateToken } from '../../utils';
-import { IOtpService } from '../interfaces';
 require('dotenv').config();
 
-export class OtpService implements IOtpService {
+export class OtpService {
   private transporter: nodemailer.Transporter;
 
   constructor() { 

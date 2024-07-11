@@ -1,5 +1,5 @@
 // import { BadRequestError } from "tune-up-library";
-// import { IUserRepository, IRedisRepository } from "../repositories/interfaces";
+// import { IUserRepository, IRedisRepository } from "../repositories";
 // import { hashPassword } from '../utils';
 
 // export class ResetPasswordUseCase {

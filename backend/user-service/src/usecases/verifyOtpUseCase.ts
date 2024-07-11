@@ -1,5 +1,5 @@
 import { BadRequestError, TokenService } from "tune-up-library";
-import { IRedisRepository, IUserRepository } from "../repositories/interfaces";
+import { IRedisRepository, IUserRepository } from "../repositories";
 
 export class VerifyOtpUseCase {
   constructor(

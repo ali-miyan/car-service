@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { UserController } from "../../adapters/controllers";
 import { VerifyOtpUseCase,LoginUseCase,SignupUseCase,GoogleUseCase } from "../../usecases";
-import { RedisOtpRepository,OtpService,UserRepository } from "../../repositories/implementaion";
+import { RedisOtpRepository,UserRepository } from "../../repositories";
+import { OtpService } from "../../infrastructure/services";
 import { ResendOtpUseCase } from "../../usecases/resendOtpUseCase";
 
 const userRepository = new UserRepository();

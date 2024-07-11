@@ -1,8 +1,6 @@
 import { Service } from "../../entities";
 import { IServiceRepository } from "../interfaces";
-import serviceModel, {
-  ServiceDocument,
-} from "../../infrastructure/db/models/serviceModel";
+import { serviceModel } from "../../infrastructure/db/";
 
 export class ServiceRepository implements IServiceRepository {
   async getAll(): Promise<any> {

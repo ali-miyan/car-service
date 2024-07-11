@@ -1,10 +1,11 @@
 import { BadRequestError } from "tune-up-library";
-import { IOtpService,IRedisRepository } from "../repositories/interfaces";
+import { IRedisRepository } from "../repositories";
+import { OtpService } from "../infrastructure/services";
 
 
 export class ResendOtpUseCase {
   constructor(
-    private otpRepository: IOtpService,
+    private otpRepository: OtpService,
     private redisRepository:IRedisRepository
   ) {}
 

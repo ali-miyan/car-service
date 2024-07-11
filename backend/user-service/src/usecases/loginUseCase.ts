@@ -1,5 +1,5 @@
 import { BadRequestError, TokenService } from "tune-up-library";
-import { IUserRepository } from "../repositories/interfaces";
+import { IUserRepository } from "../repositories";
 import { verifyPassword } from "../utils";
 
 export class LoginUseCase {

@@ -1,9 +1,9 @@
 import { BadRequestError, TokenService } from "tune-up-library";
-import { IConfigService } from "../repositories/interfaces/validateInterface";
+import { ConfigService } from "../infrastructure/services";
 
 export class RegisterUseCase {
   constructor(
-    private configService:IConfigService
+    private configService:ConfigService
   ) {}
 
   async execute(email: string, password: string): Promise<any> {

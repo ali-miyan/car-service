@@ -1,13 +1,13 @@
 import { Company } from "../entities/companyEntity";
 import { ICompanyRepository } from "../repositories/interfaces";
 import { isLicenseExpired } from "../utils/dateUtil";
-import { IS3Service } from "../repositories/interfaces";
+import { S3Service } from "../infrastructure/services";
 import { BadRequestError, TokenService } from "tune-up-library";
 
 export class RegisterUseCase {
   constructor(
     private companyRepository: ICompanyRepository,
-    private s3ServiceRepository: IS3Service
+    private s3ServiceRepository: S3Service
   ) {}
 
   async execute(

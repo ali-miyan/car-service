@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { CompanyController } from "../../adapters/controllers";
-import { RegisterUseCase,LoginUseCase } from "../../usecases";
-import {CompanyRepository,S3Service,} from "../../repositories/implementation";
+import { RegisterUseCase, LoginUseCase } from "../../usecases";
+import { CompanyRepository } from "../../repositories/implementation";
+import { S3Service } from "../../infrastructure/services";
 import multer from "multer";
 const upload = multer();
 

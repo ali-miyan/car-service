@@ -1,6 +1,6 @@
 import express ,{Request,Response} from "express";
 import compnayRoute from "./infrastructure/express/routes";
-import connectDB from "./infrastructure/db/mongoConfig";
+import { connectDB } from "./infrastructure/db";
 import { errorHandler } from "tune-up-library";
 import cookieParser from 'cookie-parser';
 

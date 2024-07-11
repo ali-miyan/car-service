@@ -1,6 +1,6 @@
 import { Company } from "../../entities/companyEntity";
 import { ICompanyRepository } from "../interfaces";
-import companyModel from "../../infrastructure/db/models/companyModel";
+import { companyModel } from "../../infrastructure/db";
 
 export class CompanyRepository implements ICompanyRepository {
   async find(email: string): Promise<Company | null> {

@@ -5,7 +5,7 @@ const mongoURI = process.env.MONGO_URI as string;
 console.log(mongoURI);
 
 
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
     await mongoose.connect(mongoURI);
     console.log("MongoDB connected");
@@ -14,5 +14,3 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
-export default connectDB;

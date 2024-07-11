@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { AdminController,ServiceController } from "../../adapters/controllers";
+import { S3Service } from "../../infrastructure/services";
 import { DeleteServiceUseCase, GetServiceUseCase, RegisterUseCase, ServiceUseCase, UpdateServiceUseCase } from "../../usecases";
-import { ConfigService, S3Service, ServiceRepository } from "../../repositories/implementation";
+import { ConfigService, ServiceRepository } from "../../repositories/implementation";
 import multer from 'multer'
 import { authMiddleware } from "tune-up-library";
 const upload = multer()

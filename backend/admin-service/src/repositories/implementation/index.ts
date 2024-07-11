@@ -1,3 +1,2 @@
-export * from './validateRepository';
-export * from './s3Service';
+export * from '../../infrastructure/services/validateRepository';
 export * from './serviceRepository';

@@ -1,11 +1,11 @@
 import { User } from "../../entities/userEntity";
 import { IUserRepository } from "../interfaces";
-import UserModel from "../../infrastructure/db/models/userModel";
+import { userModel } from "../../infrastructure/db/";
 
 export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
     try {
-      const user = await UserModel.findOne({ email });
+      const user = await userModel.findOne({ email });
       if (!user) return null;
       return new User(user);
     } catch (error) {
@@ -14,7 +14,7 @@ export class UserRepository implements IUserRepository {
   }
   async findByPhone(phone: number): Promise<boolean | null> {
     try {
-      const user = await UserModel.findOne({ phone });
+      const user = await userModel.findOne({ phone });
       if (!user) return null;
       return true;
     } catch (error) {
@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
   }
   async save(user: User): Promise<User> {
     try {
-      const newUser = new UserModel(user);
+      const newUser = new userModel(user);
       await newUser.save();
       return user;
     } catch (error) {

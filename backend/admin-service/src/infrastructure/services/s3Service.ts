@@ -1,15 +1,14 @@
 import AWS from 'aws-sdk';
-import { IS3Service } from '../interfaces';
 require('dotenv').config()
 
-export class S3Service implements IS3Service {
+export class S3Service  {
     private s3: AWS.S3;
 
     constructor() {
         AWS.config.update({
             accessKeyId: process.env.S3_BUCKET_ACCESS_KEY,
             secretAccessKey: process.env.S3_BUCKET_SECRET_ACCESS_KEY,
-            region: 'ap-south-1',
+            region: process.env.S3_BUCKET_REGION,
         });
 
         this.s3 = new AWS.S3();
