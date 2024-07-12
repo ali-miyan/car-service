@@ -6,7 +6,7 @@ export const adminApiSlice = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseAdminUrl,
-    credentials:'include',
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getService: builder.query({
@@ -27,16 +27,16 @@ export const adminApiSlice = createApi({
       }),
     }),
     deleteServicePost: builder.mutation({
-      query: (id:string) => ({
+      query: (id: string) => ({
         url: `/delete-service/${id}`,
-        method:HttpMethod.DELETE,
+        method: HttpMethod.DELETE,
       }),
     }),
     updateServiceStatus: builder.mutation({
       query: ({ id, isBlocked }) => ({
         url: `/services-status/${id}`,
-        method:HttpMethod.PUT,
-        body:{isBlocked} ,
+        method: HttpMethod.PUT,
+        body: { isBlocked },
       }),
     }),
   }),
@@ -47,6 +47,5 @@ export const {
   useRegisterPostMutation,
   useAddServicePostMutation,
   useDeleteServicePostMutation,
-  useUpdateServiceStatusMutation
-
+  useUpdateServiceStatusMutation,
 } = adminApiSlice;

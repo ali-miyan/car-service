@@ -3,6 +3,7 @@ import { ICompanyRepository } from "../repositories/interfaces";
 import { isLicenseExpired } from "../utils/dateUtil";
 import { S3Service } from "../infrastructure/services";
 import { BadRequestError, TokenService } from "tune-up-library";
+import { hashPassword } from "../utils/bcrypt";
 
 export class RegisterUseCase {
   constructor(
@@ -45,6 +46,8 @@ export class RegisterUseCase {
       }
     );
 
+    const hashedPassword = await hashPassword(password)
+
     const company = new Company({
       ownerName,
       companyName,
@@ -53,7 +56,7 @@ export class RegisterUseCase {
       contact2,
       year,
       email,
-      password,
+      password:hashedPassword,
       licenseExpiry,
       approvedImg: uploadedFiles["approvedImg"],
       licenseImg: uploadedFiles["licenseImg"],
@@ -62,11 +65,11 @@ export class RegisterUseCase {
     });
 
     const token = TokenService.generateToken({
-      user: company.ownerName,
+      user: company._id,
       role: "company",
     });
     const refreshToken = TokenService.generateRefreshToken({
-      user: company.ownerName,
+      user: company._id,
       role: "company",
     });
 

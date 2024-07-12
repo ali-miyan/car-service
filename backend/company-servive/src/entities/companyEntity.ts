@@ -1,4 +1,5 @@
 export interface ICompanyData {
+  _id?:any
   ownerName: string;
   companyName: string;
   year: number;
@@ -15,6 +16,7 @@ export interface ICompanyData {
 }
 
 export class Company {
+  _id?:any
   ownerName: string;
   companyName: string;
   year: number;
@@ -30,6 +32,7 @@ export class Company {
   address:object;
 
   constructor({
+    _id,
     ownerName,
     companyName,
     year,
@@ -44,6 +47,7 @@ export class Company {
     approvedImg,
     address
   }: ICompanyData) {
+    this._id = _id;
     this.ownerName = ownerName;
     this.companyName = companyName;
     this.year = year;

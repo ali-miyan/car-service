@@ -7,6 +7,8 @@ export class GetServiceUseCase {
   ) {}
 
   async execute(): Promise<any> {
+    console.log('d');
+    
     const data = await this.serviceRepository.getAll()
     if(!data){
       throw new BadRequestError('cant get services')

@@ -54,7 +54,7 @@ const Login: React.FC = () => {
 
       if (res.success) {
         notifySuccess("you have logged in");
-        navigate("/admin/home");
+        navigate("/company/home");
       }
 
       console.log("Form submitted successfully:");

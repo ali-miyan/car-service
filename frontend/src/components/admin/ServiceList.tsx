@@ -13,7 +13,9 @@ import { useState, useEffect } from "react";
 
 const ServiceTable = () => {
 
-  const { data: posts, isLoading, refetch } = useGetServiceQuery({});
+  const { data: posts, isLoading, refetch,error } = useGetServiceQuery({});
+  console.log(error);
+  
   const [deleteServicePost] = useDeleteServicePostMutation();
   const [updateServiceStatus] = useUpdateServiceStatusMutation();
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
@@ -31,6 +33,7 @@ const ServiceTable = () => {
   const handleDelete = async (id: string) => {
     try {
       const res = await deleteServicePost(id).unwrap();
+      
       if (res.success) {
         notifySuccess("Deleted successfully");
         await refetch();

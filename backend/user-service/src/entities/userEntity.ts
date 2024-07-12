@@ -1,4 +1,5 @@
 export interface IUserData {
+  _id?:any;
   username: string;
   email: string;
   phone: number | null;
@@ -6,12 +7,14 @@ export interface IUserData {
 }
 
 export class  User {
+  _id?:any;
   username: string;
   email: string;
   phone: number | null;
   password: string;
 
-  constructor({ username, email, phone, password }: IUserData) {
+  constructor({_id, username, email, phone, password }: IUserData) {
+    this._id = _id;
     this.username = username;
     this.email = email;
     this.phone = phone;

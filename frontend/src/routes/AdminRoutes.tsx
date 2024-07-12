@@ -4,6 +4,7 @@ import AdminVerifyRoute from "./protectedRoutes/AdminVerifyRoute";
 import AdminProtectedRoute from "./protectedRoutes/AdminProtectedRoute";
 import Dashboard from "../pages/adminPages/HomePage";
 import ServicesList from "../pages/adminPages/ServicePage";
+import Notification from "../pages/adminPages/NotificationPage";
 import AddService from "../pages/adminPages/AddService";
 
 const AdminRoutes = () => (
@@ -13,6 +14,7 @@ const AdminRoutes = () => (
       <Route path="home" element={<AdminProtectedRoute element={Dashboard} />} />
       <Route path="services" element={<AdminProtectedRoute element={ServicesList} />} />
       <Route path="add-service" element={<AdminProtectedRoute element={AddService} />} />
+      <Route path="notification" element={<AdminProtectedRoute element={Notification} />} />
     </Routes>
   </>
 );

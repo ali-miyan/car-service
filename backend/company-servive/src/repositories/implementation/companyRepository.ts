@@ -1,9 +1,9 @@
 import { Company } from "../../entities/companyEntity";
 import { ICompanyRepository } from "../interfaces";
-import { companyModel } from "../../infrastructure/db";
+import { companyModel,CompanyDocument } from "../../infrastructure/db";
 
 export class CompanyRepository implements ICompanyRepository {
-  async find(email: string): Promise<Company | null> {
+  async find(email: string): Promise<CompanyDocument | null> {
     try {
       const newCompany = companyModel.findOne({ email: email });
       if (!newCompany) return null;

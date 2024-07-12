@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import { MdDashboard, MdBook, MdNotifications, MdLogout,MdConstruction } from 'react-icons/md';
+import { MdDashboard, MdBook, MdNotifications, MdLogout, MdConstruction } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -27,19 +27,17 @@ const Dashboard = ({ children }: { children: ReactNode }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex min-h-screen lowercase font-bai-regular">
+    <div className="flex min-h-screen h-screen lowercase font-bai-regular">
       <div className={`bg-gray-100 p-4 transition-width duration-300 
-        ${isSidebarOpen ? 'w-64 md:w-64 sm:w-48 xs:w-20' : 'w-20 md:w-20 sm:w-20 xs:w-20 h-full'}`}>
-        <div className="flex items-center justify-around">
+        ${isSidebarOpen ? 'w-64' : 'w-20'} ${isMobile ? 'fixed z-20' : 'relative'} h-full`}>
+        <div className="flex items-center justify-between">
           {isSidebarOpen && <span className="text-lg font-bold font-bai-bold uppercase">MINI COOPER</span>}
-          {!isMobile && (
-            <GiHamburgerMenu
-              className="text-2xl cursor-pointer"
-              onClick={toggleSidebar}
-            />
-          )}
-        </div><br />
-        <hr />
+          <GiHamburgerMenu
+            className="text-2xl cursor-pointer md:hidden"
+            onClick={toggleSidebar}
+          />
+        </div>
+        <hr className="my-4" />
         <div className="mt-9">
           <Link to={'/admin/home'}>
             <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
@@ -55,11 +53,11 @@ const Dashboard = ({ children }: { children: ReactNode }) => {
               {isSidebarOpen && <span className="hidden md:inline">Services</span>}
             </div>
           </Link>
-          <Link to={'/admin/documentation'}>
+          <Link to={'/admin/notification'}>
             <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/documentation') ? 'bg-red-100' : ''}`}>
+              ${isActive('/admin/notification') ? 'bg-red-100' : ''}`}>
               <MdBook className="text-2xl" />
-              {isSidebarOpen && <span className="hidden md:inline">Documentation</span>}
+              {isSidebarOpen && <span className="hidden md:inline">notification</span>}
             </div>
           </Link>
           <Link to={'/admin/notifications'}>
@@ -79,12 +77,12 @@ const Dashboard = ({ children }: { children: ReactNode }) => {
         </div>
       </div>
 
-      <div className="flex-1 h-auto pt-5 bg-gray-300 px-5">
+      <div className={`flex-1 h-screen pt-5 bg-gray-300 px-5 ${isSidebarOpen && isMobile ? 'ml-64' : ''}`}>
         <div className="flex justify-between items-center">
           <div></div>
           <div className="w-full bg-gray-100 " />
         </div>
-        <div className="bg-white h-full justify-center flex rounded-md shadow-md">
+        <div className="bg-white w-full h-full flex justify-center rounded-md shadow-md overflow-auto">
           {children}
         </div>
       </div>

@@ -8,8 +8,18 @@ export class LoginUseCase {
   async execute(email: string, password: string): Promise<any> {
     const company = await this.companyRepository.find(email);
 
+    console.log(company,'comapeny');
+    
+
     if (!company) {
       throw new BadRequestError("user not found");
+    }
+
+    if(company.isBlocked){
+      throw new BadRequestError("you have been blocked");
+    }
+    if(!company.isApproved){
+      throw new BadRequestError("wait for the admin approval");
     }
 
     const isPasswordValid = await verifyPassword(password, company.password);
@@ -19,11 +29,11 @@ export class LoginUseCase {
     }
 
     const token = TokenService.generateToken({
-      user: company.ownerName,
+      user: company._id as string,
       role: "company",
     });
     const refreshToken = TokenService.generateRefreshToken({
-      user: company.ownerName,
+      user: company._id as string,
       role: "company",
     });
 

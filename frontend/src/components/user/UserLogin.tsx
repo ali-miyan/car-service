@@ -109,7 +109,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   };
 
   return (
-    <form className="grid grid-cols-1 gap-4 w-full" onSubmit={handleSubmit}>
+    <form className="grid grid-cols-2 gap-4 w-full" onSubmit={handleSubmit}>
       <div>
         <Input
           type="text"

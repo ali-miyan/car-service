@@ -45,7 +45,10 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      
       console.log((req as any).user,'useruseuseruser');
+      console.log(req.cookies?.adminToken,'dfdfdfd');
+      console.log(req.cookies?.adminRefreshToken,'dfdfdfd');
       
       const company = await this.getServiceRepository.execute();
       res.status(201).json(company);

@@ -115,6 +115,7 @@ const Page3: React.FC = () => {
 
         if (res.success) {
           notifySuccess("registered succesfully");
+          navigate('/company/login')
         }
         console.log("Form submitted successfully:");
       } catch (err) {
@@ -282,7 +283,7 @@ const Page3: React.FC = () => {
             buttonText="Submit"
             isLoading={isLoading}
             onClick={handleSubmit}
-            width="w-2/12"
+            width="w-3/12"
             height="h-11"
           />
         </div>

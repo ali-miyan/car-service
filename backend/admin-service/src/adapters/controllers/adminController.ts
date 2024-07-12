@@ -19,6 +19,9 @@ export class AdminController {
         password,
       );
 
+      console.log(response.token,response.refreshToken,'tokens');
+      
+
       if(response.success){
         res.cookie('adminToken', response.token, {
           maxAge:60 * 60 * 1000, 

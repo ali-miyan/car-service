@@ -79,6 +79,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
     if (!hasError && !isEmpty) {
       try {
         const res = await registerPost(formData).unwrap();
+        console.log(res);
+        
         if (res.success) {
           onOtpRequest();
         }
@@ -108,7 +110,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
 
   return (
     <form
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full"
+      className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full"
       onSubmit={handleSubmit}
     >
       <div>

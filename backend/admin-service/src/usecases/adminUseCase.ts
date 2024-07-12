@@ -23,7 +23,7 @@ export class RegisterUseCase {
       role: "admin",
     });
 
-    return {success:true,token:token,refreshToken}
+    return {success:true,token,refreshToken}
 
   }
 }

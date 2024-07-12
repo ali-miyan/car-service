@@ -15,6 +15,7 @@ export interface CompanyDocument extends Document {
   approvedImg: string;
   isBlocked: boolean;
   address: object;
+  isApproved:boolean;
 }
 
 const companySchema = new Schema<CompanyDocument>({
@@ -32,6 +33,7 @@ const companySchema = new Schema<CompanyDocument>({
   licenseImg: { type: String, required: true },
   approvedImg: { type: String, required: true },
   isBlocked: { type: Boolean, default: false },
+  isApproved: { type: Boolean, default: false },
 });
 
 export default model<CompanyDocument>("Company", companySchema);

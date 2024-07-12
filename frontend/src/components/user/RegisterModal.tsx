@@ -83,7 +83,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   return (
     <CustomModal
       open={isOpen}
-      width={500}
+      width={430}
       height={isOtpSent ? 320 : isLogin ? 440 : 480}
       buttonLabel={isOtpSent ? "Signup" : "Signup"}
       title={isOtpSent ? "Enter OTP" : isLogin ? "Login" : "Create your account"}

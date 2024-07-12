@@ -1,6 +1,7 @@
 import { User } from "../../entities/userEntity";
 import { IUserRepository } from "../interfaces";
 import { userModel } from "../../infrastructure/db/";
+import { BadRequestError } from "tune-up-library";
 
 export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
@@ -9,7 +10,7 @@ export class UserRepository implements IUserRepository {
       if (!user) return null;
       return new User(user);
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db");
     }
   }
   async findByPhone(phone: number): Promise<boolean | null> {
@@ -18,7 +19,7 @@ export class UserRepository implements IUserRepository {
       if (!user) return null;
       return true;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db");
     }
   }
 
@@ -30,7 +31,7 @@ export class UserRepository implements IUserRepository {
       await user.save();
       return true;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db");
     }
   }
 
@@ -40,7 +41,9 @@ export class UserRepository implements IUserRepository {
       await newUser.save();
       return user;
     } catch (error) {
-      throw new Error("error in db");
+      console.log(error);
+      
+      throw new BadRequestError("error in db");
     }
   }
 }

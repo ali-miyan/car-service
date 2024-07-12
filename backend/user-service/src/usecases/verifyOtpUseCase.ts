@@ -26,12 +26,12 @@ export class VerifyOtpUseCase {
     }
 
     const token = TokenService.generateToken({
-      user: user.username,
+      user: user._id,
       role: 'user',
     });
 
     const refreshToken = TokenService.generateRefreshToken({
-      user:user.username,
+      user:user._id,
       role:'user'
     });
 
