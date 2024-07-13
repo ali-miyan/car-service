@@ -12,6 +12,24 @@ export const companyApiSlice = createApi({
     getPosts: builder.query({
       query: () => "/data",
     }),
+    getCompanies: builder.query({
+      query: () => "/get-approvals",
+    }),
+    getCompanyById: builder.query({
+      
+      query: (id:string) => {
+        console.log(id,'id in slice');
+        
+        return `/get-company/${id}`
+      }
+    }),
+    blockCompany: builder.mutation({
+      query: ({id, isBlocked}) => ({
+        url: `/services-status/${id}`,
+        method: HttpMethod.PATCH,
+        body: {isBlocked},
+      }),
+    }),
     registerPost: builder.mutation({
       query: (postData) => ({
         url: "/register",
@@ -33,4 +51,7 @@ export const {
   useGetPostsQuery,
   useRegisterPostMutation,
   useLoginPostMutation,
+  useGetCompaniesQuery,
+  useBlockCompanyMutation,
+  useGetCompanyByIdQuery
 } = companyApiSlice;

@@ -94,11 +94,11 @@ const Page3: React.FC = () => {
 
       console.log(formData);
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === "licenseImg") {
+        if (key === "logoImg") {
+          formDatas.append("image", value as File);
+        } else if (key === "licenseImg") {
           formDatas.append("image", value as File);
         } else if (key === "approvedImg") {
-          formDatas.append("image", value as File);
-        } else if (key === "logoImg") {
           formDatas.append("image", value as File);
         } else if (key === "address") {
           const jsonAddress = JSON.stringify(value);

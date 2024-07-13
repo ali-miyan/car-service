@@ -15,7 +15,7 @@ const ServiceTable = () => {
 
   const { data: posts, isLoading, refetch,error } = useGetServiceQuery({});
   console.log(error);
-  
+
   const [deleteServicePost] = useDeleteServicePostMutation();
   const [updateServiceStatus] = useUpdateServiceStatusMutation();
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
@@ -72,6 +72,7 @@ const ServiceTable = () => {
   };
 
   return (
+    <>
     <div className="container mx-auto p-4">
       <div className="overflow-x-auto">
         <table className="min-w-full">
@@ -176,6 +177,7 @@ const ServiceTable = () => {
         </Link>
       </div>
     </div>
+    </>
   );
 };
 

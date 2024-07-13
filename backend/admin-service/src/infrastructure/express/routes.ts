@@ -32,7 +32,7 @@ router.get("/get-service",authMiddleware(['admin']), (req, res, next) =>
 router.delete("/delete-service/:id",authMiddleware(['admin']), (req, res, next) =>
   serviceController.deleteService(req, res, next)
 );
-router.put("/services-status/:id",authMiddleware(['admin']), (req, res, next) =>
+router.patch("/services-status/:id",authMiddleware(['admin']), (req, res, next) =>
   serviceController.updateStatus(req, res, next)
 );
 

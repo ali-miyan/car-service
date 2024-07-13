@@ -35,7 +35,7 @@ export const adminApiSlice = createApi({
     updateServiceStatus: builder.mutation({
       query: ({ id, isBlocked }) => ({
         url: `/services-status/${id}`,
-        method: HttpMethod.PUT,
+        method: HttpMethod.PATCH,
         body: { isBlocked },
       }),
     }),

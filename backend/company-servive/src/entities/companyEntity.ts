@@ -1,5 +1,5 @@
 export interface ICompanyData {
-  _id?:any
+  _id?: any;
   ownerName: string;
   companyName: string;
   year: number;
@@ -12,11 +12,12 @@ export interface ICompanyData {
   password: string;
   licenseImg: string;
   approvedImg: string;
-  address:object
+  address: object;
+  isApproved: 'pending' | 'accepted' | 'declined';
 }
 
 export class Company {
-  _id?:any
+  _id?: any;
   ownerName: string;
   companyName: string;
   year: number;
@@ -29,7 +30,8 @@ export class Company {
   password: string;
   licenseImg: string;
   approvedImg: string;
-  address:object;
+  address: object;
+  isApproved: 'pending' | 'accepted' | 'declined';
 
   constructor({
     _id,
@@ -45,7 +47,8 @@ export class Company {
     password,
     licenseImg,
     approvedImg,
-    address
+    address,
+    isApproved = 'pending'
   }: ICompanyData) {
     this._id = _id;
     this.ownerName = ownerName;
@@ -61,5 +64,6 @@ export class Company {
     this.licenseImg = licenseImg;
     this.approvedImg = approvedImg;
     this.address = address;
+    this.isApproved = isApproved;
   }
 }

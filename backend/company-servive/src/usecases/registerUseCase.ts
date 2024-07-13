@@ -28,7 +28,7 @@ export class RegisterUseCase {
       throw new BadRequestError("Your License has expired, please renew");
     }
 
-    const [licenseImgFile, approvedImgFile, logo] = files;
+    const [logo,licenseImgFile, approvedImgFile] = files;
     console.log(licenseImgFile, "--->>", approvedImgFile);
 
     const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
@@ -58,10 +58,11 @@ export class RegisterUseCase {
       email,
       password:hashedPassword,
       licenseExpiry,
-      approvedImg: uploadedFiles["approvedImg"],
       licenseImg: uploadedFiles["licenseImg"],
+      approvedImg: uploadedFiles["approvedImg"],
       licenseNumber,
       address: JSON.parse(address),
+      isApproved:'pending'
     });
 
     const token = TokenService.generateToken({
