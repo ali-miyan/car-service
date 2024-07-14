@@ -7,6 +7,7 @@ import ServicesList from "../pages/adminPages/ServicePage";
 import Notification from "../pages/adminPages/NotificationPage";
 import CompanyDetail from "../pages/adminPages/CompanyDetailsPage";
 import AddService from "../pages/adminPages/AddService";
+import UsersDetails from "../pages/adminPages/UsersDetailsPage";
 
 const AdminRoutes = () => (
   <>
@@ -17,6 +18,7 @@ const AdminRoutes = () => (
       <Route path="add-service" element={<AdminProtectedRoute element={AddService} />} />
       <Route path="notification" element={<AdminProtectedRoute element={Notification} />} />
       <Route path="detail-page/:id" element={<AdminProtectedRoute element={CompanyDetail} />} />
+      <Route path="users" element={<AdminProtectedRoute element={UsersDetails} />} />
     </Routes>
   </>
 );

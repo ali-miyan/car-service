@@ -5,7 +5,7 @@ import { companyModel,CompanyDocument } from "../../infrastructure/db";
 export class CompanyRepository implements ICompanyRepository {
   async find(email: string): Promise<CompanyDocument | null> {
     try {
-      const newCompany = companyModel.findOne({ email: email });
+      const newCompany = await companyModel.findOne({ email: email });
       if (!newCompany) return null;
       return newCompany;
     } catch (error) {
@@ -14,7 +14,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async getAll(): Promise<CompanyDocument[] | null> {
     try {
-      const newCompany = companyModel.find();
+      const newCompany = await companyModel.find();
       return newCompany;
     } catch (error) {
       throw new Error("error in db");
@@ -22,7 +22,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async getById(id:string): Promise<CompanyDocument | null> {
     try {
-      const newCompany = companyModel.findOne({_id:id});
+      const newCompany =await companyModel.findOne({_id:id});
       return newCompany;
     } catch (error) {
       throw new Error("error in db");
@@ -31,7 +31,7 @@ export class CompanyRepository implements ICompanyRepository {
 
   async updateStatus(id: string, data: object): Promise<void> {
     try {
-      const service = await companyModel.findByIdAndUpdate(id, data, {
+      await companyModel.findByIdAndUpdate(id, data, {
         new: true,
       });
     } catch (error) {

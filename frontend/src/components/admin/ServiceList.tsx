@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   useDeleteServicePostMutation,
   useGetServiceQuery,
@@ -13,12 +13,19 @@ import { useState, useEffect } from "react";
 
 const ServiceTable = () => {
 
-  const { data: posts, isLoading, refetch,error } = useGetServiceQuery({});
-  console.log(error);
+  const { data: posts, isLoading, refetch } = useGetServiceQuery({});
+  const location = useLocation();
+
 
   const [deleteServicePost] = useDeleteServicePostMutation();
   const [updateServiceStatus] = useUpdateServiceStatusMutation();
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    if (location.state?.refetch) {
+      refetch();
+    }
+  }, [location.state, refetch]);
 
   useEffect(() => {
     if (posts) {

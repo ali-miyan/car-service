@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import {
   useGetCompaniesQuery,
-  useBlockCompanyMutation,
+  useUpdateCompanyMutation,
 } from "../../store/slices/companyApiSlice";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Post } from "../../schema/company";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
 
 const Notification = () => {
+  const location = useLocation();
   const { data: posts, isLoading, refetch } = useGetCompaniesQuery({});
-  const [blockCompany] = useBlockCompanyMutation({});
+  const [updateCompany] = useUpdateCompanyMutation({});
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
     {}
-  );
+  );  
   useEffect(() => {
     if (posts) {
       const initialToggleStates = posts.reduce((acc: any, post: any) => {
@@ -24,12 +25,17 @@ const Notification = () => {
     }
   }, [posts]);
 
-  console.log(posts);
+  useEffect(() => {
+    if (location.state?.refetch) {
+      refetch();
+    }
+  }, [location.state, refetch]);
+
 
   const handleToggle = async (id: string, currentStatus: boolean) => {
     try {
       const updatedStatus = !currentStatus;
-      const res = await blockCompany({ id, isBlocked: updatedStatus }).unwrap();
+      const res = await updateCompany({ id, isBlocked: updatedStatus }).unwrap();
       if (res.success) {
         setToggleStates((prevState) => ({ ...prevState, [id]: updatedStatus }));
         notifySuccess("Status updated successfully");
@@ -130,19 +136,12 @@ const Notification = () => {
             ) : (
               <tr>
                 <td colSpan={7} className="py-4 text-center">
-                  <p>No services available.</p>
+                  <p>No Notifcations.</p>
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        <Link to="/admin/add-service">
-          <button className="bg-black lowercase text-white px-4 py-2 my-2 rounded">
-            ADD NEW SERVICE
-          </button>
-        </Link>
       </div>
     </div>
   );

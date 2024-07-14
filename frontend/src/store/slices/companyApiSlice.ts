@@ -9,26 +9,27 @@ export const companyApiSlice = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getPosts: builder.query({
-      query: () => "/data",
-    }),
     getCompanies: builder.query({
       query: () => "/get-approvals",
     }),
     getCompanyById: builder.query({
-      
-      query: (id:string) => {
-        console.log(id,'id in slice');
-        
-        return `/get-company/${id}`
-      }
+      query: (id: string) => `/get-company/${id}`,
     }),
-    blockCompany: builder.mutation({
-      query: ({id, isBlocked}) => ({
-        url: `/services-status/${id}`,
-        method: HttpMethod.PATCH,
-        body: {isBlocked},
-      }),
+    updateCompany: builder.mutation({
+      query: ({ id, isBlocked, isApproved }) => {
+        const body: any = {};
+        if (isBlocked !== undefined) body.isBlocked = isBlocked;
+        if (isApproved !== undefined) body.isApproved = isApproved;
+
+        console.log(body);
+        
+
+        return {
+          url: `/company-status/${id}`,
+          method: HttpMethod.PATCH,
+          body,
+        };
+      },
     }),
     registerPost: builder.mutation({
       query: (postData) => ({
@@ -48,10 +49,9 @@ export const companyApiSlice = createApi({
 });
 
 export const {
-  useGetPostsQuery,
   useRegisterPostMutation,
   useLoginPostMutation,
   useGetCompaniesQuery,
-  useBlockCompanyMutation,
-  useGetCompanyByIdQuery
+  useUpdateCompanyMutation,
+  useGetCompanyByIdQuery,
 } = companyApiSlice;

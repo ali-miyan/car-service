@@ -115,7 +115,7 @@ export class CompanyController {
     }
   }
 
-  async updateServiceStatus(
+  async updateCompanyStatus(
     req: Request,
     res: Response,
     next: NextFunction
@@ -124,7 +124,7 @@ export class CompanyController {
     const status = req.body;
     console.log(req.params, "dsdsd", req.body);
 
-    if (!id) {
+    if (!id || !status) {
       throw new BadRequestError("id not found");
     }
 
@@ -135,4 +135,5 @@ export class CompanyController {
       next(error);
     }
   }
+
 }

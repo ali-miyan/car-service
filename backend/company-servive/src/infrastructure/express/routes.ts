@@ -29,9 +29,8 @@ router.get("/get-approvals", (req, res, next) =>
 router.get("/get-company/:id", (req, res, next) =>
   userController.getById(req, res, next)
 );
-router.patch("/services-status/:id", (req, res, next) =>
-  userController.updateServiceStatus(req, res, next)
+router.patch("/company-status/:id", (req, res, next) =>
+  userController.updateCompanyStatus(req, res, next)
 );
-
 
 export default router;

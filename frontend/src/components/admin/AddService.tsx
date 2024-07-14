@@ -3,13 +3,14 @@ import { validateInput } from "../../helpers/userValidation";
 import { FormState } from "../../schema/component";
 import { useAddServicePostMutation } from "../../store/slices/adminApiSlice";
 import { notifyError, notifySuccess } from "../common/Toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingButton from "../common/Loading";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 
 const AddYourService: React.FC = () => {
   const [addServicePost, { isLoading }] = useAddServicePostMutation();
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState<FormState>({
     serviceName: "",
@@ -115,7 +116,7 @@ const AddYourService: React.FC = () => {
       const res = await addServicePost(data).unwrap();
       if (res.success) {
         notifySuccess("Successfully added");
-        window.location.href = "/admin/services";
+        navigate('/admin/notification', { state: { refetch: true } });
       }
       console.log(res, "response");
     } catch (err) {
@@ -223,7 +224,7 @@ const AddYourService: React.FC = () => {
           <p className="text-red-500 text-center mt-5 font-bai-regular lowercase text-xs">{errors.global}</p>
         )}
         <div className="text-center mt-5 flex justify-center space-x-3">
-          <Link to={"/admin/service"}>
+          <Link to={"/admin/services"}>
             <button className="bg-black h-10 px-4 text-white rounded">Back</button>
           </Link>
           <LoadingButton

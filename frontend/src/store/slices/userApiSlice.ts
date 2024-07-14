@@ -9,8 +9,8 @@ export const userApiSlice = createApi({
   credentials: "include",
  }),
   endpoints: (builder) => ({
-    getPosts: builder.query({
-      query: () => "/data",
+    getUsers: builder.query({
+      query: () => "/get-users",
     }),
     registerPost: builder.mutation({
       query: (postData) => ({
@@ -60,17 +60,25 @@ export const userApiSlice = createApi({
         method: HttpMethod.PATCH,
         body: postData,
       }),
+    }),
+    updateStatus: builder.mutation({
+      query: ({id,isBlocked}) => ({
+        url: `/update-status/${id}`,
+        method: HttpMethod.PATCH,
+        body: {isBlocked},
+      }),
     })
   })
 });
 
 export const {
-  useGetPostsQuery,
   useRegisterPostMutation,
   useVerifyOtpMutation,
   useLoginUserMutation,
   useGoogleRegisterMutation,
   useResendOtpMutation,
   useResetRequestMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
+  useGetUsersQuery,
+  useUpdateStatusMutation
 } = userApiSlice;

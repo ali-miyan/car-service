@@ -18,8 +18,10 @@ export class LoginUseCase {
     if(company.isBlocked){
       throw new BadRequestError("you have been blocked");
     }
-    if(!company.isApproved){
-      throw new BadRequestError("wait for the admin approval");
+    if(company.isApproved === 'declined'){
+      throw new BadRequestError("you request has been declined");
+    } else if(company.isApproved === "pending"){
+      throw new BadRequestError("please wait for the admins approvel");
     }
 
     const isPasswordValid = await verifyPassword(password, company.password);

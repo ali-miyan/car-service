@@ -1,9 +1,33 @@
 import { User } from "../../entities/userEntity";
 import { IUserRepository } from "../interfaces";
-import { userModel } from "../../infrastructure/db/";
+import { userModel, UserDocument } from "../../infrastructure/db/";
 import { BadRequestError } from "tune-up-library";
 
 export class UserRepository implements IUserRepository {
+  async getAll(): Promise<UserDocument[] | null> {
+    try {
+      return await userModel.find();
+    } catch (error) {
+      throw new BadRequestError("error in db");
+    }
+  }
+  async getById(id: string): Promise<UserDocument | null> {
+    try {
+      return await userModel.findOne({ _id: id });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
+
+  async updateStatus(id: string, data: object): Promise<void> {
+    try {
+      await userModel.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
   async findByEmail(email: string): Promise<User | null> {
     try {
       const user = await userModel.findOne({ email });
@@ -42,7 +66,7 @@ export class UserRepository implements IUserRepository {
       return user;
     } catch (error) {
       console.log(error);
-      
+
       throw new BadRequestError("error in db");
     }
   }

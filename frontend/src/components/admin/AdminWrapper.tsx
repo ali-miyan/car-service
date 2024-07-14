@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import { MdDashboard, MdBook, MdNotifications, MdLogout, MdConstruction } from 'react-icons/md';
+import { MdDashboard, MdBook, MdNotifications, MdLogout, MdConstruction, MdSupervisedUserCircle } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -44,6 +44,13 @@ const Dashboard = ({ children }: { children: ReactNode }) => {
               ${isActive('/admin/home') ? 'bg-red-100' : ''}`}>
               <MdDashboard className="text-2xl" />
               {isSidebarOpen && <span className=" md:inline">Dashboard</span>}
+            </div>
+          </Link>
+          <Link to={'/admin/users'}>
+            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
+              ${isActive('/admin/users') ? 'bg-red-100' : ''}`}>
+              <MdSupervisedUserCircle className="text-2xl" />
+              {isSidebarOpen && <span className=" md:inline">Users</span>}
             </div>
           </Link>
           <Link to={'/admin/services'}>

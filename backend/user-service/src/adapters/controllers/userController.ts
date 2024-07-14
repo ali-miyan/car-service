@@ -4,10 +4,13 @@ import {
   LoginUseCase,
   VerifyOtpUseCase,
   GoogleUseCase,
+  GetUsersUseCase,
+  RequestPasswordUseCase,
+  ResendOtpUseCase,
+  ResetPasswordUseCase,
+  UpdateStatusUseCase
 } from "../../usecases/index";
-import { ResendOtpUseCase } from "../../usecases/resendOtpUseCase";
-import { RequestPasswordUseCase } from "../../usecases/reqeustPasswordUseCase";
-import { ResetPasswordUseCase } from "../../usecases/resetPasswordUseCase";
+import { BadRequestError } from "tune-up-library";
 
 export class UserController {
   constructor(
@@ -17,7 +20,9 @@ export class UserController {
     private requestPassword: RequestPasswordUseCase,
     private googleUseCase: GoogleUseCase,
     private resendOtpUseCase: ResendOtpUseCase,
-    private resetPasswordRepository: ResetPasswordUseCase
+    private resetPasswordRepository: ResetPasswordUseCase,
+    private getUsersUseCase:GetUsersUseCase,
+    private updateStatusUseCase:UpdateStatusUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -145,6 +150,40 @@ export class UserController {
         });
       }
       res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      
+      const response = await this.getUsersUseCase.execute();
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+    const status = req.body;
+    console.log(req.params, "dsdsd", status);
+
+    if (!id ) {
+      throw new BadRequestError("id or status not found");
+    }
+
+    try {
+      const response = await this.updateStatusUseCase.execute(id, status);
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
