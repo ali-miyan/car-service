@@ -49,8 +49,8 @@ const UsersDetails = () => {
   };
   return (
     <>
-      <div className="container mx-auto p-4">
-        <div className="overflow-x-auto">
+      <div style={{ height: "100%" }} className="container lowercase font-bai-regular mx-auto p-4">
+        <div className="overflow-x-auto min-h-screen">
           <table className="min-w-full">
             <thead className="bg-gray-100">
               <tr>

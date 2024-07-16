@@ -1,100 +1,94 @@
-import React, { useState, useEffect, ReactNode } from 'react';
-import { MdDashboard, MdBook, MdNotifications, MdLogout, MdConstruction, MdSupervisedUserCircle } from 'react-icons/md';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link, useLocation } from 'react-router-dom';
+import { ReactNode,useState } from 'react';
+import { FaLongArrowAltLeft } from 'react-icons/fa';
+import { MdBook, MdConstruction, MdDashboard, MdLogout, MdSupervisedUserCircle } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { adminImg } from '../../constants/imageUrl';
 
-const Dashboard = ({ children }: { children: ReactNode }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      setIsSidebarOpen(!mobile);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
+const Sidebar = ({children}:{children:ReactNode}) => {
+  const [open, setOpen] = useState(true);
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex min-h-screen h-screen lowercase font-bai-regular">
-      <div className={`bg-gray-100 p-4 transition-width duration-300 
-        ${isSidebarOpen ? 'w-64' : 'w-20'} ${isMobile ? 'fixed z-20' : 'relative'} h-full`}>
-        <div className="flex items-center justify-between">
-          {isSidebarOpen && <span className="text-lg font-bold font-bai-bold uppercase">MINI COOPER</span>}
-          <GiHamburgerMenu
-            className="text-2xl cursor-pointer"
-            onClick={!isMobile  ? toggleSidebar : ()=>{}}
-            />
+    <>
+    <div  className="flex font-bai-medium uppercase">
+      <div
+        className={`${
+          open ? 'w-72' : 'w-20'
+        } bg-gray-100 border-r-8 h-screen p-5 pt-8 relative duration-300`}
+      >
+        <FaLongArrowAltLeft
+          className={`absolute cursor-pointer text-1xl bg-white -right-3 top-9 w-7 h-5 border-2 border-dark-purple rounded-full ${
+            !open && 'rotate-180'
+          }`}
+          onClick={() => setOpen(!open)}
+        />
+        <div className="flex gap-x-4 items-center">
+          <img
+            src={adminImg}
+            className={`cursor-pointer rounded-full w-10 duration-500 text-black text-3xl ${open && 'rotate-[360deg]'}`}
+          />
+          <h1
+            className={`text-vlack origin-left font-medium text-xl duration-200 ${
+              !open && 'scale-0'
+            }`}
+          >
+            ADMIN
+          </h1>
         </div>
-        <hr className="my-4" />
-        <div className="mt-9">
-          <Link to={'/admin/home'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/home') ? 'bg-red-100' : ''}`}>
-              <MdDashboard className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">Dashboard</span>}
-            </div>
+        <ul className="pt-7">
+        <Link to={'/admin/home'}>
+          <li
+          
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100 text-black
+            ${isActive('/admin/home') ? 'bg-red-100' : ''} text-sm items-center gap-x-4 mt-4 `}
+          >
+            <MdDashboard className='text-2xl' />
+            <span className={`${!open && 'hidden'} origin-left duration-200`}>Dashboard</span>
+          </li>
           </Link>
           <Link to={'/admin/users'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/users') ? 'bg-red-100' : ''}`}>
-              <MdSupervisedUserCircle className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">Users</span>}
-            </div>
-          </Link>
-          <Link to={'/admin/services'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/services') ? 'bg-red-100' : ''}`}>
-              <MdConstruction className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">Services</span>}
-            </div>
+          <li
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+            ${isActive('/admin/users') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
+          >
+            <MdSupervisedUserCircle className='text-2xl' />
+            <span className={`${!open && 'hidden'} origin-left duration-200`}>Users</span>
+          </li>
+            </Link>
+            <Link to={'/admin/services'}>
+          <li
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+             ${isActive('/admin/services') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
+          >
+            <MdConstruction className='text-2xl' />
+            <span className={`${!open && 'hidden'} origin-left duration-200`}>Services</span>
+          </li>
           </Link>
           <Link to={'/admin/notification'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/notification') ? 'bg-red-100' : ''}`}>
-              <MdBook className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">notification</span>}
-            </div>
-          </Link>
-          <Link to={'/admin/notifications'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/notifications') ? 'bg-red-100' : ''}`}>
-              <MdNotifications className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">Notifications</span>}
-            </div>
+          <li
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+               ${isActive('/admin/notification') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
+          >
+            <MdBook className='text-2xl' />
+            <span className={`${!open && 'hidden'} origin-left duration-200`}>notification</span>
+          </li>
           </Link>
           <Link to={'/admin/logout'}>
-            <div className={`flex items-center gap-4 p-3 hover:bg-red-100 rounded-md cursor-pointer mb-3
-              ${isActive('/admin/logout') ? 'bg-red-100' : ''}`}>
-              <MdLogout className="text-2xl" />
-              {isSidebarOpen && <span className=" md:inline">Log-out</span>}
-            </div>
+          <li
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+               ${isActive('/admin/logout') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
+          >
+            <MdLogout className='text-2xl' />
+            <span className={`${!open && 'hidden'} origin-left duration-200`}>Log-out</span>
+          </li>
           </Link>
-        </div>
+        </ul>
       </div>
-
-      <div className={`flex-1 h-screen pt-5 bg-gray-300 px-5 ${isSidebarOpen && isMobile ? 'ml-64' : ''}`}>
-        <div className="flex justify-between items-center">
-          <div></div>
-          <div className="w-full bg-gray-100 " />
-        </div>
-        <div className="bg-white w-full h-full flex justify-center rounded-md shadow-md overflow-auto">
-          {children}
-        </div>
-      </div>
+      {children}
     </div>
+    
+    </>
   );
 };
 
-export default Dashboard;
+export default Sidebar;

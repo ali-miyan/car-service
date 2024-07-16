@@ -24,10 +24,11 @@ export interface ModalProps {
   children: React.ReactNode;
   disableClose?:boolean
   onClose?: () => void | undefined | void;
+  packages?:object[]
 }
 
 export interface ButtonProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     width?: string;
     height?: string;
     hoverColor?: string;
@@ -38,6 +39,14 @@ export interface ButtonProps {
 export interface FormState {
   serviceName: string;
   description: string;
+  logo: File | null;
+  subServices: string[];
+}
+export interface serviceForm {
+  serviceName: string;
+  experience: string;
+  workingHours: string;
+  terms: string;
   logo: File | null;
   subServices: string[];
 }

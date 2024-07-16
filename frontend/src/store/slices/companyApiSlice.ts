@@ -11,6 +11,7 @@ export const companyApiSlice = createApi({
   endpoints: (builder) => ({
     getCompanies: builder.query({
       query: () => "/get-approvals",
+      keepUnusedDataFor:300,
     }),
     getCompanyById: builder.query({
       query: (id: string) => `/get-company/${id}`,
@@ -20,10 +21,6 @@ export const companyApiSlice = createApi({
         const body: any = {};
         if (isBlocked !== undefined) body.isBlocked = isBlocked;
         if (isApproved !== undefined) body.isApproved = isApproved;
-
-        console.log(body);
-        
-
         return {
           url: `/company-status/${id}`,
           method: HttpMethod.PATCH,

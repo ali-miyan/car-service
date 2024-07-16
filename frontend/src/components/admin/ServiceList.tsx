@@ -80,8 +80,8 @@ const ServiceTable = () => {
 
   return (
     <>
-    <div className="container mx-auto p-4">
-      <div className="overflow-x-auto">
+    <div style={{ height: "100%" }} className="container font-bai-regular lowercase mx-auto p-4">
+      <div className="overflow-x-auto min-h-screen">
         <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
@@ -175,13 +175,13 @@ const ServiceTable = () => {
             )}
           </tbody>
         </table>
-      </div>
       <div className="flex justify-center mt-4">
         <Link to="/admin/add-service">
           <button className="bg-black lowercase text-white px-4 py-2 my-2 rounded">
             ADD NEW SERVICE
           </button>
         </Link>
+      </div>
       </div>
     </div>
     </>

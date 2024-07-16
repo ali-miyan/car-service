@@ -12,8 +12,6 @@ const AdminProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
   const token = getInitialToken("adminToken");
 
-  console.log(token, "tokentokentoken");
-
   useEffect(() => {
     if (!token) {
       navigate("/admin/login");

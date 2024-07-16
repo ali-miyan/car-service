@@ -11,6 +11,7 @@ export const adminApiSlice = createApi({
   endpoints: (builder) => ({
     getService: builder.query({
       query: () => "/get-service",
+      keepUnusedDataFor:300
     }),
     registerPost: builder.mutation({
       query: (postData) => ({

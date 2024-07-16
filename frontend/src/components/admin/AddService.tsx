@@ -116,7 +116,7 @@ const AddYourService: React.FC = () => {
       const res = await addServicePost(data).unwrap();
       if (res.success) {
         notifySuccess("Successfully added");
-        navigate('/admin/notification', { state: { refetch: true } });
+        navigate('/admin/services', { state: { refetch: true } });
       }
       console.log(res, "response");
     } catch (err) {
@@ -134,7 +134,7 @@ const AddYourService: React.FC = () => {
   };
 
   return (
-    <div className="px-4 sm:px-9  sm:w-10/12 pt-14">
+    <div style={{ height: "100%" }} className="px-4 sm:px-9 min-h-screen sm:w-10/12 pt-14">
       <div className="font-bai-regular text-sm lowercase ">
         <h2 className="font-bai-bold uppercase text-center mb-5">ADD GENERAL SERVICE</h2>
         <div className="text-start w-full flex flex-col sm:flex-row">

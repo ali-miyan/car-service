@@ -1,10 +1,13 @@
-import React from 'react'
-import CompanyHome from '../../components/company/Home'
+import React from "react";
+import CompanyHome from "../../components/company/Home";
+import Sidebar from "../../components/company/SideBar";
 
 const CompanyHomePage = () => {
   return (
-    <div><CompanyHome /></div>
-  )
-}
+    <Sidebar>
+      <CompanyHome />
+    </Sidebar>
+  );
+};
 
-export default CompanyHomePage
+export default CompanyHomePage;
