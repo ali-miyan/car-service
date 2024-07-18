@@ -4,3 +4,6 @@ export * from './getApprovalsUseCase';
 export * from './updateStatusUseCase';
 export * from './getByIdUseCase';
 export * from './addServiceUseCase';
+export * from './serviceStatusUseCase';
+export * from './getServiceUseCase';
+export * from './deleteServiceUseCase';

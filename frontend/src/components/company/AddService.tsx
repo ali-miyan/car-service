@@ -28,6 +28,7 @@ const AddYourService: React.FC = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [selectedService, setSelectedService] = useState('');
   const [selectedHours, setSelectedHours] = useState("");
+  const [servicePlace, setServicePlace] = useState("");
   const [basicSubService, setBasicSubService] = useState<{ _id: string; name: string }[]>([]);
   const [standardSubService, setStandardSubService] = useState<{ _id: string; name: string }[]>([]);
   const [premiumSubService, setPremiumSubService] = useState<{ _id: string; name: string }[]>([]);
@@ -71,19 +72,18 @@ const AddYourService: React.FC = () => {
   }, [posts]);
 
   const [formData, setFormData] = useState<serviceForm>({
-    experience: "",
     terms: "",
     workImages: [],
     subServices: [],
   });
 
   const [errors, setErrors] = useState({
-    experience: "",
     selecetedHours:'',
     selectedService:"",
     terms: "",
     workImages: "",
     packageError: "",
+    servicePlaceError:"",
     global: "",
   });
 
@@ -145,24 +145,26 @@ const AddYourService: React.FC = () => {
   const handleSubmit = async () => {
     const selectedServiceError = validateInput("selectedService",selectedService );
     const selecetedHoursError = validateInput("selecetedHours",selectedHours );
-    const experienceError = validateInput("experience", formData.experience);
+    const servicePlaceError = validateInput("servicePlace",servicePlace );
     const termsError = validateInput("terms", formData.terms);
     const logoError =(formData.workImages as []).length > 0? "": "Please provide atleast 1 work images";
     const packageError =!basicSubService.length ||!standardSubService.length ||!premiumSubService.length? "packages cannot be empty": "";
 
     setErrors({
-      experience: experienceError,
       terms: termsError,
       workImages: logoError,
       packageError: packageError,
       selecetedHours:selecetedHoursError,
       selectedService:selectedServiceError,
+      servicePlaceError:servicePlaceError,
       global: "",
     });
 
-    if (experienceError || termsError || logoError || packageError) {
+    console.log('hoi',termsError,logoError,packageError,servicePlaceError);
+    if (termsError || logoError || packageError || servicePlaceError) {
       return;
     }
+    
 
     const id = getInitialToken('companyToken')
 
@@ -170,7 +172,7 @@ const AddYourService: React.FC = () => {
     data.append("generalServiceId", selectedService);
     data.append("companyId", (id as string));
     data.append("selectedHours", selectedHours);
-    data.append("experience", formData.experience);
+    data.append("servicePlace", servicePlace);
     data.append("terms", formData.terms);
     (formData.workImages as []).forEach((image: File) => {
       data.append("images", image);
@@ -272,19 +274,23 @@ const AddYourService: React.FC = () => {
                 </p>
               )}
             </div>
-            <div className="form-group">
-              <label htmlFor="experience">Experience</label>
-              <input
-                onChange={handleInputChange}
-                value={formData.experience}
-                type="text"
-                className="border p-2 rounded w-full"
-                placeholder="Type here"
-                name="experience"
-              />
-              {errors.experience && (
+            <div className="form-group ">
+              <label htmlFor="working-hours">service place</label>
+              <select
+                name="working-hours"
+                className="border lowercase p-2 rounded w-full"
+                id="working-hours"
+                value={selectedHours}
+                onChange={(e) => setServicePlace(e.target.value)}
+              >
+                <option value="" disabled>select a place</option>
+                <option value="home">at home</option>
+                <option value="service-center">at service center</option>
+                <option value="both">both</option>
+              </select>
+              {errors.servicePlace && (
                 <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.experience}
+                  {errors.servicePlace}
                 </p>
               )}
             </div>

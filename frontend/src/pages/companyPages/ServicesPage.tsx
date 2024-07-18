@@ -5,7 +5,12 @@ const RegisterPage3 = () => {
   return (
     <>
       <Sidebar>
-        <Service />
+        <div className="w-full min-h-screen h-full bg-gray-200">
+          <h1 className="text-center pt-6 font-bai-bold underline underline-offset-2 text-xl ">
+            SERVICES
+          </h1>
+          <Service />
+        </div>
       </Sidebar>
     </>
   );

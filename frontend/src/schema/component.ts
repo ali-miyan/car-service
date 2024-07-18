@@ -43,7 +43,6 @@ export interface FormState {
   subServices: string[];
 }
 export interface serviceForm {
-  experience: string;
   terms: string;
   workImages: File | [];
   subServices: string[];

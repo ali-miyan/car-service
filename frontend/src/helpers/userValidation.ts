@@ -117,6 +117,11 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "select a hour";
       }
       break;
+    case "servicePlace":
+      if (!value) {
+        error = "please select a place";
+      }
+      break;
     case "experience":
       if (!value) {
         error = "experience is required";

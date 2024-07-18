@@ -13,6 +13,10 @@ export const companyApiSlice = createApi({
       query: () => "/get-approvals",
       keepUnusedDataFor:300,
     }),
+    getServices: builder.query({
+      query: () => "/get-services",
+      keepUnusedDataFor:300,
+    }),
     getCompanyById: builder.query({
       query: (id: string) => `/get-company/${id}`,
     }),
@@ -27,6 +31,13 @@ export const companyApiSlice = createApi({
           body,
         };
       },
+    }),
+    updateServiceStatus: builder.mutation({
+      query: ({ id, isBlocked }) => ({
+        url: `/services-status/${id}`,
+        method: HttpMethod.PATCH,
+        body: { isBlocked },
+      }),
     }),
     registerPost: builder.mutation({
       query: (postData) => ({
@@ -49,6 +60,12 @@ export const companyApiSlice = createApi({
         body: postData,
       }),
     }),
+    deleteServicePost: builder.mutation({
+      query: (id: string) => ({
+        url: `/delete-service/${id}`,
+        method: HttpMethod.DELETE,
+      }),
+    }),
   }),
 });
 
@@ -58,5 +75,8 @@ export const {
   useGetCompaniesQuery,
   useUpdateCompanyMutation,
   useGetCompanyByIdQuery,
-  useAddServiceMutation
+  useAddServiceMutation,
+  useGetServicesQuery,
+  useUpdateServiceStatusMutation,
+  useDeleteServicePostMutation
 } = companyApiSlice;

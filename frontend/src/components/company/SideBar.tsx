@@ -24,7 +24,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
   const links = useMemo(
     () => [
       { to: '/company/home', icon: <MdDashboard className="text-2xl" />, label: 'Dashboard' },
-      { to: '/company/add-services', icon: <MdConstruction className="text-2xl" />, label: 'Services' },
+      { to: '/company/services', icon: <MdConstruction className="text-2xl" />, label: 'Services' },
       { to: '/company/notification', icon: <MdBook className="text-2xl" />, label: 'Notification' },
       { to: '/company/logout', icon: <MdLogout className="text-2xl" />, label: 'Log-out' },
     ],

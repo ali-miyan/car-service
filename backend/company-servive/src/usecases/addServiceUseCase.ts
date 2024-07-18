@@ -18,41 +18,40 @@ export class AddServiceUseCase {
     generalServiceId: string,
     companyId: string,
     selectedHours: string,
-    experience: number,
+    servicePlace:string,
     terms: string,
     basicSubService: [string, string],
     standardSubService: [string, string],
     premiumSubService: [string, string],
-    files:any
+    files: any
   ): Promise<any> {
     
     const basicPackage = parseSubService(basicSubService);
     const standardPackage = parseSubService(standardSubService);
     const premiumPackage = parseSubService(premiumSubService);
     
-    const uploadedFiles = await this.s3ServiceRepository.uploadImageArray("tune-up",files);
+    const uploadedFiles = await this.s3ServiceRepository.uploadImageArray("tune-up", files);
     
-    console.log(uploadedFiles,'uploaded files');
-    
+    console.log(uploadedFiles, 'uploaded files');
     
     const service = new Service({
       generalServiceId,
       companyId,
       selectedHours,
-      experience,
+      servicePlace,
       terms,
-      images:uploadedFiles,
-      basicPackage:basicPackage ,
-      standardPackage:standardPackage,
-      premiumPackage:premiumPackage,
-      isBlocked:false
+      images: uploadedFiles,
+      basicPackage,
+      standardPackage,
+      premiumPackage,
+      isBlocked: false
     });
     
-    console.log(service,'saveing service');
+    console.log(service, 'saving service');
     
-    await this.serviceRepository.save(service)
+    await this.serviceRepository.save(service);
     
     return true;
-    
   }
+  
 }

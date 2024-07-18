@@ -32,6 +32,15 @@ export class ServiceRepository implements IServiecRepository {
     }
   }
 
+  async deleteOne(id: string): Promise<any> {
+    try {
+      const user = await serviceModal.deleteOne({ _id: id });
+      return user;
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
+
   async updateStatus(id: string, data: object): Promise<void> {
     try {
       await serviceModal.findByIdAndUpdate(id, data, {

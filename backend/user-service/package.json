@@ -18,7 +18,7 @@
     "ioredis": "^5.4.1",
     "mongoose": "^8.4.4",
     "nodemailer": "^6.9.14",
-    "tune-up-library": "^1.1.21"
+    "tune-up-library": "^1.1.22"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

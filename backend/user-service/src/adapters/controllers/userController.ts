@@ -160,6 +160,9 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
+
+      console.log(req.cookies);
+      
       
       const response = await this.getUsersUseCase.execute();
 
