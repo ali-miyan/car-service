@@ -42,6 +42,13 @@ export const companyApiSlice = createApi({
         body: postData,
       }),
     }),
+    addService: builder.mutation({
+      query: (postData) => ({
+        url: "/add-service",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
+    }),
   }),
 });
 
@@ -51,4 +58,5 @@ export const {
   useGetCompaniesQuery,
   useUpdateCompanyMutation,
   useGetCompanyByIdQuery,
+  useAddServiceMutation
 } = companyApiSlice;

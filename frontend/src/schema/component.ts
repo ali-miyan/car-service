@@ -43,11 +43,9 @@ export interface FormState {
   subServices: string[];
 }
 export interface serviceForm {
-  serviceName: string;
   experience: string;
-  workingHours: string;
   terms: string;
-  logo: File | null;
+  workImages: File | [];
   subServices: string[];
 }
 

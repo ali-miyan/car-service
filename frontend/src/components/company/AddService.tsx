@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { validateInput } from "../../helpers/userValidation";
 import { serviceForm } from "../../schema/component";
-import { useAddServicePostMutation } from "../../store/slices/adminApiSlice";
+import { useAddServiceMutation } from "../../store/slices/companyApiSlice";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { Link, useNavigate } from "react-router-dom";
 import LoadingButton from "../common/Loading";
@@ -9,35 +10,58 @@ import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 import { useGetServiceQuery } from "../../store/slices/adminApiSlice";
 import { FaDotCircle, FaPlus } from "react-icons/fa";
-import AddPackageModal from "./AddPackageModal";
 import CustomModal from "../common/Modal";
 import { Post } from "../../schema/company";
 import PackageContent from "./PackageContent";
+import extractToken from "../../helpers/extractToken";
+import { getInitialToken } from "../../helpers/getToken";
 
 const AddYourService: React.FC = () => {
-  const {
-    data: posts,
-    refetch,
-    error,
-  } = useGetServiceQuery({ refetchOnMountOrArgChange: false });
+  const { data: posts } = useGetServiceQuery({
+    refetchOnMountOrArgChange: false,
+  });
 
-  const [addServicePost, { isLoading }] = useAddServicePostMutation();
+  const [addService, { isLoading }] = useAddServiceMutation();
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedService, setSelectedService] = useState(
-    posts && posts.length > 0 ? posts[0]?._id : ""
-  );
-  const [selectedSubService, setSelectedSubService] = useState<string[]>([]);
+  const [selectedService, setSelectedService] = useState('');
+  const [selectedHours, setSelectedHours] = useState("");
+  const [basicSubService, setBasicSubService] = useState<{ _id: string; name: string }[]>([]);
+  const [standardSubService, setStandardSubService] = useState<{ _id: string; name: string }[]>([]);
+  const [premiumSubService, setPremiumSubService] = useState<{ _id: string; name: string }[]>([]);
   const [subservices, setSubservices] = useState(
-    posts && posts.length > 0 ? posts[0]?.subServices : []
+    posts && posts.lengsetStandardSubServiceth > 0 ? posts[0]?.subServices : []
   );
 
-  const handleSubServicesSubmit = (selectedSubServices: string[]) => {
-    console.log(selectedSubServices, "parent to child");
+  const [basicData, setBasicData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
+  const [standardData, setStandardData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
+  const [premiumData, setPremiumData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
 
-    setSelectedSubService(selectedSubServices);
+  const handleSubServicesSubmit = (
+    selectedSubServices: { _id: string; name: string }[],
+    workingData: { price: string; workingHours: string }
+  ) => {
+    if (modalTitle === "basic") {
+      setBasicSubService(selectedSubServices);
+      setBasicData(workingData);
+    } else if (modalTitle === "standard") {
+      setStandardSubService(selectedSubServices);
+      setStandardData(workingData);
+    } else {
+      setPremiumSubService(selectedSubServices);
+      setPremiumData(workingData);
+    }
   };
 
   useEffect(() => {
@@ -47,21 +71,19 @@ const AddYourService: React.FC = () => {
   }, [posts]);
 
   const [formData, setFormData] = useState<serviceForm>({
-    serviceName: "",
     experience: "",
-    workingHours: "",
     terms: "",
-    logo: null,
+    workImages: [],
     subServices: [],
   });
 
   const [errors, setErrors] = useState({
-    serviceName: "",
     experience: "",
-    workingHours: "",
+    selecetedHours:'',
+    selectedService:"",
     terms: "",
-    logo: "",
-    subServices: "",
+    workImages: "",
+    packageError: "",
     global: "",
   });
 
@@ -79,15 +101,17 @@ const AddYourService: React.FC = () => {
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData((prevData) => ({
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      setFormData((prevData: any) => ({
         ...prevData,
-        logo: file,
+        workImages: prevData.workImages
+          ? [...prevData.workImages, ...files]
+          : files,
       }));
       setErrors((prevErrors) => ({
         ...prevErrors,
-        logo: "",
+        workImages: "",
       }));
     }
   };
@@ -105,6 +129,12 @@ const AddYourService: React.FC = () => {
       setSubservices([]);
     }
     setSelectedService(selectedServiceId);
+    setBasicData({});
+    setStandardData({});
+    setPremiumData({});
+    setBasicSubService([]);
+    setStandardSubService([]);
+    setPremiumSubService([]);
   };
 
   const openModal = (title: string) => {
@@ -113,55 +143,53 @@ const AddYourService: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const serviceNameError = validateInput("serviceName", formData.serviceName);
+    const selectedServiceError = validateInput("selectedService",selectedService );
+    const selecetedHoursError = validateInput("selecetedHours",selectedHours );
     const experienceError = validateInput("experience", formData.experience);
-    const workingHoursError = validateInput(
-      "workingHours",
-      formData.workingHours
-    );
     const termsError = validateInput("terms", formData.terms);
-    const logoError = formData.logo ? "" : "Please provide a logo";
-    const subServicesError =
-      formData.subServices.length < 2
-        ? "Please add at least two sub-service"
-        : "";
+    const logoError =(formData.workImages as []).length > 0? "": "Please provide atleast 1 work images";
+    const packageError =!basicSubService.length ||!standardSubService.length ||!premiumSubService.length? "packages cannot be empty": "";
 
     setErrors({
-      serviceName: serviceNameError,
       experience: experienceError,
-      workingHours: workingHoursError,
       terms: termsError,
-      logo: logoError,
-      subServices: subServicesError,
+      workImages: logoError,
+      packageError: packageError,
+      selecetedHours:selecetedHoursError,
+      selectedService:selectedServiceError,
       global: "",
     });
 
-    if (
-      serviceNameError ||
-      experienceError ||
-      workingHoursError ||
-      termsError ||
-      logoError ||
-      subServicesError
-    ) {
+    if (experienceError || termsError || logoError || packageError) {
       return;
     }
 
+    const id = getInitialToken('companyToken')
+
     const data = new FormData();
-    data.append("serviceName", formData.serviceName);
+    data.append("generalServiceId", selectedService);
+    data.append("companyId", (id as string));
+    data.append("selectedHours", selectedHours);
     data.append("experience", formData.experience);
-    data.append("workingHours", formData.workingHours);
     data.append("terms", formData.terms);
-    data.append("image", formData.logo as File);
-    formData.subServices.forEach((subService) => {
-      data.append("services", subService);
+    (formData.workImages as []).forEach((image: File) => {
+      data.append("images", image);
     });
+    data.append("basicSubService", JSON.stringify(basicSubService));
+    data.append("basicSubService", JSON.stringify(basicData));
+    data.append("standardSubService", JSON.stringify(standardSubService));
+    data.append("standardSubService", JSON.stringify(standardData));
+    data.append("premiumSubService", JSON.stringify(premiumSubService));
+    data.append("premiumSubService", JSON.stringify(premiumData));
+
+    console.log([...data.entries()]);
+  
 
     try {
-      const res = await addServicePost(data).unwrap();
+      const res = await addService(data).unwrap();
       if (res.success) {
         notifySuccess("Successfully added");
-        navigate("/admin/notification", { state: { refetch: true } });
+        navigate("/company/services", { state: { refetch: true } });
       }
       console.log(res, "response");
     } catch (err) {
@@ -188,7 +216,7 @@ const AddYourService: React.FC = () => {
           open={showModal}
           title={modalTitle}
           width={500}
-          height={500}
+          height={530}
           onClose={() => setShowModal(false)}
           children={
             <>
@@ -196,6 +224,20 @@ const AddYourService: React.FC = () => {
                 subservices={subservices}
                 onClose={() => setShowModal(false)}
                 handleSubServicesSubmit={handleSubServicesSubmit}
+                alreadyChecked={
+                  modalTitle === "basic"
+                    ? basicSubService
+                    : modalTitle === "standard"
+                    ? standardSubService
+                    : premiumSubService
+                }
+                setData={
+                  modalTitle === "basic"
+                    ? basicData
+                    : modalTitle === "standard"
+                    ? standardData
+                    : premiumData
+                }
               />
             </>
           }
@@ -216,13 +258,19 @@ const AddYourService: React.FC = () => {
                 value={selectedService}
                 onChange={handleServiceChange}
               >
+                <option value="" disabled>select a service</option>
                 {posts &&
-                  posts.map((post, index) => (
+                  posts.map((post: any, index: number) => (
                     <option key={index} value={post._id}>
                       {post.serviceName}
                     </option>
                   ))}
               </select>
+              {errors.selectedService && (
+                <p className="text-red-500 font-bai-regular lowercase text-xs">
+                  {errors.selectedService}
+                </p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="experience">Experience</label>
@@ -240,18 +288,25 @@ const AddYourService: React.FC = () => {
                 </p>
               )}
             </div>
-            <div className="form-group">
+            <div className="form-group ">
               <label htmlFor="working-hours">Working Hours</label>
               <select
                 name="working-hours"
-                className="border p-2 rounded w-full"
+                className="border lowercase p-2 rounded w-full"
                 id="working-hours"
+                value={selectedHours}
+                onChange={(e) => setSelectedHours(e.target.value)}
               >
-                <option value="">Select working hours</option>
-                <option value="sun-mon">Monday to Sunday</option>
+                <option value="" disabled>select a option</option>
+                <option value="mon-sun">Monday to Sunday</option>
                 <option value="mon-sat">Monday to Saturday</option>
                 <option value="24/7">24/7</option>
               </select>
+              {errors.selecetedHours && (
+                <p className="text-red-500 font-bai-regular lowercase text-xs">
+                  {errors.selecetedHours}
+                </p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="terms">Terms</label>
@@ -270,29 +325,36 @@ const AddYourService: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="w-full sm:w-5/12 sm:pl-5 mt-4 sm:mt-0">
-            <div className="form-group h-36 logo-upload mt-7 relative">
+          <div className="w-full sm:w-8/12 sm:pl-5 mt-4 sm:mt-0">
+            <div className="h-36 border-4 mt-7 relative">
               <input
                 type="file"
                 multiple
-                name="logo"
+                name="workImages"
                 onChange={handleImage}
                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               />
-              {formData.logo ? (
-                <img
-                  src={URL.createObjectURL(formData.logo)}
-                  alt="Company Logo"
-                  className="w-24 h-24 object-cover m-2 rounded"
-                />
+              {formData.workImages && (formData.workImages as []).length > 0 ? (
+                <div className="flex flex-wrap">
+                  {(formData.workImages as []).map(
+                    (image: any, index: number) => (
+                      <img
+                        key={index}
+                        src={URL.createObjectURL(image)}
+                        alt={`Work Image ${index + 1}`}
+                        className="w-16 h-16 mt-8 object-cover m-2 rounded"
+                      />
+                    )
+                  )}
+                </div>
               ) : (
-                <span className="w-24 h-24  flex items-center justify-center rounded cursor-pointer">
+                <span className="w-full h-full flex items-center justify-center text-center rounded cursor-pointer">
                   ADD YOUR WORK PHOTOS
                 </span>
               )}
-              {errors.logo && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.logo}
+              {errors.workImages && (
+                <p className="text-red-500 text-center mt-1 font-bai-regular lowercase text-xs">
+                  {errors.workImages}
                 </p>
               )}
             </div>
@@ -303,6 +365,11 @@ const AddYourService: React.FC = () => {
           <h3 className="font-bai-bold uppercase text-center mb-2">
             ADD PACKAGES
           </h3>
+              {errors.packageError && (
+                <p className="text-red-500 font-bai-regular text-center lowercase text-xs">
+                  {errors.packageError}
+                </p>
+              )}
           <section>
             <div className="py-2 px-4 mx-auto max-w-screen-xl lg:py-5 lg:px-6">
               <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
@@ -313,29 +380,41 @@ const AddYourService: React.FC = () => {
                   <p className="font-light text-gray-500">
                     add your basic plan here.
                   </p>
-                  <div className="flex justify-center items-baseline my-4">
-                    <span className=" text-3xl font-extrabold">$29</span>
-                    <span className="text-gray-500">/service</span>
+                  <div className="mb-4">
+                    <div className="flex justify-center pt-3  items-baseline m">
+                      <span className="text-3xl font-extrabold">
+                        ${basicData.price || "0"}
+                      </span>
+                      <span className="text-gray-500">/service</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="text-sm text-gray-500">
+                        takes {basicData.workingHours || "0"} hours
+                      </span>
+                    </div>
                   </div>
-                  <ul role="list" className="mb-8 space-y-4 text-left">
-                    {selectedSubService.length === 0 && (
+                  <ul>
+                    {basicSubService.length === 0 && (
                       <p>None has been selected</p>
                     )}
-                    {posts.map((val, index) => (
-                      <React.Fragment key={index}>
-                        {val.subServices
-                          .filter((sub) => selectedSubService.includes(sub._id))
-                          .map((sub) => (
-                            <li
-                              className="flex items-center space-x-3 text-xs"
-                              key={sub._id}
-                            >
-                              <FaDotCircle className="flex-shrink-0 w-2 h-2 text-gray-300" />
-                              <span>{sub.name}</span>
-                            </li>
-                          ))}
-                      </React.Fragment>
-                    ))}
+                    {posts &&
+                      posts.map((val: any, index: number) => (
+                        <React.Fragment key={index}>
+                          {val.subServices
+                            .filter((sub: any) =>
+                              basicSubService.some((selected) => selected._id === sub._id)
+                            )
+                            .map((sub: any) => (
+                              <li
+                                className="flex items-center space-x-3 text-xs"
+                                key={sub._id}
+                              >
+                                <FaDotCircle className="flex-shrink-0 w-2 h-2 text-gray-300" />
+                                <span>{sub.name}</span>
+                              </li>
+                            ))}
+                        </React.Fragment>
+                      ))}
                   </ul>
 
                   <FaPlus
@@ -353,42 +432,41 @@ const AddYourService: React.FC = () => {
                   <p className="font-light text-gray-500">
                     add you standard plan here.
                   </p>
-                  <div className="flex justify-center items-baseline my-4">
-                    <span className=" text-3xl font-extrabold">$99</span>
-                    <span className="text-gray-500">/service</span>
+                  <div className="mb-4">
+                    <div className="flex justify-center pt-3  items-baseline m">
+                      <span className="text-3xl font-extrabold">
+                        ${standardData.price || "0"}
+                      </span>
+                      <span className="text-gray-500">/service</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="text-sm text-gray-500">
+                        takes {standardData.workingHours || "0"} hours
+                      </span>
+                    </div>
                   </div>
-                  <ul role="list" className="mb-8 space-y-4 text-left">
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>Individual configuration</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>No setup, or hidden fees</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Team size:{" "}
-                        <span className="font-bai-semi-bold">
-                          10 developers
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Premium support:{" "}
-                        <span className="font-bai-semi-bold">24 months</span>
-                      </span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Free updates:{" "}
-                        <span className="font-bai-semi-bold">24 months</span>
-                      </span>
-                    </li>
+                  <ul>
+                    {standardSubService.length === 0 && (
+                      <p>None has been selected</p>
+                    )}
+                    {posts &&
+                      posts.map((val: any, index: number) => (
+                        <React.Fragment key={index}>
+                          {val.subServices
+                            .filter((sub: any) =>
+                              standardSubService.some((selected) => selected._id === sub._id)
+                            )
+                            .map((sub: any) => (
+                              <li
+                                className="flex items-center space-x-3 text-xs"
+                                key={sub._id}
+                              >
+                                <FaDotCircle className="flex-shrink-0 w-2 h-2 text-gray-300" />
+                                <span>{sub.name}</span>
+                              </li>
+                            ))}
+                        </React.Fragment>
+                      ))}
                   </ul>
                   <FaPlus
                     className="text-2xl cursor-pointer "
@@ -405,42 +483,41 @@ const AddYourService: React.FC = () => {
                   <p className="font-light text-gray-500">
                     add your premium plan here.
                   </p>
-                  <div className="flex justify-center items-baseline my-4">
-                    <span className=" text-3xl font-extrabold">$499</span>
-                    <span className="text-gray-500">/service</span>
+                  <div className="mb-4">
+                    <div className="flex justify-center pt-3  items-baseline m">
+                      <span className="text-3xl font-extrabold">
+                        ${premiumData.price || "0"}
+                      </span>
+                      <span className="text-gray-500">/service</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="text-sm text-gray-500">
+                        takes {premiumData.workingHours || "0"} hours
+                      </span>
+                    </div>
                   </div>
-                  <ul role="list" className="mb-8 space-y-4 text-left">
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>Individual configuration</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>No setup, or hidden fees</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Team size:{" "}
-                        <span className="font-bai-semi-bold">
-                          100+ developers
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Premium support:{" "}
-                        <span className="font-bai-semi-bold">36 months</span>
-                      </span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <FaDotCircle className="flex-shrink-0 w-5 h-5 text-gray-300" />
-                      <span>
-                        Free updates:{" "}
-                        <span className="font-bai-semi-bold">36 months</span>
-                      </span>
-                    </li>
+                  <ul>
+                    {premiumSubService.length === 0 && (
+                      <p>None has been selected</p>
+                    )}
+                    {posts &&
+                      posts.map((val: any, index: number) => (
+                        <React.Fragment key={index}>
+                          {val.subServices
+                            .filter((sub: any) =>
+                              premiumSubService.some((selected) => selected._id === sub._id)
+                            )
+                            .map((sub: any) => (
+                              <li
+                                className="flex items-center space-x-3 text-xs"
+                                key={sub._id}
+                              >
+                                <FaDotCircle className="flex-shrink-0 w-2 h-2 text-gray-300" />
+                                <span>{sub.name}</span>
+                              </li>
+                            ))}
+                        </React.Fragment>
+                      ))}
                   </ul>
                   <FaPlus
                     className="text-2xl cursor-pointer "

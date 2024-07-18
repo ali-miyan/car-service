@@ -51,6 +51,8 @@ const Notification = () => {
 
   return (
     <div style={{ height: "100%" }} className="container font-bai-regular lowercase mx-auto p-4">
+    ,
+    ,
       <div className="overflow-x-auto min-h-screen">
         <table className="min-w-full">
           <thead className="bg-gray-100">

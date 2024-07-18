@@ -42,22 +42,64 @@ export class S3Service {
   ): Promise<{ [key: string]: string }> {
     const uploadPromises = Object.keys(files).map(async (key) => {
       const { buffer, contentType } = files[key];
-      const location = await this.uploadFile(
-        bucketName,
-        `${Date.now()}-${key}`,
-        buffer,
-        contentType
-      );
-      return { key, location };
+      try {
+        const location = await this.uploadFile(
+          bucketName,
+          `${Date.now()}-${key}`,
+          buffer,
+          contentType
+        );
+        return { key, location };
+      } catch (error) {
+        console.error(`Error uploading file ${key} to S3:`, error);
+        throw new Error((error as string))
+      }
     });
 
-    const results = await Promise.all(uploadPromises);
-    return results.reduce(
-      (acc: { [key: string]: string }, { key, location }) => {
-        acc[key] = location;
-        return acc;
-      },
-      {}
-    );
+    try {
+      const results = await Promise.all(uploadPromises);
+      return results.reduce(
+        (acc: { [key: string]: string }, { key, location }) => {
+          acc[key] = location;
+          return acc;
+        },
+        {}
+      );
+    } catch (error) {
+      console.error("Error uploading files to S3:", error);
+      throw error;
+    }
+  }
+
+  async uploadImageArray(
+    bucketName: string,
+    files: {
+      fieldname: string;
+      originalname: string;
+      encoding: string;
+      mimetype: string;
+      buffer: Buffer;
+      size: number;
+    }[]
+  ): Promise<string[]> {
+    const uploadPromises = files.map(async (file) => {
+      const { originalname, buffer, mimetype } = file;
+      const key = `${Date.now()}-${originalname}`;
+      try {
+        const location = await this.uploadFile(bucketName, key, buffer, mimetype);
+        return location;
+      } catch (error) {
+        console.error(`Error uploading image ${originalname} to S3:`, error);
+        throw error;
+      }
+    });
+
+    try {
+      const urls = await Promise.all(uploadPromises);
+      return urls;
+    } catch (error) {
+      console.error("Error uploading image array to S3:", error);
+      throw error;
+    }
   }
 }

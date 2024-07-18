@@ -107,6 +107,16 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "address is required";
       }
       break;
+    case "selectedService":
+      if (!value) {
+        error = "select a service";
+      }
+      break;
+    case "selecetedHours":
+      if (!value) {
+        error = "select a hour";
+      }
+      break;
     case "experience":
       if (!value) {
         error = "experience is required";
@@ -135,6 +145,11 @@ export const validateInput = (name: string, value: any | undefined) => {
     case "postcode":
       if (!value) {
         error = "postcode is required";
+      }
+      break;
+    case "terms":
+      if (!value) {
+        error = "terms is required";
       }
       break;
     case "country":
