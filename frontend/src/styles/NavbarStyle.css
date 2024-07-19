@@ -58,3 +58,40 @@
     display: block;
   }
 }
+
+/* Overlay style to cover the entire screen */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  z-index: 999; /* Ensure it is on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for the close button */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn:hover {
+  background-color: #f0f0f0;
+}
+
+

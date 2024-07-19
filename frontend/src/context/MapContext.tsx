@@ -12,7 +12,7 @@ interface LocationContextProps {
 const LocationContext = createContext<LocationContextProps | undefined>(undefined);
 
 export const LocationProvider = ({ children }: { children: ReactNode }) => {
-  const [latitude, setLatitude] = useState(11.1527788);
+  const [latitude, setLatitude] = useState(11.1722607144428);
   const [longitude, setLongitude] = useState(75.940202);
   const [address, setAddress] = useState("");
 

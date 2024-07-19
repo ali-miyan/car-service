@@ -149,7 +149,7 @@ const Page2: React.FC = () => {
           open={openModal}
           onClose={() => setOpenModal(false)}
           width={600}
-          height={530}
+          height={570}
           disableClose={false}
           title={"CHOOSE YOUR LOCATION"}
         >

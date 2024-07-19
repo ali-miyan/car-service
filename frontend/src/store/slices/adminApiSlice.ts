@@ -6,7 +6,7 @@ export const adminApiSlice = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseAdminUrl,
-    credentials: "include",
+    credentials:"include",
   }),
   endpoints: (builder) => ({
     getService: builder.query({

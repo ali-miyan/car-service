@@ -161,9 +161,6 @@ export class UserController {
   ): Promise<void> {
     try {
 
-      console.log(req.cookies);
-      
-      
       const response = await this.getUsersUseCase.execute();
 
       res.status(200).json(response);

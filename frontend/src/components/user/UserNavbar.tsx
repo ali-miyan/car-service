@@ -1,17 +1,22 @@
 import "../../styles/NavbarStyle.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import BasicModal from "./RegisterModal";
-import { FaRegCircleUser, FaLocationDot } from "react-icons/fa6";
+import { FaRegCircleUser, FaLocationDot, FaCross } from "react-icons/fa6";
 import extractToken from "../../helpers/extractToken";
 import { getInitialToken } from "../../helpers/getToken";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
+import ServiceMap from "./serviceMap";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showMap, setShowMap] = useState<boolean>(false);
+
+  const mapRef = useRef()
 
   const token = getInitialToken("userToken");
-
 
   const userName = extractToken(token);
 
@@ -27,13 +32,32 @@ const UserNavbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMapClose = () => {
+    setShowMap(false);
+  };
+
+  const handleMap = () =>{
+    setShowMap(true)
+  }
+
   return (
     <>
+      {showMap && (
+        <div className="overlay">
+          <button className="close-btn" onClick={handleMapClose}>
+            <IoIosCloseCircleOutline  className="w-6 h-6" />
+          </button>
+          <ServiceMap />
+        </div>
+      )}
       <div className="w-full">
         <div className="flex w-full">
           <div className="w-1/12">
             <div className="mt-8 ml-8">
-              <FaLocationDot className="w-8 h-8 cursor-pointer" />
+              <FaLocationDot
+                className="w-8 h-8 cursor-pointer"
+                onClick={handleMap}
+              />
             </div>
           </div>
           <nav className="navbar font-bai-regular w-10/12">

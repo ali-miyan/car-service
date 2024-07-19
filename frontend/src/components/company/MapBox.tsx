@@ -68,7 +68,7 @@ const MapComponent: React.FC<{mapChanged:(data:boolean)=>void}> = ({mapChanged})
         zoom: 8,
       }}
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
-      style={{ width: '250px', height: '350px', margin: '0 auto', border: "3px solid #d8d8d8", borderRadius: '10px' }}
+      style={{ width: '250px', height: '360px', margin: '0 auto', border: "3px solid #d8d8d8", borderRadius: '10px' }}
     >
       <Marker
         latitude={latitude}
@@ -83,7 +83,7 @@ const MapComponent: React.FC<{mapChanged:(data:boolean)=>void}> = ({mapChanged})
         onGeolocate={onLocate}
       />
       <Geocoder />
-      <div style={{ position: 'absolute', bottom: 10, left: 10, backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
+      <div style={{ position: 'absolute', bottom: 1, left: 10, backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
         <p>Address: {address}</p>
       </div>
     </ReactMapGL>

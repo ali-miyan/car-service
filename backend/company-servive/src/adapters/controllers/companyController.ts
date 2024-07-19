@@ -80,6 +80,9 @@ export class CompanyController {
         });
       }
 
+      console.log(response);
+      
+
       res.status(201).json(response);
     } catch (error) {
       next(error);

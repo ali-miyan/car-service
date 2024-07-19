@@ -9,7 +9,10 @@ import { useForm } from "../../context/RegisterContext";
 const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> = ({setIsAddressFilled,onClose}) => {
   const { formData, setFormData } = useForm();
   const [message, setMessage] = useState<boolean>(false);
-  const { address } = useLocation();
+  const { address, latitude, longitude } = useLocation();
+
+  console.log(latitude,longitude,'latitutdededede');
+  
 
   const [locationData, setLocationData] = useState<AddressData>({
     address: "",
@@ -17,6 +20,8 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
     streetRegion: "",
     postcode: "",
     country: "",
+    latitude: "",
+    longitude: "",
   });
 
   const [errors, setErrors] = useState<AddressData>({
@@ -25,6 +30,8 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
     streetRegion: "",
     postcode: "",
     country: "",
+    latitude: "",
+    longitude: "",
   });
 
   useEffect(() => {
@@ -34,8 +41,10 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
       streetRegion: address[2] || "",
       postcode: address[1] || "",
       country: address[6] || "",
+      latitude: latitude || "",
+      longitude: longitude || "",
     });
-  }, [address]);
+  }, [address, latitude, longitude]);
 
   useEffect(() => {
     console.log(address, 'address data');
@@ -69,6 +78,8 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
       streetRegion: validateInput("streetRegion", locationData.streetRegion),
       postcode: validateInput("postcode", locationData.postcode),
       country: validateInput("country", locationData.country),
+      latitude: validateInput("latitude", locationData.latitude),
+      longitude: validateInput("longitude", locationData.longitude),
     };
 
     setErrors(newErrors);
@@ -87,10 +98,10 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
   };
 
   return (
-    <div className="flex  md:flex-row  items-center justify-start font-bai-medium">
-      <form className="p-5 rounded-lg  w-9/12 max-w-sm ml-20 md:ml-0" onSubmit={handleSubmit}>
+    <div className="flex  md:flex-row lowercase items-center justify-start font-bai-medium">
+      <form className="p-2 rounded-lg text-gray-700  w-9/12 max-w-sm ml-20 md:ml-0" onSubmit={handleSubmit}>
         <div className="">
-          <label htmlFor="address" className="block text-gray-700 text-sm">
+          <label htmlFor="address" className="block text-gray-700 text-xs">
             Address:
           </label>
           <input
@@ -99,7 +110,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="address"
             value={locationData.address}
             onChange={handleChange}
-            className={`w-full px-3 py-1 border ${errors.address ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${errors.address ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
           />
           {errors.address && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -109,7 +120,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
         </div>
 
         <div className="">
-          <label htmlFor="city" className="block text-gray-700 text-sm">
+          <label htmlFor="city" className="block text-gray-700 text-xs">
             City:
           </label>
           <input
@@ -118,7 +129,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="city"
             value={locationData.city}
             onChange={handleChange}
-            className={`w-full px-3 py-1 border ${errors.city ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3  border ${errors.city ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
           />
           {errors.city && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -128,7 +139,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
         </div>
 
         <div className="">
-          <label htmlFor="streetRegion" className="block text-gray-700 text-sm">
+          <label htmlFor="streetRegion" className="block text-gray-700 text-xs">
             Street/Region:
           </label>
           <input
@@ -137,7 +148,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="streetRegion"
             value={locationData.streetRegion}
             onChange={handleChange}
-            className={`w-full px-3 py-1 border ${errors.streetRegion ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${errors.streetRegion ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
           />
           {errors.streetRegion && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -147,7 +158,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
         </div>
 
         <div className="">
-          <label htmlFor="postcode" className="block text-gray-700 text-sm">
+          <label htmlFor="postcode" className="block text-gray-700 text-xs">
             Postcode:
           </label>
           <input
@@ -156,7 +167,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="postcode"
             value={locationData.postcode}
             onChange={handleChange}
-            className={`w-full px-3 py-1 border ${errors.postcode ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${errors.postcode ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
           />
           {errors.postcode && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -165,8 +176,8 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
           )}
         </div>
 
-        <div className="mb-5">
-          <label htmlFor="country" className="block text-gray-700 text-sm">
+        <div className="">
+          <label htmlFor="country" className="block text-gray-700 text-xs">
             Country:
           </label>
           <input
@@ -175,11 +186,49 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="country"
             value={locationData.country}
             onChange={handleChange}
-            className={`w-full px-3 py-1 border ${errors.country ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${errors.country ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
           />
           {errors.country && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
               {errors.country}
+            </p>
+          )}
+        </div>
+
+        <div className="">
+          <label htmlFor="latitude" className="block text-gray-700 text-xs">
+            Latitude:
+          </label>
+          <input
+            type="text"
+            id="latitude"
+            name="latitude"
+            value={locationData.latitude}
+            onChange={handleChange}
+            className={`w-full px-3 border ${errors.latitude ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+          />
+          {errors.latitude && (
+            <p className="text-red-500 font-bai-regular lowercase text-xs">
+              {errors.latitude}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-5">
+          <label htmlFor="longitude" className="block text-gray-700 text-xs">
+            Longitude:
+          </label>
+          <input
+            type="text"
+            id="longitude"
+            name="longitude"
+            value={locationData.longitude}
+            onChange={handleChange}
+            className={`w-full px-3 border ${errors.longitude ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+          />
+          {errors.longitude && (
+            <p className="text-red-500 font-bai-regular lowercase text-xs">
+              {errors.longitude}
             </p>
           )}
         </div>
@@ -190,7 +239,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
           </button>
         </div>
       </form>
-      <div className="w-full mt-5 md:mt-0">
+      <div className="w-ful">
         <MiniMap mapChanged={mapChanged} />
       </div>
     </div>

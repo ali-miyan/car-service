@@ -17,7 +17,7 @@
     "mongoose": "^8.4.4",
     "multer": "^1.4.5-lts.1",
     "ts-node": "^10.9.2",
-    "tune-up-library": "^1.1.22"
+    "tune-up-library": "^1.1.25"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

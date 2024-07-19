@@ -1,13 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUserUrl } from "../../constants/api";
+import Cookies from "js-cookie";
 import { HttpMethod } from "../../schema/httpMethods";
+import { getTokenByName } from "../../helpers/getToken";
 
 export const userApiSlice = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-  baseUrl: baseUserUrl,
-  credentials: "include",
- }),
+    baseUrl: baseUserUrl,
+    credentials: "include",
+  }),
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/get-users",
@@ -62,13 +64,13 @@ export const userApiSlice = createApi({
       }),
     }),
     updateStatus: builder.mutation({
-      query: ({id,isBlocked}) => ({
+      query: ({ id, isBlocked }) => ({
         url: `/update-status/${id}`,
         method: HttpMethod.PATCH,
-        body: {isBlocked},
+        body: { isBlocked },
       }),
-    })
-  })
+    }),
+  }),
 });
 
 export const {
@@ -80,5 +82,5 @@ export const {
   useResetRequestMutation,
   useResetPasswordMutation,
   useGetUsersQuery,
-  useUpdateStatusMutation
+  useUpdateStatusMutation,
 } = userApiSlice;

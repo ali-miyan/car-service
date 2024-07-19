@@ -6,7 +6,7 @@ export const companyApiSlice = createApi({
   reducerPath: "companyApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseCompanyUrl,
-    credentials: "include",
+    credentials:"include",
   }),
   endpoints: (builder) => ({
     getCompanies: builder.query({

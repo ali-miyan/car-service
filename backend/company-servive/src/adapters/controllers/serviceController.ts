@@ -77,7 +77,7 @@ export class ServiceController {
   ): Promise<void> {
     try {
 
-      console.log(req.cookies);
+      console.log(req.headers['company-token'],'tokentokentokentokentokentokentokentokentokentokentoken');
       
       
       const company = await this.getServiceUseCase.execute();
@@ -94,7 +94,6 @@ export class ServiceController {
   ): Promise<void> {
     const { id } = req.params;
 
-    console.log(req.params,'dsdsd');
     
 
     if (!id) {

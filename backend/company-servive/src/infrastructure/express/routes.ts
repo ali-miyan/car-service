@@ -52,18 +52,18 @@ router.post("/login", (req, res, next) => userController.login(req, res, next));
 router.post("/register", upload.array("image", 3), (req, res, next) =>
   userController.signup(req, res, next)
 );
-router.get("/get-approvals", authMiddleware(["admin"]), (req, res, next) =>
+router.get("/get-approvals", authMiddleware(["admin","user"]), (req, res, next) =>
   userController.getApprovels(req, res, next)
 );
 router.get(
   "/get-company/:id",
-  authMiddleware(["admin", "company"]),
+  authMiddleware(["company","admin"]),
   (req, res, next) => userController.getById(req, res, next)
 );
-router.patch("/company-status/:id", (req, res, next) =>
+router.patch("/company-status/:id",authMiddleware(["admin"]), (req, res, next) =>
   userController.updateCompanyStatus(req, res, next)
 );
-router.post("/add-service", upload.array("images"), (req, res, next) =>
+router.post("/add-service",authMiddleware(["company"]), upload.array("images"), (req, res, next) =>
   serviceController.addService(req, res, next)
 );
 router.get("/get-services", authMiddleware(["company"]), (req, res, next) =>

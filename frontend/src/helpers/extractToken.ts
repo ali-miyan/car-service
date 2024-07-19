@@ -1,14 +1,12 @@
-const extractToken = (token: string | null): string | null => {
-  try {
-    const tokenParts = token?.split(".");
-    if (!tokenParts) {
-      return null;
-    }
-    const encodedPayload = tokenParts[1];
-    const decodedPayload = atob(encodedPayload);
-    const userObject = JSON.parse(decodedPayload).user;
+const extractToken = (token: string ): string | null => {
+  if (!token) {
+    console.error("Token is null or undefined");
+    return null;
+  }
 
-    return userObject;
+  try {
+    const tokenParts = JSON.parse(atob(token.split(".")[1]))
+    return tokenParts.user;
   } catch (error) {
     console.error("Error decoding token:", error);
     return null;

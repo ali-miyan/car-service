@@ -137,6 +137,16 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "termsAndConditions is required";
       }
       break;
+    case "latitude":
+      if (!value) {
+        error = "latitude is required";
+      }
+      break;
+    case "longitude":
+      if (!value) {
+        error = "longitude is required";
+      }
+      break;
     case "city":
       if (!value) {
         error = "city is required";
