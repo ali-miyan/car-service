@@ -2,7 +2,9 @@ import { BadRequestError } from "tune-up-library";
 import { IUserRepository } from "../repositories";
 
 export class UpdateStatusUseCase {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(
+    private userRepository: IUserRepository,
+  ) {}
 
   async execute(id: string,data:object): Promise<any> {
 

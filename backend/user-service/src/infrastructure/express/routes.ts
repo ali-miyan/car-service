@@ -1,14 +1,19 @@
 import { Router } from "express";
 import { UserController } from "../../adapters/controllers";
-import { VerifyOtpUseCase,LoginUseCase,SignupUseCase,GoogleUseCase,GetUsersUseCase,RequestPasswordUseCase,ResendOtpUseCase,ResetPasswordUseCase, UpdateStatusUseCase } from "../../usecases";
+import { VerifyOtpUseCase,LoginUseCase,SignupUseCase,GoogleUseCase,GetUsersUseCase,RequestPasswordUseCase,ResendOtpUseCase,ResetPasswordUseCase, UpdateStatusUseCase, GetUserByIdUseCase, UserImageUseCase } from "../../usecases";
 import { RedisOtpRepository,UserRepository } from "../../repositories";
-import { OtpService } from "../../infrastructure/services";
+import { OtpService, S3Service } from "../../infrastructure/services";
 import { authMiddleware } from "tune-up-library";
+import multer from 'multer'
+const upload = multer()
 
 const userRepository = new UserRepository();
 const otpRepository = new OtpService();
 const redisRepository = new RedisOtpRepository();
+const s3Service = new S3Service();
 const loginUseCase = new LoginUseCase(userRepository);
+const userUploadUseCase = new UserImageUseCase(userRepository,s3Service);
+const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
 const googleRepositry = new GoogleUseCase(userRepository);
 const verifyOtpUseCase = new VerifyOtpUseCase(redisRepository,userRepository);
 const getUsersUseCase = new GetUsersUseCase(userRepository);
@@ -17,7 +22,7 @@ const resendOtpUseCase = new ResendOtpUseCase(otpRepository,redisRepository);
 const signupUseCase = new SignupUseCase(userRepository,otpRepository,redisRepository);
 const requestPasswordUseCase = new RequestPasswordUseCase(userRepository,redisRepository,otpRepository);
 const resetPasswordUseCase = new ResetPasswordUseCase(userRepository,redisRepository);
-const userController = new UserController(signupUseCase, verifyOtpUseCase,loginUseCase,requestPasswordUseCase,googleRepositry,resendOtpUseCase,resetPasswordUseCase,getUsersUseCase,updateStatusUseCase);
+const userController = new UserController(signupUseCase, verifyOtpUseCase,loginUseCase,requestPasswordUseCase,googleRepositry,resendOtpUseCase,resetPasswordUseCase,getUsersUseCase,updateStatusUseCase,getUserByIdUseCase,userUploadUseCase);
 
 const router = Router();
 
@@ -45,8 +50,14 @@ router.patch("/change-password", (req, res, next) =>
 router.get("/get-users",authMiddleware(['admin']),(req, res, next) =>
   userController.getUser(req, res, next)
 );
+router.get("/get-user/:id",authMiddleware(['user']),(req, res, next) =>
+  userController.getUserById(req, res, next)
+);
 router.patch("/update-status/:id",authMiddleware(['admin']),(req, res, next) =>
   userController.updateUser(req, res, next)
+);
+router.patch("/upload-image",upload.single('image'),authMiddleware(['user']),(req, res, next) =>
+  userController.uploadImage(req, res, next)
 );
 
 export default router;

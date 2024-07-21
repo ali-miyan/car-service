@@ -28,6 +28,13 @@ export class UserRepository implements IUserRepository {
       throw new Error("error in db");
     }
   }
+  async updateImage(id: string, profileImg: string): Promise<void> {
+    try {
+      await userModel.findByIdAndUpdate(id, { profileImg }, { new: true });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
   async findByEmail(email: string): Promise<User | null> {
     try {
       const user = await userModel.findOne({ email });

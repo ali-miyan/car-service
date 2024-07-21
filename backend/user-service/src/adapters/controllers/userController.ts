@@ -8,7 +8,9 @@ import {
   RequestPasswordUseCase,
   ResendOtpUseCase,
   ResetPasswordUseCase,
-  UpdateStatusUseCase
+  UpdateStatusUseCase,
+  GetUserByIdUseCase,
+  UserImageUseCase
 } from "../../usecases/index";
 import { BadRequestError } from "tune-up-library";
 
@@ -22,7 +24,9 @@ export class UserController {
     private resendOtpUseCase: ResendOtpUseCase,
     private resetPasswordRepository: ResetPasswordUseCase,
     private getUsersUseCase:GetUsersUseCase,
-    private updateStatusUseCase:UpdateStatusUseCase
+    private updateStatusUseCase:UpdateStatusUseCase,
+    private getUserByIdUseCase:GetUserByIdUseCase,
+    private userImageUseCase:UserImageUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -168,6 +172,25 @@ export class UserController {
       next(error);
     }
   }
+  async getUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+
+      
+      
+      const { id } = req.params
+      console.log(id);
+
+      const response = await this.getUserByIdUseCase.execute(id as string);
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
   async updateUser(
     req: Request,
     res: Response,
@@ -183,6 +206,30 @@ export class UserController {
 
     try {
       const response = await this.updateStatusUseCase.execute(id, status);
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async uploadImage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+
+    console.log(req.file, "dsdsd", req.body);
+
+    const { id } = req.body;
+    const file = req.file;
+
+    if (!id || !file) {
+      throw new BadRequestError("ID or file not found");
+    }
+  
+    const { originalname, buffer, mimetype } = file;
+  
+    try {
+      const response = await this.userImageUseCase.execute(id, {originalname,buffer,mimetype});
       res.status(201).json(response);
     } catch (error) {
       next(error);

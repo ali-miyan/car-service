@@ -7,3 +7,5 @@ export * from './resendOtpUseCase';
 export * from './getUsersUseCase';
 export * from './resetPasswordUseCase';
 export * from './updateStatusUseCase';
+export * from './getUsersByIdUseCase';
+export * from './uploadImageUseCase';

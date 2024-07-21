@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUserUrl } from "../../constants/api";
-import Cookies from "js-cookie";
 import { HttpMethod } from "../../schema/httpMethods";
-import { getTokenByName } from "../../helpers/getToken";
 
 export const userApiSlice = createApi({
   reducerPath: "userApi",
@@ -13,6 +11,9 @@ export const userApiSlice = createApi({
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/get-users",
+    }),
+    getUserById: builder.query({
+      query: (id:string) => `/get-user/${id}`,
     }),
     registerPost: builder.mutation({
       query: (postData) => ({
@@ -70,6 +71,13 @@ export const userApiSlice = createApi({
         body: { isBlocked },
       }),
     }),
+    uploadImage: builder.mutation({
+      query: (formData) => ({
+        url: `/upload-image`,
+        method: HttpMethod.PATCH,
+        body: formData,
+      }),
+    }),
   }),
 });
 
@@ -83,4 +91,6 @@ export const {
   useResetPasswordMutation,
   useGetUsersQuery,
   useUpdateStatusMutation,
+  useGetUserByIdQuery,
+  useUploadImageMutation
 } = userApiSlice;
