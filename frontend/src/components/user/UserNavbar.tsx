@@ -1,6 +1,6 @@
 import "../../styles/NavbarStyle.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useMemo, useState } from "react";
 import BasicModal from "./RegisterModal";
 import {
   FaFacebook,
@@ -22,6 +22,10 @@ const UserNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
 
+  const location = useLocation();
+
+  const currentPath = useMemo(() => location.pathname, [location.pathname]);
+
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
@@ -39,7 +43,6 @@ const UserNavbar = () => {
   };
 
   const token = getInitialToken("userToken");
-
 
   const handleMap = () => {
     setShowMap(true);
@@ -92,58 +95,52 @@ const UserNavbar = () => {
         </div>
         <div className="flex items-center justify-around py-4 px-4 lg:px-8 bg-gray-900 text-red-900">
           <div className="flex items-center space-x-4">
-            <img src="../../../public/assets/_f91ac4f4-f43a-4549-9339-b2d9e4be63d9.jpeg" alt="Ripara" className="h-20" />
+            <img
+              src="../../../public/assets/_f91ac4f4-f43a-4549-9339-b2d9e4be63d9.jpeg"
+              alt="Ripara"
+              className="h-20"
+            />
           </div>
           <nav className="hidden lg:flex items-center space-x-4">
-            <Link to="/" className="text-red-900 hover:text-red-500 px-4 py-2">
+            <Link
+              to="/"
+              className={`text-white font-bai-regular px-3 py-2 custom-underline ${
+                currentPath === "/home" ? "active" : ""
+              }`}
+            >
               HOME
             </Link>
-            <div className="group relative">
-              <button className="text-red-900 hover:text-red-500 px-4 py-2">
-                SHOP
-              </button>
-              <div className="hidden group-hover:block absolute bg-white text-red-900 shadow-md mt-2">
-                <Link
-                  to="/category1"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  Category 1
-                </Link>
-                <Link
-                  to="/category2"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  Category 2
-                </Link>
-              </div>
-            </div>
+
             <Link
-              to="/blog"
-              className="text-red-900 hover:text-red-500 px-4 py-2"
+              to="/services"
+              className={`text-white font-bai-regular px-3 py-2 custom-underline ${
+                currentPath === "/services" ? "active" : ""
+              }`}
             >
-              BLOG
+              SERVICES
             </Link>
+
             <Link
-              to="/pages"
-              className="text-red-900 hover:text-red-500 px-4 py-2"
+              to="/for-business"
+              className={`text-white font-bai-regular px-3 py-2 custom-underline ${
+                currentPath === "/for-business" ? "active" : ""
+              }`}
             >
-              PAGES
+              FOR BUSINESS
             </Link>
+
             <Link
               to="/about-us"
-              className="text-red-900 hover:text-red-500 px-4 py-2"
+              className={`text-white font-bai-regular px-3 py-2 custom-underline ${
+                currentPath === "/about-us" ? "active" : ""
+              }`}
             >
               ABOUT US
             </Link>
-            <Link
-              to="/contact-us"
-              className="text-red-900 hover:text-red-500 px-4 py-2"
-            >
-              CONTACT US
-            </Link>
           </nav>
+
           <div className="flex items-center text-white space-x-4">
-          {token ? (
+            {token ? (
               <Link to={"/profile"}>
                 <div className="flex justify-start">
                   <FaUserCircle className="w-8 h-8 cursor-pointer" />

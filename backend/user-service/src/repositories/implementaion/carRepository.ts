@@ -11,9 +11,19 @@ export class CarRepository implements ICarRepository {
       throw new BadRequestError("error in db");
     }
   }
-  async getById(id: string): Promise<ICarData | null> {
+  async getById(id: string): Promise<ICarData[] | null> {
     try {
-      return await carModel.findOne({ _id: id });
+      return await carModel.find({ userId: id });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
+
+  async deleteById(id: string): Promise<void> {
+    try {
+      const checl = await carModel.deleteOne({ _id: id });
+      console.log(checl,'check');
+      
     } catch (error) {
       throw new Error("error in db");
     }
@@ -41,10 +51,7 @@ export class CarRepository implements ICarRepository {
     phone: null | number
   ): Promise<void> {
     try {
-      await carModel.updateOne(
-        { _id: id },
-        { $set: { username, phone } }
-      );
+      await carModel.updateOne({ _id: id }, { $set: { username, phone } });
     } catch (error) {
       throw new Error("error in db");
     }
@@ -60,15 +67,12 @@ export class CarRepository implements ICarRepository {
     }
   }
 
-
-  async save(user: Car): Promise<Car> {
+  async save(user: Car): Promise<void> {
     try {
       const newUser = new carModel(user);
       await newUser.save();
-      return user;
     } catch (error) {
       console.log(error);
-
       throw new BadRequestError("error in db");
     }
   }

@@ -69,6 +69,13 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "At least 10 characters long";
       }
       break;
+    case "newPassword":
+      if (!value) {
+        error = "new password is required";
+      } else if (value.length < 10) {
+        error = "At least 10 characters long";
+      }
+      break;
     case "contact1":
       if (!value) {
         error = "contact-1 is required";

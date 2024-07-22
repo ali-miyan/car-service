@@ -95,6 +95,19 @@ export const userApiSlice = createApi({
         body:formData
       }),
     }),
+    deleteCar: builder.mutation({
+      query: (id: string) => ({
+        url: `/delete-car/${id}`,
+        method: HttpMethod.DELETE,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: (formData) => ({
+        url: `/update-password`,
+        method: HttpMethod.PATCH,
+        body:formData,
+      }),
+    }),
   }),
 });
 
@@ -112,5 +125,7 @@ export const {
   useUploadImageMutation,
   useEditUserMutation,
   useAddCarMutation,
-  useGetCarByIdQuery
+  useGetCarByIdQuery,
+  useDeleteCarMutation,
+  useChangePasswordMutation
 } = userApiSlice;

@@ -94,4 +94,23 @@
   background-color: #f0f0f0;
 }
 
+.custom-underline {
+  position: relative;
+  display: inline-block;
+}
 
+.custom-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #b91c1c; /* red-900 */
+  transition: width 0.3s ease-in-out;
+}
+
+.custom-underline:hover::after,
+.custom-underline.active::after {
+  width: 100%;
+}

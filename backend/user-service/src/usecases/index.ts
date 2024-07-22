@@ -12,3 +12,5 @@ export * from './uploadImageUseCase';
 export * from './editUserUseCase';
 export * from './addCarUseCase';
 export * from './getCarByIdUseCase';
+export * from './deleteCarUseCase';
+export * from './changePasswordUseCase';

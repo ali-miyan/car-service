@@ -1,49 +1,105 @@
-import React, { useState } from 'react';  
-import CarBrandsModal from './CarBrandsModal';  
-import { CarBrands } from './CarDetails';  
+import React, { useState } from "react";
+import CarBrandsModal from "./CarBrandsModal";
+import { useDeleteCarMutation, useGetCarByIdQuery } from "../../store/slices/userApiSlice";
+import { getInitialToken } from "../../helpers/getToken";
+import DeleteConfirmationModal from "../common/ConfirmationModal";
+import { AiFillDelete } from "react-icons/ai";
+import { notifyError, notifySuccess } from "../common/Toast";
+import { errMessage } from "../../constants/errorMessage";
 
-const UserCar = () => {  
-  const [isModalOpen, setIsModalOpen] = useState(false);  
+const UserCar = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const token = getInitialToken("userToken");
+  const [deleteCar] = useDeleteCarMutation()
 
-  const handleAddCarClick = () => {  
-    setIsModalOpen(true);  
-  };  
+  const { data: posts, refetch } = useGetCarByIdQuery(token as string);
 
-  const handleCloseModal = () => {  
-    setIsModalOpen(false);  
-  };  
+  console.log(posts);
 
-  return (  
-    <div className="flex flex-col items-center bg-gray-100 p-6 md:p-12">  
-      <h1 className="text-2xl font-bold mb-4">MY CAR</h1>  
-      <img src="../../../public/assets/download__1_-removebg-preview.png" alt="Car" className="w-full max-w-md mb-4" />  
+  const handleAddCarClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async(id:string) => {
+    try { 
+      const res = await deleteCar(id).unwrap();
       
-      <div className="bg-white p-6 shadow-md rounded-md w-full max-w-lg mb-4">  
-        <h2 className="text-xl font-semibold mb-2">About My Car</h2>  
-        <ul className="list-disc list-inside space-y-1">  
-          <li>Model Name: Suzuki Swift</li>  
-          <li>Engine Type: 1.2L Dualjet Petrol</li>  
-          <li>Power Output: 82 bhp @ 6000 rpm</li>  
-          <li>Transmission: 5-speed manual / 5-speed AMT</li>  
-          <li>Fuel Efficiency: Up to 23.2 km/l</li>  
-          <li>Seating Capacity: 5</li>  
-          <li>Infotainment System: 7-inch touchscreen with Apple CarPlay and Android Auto</li>  
-          <li>Safety Features: Dual front airbags, ABS with EBD, rear parking sensors</li>  
-          <li>Exterior Highlights: LED projector headlights with DRLs, 15-inch alloy wheels</li>    
-          <li>Price Range: Starts from $14,000</li>  
-        </ul>  
-      </div>  
+      if (res.success) {
+        notifySuccess("Deleted successfully");
+        await refetch();
+      } else {
+        notifyError(errMessage);
+      }
+    } catch (error) {
+      notifyError(errMessage);
+      console.error("Failed to delete the service:", error);
+    }
+  }
 
-      <button onClick={handleAddCarClick} className="bg-red-500 text-white py-2 px-4 rounded-md flex items-center space-x-2">  
-        <span>ADD CAR</span>  
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">  
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />  
-        </svg>  
-      </button>  
+  return (
+    <div className="flex flex-col items-center bg-gray-100 p-6 md:p-12">
+      <h1 className="text-2xl font-bold mb-4">MY CARS</h1>
 
-      <CarBrandsModal isOpen={isModalOpen} onClose={handleCloseModal} />  
-    </div>  
-  );  
-};  
+      <div className="flex flex-wrap justify-center w-full max-w-6xl">
+        {posts?.car && posts.car.length > 0 ? (
+          posts.car.map((car: any) => (
+            <div
+              key={car._id}
+              className="bg-white p-4 shadow-md mx-3 text-sm uppercase mb-4 rounded-md w-60"
+            >
+              <DeleteConfirmationModal
+                body="Are you sure you want to delete this item?"
+                onConfirm={() => {
+                  handleDelete(car._id);
+                }}
+              >
+                <button className="bg-red-900 hover:bg-red-800 text-white p-1 rounded">
+                  <AiFillDelete />
+                </button>
+              </DeleteConfirmationModal>
+              <div className="flex justify-center mb-2">
+                <img
+                  src={car.src}
+                  alt={car.name}
+                  className="object-cover w-auto"
+                />
+              </div>
+              <h2 className="text-sm font-semibold ">
+                <strong>brand:</strong>
+                {car.name}
+              </h2>
+              <p className="text-gray-700 ">
+                <strong>Color:</strong> {car.color}
+              </p>
+              <p className="text-gray-700 ">
+                <strong>NUMBER:</strong> {car.vin}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No cars available</p>
+        )}
+      </div>
+
+      <button
+        onClick={handleAddCarClick}
+        className="bg-gray-900 text-white py-2 px-4 rounded flex items-center space-x-2 mt-6"
+      >
+        <span>ADD CAR</span>
+      </button>
+
+      <CarBrandsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        refetch={refetch}
+      />
+    </div>
+  );
+};
 
 export default UserCar;

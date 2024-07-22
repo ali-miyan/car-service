@@ -14,12 +14,14 @@ import {
   UserImageUseCase,
   EditUSerUseCase,
   GetCarByIdUseCase,
+  DeleteCarUseCase,
+  UpadtePasswordUseCase,
+  AddCarUseCase
 } from "../../usecases";
 import { RedisOtpRepository, UserRepository } from "../../repositories";
 import { OtpService, S3Service } from "../../infrastructure/services";
 import { authMiddleware } from "tune-up-library";
 import multer from "multer";
-import { AddCarUseCase } from "../../usecases/addCarUseCase";
 import { CarRepository } from "../../repositories/implementaion/carRepository";
 const upload = multer();
 
@@ -28,6 +30,7 @@ const otpRepository = new OtpService();
 const redisRepository = new RedisOtpRepository();
 const s3Service = new S3Service();
 const loginUseCase = new LoginUseCase(userRepository);
+const upadtePasswordUseCase = new UpadtePasswordUseCase(userRepository);
 const editUSerUseCase = new EditUSerUseCase(userRepository);
 const userUploadUseCase = new UserImageUseCase(userRepository, s3Service);
 const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
@@ -50,10 +53,16 @@ const resetPasswordUseCase = new ResetPasswordUseCase(
   userRepository,
   redisRepository
 );
-const carRepository = new CarRepository()
-const addCarUseCase = new AddCarUseCase(carRepository)
-const getCarByIdUseCase = new GetCarByIdUseCase(carRepository)
-const carController = new CarController(addCarUseCase,getCarByIdUseCase)
+const carRepository = new CarRepository();
+const addCarUseCase = new AddCarUseCase(carRepository);
+const deleteCarUseCase = new DeleteCarUseCase(carRepository);
+const getCarByIdUseCase = new GetCarByIdUseCase(carRepository);
+const updatePasswordUsecase = new UpadtePasswordUseCase(userRepository);
+const carController = new CarController(
+  addCarUseCase,
+  getCarByIdUseCase,
+  deleteCarUseCase,
+);
 const userController = new UserController(
   signupUseCase,
   verifyOtpUseCase,
@@ -66,7 +75,8 @@ const userController = new UserController(
   updateStatusUseCase,
   getUserByIdUseCase,
   userUploadUseCase,
-  editUSerUseCase
+  editUSerUseCase,
+  upadtePasswordUseCase
 );
 
 const router = Router();
@@ -115,6 +125,14 @@ router.post("/add-car", authMiddleware(["user"]), (req, res, next) =>
 );
 router.get("/get-car/:id", authMiddleware(["user"]), (req, res, next) =>
   carController.getCar(req, res, next)
+);
+router.delete("/delete-car/:id", authMiddleware(["user"]), (req, res, next) =>
+  carController.deleteCar(req, res, next)
+);
+router.patch(
+  "/update-password",
+  authMiddleware(["user"]),
+  (req, res, next) => userController.updatePassword(req, res, next)
 );
 
 export default router;

@@ -20,7 +20,7 @@ import {
 import { validateInput } from "../../helpers/userValidation";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
-import { useAddCarMutation, useGetCarByIdQuery } from "../../store/slices/userApiSlice";
+import { useAddCarMutation } from "../../store/slices/userApiSlice";
 import { getInitialToken } from "../../helpers/getToken";
 
 const brandToCarsMap: any = {
@@ -51,9 +51,10 @@ interface Car {
 interface CarBrandsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  refetch:()=>void;
 }
 
-const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose }) => {
+const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose ,refetch }) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedCars, setSelectedCars] = useState<Car[]>([]);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -62,13 +63,8 @@ const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose }) => {
   const [vinError, setVinError] = useState<string>("");
   const [colorError, setColorError] = useState<string>("");
 
-  const token = getInitialToken('userToken')
-
   const [addCar] = useAddCarMutation({});
-  const {data:posts} = useGetCarByIdQuery(token as string);
-
-  console.log(posts);
-  
+  const userId = getInitialToken("userToken");
 
   if (!isOpen) return null;
 
@@ -83,7 +79,12 @@ const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleBackClick = () => {
-    setSelectedCar(null);
+    if (selectedCar) {
+      setSelectedCar(null);
+    } else if (selectedBrand) {
+      setSelectedBrand(null);
+      setSelectedCars([]);
+    }
   };
 
   const handleVinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,9 +104,13 @@ const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose }) => {
 
     if (!vinError || !colorError) {
       try {
-        const res = await addCar({ vin, color, src, name }).unwrap();
-        if(res.success){
-            notifySuccess('car added')
+        const res = await addCar({ userId, vin, color, src, name }).unwrap();
+        console.log(res);
+
+        if (res.success) {
+          notifySuccess("Car added");
+          onClose();
+          await refetch();
         }
       } catch (error) {
         console.log(error);

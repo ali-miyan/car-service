@@ -4,23 +4,18 @@ import {
 } from "../repositories";
 import { Car } from "../entities";
 
-export class AddCarUseCase {
+export class DeleteCarUseCase {
   constructor(private carRepository: ICarRepository) {}
   async execute(
     userId:string,
-    name: string,
-    color: string,
-    src: string,
-    vin: string
   ): Promise<any> {
 
-    if (!name || !color || !src || !vin) {
+    if (!userId) {
       throw new BadRequestError("Invalid input");
     }
 
-    const user = new Car({userId,name,color,src,vin});
 
-    await this.carRepository.save(user);
+    await this.carRepository.deleteById(userId);
 
     return {success:true}
 
