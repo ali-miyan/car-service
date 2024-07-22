@@ -1,30 +1,47 @@
-import React, { useState, useRef } from 'react';
-import { FiSettings, FiLogOut, FiUser, FiPackage, FiMapPin, FiTool, FiEdit2 } from 'react-icons/fi';
-import UserCar from './UserCar';
-import Garage from './Garage';
-import Address from './Addresses';
-import ProfileSettings from './ProfileSettings';
-import { useGetUserByIdQuery, useUploadImageMutation } from '../../store/slices/userApiSlice';
-import { getInitialToken } from '../../helpers/getToken';
+import React, { useState, useRef } from "react";
+import {
+  FiSettings,
+  FiLogOut,
+  FiUser,
+  FiPackage,
+  FiMapPin,
+  FiTool,
+  FiEdit2,
+} from "react-icons/fi";
+import UserCar from "./UserCar";
+import Garage from "./Garage";
+import Address from "./Addresses";
+import ProfileSettings from "./ProfileSettings";
+import {
+  useGetUserByIdQuery,
+  useUploadImageMutation,
+} from "../../store/slices/userApiSlice";
+import { getInitialToken } from "../../helpers/getToken";
+import { notifyError, notifySuccess } from "../common/Toast";
+import { errMessage } from "../../constants/errorMessage";
+import EditProfileModal from "./EditProfileModal";
 
 const Profile = () => {
-  const token = getInitialToken('userToken');
-  const { data: posts } = useGetUserByIdQuery(token as string);
-  const [uploadImage, { isLoading }] = useUploadImageMutation({})
+  const token = getInitialToken("userToken");
+  const { data: posts, refetch } = useGetUserByIdQuery(token as string);
+  const [uploadImage, { isLoading }] = useUploadImageMutation({});
 
-  const [selectedSection, setSelectedSection] = useState('services');
+  const [selectedSection, setSelectedSection] = useState("services");
   const [newProfileImg, setNewProfileImg] = useState<string | null>(null);
+  const [showCancel, setShowCancel] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const renderSection = () => {
     switch (selectedSection) {
-      case 'car':
+      case "car":
         return <UserCar />;
-      case 'garage':
+      case "garage":
         return <Garage />;
-      case 'address':
+      case "address":
         return <Address />;
-      case 'settings':
+      case "settings":
         return <ProfileSettings />;
       default:
         return <UserCar />;
@@ -33,53 +50,67 @@ const Profile = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
+      setShowCancel(true);
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onloadend = () => {
         setNewProfileImg(reader.result as string);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
   const handleUpload = async () => {
-    if (newProfileImg) {
+    if (file) {
       const form = new FormData();
-      console.log(file, 'seen');
+      form.append("id", token as string);
+      form.append("image", file);
 
-      form.append('id', token as string)
-      form.append('image', file as File)
-      setNewProfileImg(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      try {
+        const response = await uploadImage(form).unwrap();
+        if (response.success) {
+          notifySuccess("Image uploaded");
+          setShowCancel(false);
+        }
+        setFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } catch (error) {
+        console.error("Failed to upload image", error);
+        notifyError(errMessage);
       }
-
-      const response = await uploadImage(form).unwrap();
-      console.log(response, 'response');
     }
   };
 
   const handleCancel = () => {
     setNewProfileImg(null);
+    setFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
+  };
+
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
   };
 
   return (
     <div className="flex flex-col font-bai-regular lowercase md:flex-row gap-8 my-8 md:my-32 w-full px-4 md:px-10">
       <div className="w-full md:w-3/12 lg:w-2/12 bg-gray-100 p-6 rounded-lg">
         <div className="flex flex-col items-center mb-8">
-          <div className="relative w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden cursor-pointer">
-            <label htmlFor="profile-image-input" className="cursor-pointer w-full h-full">
+          <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden cursor-pointer">
+            <label htmlFor="profile-image-input" className="cursor-pointer">
               <img
-                src={newProfileImg || posts?.profileImg || 'https://via.placeholder.com/150'}
+                src={
+                  newProfileImg ||
+                  posts?.profileImg ||
+                  "https://via.placeholder.com/150"
+                }
                 alt="Profile"
                 className="object-cover w-full h-full"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                <FiEdit2 className="text-white" size={20} />
-              </div>
             </label>
             <input
               id="profile-image-input"
@@ -90,20 +121,31 @@ const Profile = () => {
               className="hidden"
             />
           </div>
-          <p className="text-gray-700 font-medium uppercase mt-2">HELLO {posts?.username}</p>
-          {newProfileImg && (
+          <div className="flex items-center text-xs gap-2 mt-2">
+            <p className="text-gray-700">{posts?.username}</p>
+          </div>
+          <div className="flex items-center text-xs gap-2">
+            <p className="text-gray-700">{posts?.email}</p>
+          </div>
+          <div className="flex items-center text-xs gap-2">
+            <p className="text-gray-700">
+              PH: {posts?.phone ? posts?.phone : "add a phone"}
+            </p>
+          </div>
+          <FiEdit2 className="cursor-pointer" onClick={handleEditClick} />
+          {showCancel && (
             <div className="flex gap-2 mt-2">
               <button
                 className="px-2 py-1 text-sm bg-gray-800 text-white rounded"
                 onClick={handleCancel}
               >
-                cancel
+                Cancel
               </button>
               <button
                 className="px-2 py-1 text-sm bg-red-900 text-white rounded"
                 onClick={handleUpload}
               >
-                ok
+                OK
               </button>
             </div>
           )}
@@ -111,44 +153,50 @@ const Profile = () => {
         <ul className="flex flex-col gap-3 lowercase font-normal">
           <li
             className="flex items-center gap-3 hover:bg-red-100 rounded-md p-3 cursor-pointer"
-            onClick={() => setSelectedSection('car')}
+            onClick={() => setSelectedSection("car")}
           >
             <FiPackage size={24} color="#718096" />
-            <span className='font-bai-medium'>My car</span>
+            <span className="font-bai-medium">My Car</span>
           </li>
           <li
             className="flex items-center gap-3 hover:bg-red-100 rounded-md p-3 cursor-pointer"
-            onClick={() => setSelectedSection('garage')}
+            onClick={() => setSelectedSection("garage")}
           >
             <FiTool size={24} color="#718096" />
-            <span className='font-bai-medium'>My Garage</span>
+            <span className="font-bai-medium">My Garage</span>
           </li>
           <li
             className="flex items-center gap-3 hover:bg-red-100 rounded-md p-3 cursor-pointer"
-            onClick={() => setSelectedSection('address')}
+            onClick={() => setSelectedSection("address")}
           >
             <FiMapPin size={24} color="#718096" />
-            <span className='font-bai-medium'>My Address</span>
+            <span className="font-bai-medium">My Address</span>
           </li>
           <li
             className="flex items-center gap-3 hover:bg-red-100 rounded-md p-3 cursor-pointer"
-            onClick={() => setSelectedSection('settings')}
+            onClick={() => setSelectedSection("settings")}
           >
             <FiSettings size={24} color="#718096" />
-            <span className='font-bai-medium'>Profile Settings</span>
+            <span className="font-bai-medium">Profile Settings</span>
           </li>
           <li
             className="flex items-center gap-3 hover:bg-red-100 rounded-md p-3 cursor-pointer"
-            onClick={() => setSelectedSection('logout')}
+            onClick={() => setSelectedSection("logout")}
           >
             <FiLogOut size={24} color="#718096" />
-            <span className='font-bai-medium'>Log-Out</span>
+            <span className="font-bai-medium">Log-Out</span>
           </li>
         </ul>
       </div>
-      <div className="flex-1 w-full">
-        {renderSection()}
-      </div>
+      <div className="flex-1 w-full">{renderSection()}</div>
+      {isEditModalOpen && (
+        <EditProfileModal
+          onClose={() => setIsEditModalOpen(false)}
+          currentUsername={posts?.username}
+          currentPhone={posts?.phone}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

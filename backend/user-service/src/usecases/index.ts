@@ -9,3 +9,6 @@ export * from './resetPasswordUseCase';
 export * from './updateStatusUseCase';
 export * from './getUsersByIdUseCase';
 export * from './uploadImageUseCase';
+export * from './editUserUseCase';
+export * from './addCarUseCase';
+export * from './getCarByIdUseCase';

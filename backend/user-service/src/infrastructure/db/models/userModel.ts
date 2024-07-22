@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
-export interface UserDocument extends Document {
+export interface IUserData extends Document {
   username: string;
   email: string;
   phone: number | null;
@@ -9,7 +9,7 @@ export interface UserDocument extends Document {
   isBlocked: boolean;
 }
 
-const userSchema = new Schema<UserDocument>({
+const userSchema = new Schema<IUserData>({
   username: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: Number, default: null },
@@ -18,4 +18,4 @@ const userSchema = new Schema<UserDocument>({
   isBlocked: { type: Boolean, default: false },
 });
 
-export default model<UserDocument>("User", userSchema);
+export default model<IUserData>("User", userSchema);

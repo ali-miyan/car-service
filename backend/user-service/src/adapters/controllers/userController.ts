@@ -10,7 +10,8 @@ import {
   ResetPasswordUseCase,
   UpdateStatusUseCase,
   GetUserByIdUseCase,
-  UserImageUseCase
+  UserImageUseCase,
+  EditUSerUseCase,
 } from "../../usecases/index";
 import { BadRequestError } from "tune-up-library";
 
@@ -23,10 +24,11 @@ export class UserController {
     private googleUseCase: GoogleUseCase,
     private resendOtpUseCase: ResendOtpUseCase,
     private resetPasswordRepository: ResetPasswordUseCase,
-    private getUsersUseCase:GetUsersUseCase,
-    private updateStatusUseCase:UpdateStatusUseCase,
-    private getUserByIdUseCase:GetUserByIdUseCase,
-    private userImageUseCase:UserImageUseCase
+    private getUsersUseCase: GetUsersUseCase,
+    private updateStatusUseCase: UpdateStatusUseCase,
+    private getUserByIdUseCase: GetUserByIdUseCase,
+    private userImageUseCase: UserImageUseCase,
+    private editUSerUseCase: EditUSerUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -164,7 +166,6 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-
       const response = await this.getUsersUseCase.execute();
 
       res.status(200).json(response);
@@ -178,10 +179,7 @@ export class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-
-      
-      
-      const { id } = req.params
+      const { id } = req.params;
       console.log(id);
 
       const response = await this.getUserByIdUseCase.execute(id as string);
@@ -200,7 +198,7 @@ export class UserController {
     const status = req.body;
     console.log(req.params, "dsdsd", status);
 
-    if (!id ) {
+    if (!id) {
       throw new BadRequestError("id or status not found");
     }
 
@@ -216,7 +214,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-
     console.log(req.file, "dsdsd", req.body);
 
     const { id } = req.body;
@@ -225,11 +222,29 @@ export class UserController {
     if (!id || !file) {
       throw new BadRequestError("ID or file not found");
     }
-  
+
     const { originalname, buffer, mimetype } = file;
-  
+
     try {
-      const response = await this.userImageUseCase.execute(id, {originalname,buffer,mimetype});
+      const response = await this.userImageUseCase.execute(id, {
+        originalname,
+        buffer,
+        mimetype,
+      });
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async editUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id, username, phone } = req.body;
+
+    try {
+      const response = await this.editUSerUseCase.execute(id, username, phone);
       res.status(201).json(response);
     } catch (error) {
       next(error);

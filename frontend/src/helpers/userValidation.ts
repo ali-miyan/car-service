@@ -102,9 +102,19 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "At least 10 characters long";
       }
       break;
+    case "vin":
+      if (!value) {
+        error = "number is required";
+      }
+      break;
     case "address":
       if (!value) {
         error = "address is required";
+      }
+      break;
+    case "color":
+      if (!value) {
+        error = "color is required";
       }
       break;
     case "selectedService":

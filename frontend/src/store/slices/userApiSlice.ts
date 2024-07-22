@@ -15,6 +15,9 @@ export const userApiSlice = createApi({
     getUserById: builder.query({
       query: (id:string) => `/get-user/${id}`,
     }),
+    getCarById: builder.query({
+      query: (id:string) => `/get-car/${id}`,
+    }),
     registerPost: builder.mutation({
       query: (postData) => ({
         url: "/register",
@@ -74,8 +77,22 @@ export const userApiSlice = createApi({
     uploadImage: builder.mutation({
       query: (formData) => ({
         url: `/upload-image`,
-        method: HttpMethod.PATCH,
+        method: HttpMethod.POST,
         body: formData,
+      }),
+    }),
+    editUser: builder.mutation({
+      query: (formData) => ({
+        url: `/edit-user`,
+        method: HttpMethod.POST,
+        body: formData,
+      }),
+    }),
+    addCar: builder.mutation({
+      query: (formData) => ({
+        url: `/add-car`,
+        method: HttpMethod.POST,
+        body:formData
       }),
     }),
   }),
@@ -92,5 +109,8 @@ export const {
   useGetUsersQuery,
   useUpdateStatusMutation,
   useGetUserByIdQuery,
-  useUploadImageMutation
+  useUploadImageMutation,
+  useEditUserMutation,
+  useAddCarMutation,
+  useGetCarByIdQuery
 } = userApiSlice;

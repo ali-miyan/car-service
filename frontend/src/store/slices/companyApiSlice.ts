@@ -66,6 +66,7 @@ export const companyApiSlice = createApi({
         method: HttpMethod.DELETE,
       }),
     }),
+
   }),
 });
 

@@ -1,17 +1,17 @@
 import { User } from "../../entities/userEntity";
 import { IUserRepository } from "../interfaces";
-import { userModel, UserDocument } from "../../infrastructure/db/";
+import { userModel, IUserData } from "../../infrastructure/db/";
 import { BadRequestError } from "tune-up-library";
 
 export class UserRepository implements IUserRepository {
-  async getAll(): Promise<UserDocument[] | null> {
+  async getAll(): Promise<IUserData[] | null> {
     try {
       return await userModel.find();
     } catch (error) {
       throw new BadRequestError("error in db");
     }
   }
-  async getById(id: string): Promise<UserDocument | null> {
+  async getById(id: string): Promise<IUserData | null> {
     try {
       return await userModel.findOne({ _id: id });
     } catch (error) {
@@ -31,6 +31,20 @@ export class UserRepository implements IUserRepository {
   async updateImage(id: string, profileImg: string): Promise<void> {
     try {
       await userModel.findByIdAndUpdate(id, { profileImg }, { new: true });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
+  async updateCredentials(
+    id: string,
+    username: string,
+    phone: null | number
+  ): Promise<void> {
+    try {
+      await userModel.updateOne(
+        { _id: id },
+        { $set: { username, phone } }
+      );
     } catch (error) {
       throw new Error("error in db");
     }
