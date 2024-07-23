@@ -1,4 +1,4 @@
-import ChangePassword from "../../components/user/ChangePassword";
+import ChangePassword from "../../components/user/MainPages/ChangePassword";
 
 const Home = () => {
   return (

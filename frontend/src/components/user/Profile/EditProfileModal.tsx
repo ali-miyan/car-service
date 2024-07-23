@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FiX } from "react-icons/fi";
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
-import { validateInput } from "../../helpers/userValidation";
-import { useEditUserMutation } from "../../store/slices/userApiSlice";
-import { getInitialToken } from "../../helpers/getToken";
+import { notifyError, notifySuccess } from "../../common/Toast";
+import { errMessage } from "../../../constants/errorMessage";
+import { validateInput } from "../../../helpers/userValidation";
+import { useEditUserMutation } from "../../../store/slices/userApiSlice";
+import { getInitialToken } from "../../../helpers/getToken";
 
 interface EditProfileModalProps {
   onClose: () => void;

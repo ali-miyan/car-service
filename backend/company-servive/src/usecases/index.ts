@@ -7,3 +7,4 @@ export * from './addServiceUseCase';
 export * from './serviceStatusUseCase';
 export * from './getServiceUseCase';
 export * from './deleteServiceUseCase';
+export * from './getAllServicesUseCase';

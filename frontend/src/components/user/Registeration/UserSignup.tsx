@@ -1,38 +1,37 @@
 import React, { useState } from "react";
-import Input from "../common/Input";
-import {
-  hasFormErrors,
-  isFormEmpty,
-  validateInput,
-} from "../../helpers/userValidation";
-import { useLoginUserMutation } from "../../store/slices/userApiSlice";
-import { CustomError } from "../../schema/error";
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
-import { Link, useNavigate } from "react-router-dom";
+import Input from "../../common/Input";
+import { hasFormErrors, isFormEmpty, validateInput } from "../../../helpers/userValidation";
+import { useRegisterPostMutation } from "../../../store/slices/userApiSlice";
+import { CustomError } from "../../../schema/error";
+import { notifyError } from "../../common/Toast";
+import { errMessage } from "../../../constants/errorMessage";
 
-interface LoginFormProps {
-  onSwitchToSignup: () => void;
+interface SignupFormProps {
+  onOtpRequest: () => void;
+  getEmail: (email: string) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
-  const [loginUser, { isLoading }] = useLoginUserMutation();
-
-  const navigate = useNavigate()
-
+const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
+  const [registerPost, { isLoading }] = useRegisterPostMutation();
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
+    confirmPassword: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
+    username: "",
     email: "",
+    confirmPassword: "",
     password: "",
     global: "",
   });
 
   const [errorFields, setErrorFields] = useState<Record<string, boolean>>({
+    username: false,
     email: false,
+    confirmPassword: false,
     password: false,
   });
 
@@ -58,35 +57,34 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       }));
     }
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    getEmail(formData.email);
+
     const newErrors = {
+      username: validateInput("username", formData.username),
       email: validateInput("email", formData.email),
       password: validateInput("password", formData.password),
       global: "",
+      confirmPassword: formData.confirmPassword !== formData.password ? 'password not matching' : '',
+
     };
 
     setErrors(newErrors);
 
     const hasError = hasFormErrors(newErrors);
-    const isEmpty = isFormEmpty(formData);
+    const isEmpty = isFormEmpty(formData)
 
     if (!hasError && !isEmpty) {
       try {
-        const res = await loginUser(formData).unwrap();
-        console.log(res,'dfdfdfdfdfdfdfd');
-
+        const res = await registerPost(formData).unwrap();
+        console.log(res);
+        
         if (res.success) {
-          notifySuccess("you have logged in");
-          navigate('/home')
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            global: res.message,
-          }));
+          onOtpRequest();
         }
+        console.log(res, "ssssssssssssss");
       } catch (err) {
         const error = err as CustomError;
         console.log("Error occurred:", error);
@@ -102,19 +100,41 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     } else {
       console.log("Form contains errors or is incomplete");
       setErrorFields({
+        username: newErrors.username !== "",
         email: newErrors.email !== "",
+        confirmPassword: newErrors.confirmPassword !== "",
         password: newErrors.password !== "",
       });
     }
   };
 
   return (
-    <form className="grid grid-cols-2 gap-4 w-full" onSubmit={handleSubmit}>
+    <form
+      className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full"
+      onSubmit={handleSubmit}
+    >
       <div>
         <Input
           type="text"
           width="w-full"
-          placeholder="Email"
+          placeholder="username"
+          label="Username"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+          error={errorFields.username}
+        />
+        {errors.username && (
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.username}
+          </p>
+        )}
+      </div>
+      <div>
+        <Input
+          type="text"
+          width="w-full"
+          placeholder="email"
           label="Email"
           name="email"
           value={formData.email}
@@ -131,7 +151,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
         <Input
           type="password"
           width="w-full"
-          placeholder="Password"
+          placeholder="password"
           label="Password"
           name="password"
           value={formData.password}
@@ -144,17 +164,31 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
           </p>
         )}
       </div>
+      <div>
+        <Input
+          type="password"
+          width="w-full"
+          placeholder="confirm password"
+          label="confirm"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleInputChange}
+          error={errorFields.confirmPassword}
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-500 font-bai-regular lowercase text-xs">
+            {errors.confirmPassword}
+          </p>
+        )}
+      </div>
       {errors.global && (
-        <p className="text-red-500 font-bai-regular text-center relative left-28  lowercase text-sm">
-          {errors.global}
-        </p>
+        <div className="text-center relative left-28">
+          <p className="text-red-500 text-center text-xs">{errors.global}</p>
+        </div>
       )}
-      <div className="col-span-2">
+      <div className="col-span-2 flex items-center justify-center text-center">
         {isLoading ? (
-          <button
-            className="bg-red-800 text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center"
-            disabled
-          >
+          <button className="bg-red-800  text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
             <svg
               className="animate-spin h-5 w-5 mr-3 text-white"
               xmlns="http://www.w3.org/2000/svg"
@@ -178,28 +212,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
           </button>
         ) : (
           <button className="bg-red-800 hover:bg-red-900 text-white font-bai-regular font-bold py-2 px-4 rounded w-full h-12">
-            LOGIN
+            REGISTER
           </button>
         )}
-      <Link to={'/change-password'}><span className="text-gray-600 text-sm text-end justify-end flex  font-bai-regular hover:underline cursor-pointer">
-            forget password?
-          </span></Link>
-      </div>
-      <div className="col-span-2 text-center mb-1">
-        <button
-          type="button"
-          className="text-red-800 text-sm font-bai-regular"
-          onClick={onSwitchToSignup}
-        >
-          <span className="text-black text-sm font-bai-regular">
-            Don't have an account?
-          </span>
-          <span className="hover:underline">Register</span>
-      
-        </button>
       </div>
     </form>
   );
 };
 
-export default LoginForm;
+export default SignupForm;

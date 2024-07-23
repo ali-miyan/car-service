@@ -1,7 +1,7 @@
-import "../../styles/NavbarStyle.css";
+import "../../../styles/NavbarStyle.css";
 import { Link, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
-import BasicModal from "./RegisterModal";
+import BasicModal from "../Registeration/RegisterModal";
 import {
   FaFacebook,
   FaTwitter,
@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
-import { getInitialToken } from "../../helpers/getToken";
+import { getInitialToken } from "../../../helpers/getToken";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

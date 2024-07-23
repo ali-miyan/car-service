@@ -14,7 +14,11 @@ export const companyApiSlice = createApi({
       keepUnusedDataFor:300,
     }),
     getServices: builder.query({
-      query: () => "/get-services",
+      query: (id:string) => `/get-services/${id}`,
+      keepUnusedDataFor:300,
+    }),
+    getEveryServices: builder.query({
+      query: () => "/get-all-services",
       keepUnusedDataFor:300,
     }),
     getCompanyById: builder.query({
@@ -79,5 +83,6 @@ export const {
   useAddServiceMutation,
   useGetServicesQuery,
   useUpdateServiceStatusMutation,
-  useDeleteServicePostMutation
+  useDeleteServicePostMutation,
+  useGetEveryServicesQuery
 } = companyApiSlice;

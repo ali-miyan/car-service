@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../components/user/UserNavbar';
-import Footer from '../components/user/UserFooter';
+import Header from '../components/user/MainPages/UserNavbar';
+import Footer from '../components/user/MainPages/UserFooter';
 import { MainLayoutProps } from '../schema/component';
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {

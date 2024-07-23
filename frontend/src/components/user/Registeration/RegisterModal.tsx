@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import CustomModal from "../common/Modal";
+import CustomModal from "../../common/Modal";
 import SignupForm from "./UserSignup";
 import LoginForm from "./UserLogin";
 import OtpForm from "./UserOtp";
-import { useVerifyOtpMutation,useGoogleRegisterMutation } from "../../store/slices/userApiSlice";
-import { CustomError } from "../../schema/error";
+import { useVerifyOtpMutation,useGoogleRegisterMutation } from "../../../store/slices/userApiSlice";
+import { CustomError } from "../../../schema/error";
 import { useGoogleLogin } from "@react-oauth/google";
-import { notifyError, notifySuccess } from "../common/Toast";
+import { notifyError, notifySuccess } from "../../common/Toast";
 import { useNavigate } from "react-router-dom";
 
 interface BasicModalProps {

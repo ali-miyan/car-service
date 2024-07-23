@@ -15,13 +15,13 @@ import ProfileSettings from "./ProfileSettings";
 import {
   useGetUserByIdQuery,
   useUploadImageMutation,
-} from "../../store/slices/userApiSlice";
-import { getInitialToken } from "../../helpers/getToken";
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
+} from "../../../store/slices/userApiSlice";
+import { getInitialToken } from "../../../helpers/getToken";
+import { notifyError, notifySuccess } from "../../common/Toast";
+import { errMessage } from "../../../constants/errorMessage";
 import EditProfileModal from "./EditProfileModal";
 import { useNavigate } from "react-router-dom";
-import DeleteConfirmationModal from "../common/ConfirmationModal";
+import DeleteConfirmationModal from "../../common/ConfirmationModal";
 
 const Profile = () => {
   const token = getInitialToken("userToken");

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Input from "../common/Input";
-import "../../styles/ButtonStyle.css";
-import { useResendOtpMutation } from "../../store/slices/userApiSlice";
+import Input from "../../common/Input";
+import "../../../styles/ButtonStyle.css";
+import { useResendOtpMutation } from "../../../store/slices/userApiSlice";
 
 interface OtpFormProps {
   otp: string;

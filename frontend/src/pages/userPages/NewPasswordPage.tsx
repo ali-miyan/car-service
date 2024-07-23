@@ -1,4 +1,4 @@
-import NewPassword from "../../components/user/NewPassword";
+import NewPassword from "../../components/user/Profile/NewPassword";
 
 const Home = () => {
   return (

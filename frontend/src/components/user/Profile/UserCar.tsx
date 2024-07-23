@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import CarBrandsModal from "./CarBrandsModal";
-import { useDeleteCarMutation, useGetCarByIdQuery } from "../../store/slices/userApiSlice";
-import { getInitialToken } from "../../helpers/getToken";
-import DeleteConfirmationModal from "../common/ConfirmationModal";
+import { useDeleteCarMutation, useGetCarByIdQuery } from "../../../store/slices/userApiSlice";
+import { getInitialToken } from "../../../helpers/getToken";
+import DeleteConfirmationModal from "../../common/ConfirmationModal";
 import { AiFillDelete } from "react-icons/ai";
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
+import { notifyError, notifySuccess } from "../../common/Toast";
+import { errMessage } from "../../../constants/errorMessage";
 
 const UserCar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

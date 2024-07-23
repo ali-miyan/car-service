@@ -12,9 +12,11 @@ import ListPackages from "./ListPackages";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { getInitialToken } from "../../helpers/getToken";
 
 const ServiceList = () => {
-  const { data: posts, isLoading, refetch, error } = useGetServicesQuery({});
+  const companyId = getInitialToken('companyToken')
+  const { data: posts, isLoading, refetch, error } = useGetServicesQuery(companyId as string);
   const [deleteServicePost] = useDeleteServicePostMutation();
 
   console.log(posts, "erererereerrorrr");

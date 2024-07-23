@@ -13,9 +13,18 @@ export class ServiceRepository implements IServiecRepository {
       throw new Error("error in db");
     }
   }
-  async getAll(): Promise<IService[] | null> {
+  async getAll(companyId:string): Promise<IService[] | null> {
     try {
-      const newService = await serviceModal.find();
+      const newService = await serviceModal.find({companyId});
+      return newService;
+    } catch (error) {
+      console.log(error);
+      throw new Error("error in db");
+    }
+  }
+  async getEveryService(): Promise<IService[] | null> {
+    try {
+      const newService = await serviceModal.find().populate('companyId');
       return newService;
     } catch (error) {
       console.log(error);

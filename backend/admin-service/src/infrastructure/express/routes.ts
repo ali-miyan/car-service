@@ -26,7 +26,7 @@ router.post("/login", (req, res, next) =>
 router.post("/add-service",authMiddleware(['admin']),upload.single("image"), (req, res, next) =>
   serviceController.addService(req, res, next)
 );
-router.get("/get-service",authMiddleware(['admin','company']), (req, res, next) =>
+router.get("/get-service", (req, res, next) =>
   serviceController.getService(req, res, next)
 );
 router.delete("/delete-service/:id",authMiddleware(['admin']), (req, res, next) =>

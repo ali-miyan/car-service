@@ -6,9 +6,11 @@ export class GetServiceUseCase {
     private serviceRepository: ServiceRepository
   ) {}
 
-  async execute(): Promise<any> {
+  async execute(
+    id:string
+  ): Promise<any> {
     
-    const data = await this.serviceRepository.getAll()
+    const data = await this.serviceRepository.getAll(id)
     if(!data){
       throw new BadRequestError('cant get services')
     }

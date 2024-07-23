@@ -1,4 +1,4 @@
-import HomePage from "../../components/user/HomePage";
+import HomePage from "../../components/user/MainPages/HomePage";
 import MainLayout from "../../layouts/MainLayout";
 
 const Home = () => {

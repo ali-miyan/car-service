@@ -17,11 +17,11 @@ import {
   Toyota,
   Volkswagen,
 } from "./CarDetails";
-import { validateInput } from "../../helpers/userValidation";
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
-import { useAddCarMutation } from "../../store/slices/userApiSlice";
-import { getInitialToken } from "../../helpers/getToken";
+import { validateInput } from "../../../helpers/userValidation";
+import { notifyError, notifySuccess } from "../../common/Toast";
+import { errMessage } from "../../../constants/errorMessage";
+import { useAddCarMutation } from "../../../store/slices/userApiSlice";
+import { getInitialToken } from "../../../helpers/getToken";
 
 const brandToCarsMap: any = {
   Audi,

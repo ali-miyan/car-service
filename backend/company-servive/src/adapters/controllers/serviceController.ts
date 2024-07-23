@@ -1,13 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "tune-up-library";
-import { AddServiceUseCase, GetServiceUseCase, ServiceStatusUseCase,DeleteServiceUseCase } from "../../usecases";
+import {
+  AddServiceUseCase,
+  GetServiceUseCase,
+  ServiceStatusUseCase,
+  DeleteServiceUseCase,
+  GetAllServicesUseCase,
+} from "../../usecases";
 
 export class ServiceController {
   constructor(
     private addServiceUseCase: AddServiceUseCase,
-    private serviceStatusUseCase:ServiceStatusUseCase,
+    private serviceStatusUseCase: ServiceStatusUseCase,
     private getServiceUseCase: GetServiceUseCase,
-    private deleteServiceUseCase:DeleteServiceUseCase
+    private deleteServiceUseCase: DeleteServiceUseCase,
+    private getEveryServiceUseCase:GetAllServicesUseCase
   ) {}
 
   async addService(
@@ -41,8 +48,8 @@ export class ServiceController {
         premiumSubService,
         files
       );
-      
-      res.status(201).json({success:response});
+
+      res.status(201).json({ success: response });
     } catch (error) {
       next(error);
     }
@@ -52,18 +59,16 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-
     const { id } = req.params;
-    const status = req.body
-    console.log(req.params,'dsdsd',req.body);
-    
+    const status = req.body;
+    console.log(req.params, "dsdsd", req.body);
 
     if (!id) {
       throw new BadRequestError("id not found");
     }
 
     try {
-      const response = await this.serviceStatusUseCase.execute(id,status);
+      const response = await this.serviceStatusUseCase.execute(id, status);
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -76,11 +81,20 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
-
-      console.log(req.headers['company-token'],'tokentokentokentokentokentokentokentokentokentokentoken');
-      
-      
-      const company = await this.getServiceUseCase.execute();
+      const { id } = req.params;
+      const company = await this.getServiceUseCase.execute(id);
+      res.status(201).json(company);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAllServices(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const company = await this.getEveryServiceUseCase.execute();
       res.status(201).json(company);
     } catch (error) {
       next(error);
@@ -93,8 +107,6 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     const { id } = req.params;
-
-    
 
     if (!id) {
       throw new BadRequestError("id not found");

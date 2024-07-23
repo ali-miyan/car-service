@@ -280,7 +280,7 @@ const AddYourService: React.FC = () => {
                 name="working-hours"
                 className="border lowercase p-2 rounded w-full"
                 id="working-hours"
-                value={selectedHours}
+                value={servicePlace}
                 onChange={(e) => setServicePlace(e.target.value)}
               >
                 <option value="" disabled>select a place</option>

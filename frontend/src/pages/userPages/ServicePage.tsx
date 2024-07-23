@@ -1,4 +1,4 @@
-import Service from "../../components/user/ServiceList";
+import Service from "../../components/user/ListService/ServiceHeader";
 import MainLayout from "../../layouts/MainLayout";
 
 const ServiceList = () => {

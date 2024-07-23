@@ -5,9 +5,9 @@ import ReactMapGL, {
   Marker,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useLocation } from "../../context/MapContext";
-import Geocoder from "../company/Geocoder";
-import { useGetCompaniesQuery } from "../../store/slices/companyApiSlice";
+import { useLocation } from "../../../context/MapContext";
+import Geocoder from "../../company/Geocoder";
+import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
