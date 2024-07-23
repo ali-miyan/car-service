@@ -47,6 +47,7 @@ export class ServiceController {
     try {
       
       const company = await this.getServiceRepository.execute();
+      
       res.status(201).json(company);
     } catch (error) {
       next(error);

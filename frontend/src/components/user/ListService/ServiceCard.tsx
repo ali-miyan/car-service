@@ -1,11 +1,15 @@
-const ServiceCard = ({ company, selectedHours, servicePlace, image }) => {
+import React from "react";
+
+const ServiceCard = ({ id, company, selectedHours, servicePlace, image, serviceData }) => {
+  const service = React.useMemo(() => serviceData.find(service => service.id === id), [id, serviceData]);
+
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 cursor-pointer">
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:scale-90 transition duration-700 cursor-pointer">
       <div className="flex flex-col md:flex-row">
         <img
           src={image}
           alt="Company Logo"
-          className="w-full md:w-48 h-48 object-cover"
+          className="w-full md:w-48 h-52 object-cover"
         />
 
         <div className="flex flex-col font-bai-regular lowercase justify-between p-3 flex-grow">
@@ -33,8 +37,12 @@ const ServiceCard = ({ company, selectedHours, servicePlace, image }) => {
               <span className="font-semibold ">Since</span> {company.year}
             </p>
             <p className="text-sm text-gray-600">
-              <span className="font-semibold ">location:</span>
-                {company.address.city}, {company.address.address}
+              <span className="font-semibold ">service Type:</span>{" "}
+              {service ? service.name : "Unknown Service"}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-semibold ">location:</span>{" "}
+              {company.address.city}, {company.address.address}
             </p>
           </div>
         </div>
@@ -43,4 +51,4 @@ const ServiceCard = ({ company, selectedHours, servicePlace, image }) => {
   );
 };
 
-export default ServiceCard;
+export default React.memo(ServiceCard);

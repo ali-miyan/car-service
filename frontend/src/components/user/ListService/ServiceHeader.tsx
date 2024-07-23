@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
 import Filters from "./Filter";
@@ -6,21 +6,34 @@ import ServiceList from "./ServiceList";
 
 const ServiceHeader = () => {
   const scrollRef = useRef(null);
+  const { data: services } = useGetServiceQuery({
+    refetchOnMountOrArgChange: false,
+  });
 
-  const { data: services } = useGetServiceQuery({});
+  const [serviceData, setServiceData] = useState<object[]>([]);
 
-  console.log(services, "servicew");
+  useEffect(() => {
+    if (services) {
+      const transformedData = services.map((service) => ({
+        id: service._id,
+        name: service.serviceName,
+      }));
+      setServiceData(transformedData);
+    } else {
+      setServiceData([]);
+    }
+  }, [services]);
 
   const scroll = (scrollOffset) => {
     scrollRef.current.scrollBy({ left: scrollOffset, behavior: "smooth" });
   };
 
-  const scrollBarStyles = {
+  const scrollBarStyles = useMemo(() => ({
     WebkitOverflowScrolling: "touch",
     overflowX: "scroll",
     scrollbarWidth: "none",
     msOverflowStyle: "none",
-  };
+  }), []);
 
   return (
     <>
@@ -34,7 +47,7 @@ const ServiceHeader = () => {
           className="flex items-center justify-center w-full max-w-full overflow-x-auto"
         >
           <div className="flex space-x-1">
-            {services &&
+            {services && services.length > 0 ? (
               services.map((service, index) => (
                 <div
                   key={index}
@@ -45,20 +58,23 @@ const ServiceHeader = () => {
                     {service.serviceName}
                   </p>
                 </div>
-              ))}
-            {services && services.length === 0 && <p>no services abailable</p>}
+              ))
+            ) : (
+              <p>no services available</p>
+            )}
           </div>
         </div>
         <button onClick={() => scroll(100)} className="text-xl  ml-2">
           <FaArrowRight />
         </button>
       </div>
+      <hr className="mt-5 w-11/12 mx-auto " />
       <div className="flex flex-col md:flex-row justify-evenly p-4 md:p-10">
         <Filters />
-        <ServiceList />
+        <ServiceList serviceData={serviceData} />
       </div>
     </>
   );
 };
 
-export default ServiceHeader;
+export default React.memo(ServiceHeader);

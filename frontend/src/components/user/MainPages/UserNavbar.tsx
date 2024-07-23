@@ -9,8 +9,6 @@ import {
   FaLinkedin,
   FaPinterest,
   FaYoutube,
-  FaHeart,
-  FaShoppingCart,
   FaUserCircle,
 } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -53,7 +51,7 @@ const UserNavbar = () => {
       {showMap && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <button
-            className="absolute top-4 right-4 text-white text-4xl"
+            className="absolute top-14 z-50 right-3 text-black  text-4xl"
             onClick={handleMapClose}
           >
             <IoIosCloseCircleOutline />
@@ -100,6 +98,7 @@ const UserNavbar = () => {
               alt="Ripara"
               className="h-20"
             />
+            <button onClick={handleMap}>open map</button>
           </div>
           <nav className="hidden lg:flex items-center space-x-4">
             <Link

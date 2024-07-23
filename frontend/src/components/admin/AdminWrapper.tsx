@@ -1,12 +1,21 @@
-import { ReactNode,useState } from 'react';
+import { ReactNode,useCallback,useState } from 'react';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { MdBook, MdConstruction, MdDashboard, MdLogout, MdSupervisedUserCircle } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { adminImg } from '../../constants/imageUrl';
+import DeleteConfirmationModal from '../common/ConfirmationModal';
 
 const Sidebar = ({children}:{children:ReactNode}) => {
   const [open, setOpen] = useState(true);
   const isActive = (path: string) => location.pathname === path;
+
+  const navigate = useNavigate()
+
+  const handleLogout = useCallback(() => {
+    document.cookie =
+      "adminToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/admin/login");
+  }, [navigate]);
 
   return (
     <>
@@ -73,7 +82,10 @@ const Sidebar = ({children}:{children:ReactNode}) => {
             <span className={`${!open && 'hidden'} origin-left duration-200`}>notification</span>
           </li>
           </Link>
-          <Link to={'/admin/logout'}>
+          <DeleteConfirmationModal 
+          body='are sure you want to logout'
+          onConfirm={handleLogout}
+          >
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
                ${isActive('/admin/logout') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
@@ -81,7 +93,7 @@ const Sidebar = ({children}:{children:ReactNode}) => {
             <MdLogout className='text-2xl' />
             <span className={`${!open && 'hidden'} origin-left duration-200`}>Log-out</span>
           </li>
-          </Link>
+          </DeleteConfirmationModal>
         </ul>
       </div>
       {children}

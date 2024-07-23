@@ -8,6 +8,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useLocation } from "../../../context/MapContext";
 import Geocoder from "../../company/Geocoder";
 import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
+import { Link } from "react-router-dom";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
@@ -50,13 +51,12 @@ const ServiceMap: React.FC = () => {
           latitude: latitude,
           zoom: 11,
         }}
-        mapStyle="mapbox://styles/mapbox/outdoors-v12"
+        mapStyle="mapbox://styles/mapbox/streets-v12"
         style={{
-          width: "90%",
-          height: "90%",
+          width: "100%",
+          height: "100%",
           margin: "0 auto",
           border: "3px solid #d8d8d8",
-          borderRadius: "10px",
         }}
       >
         <NavigationControl position="bottom-left" />
@@ -109,7 +109,7 @@ const ServiceMap: React.FC = () => {
         {posts ? (
           posts.map((center: any) => (
             <div key={center._id} className="mb-2 p-2 cursor-pointer hover:bg-red-50">
-              <div className="flex items-center">
+              <Link to={'/services'}><div className="flex items-center">
                 <img
                   src={center.logo}
                   alt="Car Service Center"
@@ -120,6 +120,7 @@ const ServiceMap: React.FC = () => {
                   <div className="text-gray-600">{center.address.address}</div>
                 </div>
               </div>
+              </Link>
             </div>
           ))
         ) : (

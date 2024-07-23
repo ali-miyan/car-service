@@ -32,7 +32,6 @@ export class AddServiceUseCase {
     
     const uploadedFiles = await this.s3ServiceRepository.uploadImageArray("tune-up", files);
     
-    console.log(uploadedFiles, 'uploaded files');
     
     const service = new Service({
       generalServiceId,
@@ -47,7 +46,6 @@ export class AddServiceUseCase {
       isBlocked: false
     });
     
-    console.log(service, 'saving service');
     
     await this.serviceRepository.save(service);
     

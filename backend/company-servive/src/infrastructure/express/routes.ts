@@ -64,7 +64,6 @@ router.post("/register", upload.array("image", 3), (req, res, next) =>
 );
 router.get(
   "/get-approvals",
-  authMiddleware(["admin", "user"]),
   (req, res, next) => companyController.getApprovels(req, res, next)
 );
 router.get(
