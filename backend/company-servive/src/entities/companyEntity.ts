@@ -12,6 +12,7 @@ export interface ICompanyData {
   password: string;
   licenseImg: string;
   approvedImg: string;
+  description:string;
   address: object;
   isApproved: 'pending' | 'accepted' | 'declined';
 }
@@ -30,6 +31,7 @@ export class Company {
   password: string;
   licenseImg: string;
   approvedImg: string;
+  description:string;
   address: object;
   isApproved: 'pending' | 'accepted' | 'declined';
 
@@ -47,6 +49,7 @@ export class Company {
     password,
     licenseImg,
     approvedImg,
+    description,
     address,
     isApproved = 'pending'
   }: ICompanyData) {
@@ -63,6 +66,7 @@ export class Company {
     this.password = password;
     this.licenseImg = licenseImg;
     this.approvedImg = approvedImg;
+    this.description = description;
     this.address = address;
     this.isApproved = isApproved;
   }

@@ -1,7 +1,7 @@
 import { BadRequestError } from "tune-up-library";
 import { ICompanyRepository } from "../repositories";
 
-export class GetApprovalUseCase {
+export class GetApprovedCompanyUseCase {
   constructor(
     private companyRepository: ICompanyRepository
   ) {}

@@ -26,12 +26,18 @@ const AddYourService: React.FC = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [selectedService, setSelectedService] = useState('');
+  const [selectedService, setSelectedService] = useState("");
   const [selectedHours, setSelectedHours] = useState("");
   const [servicePlace, setServicePlace] = useState("");
-  const [basicSubService, setBasicSubService] = useState<{ _id: string; name: string }[]>([]);
-  const [standardSubService, setStandardSubService] = useState<{ _id: string; name: string }[]>([]);
-  const [premiumSubService, setPremiumSubService] = useState<{ _id: string; name: string }[]>([]);
+  const [basicSubService, setBasicSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
+  const [standardSubService, setStandardSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
+  const [premiumSubService, setPremiumSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
   const [subservices, setSubservices] = useState(
     posts && posts.lengsetStandardSubServiceth > 0 ? posts[0]?.subServices : []
   );
@@ -78,12 +84,12 @@ const AddYourService: React.FC = () => {
   });
 
   const [errors, setErrors] = useState({
-    selecetedHours:'',
-    selectedService:"",
+    selecetedHours: "",
+    selectedService: "",
     terms: "",
     workImages: "",
     packageError: "",
-    servicePlaceError:"",
+    servicePlaceError: "",
     global: "",
   });
 
@@ -143,34 +149,44 @@ const AddYourService: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const selectedServiceError = validateInput("selectedService",selectedService );
-    const selecetedHoursError = validateInput("selecetedHours",selectedHours );
-    const servicePlaceError = validateInput("servicePlace",servicePlace );
+    const selectedServiceError = validateInput(
+      "selectedService",
+      selectedService
+    );
+    const selecetedHoursError = validateInput("selecetedHours", selectedHours);
+    const servicePlaceError = validateInput("servicePlace", servicePlace);
     const termsError = validateInput("terms", formData.terms);
-    const logoError =(formData.workImages as []).length > 0? "": "Please provide atleast 1 work images";
-    const packageError =!basicSubService.length ||!standardSubService.length ||!premiumSubService.length? "packages cannot be empty": "";
+    const logoError =
+      (formData.workImages as []).length > 0
+        ? ""
+        : "Please provide atleast 1 work images";
+    const packageError =
+      !basicSubService.length ||
+      !standardSubService.length ||
+      !premiumSubService.length
+        ? "packages cannot be empty"
+        : "";
 
     setErrors({
       terms: termsError,
       workImages: logoError,
       packageError: packageError,
-      selecetedHours:selecetedHoursError,
-      selectedService:selectedServiceError,
-      servicePlaceError:servicePlaceError,
+      selecetedHours: selecetedHoursError,
+      selectedService: selectedServiceError,
+      servicePlaceError: servicePlaceError,
       global: "",
     });
 
-    console.log('hoi',termsError,logoError,packageError,servicePlaceError);
+    console.log("hoi", termsError, logoError, packageError, servicePlaceError);
     if (termsError || logoError || packageError || servicePlaceError) {
       return;
     }
-    
 
-    const id = getInitialToken('companyToken')
+    const id = getInitialToken("companyToken");
 
     const data = new FormData();
     data.append("generalServiceId", selectedService);
-    data.append("companyId", (id as string));
+    data.append("companyId", id as string);
     data.append("selectedHours", selectedHours);
     data.append("servicePlace", servicePlace);
     data.append("terms", formData.terms);
@@ -185,7 +201,6 @@ const AddYourService: React.FC = () => {
     data.append("premiumSubService", JSON.stringify(premiumData));
 
     console.log([...data.entries()]);
-  
 
     try {
       const res = await addService(data).unwrap();
@@ -260,7 +275,9 @@ const AddYourService: React.FC = () => {
                 value={selectedService}
                 onChange={handleServiceChange}
               >
-                <option value="" disabled>select a service</option>
+                <option value="" disabled>
+                  select a service
+                </option>
                 {posts &&
                   posts.map((post: any, index: number) => (
                     <option key={index} value={post._id}>
@@ -283,14 +300,16 @@ const AddYourService: React.FC = () => {
                 value={servicePlace}
                 onChange={(e) => setServicePlace(e.target.value)}
               >
-                <option value="" disabled>select a place</option>
+                <option value="" disabled>
+                  select a place
+                </option>
                 <option value="home">at home</option>
                 <option value="service-center">at service center</option>
                 <option value="both">both</option>
               </select>
-              {errors.servicePlace && (
+              {errors.servicePlaceError && (
                 <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.servicePlace}
+                  {errors.servicePlaceError}
                 </p>
               )}
             </div>
@@ -303,7 +322,9 @@ const AddYourService: React.FC = () => {
                 value={selectedHours}
                 onChange={(e) => setSelectedHours(e.target.value)}
               >
-                <option value="" disabled>select a option</option>
+                <option value="" disabled>
+                  select a option
+                </option>
                 <option value="mon-sun">Monday to Sunday</option>
                 <option value="mon-sat">Monday to Saturday</option>
                 <option value="24/7">24/7</option>
@@ -371,11 +392,11 @@ const AddYourService: React.FC = () => {
           <h3 className="font-bai-bold uppercase text-center mb-2">
             ADD PACKAGES
           </h3>
-              {errors.packageError && (
-                <p className="text-red-500 font-bai-regular text-center lowercase text-xs">
-                  {errors.packageError}
-                </p>
-              )}
+          {errors.packageError && (
+            <p className="text-red-500 font-bai-regular text-center lowercase text-xs">
+              {errors.packageError}
+            </p>
+          )}
           <section>
             <div className="py-2 px-4 mx-auto max-w-screen-xl lg:py-5 lg:px-6">
               <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
@@ -408,7 +429,9 @@ const AddYourService: React.FC = () => {
                         <React.Fragment key={index}>
                           {val.subServices
                             .filter((sub: any) =>
-                              basicSubService.some((selected) => selected._id === sub._id)
+                              basicSubService.some(
+                                (selected) => selected._id === sub._id
+                              )
                             )
                             .map((sub: any) => (
                               <li
@@ -460,7 +483,9 @@ const AddYourService: React.FC = () => {
                         <React.Fragment key={index}>
                           {val.subServices
                             .filter((sub: any) =>
-                              standardSubService.some((selected) => selected._id === sub._id)
+                              standardSubService.some(
+                                (selected) => selected._id === sub._id
+                              )
                             )
                             .map((sub: any) => (
                               <li
@@ -511,7 +536,9 @@ const AddYourService: React.FC = () => {
                         <React.Fragment key={index}>
                           {val.subServices
                             .filter((sub: any) =>
-                              premiumSubService.some((selected) => selected._id === sub._id)
+                              premiumSubService.some(
+                                (selected) => selected._id === sub._id
+                              )
                             )
                             .map((sub: any) => (
                               <li

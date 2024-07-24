@@ -6,23 +6,28 @@ export const companyApiSlice = createApi({
   reducerPath: "companyApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseCompanyUrl,
-    credentials:"include",
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getCompanies: builder.query({
       query: () => "/get-approvals",
-      keepUnusedDataFor:300,
+      keepUnusedDataFor: 300,
     }),
     getServices: builder.query({
-      query: (id:string) => `/get-services/${id}`,
-      keepUnusedDataFor:300,
+      query: (id: string) => `/get-services/${id}`,
+      keepUnusedDataFor: 300,
     }),
     getEveryServices: builder.query({
-      query: () => "/get-all-services",
-      keepUnusedDataFor:300,
+      query: ({ type, id }: { type: string | null; id: string | null }) =>
+        `/get-all-services${id ? `?${type}=${id}` : ""}`,
+      keepUnusedDataFor: 300,
     }),
+
     getCompanyById: builder.query({
       query: (id: string) => `/get-company/${id}`,
+    }),
+    getApprovedCompany: builder.query({
+      query: () => `/get-approved-company`,
     }),
     updateCompany: builder.mutation({
       query: ({ id, isBlocked, isApproved }) => {
@@ -70,7 +75,6 @@ export const companyApiSlice = createApi({
         method: HttpMethod.DELETE,
       }),
     }),
-
   }),
 });
 
@@ -84,5 +88,6 @@ export const {
   useGetServicesQuery,
   useUpdateServiceStatusMutation,
   useDeleteServicePostMutation,
-  useGetEveryServicesQuery
+  useGetEveryServicesQuery,
+  useGetApprovedCompanyQuery,
 } = companyApiSlice;

@@ -20,6 +20,14 @@ export class CompanyRepository implements ICompanyRepository {
       throw new Error("error in db");
     }
   }
+  async getApproved(): Promise<CompanyDocument[] | null> {
+    try {
+      const newCompany = await companyModel.find({isApproved:"accepted" , isBlocked:false});
+      return newCompany;
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
   async getById(id:string): Promise<CompanyDocument | null> {
     try {
       const newCompany =await companyModel.findOne({_id:id});

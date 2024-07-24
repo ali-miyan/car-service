@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMapGL, {
   GeolocateControl,
   NavigationControl,
@@ -9,47 +9,74 @@ import { useLocation } from "../../../context/MapContext";
 import Geocoder from "../../company/Geocoder";
 import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
 import { Link } from "react-router-dom";
+import { calculateDistance } from "../../../helpers/getDistance";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
 
 const ServiceMap: React.FC = () => {
-  const { latitude, longitude, address, setLatitude, setLongitude } =
-    useLocation();
+  const {
+    latitude: userLatitude,
+    longitude: userLongitude,
+    address,
+    setLatitude,
+    setLongitude,
+  } = useLocation();
   const { data: posts } = useGetCompaniesQuery({});
 
-  console.log(posts);
+  const geolocateControlRef = useRef<any>(null);
+
+  const [sortedPosts, setSortedPosts] = useState<any[]>([]);
 
   const onLocate = async (event: any) => {
     const { coords } = event;
     try {
-      const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${MAPBOX_TOKEN}`
-      );
-      if (!response.ok) {
-        throw new Error("Reverse geocoding request failed.");
-      }
-      const data = await response.json();
-      console.log("Reverse geocoding result:", data);
-
-      const formattedAddress = data.features[0].place_name;
-      console.log("Formatted Address:", formattedAddress.split(","));
-
       setLatitude(coords.latitude);
       setLongitude(coords.longitude);
     } catch (error) {
-      console.error("Error fetching reverse geocoding data:", error);
+      console.error("Error setting user location:", error);
     }
   };
+
+  useEffect(() => {
+    if (posts && userLatitude && userLongitude) {
+      const sorted = posts.slice().sort((a: any, b: any) => {
+        const distanceA = calculateDistance(
+          userLatitude,
+          userLongitude,
+          a.address.latitude,
+          a.address.longitude
+        );
+        const distanceB = calculateDistance(
+          userLatitude,
+          userLongitude,
+          b.address.latitude,
+          b.address.longitude
+        );
+        return distanceA - distanceB;
+      });
+      setSortedPosts(sorted);
+    }
+  }, [posts, userLatitude, userLongitude]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (geolocateControlRef.current) {
+        geolocateControlRef.current.trigger();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [geolocateControlRef]);
 
   return (
     <>
       <ReactMapGL
         mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={{
-          longitude: longitude,
-          latitude: latitude,
-          zoom: 11,
+          longitude: userLongitude || 0,
+          latitude: userLatitude || 0,
+          zoom: 0,
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         style={{
@@ -61,13 +88,14 @@ const ServiceMap: React.FC = () => {
       >
         <NavigationControl position="bottom-left" />
         <GeolocateControl
-          position="bottom-right"
+          ref={geolocateControlRef}
+          position="top-left"
           trackUserLocation
           onGeolocate={onLocate}
         />
         <Geocoder />
-        {posts &&
-          posts.map((center: any) => (
+        {sortedPosts &&
+          sortedPosts.map((center: any) => (
             <Marker
               key={center._id}
               latitude={center.address.latitude}
@@ -82,6 +110,16 @@ const ServiceMap: React.FC = () => {
                 />
                 <div className="text-black text-sm font-bold mt-1 text-center">
                   {center.companyName}
+                </div>
+                <div className="text-gray-600 text-xs">
+                  Distance:{" "}
+                  {calculateDistance(
+                    userLatitude,
+                    userLongitude,
+                    center.address.latitude,
+                    center.address.longitude
+                  ).toFixed(2)}{" "}
+                  km
                 </div>
               </div>
             </Marker>
@@ -105,21 +143,39 @@ const ServiceMap: React.FC = () => {
           maxHeight: "200px",
         }}
       >
-        <h3 className="font-bold text-center underline underline-offset-4 uppercase mb-4">Service Centers</h3>
-        {posts ? (
-          posts.map((center: any) => (
-            <div key={center._id} className="mb-2 p-2 cursor-pointer hover:bg-red-50">
-              <Link to={'/services'}><div className="flex items-center">
-                <img
-                  src={center.logo}
-                  alt="Car Service Center"
-                  className="w-9 h-9 mr-2"
-                />
-                <div className="text-sm">
-                  <div className="font-bold">{center.companyName}</div>
-                  <div className="text-gray-600">{center.address.address}</div>
+        <h3 className="font-bold text-center underline underline-offset-4 uppercase mb-4">
+          Service Centers
+        </h3>
+        {sortedPosts ? (
+          sortedPosts.map((center: any) => (
+            <div
+              key={center._id}
+              className="mb-2 p-2 cursor-pointer hover:bg-red-50"
+            >
+              <Link to={`/about-company/${center._id}`}>
+                <div className="flex items-center">
+                  <img
+                    src={center.logo}
+                    alt="Car Service Center"
+                    className="w-9 h-9 mr-2"
+                  />
+                  <div className="text-sm">
+                    <div className="font-bold">{center.companyName}</div>
+                    <div className="text-gray-600">
+                      {center.address.address}
+                    </div>
+                    <div className="text-gray-600 text-xs">
+                      Distance:{" "}
+                      {calculateDistance(
+                        userLatitude,
+                        userLongitude,
+                        center.address.latitude,
+                        center.address.longitude
+                      ).toFixed(2)}{" "}
+                      km
+                    </div>
+                  </div>
                 </div>
-              </div>
               </Link>
             </div>
           ))

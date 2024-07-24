@@ -22,6 +22,7 @@ export class RegisterUseCase {
     licenseExpiry: string,
     password: string,
     files: any,
+    description:string,
     address: string
   ): Promise<any> {
     if (isLicenseExpired(licenseExpiry)) {
@@ -61,6 +62,7 @@ export class RegisterUseCase {
       licenseImg: uploadedFiles["licenseImg"],
       approvedImg: uploadedFiles["approvedImg"],
       licenseNumber,
+      description,
       address: JSON.parse(address),
       isApproved:'pending'
     });

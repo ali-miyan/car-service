@@ -6,5 +6,6 @@ export interface ICompanyRepository {
   getById(id: string): Promise<CompanyDocument | null>;
   updateStatus(id: string,data:object): Promise<void>;
   getAll(): Promise<CompanyDocument[] | null>;
+  getApproved(): Promise<CompanyDocument[] | null>;
   save(comapny: Company): Promise<Company>;
 }

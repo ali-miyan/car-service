@@ -6,6 +6,7 @@ import {
   ServiceStatusUseCase,
   DeleteServiceUseCase,
   GetAllServicesUseCase,
+  GetSignleServicesUseCase,
 } from "../../usecases";
 
 export class ServiceController {
@@ -14,7 +15,8 @@ export class ServiceController {
     private serviceStatusUseCase: ServiceStatusUseCase,
     private getServiceUseCase: GetServiceUseCase,
     private deleteServiceUseCase: DeleteServiceUseCase,
-    private getEveryServiceUseCase:GetAllServicesUseCase
+    private getEveryServiceUseCase:GetAllServicesUseCase,
+    private getSignleServicesUseCase:GetSignleServicesUseCase
   ) {}
 
   async addService(
@@ -82,8 +84,21 @@ export class ServiceController {
   ): Promise<void> {
     try {
       const { id } = req.params;
-      const company = await this.getServiceUseCase.execute(id);
-      res.status(201).json(company);
+      const service = await this.getServiceUseCase.execute(id);
+      res.status(201).json(service);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getSingleServices(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.params;
+      const service = await this.getSignleServicesUseCase.execute(id);
+      res.status(201).json(service);
     } catch (error) {
       next(error);
     }
@@ -94,8 +109,11 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const company = await this.getEveryServiceUseCase.execute();
-      res.status(201).json(company);
+
+      const service = req.query.service
+      const company = req.query.company
+      const response = await this.getEveryServiceUseCase.execute(service,company);
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }

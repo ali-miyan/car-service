@@ -14,6 +14,7 @@ export interface CompanyDocument extends Document {
   licenseImg: string;
   approvedImg: string;
   isBlocked: boolean;
+  description:string,
   address: object;
   isApproved: 'pending' | 'accepted' | 'declined';
 }
@@ -26,6 +27,7 @@ const companySchema = new Schema<CompanyDocument>({
   contact1: { type: Number, required: true },
   contact2: { type: Number, required: true },
   email: { type: String, required: true },
+  description: { type: String, required: true },
   licenseNumber: { type: String, required: true },
   licenseExpiry: { type: String, required: true },
   address: { type: Object },

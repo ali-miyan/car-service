@@ -2,14 +2,16 @@ import React from "react";
 
 const ServiceCard = ({ id, company, selectedHours, servicePlace, image, serviceData }) => {
   const service = React.useMemo(() => serviceData.find(service => service.id === id), [id, serviceData]);
+  console.log(service,'cheat',serviceData);
+  
 
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:scale-90 transition duration-700 cursor-pointer">
       <div className="flex flex-col md:flex-row">
         <img
-          src={image}
+          src={service && service.image}
           alt="Company Logo"
-          className="w-full md:w-48 h-52 object-cover"
+          className="w-20 h-20 my-auto mx-5 object-cover"
         />
 
         <div className="flex flex-col font-bai-regular lowercase justify-between p-3 flex-grow">

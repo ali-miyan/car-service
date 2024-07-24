@@ -45,6 +45,7 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
+
       
       const company = await this.getServiceRepository.execute();
       

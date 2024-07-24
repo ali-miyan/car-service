@@ -3,11 +3,19 @@ import compnayRoute from "./infrastructure/express/routes";
 import { connectDB } from "./infrastructure/db/mongoConfig";
 import { errorHandler } from "tune-up-library";
 import cookieParser from 'cookie-parser';
+import cors from "cors";
 
 
 const PORT = 3001;
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    credentials:true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());

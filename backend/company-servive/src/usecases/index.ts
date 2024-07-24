@@ -8,3 +8,5 @@ export * from './serviceStatusUseCase';
 export * from './getServiceUseCase';
 export * from './deleteServiceUseCase';
 export * from './getAllServicesUseCase';
+export * from './getSingleServiceUseCase';
+export * from './approvedCompanyUseCase';

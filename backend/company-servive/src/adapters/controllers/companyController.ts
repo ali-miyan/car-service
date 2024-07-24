@@ -4,7 +4,8 @@ import {
   GetApprovalUseCase,
   LoginUseCase,
   UpdateStatusUseCase,
-  GetByIdUseCase
+  GetByIdUseCase,
+  GetApprovedCompanyUseCase
 } from "../../usecases";
 import { BadRequestError } from "tune-up-library";
 
@@ -14,7 +15,8 @@ export class CompanyController {
     private loginCompany: LoginUseCase,
     private getApproval: GetApprovalUseCase,
     private getcompany: GetByIdUseCase,
-    private updateStatus: UpdateStatusUseCase
+    private updateStatus: UpdateStatusUseCase,
+    private getApprovedCompany:GetApprovedCompanyUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -29,6 +31,7 @@ export class CompanyController {
       licenseNumber,
       licenseExpiry,
       password,
+      description,
       address,
     } = req.body;
 
@@ -48,6 +51,7 @@ export class CompanyController {
         licenseExpiry,
         password,
         files,
+        description,
         address
       );
 
@@ -111,6 +115,20 @@ export class CompanyController {
       console.log('query id',id);
       
       const response = await this.getcompany.execute(id);
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getApproved(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      
+      const response = await this.getApprovedCompany.execute();
 
       res.status(201).json(response);
     } catch (error) {

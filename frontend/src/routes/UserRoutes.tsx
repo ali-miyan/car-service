@@ -7,6 +7,8 @@ import Protect from "./protectedRoutes/UserProtectedRoute";
 import Verify from "./protectedRoutes/UserVerifyRoute";
 import ForBusiness from "../pages/userPages/ForBusinessPage";
 import Services from "../pages/userPages/ServicePage";
+import AboutCompany from "../pages/userPages/AboutCompany";
+import SelectedService from "../pages/userPages/SelectedServicePage";
 
 const UserRoutes = () => (
   <Routes>
@@ -17,6 +19,8 @@ const UserRoutes = () => (
     <Route path="/for-business" element={<ForBusiness />} />
     <Route path="/change-password" element={<Verify element={ChangePassword} />} />
     <Route path="/reset-password/:token" element={<Verify element={NewPasswordPage} />} />
+    <Route path="/about-company/:id" element={<AboutCompany />} />
+    <Route path="/selected-service/:id" element={<SelectedService />} />
   </Routes>
 );
 

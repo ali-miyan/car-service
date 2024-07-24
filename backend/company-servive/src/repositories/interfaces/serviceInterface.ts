@@ -6,6 +6,7 @@ export interface IServiecRepository {
   getById(id: string): Promise<IService | null>;
   updateStatus(id: string,data:object): Promise<void>;
   getAll(companyId:string): Promise<IService[] | null>;
+  getSingle(_id:string): Promise<IService | null>;
   getEveryService(): Promise<IService[] | null>;
   save(comapny: Service): Promise<void>;
 }

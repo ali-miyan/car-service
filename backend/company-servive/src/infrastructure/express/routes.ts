@@ -14,6 +14,8 @@ import {
   GetServiceUseCase,
   DeleteServiceUseCase,
   GetAllServicesUseCase,
+  GetSignleServicesUseCase,
+  GetApprovedCompanyUseCase
 } from "../../usecases";
 import {
   CompanyRepository,
@@ -31,10 +33,12 @@ const s3Service = new S3Service();
 const signupUseCase = new RegisterUseCase(companyRepository, s3Service);
 const getServiceUseCase = new GetServiceUseCase(serviceRepository);
 const getAllServiceUseCase = new GetAllServicesUseCase(serviceRepository);
+const getSignleServicesUseCase = new GetSignleServicesUseCase(serviceRepository);
 const serviceStatusUseCase = new ServiceStatusUseCase(serviceRepository);
 const loginupUseCase = new LoginUseCase(companyRepository);
 const getApprovalUseCase = new GetApprovalUseCase(companyRepository);
 const getByIdUseCase = new GetByIdUseCase(companyRepository);
+const getApprovedCompany = new GetApprovedCompanyUseCase(companyRepository);
 const addServiceUseCase = new AddServiceUseCase(s3Service, serviceRepository);
 const updateStatusUseCase = new UpdateStatusUseCase(companyRepository);
 const deleteServiceUseCase = new DeleteServiceUseCase(serviceRepository);
@@ -43,14 +47,16 @@ const companyController = new CompanyController(
   loginupUseCase,
   getApprovalUseCase,
   getByIdUseCase,
-  updateStatusUseCase
+  updateStatusUseCase,
+  getApprovedCompany
 );
 const serviceController = new ServiceController(
   addServiceUseCase,
   serviceStatusUseCase,
   getServiceUseCase,
   deleteServiceUseCase,
-  getAllServiceUseCase
+  getAllServiceUseCase,
+  getSignleServicesUseCase
 );
 
 const router = Router();
@@ -68,8 +74,11 @@ router.get(
 );
 router.get(
   "/get-company/:id",
-  authMiddleware(["company", "admin"]),
   (req, res, next) => companyController.getById(req, res, next)
+);
+router.get(
+  "/get-approved-company",
+  (req, res, next) => companyController.getApproved(req, res, next)
 );
 router.patch(
   "/company-status/:id",
@@ -87,6 +96,9 @@ router.get("/get-services/:id", authMiddleware(["company"]), (req, res, next) =>
 );
 router.get("/get-all-services", (req, res, next) =>
   serviceController.getAllServices(req, res, next)
+);
+router.get("/get-single-service/:id", (req, res, next) =>
+  serviceController.getSingleServices(req, res, next)
 );
 router.delete(
   "/delete-service/:id",
