@@ -26,6 +26,7 @@ export class ServiceController {
   ): Promise<void> {
     console.log(req.body);
     const {
+      _id,
       generalServiceId,
       companyId,
       selectedHours,
@@ -38,8 +39,12 @@ export class ServiceController {
 
     const { files } = req as any;
 
+    console.log(files,'files and body',req.body);
+    
+
     try {
       const response = this.addServiceUseCase.execute(
+        _id,
         generalServiceId,
         companyId,
         selectedHours,
@@ -84,6 +89,8 @@ export class ServiceController {
   ): Promise<void> {
     try {
       const { id } = req.params;
+      console.log('paraamss',id);
+      
       const service = await this.getServiceUseCase.execute(id);
       res.status(201).json(service);
     } catch (error) {

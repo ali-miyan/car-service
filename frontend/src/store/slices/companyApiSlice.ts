@@ -22,6 +22,11 @@ export const companyApiSlice = createApi({
         `/get-all-services${id ? `?${type}=${id}` : ""}`,
       keepUnusedDataFor: 300,
     }),
+    getSinglServices: builder.query({
+      query: ( id:string) =>
+        `/get-single-service/${id}`,
+      keepUnusedDataFor: 300,
+    }),
 
     getCompanyById: builder.query({
       query: (id: string) => `/get-company/${id}`,
@@ -90,4 +95,5 @@ export const {
   useDeleteServicePostMutation,
   useGetEveryServicesQuery,
   useGetApprovedCompanyQuery,
+  useGetSinglServicesQuery
 } = companyApiSlice;

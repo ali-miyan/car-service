@@ -1,6 +1,6 @@
 import { Service } from "../../entities";
 import { IServiecRepository } from "../interfaces";
-import { IService,serviceModal } from "../../infrastructure/db";
+import { IService, serviceModal } from "../../infrastructure/db";
 
 export class ServiceRepository implements IServiecRepository {
   async find(email: string): Promise<IService | null> {
@@ -13,18 +13,20 @@ export class ServiceRepository implements IServiecRepository {
       throw new Error("error in db");
     }
   }
-  async getAll(companyId:string): Promise<IService[] | null> {
+  async getAll(companyId: string): Promise<IService[] | null> {
     try {
-      const newService = await serviceModal.find({companyId});
+      const newService = await serviceModal.find({ companyId });
       return newService;
     } catch (error) {
       console.log(error);
       throw new Error("error in db");
     }
   }
-  async getSingle(_id:string): Promise<IService | null> {
+  async getSingle(_id: string): Promise<IService | null> {
     try {
-      const newService = await serviceModal.findOne({_id}).populate('companyId');
+      const newService = await serviceModal
+        .findOne({ _id })
+        .populate("companyId");
       return newService;
     } catch (error) {
       console.log(error);
@@ -33,16 +35,16 @@ export class ServiceRepository implements IServiecRepository {
   }
   async getEveryService(): Promise<IService[] | null> {
     try {
-      const newService = await serviceModal.find().populate('companyId');
+      const newService = await serviceModal.find({isBlocked:false}).populate("companyId");
       return newService;
     } catch (error) {
       console.log(error);
       throw new Error("error in db");
     }
   }
-  async getById(id:string): Promise<IService | null> {
+  async getById(id: string): Promise<IService | null> {
     try {
-      const newService =await serviceModal.findOne({_id:id});
+      const newService = await serviceModal.findOne({ _id: id });
       return newService;
     } catch (error) {
       console.log(error);
@@ -71,11 +73,20 @@ export class ServiceRepository implements IServiecRepository {
   }
   async save(service: Service): Promise<void> {
     try {
-      const newService = new serviceModal(service);
+      const { _id, ...serviceData } = service;
+
+
+      const newService = _id
+        ? await serviceModal.findByIdAndUpdate(_id, serviceData, {
+            new: true,
+            upsert: true,
+          })
+        : new serviceModal(service);
+
       await newService.save();
     } catch (error) {
-      console.log(error);
-      throw new Error("error in db");
+      console.error("Error saving service:", error);
+      throw new Error("Error in db");
     }
   }
 }

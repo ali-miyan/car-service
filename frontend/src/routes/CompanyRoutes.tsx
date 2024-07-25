@@ -6,6 +6,7 @@ import Login from "../pages/companyPages/CompanyLogin";
 import Home from "../pages/companyPages/Home";
 import Services from "../pages/companyPages/ServicesPage";
 import AddServices from "../pages/companyPages/AddServicesPage";
+import EditService from "../pages/companyPages/EditServicePage";
 import CompanyVerifyRoute from "./protectedRoutes/CompanyVerifyRoute";
 import CompanyProtectedRoute from "./protectedRoutes/CompanyProtectedRoute";
 
@@ -18,6 +19,7 @@ const CompanyRoutes = () => (
     <Route path="home" element={<CompanyProtectedRoute element={Home} />} />
     <Route path="services" element={<CompanyProtectedRoute element={Services} />} />
     <Route path="add-services" element={<CompanyProtectedRoute element={AddServices} />} />
+    <Route path="edit-service/:id" element={<CompanyProtectedRoute element={EditService} />} />
   </Routes>
 );
 

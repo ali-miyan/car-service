@@ -92,11 +92,11 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
             </h4>
           </div>
           <hr className="h-px my-5 bg-gray-300 border-0"></hr>
-          <ul className="mt-2">
+          <ul className=" mt-2">
             {links.map((link, index) => (
               <li
                 key={index}
-                className={`flex rounded-md p-3 cursor-pointer hover:bg-red-100 text-black ${
+                className={`rounded-md p-3 cursor-pointer hover:bg-red-100 text-black ${
                   isActive(link.to) ? "bg-red-100" : ""
                 } text-sm items-center gap-x-4 mt-4`}
               >
@@ -105,7 +105,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                     body="Are you sure you want to logout?"
                     onConfirm={handleLogout}
                   >
-                    <a>
+                    <a className="flex items-center gap-x-2">
                       {link.icon}
                       <span
                         className={`${
@@ -117,7 +117,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                     </a>
                   </DeleteConfirmationModal>
                 ) : (
-                  <Link to={link.to}>
+                  <Link to={link.to} className="flex items-center gap-x-2">
                     {link.icon}
                     <span
                       className={`${

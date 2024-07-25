@@ -186,7 +186,7 @@ const Profile = () => {
             onClick={() => setSelectedSection("address")}
           >
             <FiMapPin size={24} color="#718096" />
-            <span className="font-bai-medium">My Address</span>
+            <span className="font-bai-medium">My services</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${

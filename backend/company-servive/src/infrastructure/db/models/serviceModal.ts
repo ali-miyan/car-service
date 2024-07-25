@@ -45,20 +45,28 @@ const SubServiceSchema: Schema = new Schema(
   { _id: false }
 );
 
-const serviceSchema: Schema = new Schema({
-  generalServiceId: { type: Schema.Types.ObjectId, ref: "GeneralService", required: true },
-  companyId: { type: Schema.Types.ObjectId, ref: "Company", required: true },
-  selectedHours: { type: String, required: true },
-  servicePlace: { type: String, required: true },
-  terms: { type: String, required: true },
-  images: { type: [String], required: true },
-  basicPackage: { type: SubServiceSchema, required: true },
-  standardPackage: { type: SubServiceSchema, required: true },
-  premiumPackage: { type: SubServiceSchema, required: true },
-  isBlocked: { type: Boolean, required: true, default: false },
-});
+const serviceSchema: Schema = new Schema(
+  {
+    generalServiceId: {
+      type: Schema.Types.ObjectId,
+      ref: "GeneralService",
+      required: true,
+    },
+    companyId: { type: Schema.Types.ObjectId, ref: "Company", required: true },
+    selectedHours: { type: String, required: true },
+    servicePlace: { type: String, required: true },
+    terms: { type: String, required: true },
+    images: { type: [String], required: true },
+    basicPackage: { type: SubServiceSchema, required: true },
+    standardPackage: { type: SubServiceSchema, required: true },
+    premiumPackage: { type: SubServiceSchema, required: true },
+    isBlocked: { type: Boolean, required: true, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Define models
 const Service = model<IService>("Service", serviceSchema);
 
 export default Service;

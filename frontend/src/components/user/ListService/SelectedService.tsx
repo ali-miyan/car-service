@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useGetServicesQuery } from "../../../store/slices/companyApiSlice";
+import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
@@ -10,7 +10,7 @@ import { FaUserFriends, FaStar, FaLock } from 'react-icons/fa';
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: posts } = useGetServicesQuery(id as string);
+  const { data: posts } = useGetSinglServicesQuery(id as string);
 
   console.log(posts,'selected service');
   const scrollRef = useRef(null);
@@ -37,13 +37,13 @@ const SelectedService = () => {
   <div className="mx-auto w-full justify-center flex px-4">
     <div className="mb-8 flex flex-col md:flex-row items-center">
       <img
-        src={posts && posts.images[0]}
+        src={posts && posts.images && posts.images[0]}
         alt="Car Service"
         className="border-4 w-full md:w-72 h-72 object-cover"
       />
       <div className="md:w-1/2  md:ml-8 mt-4 md:mt-0 text-center md:text-left">
       <img
-        src={posts && posts.companyId.logo}
+        src={posts.companyId && posts.companyId.logo}
         alt="Car Service"
         className="md:w-20 h-20 mx-auto object-cover"
       />
@@ -127,7 +127,7 @@ const SelectedService = () => {
                 </p>
                 <p className="mt-8">
                   <span className="text-4xl font-bold text-slate-900 tracking-tighter">
-                    ₹{basicPackage?.detail.price || "0"}
+                    ₹{basicPackage?.detail?.price || "0"}
                   </span>
 
                   <span className="text-base font-medium text-slate-500">
@@ -135,7 +135,7 @@ const SelectedService = () => {
                   </span>
                   <br />
                   <span className="text-gray-500">
-                    - takes {basicPackage?.detail.workingHours} hours
+                    - takes {basicPackage?.detail?.workingHours} hours
                   </span>
                 </p>
                 <a
@@ -151,7 +151,7 @@ const SelectedService = () => {
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
                   {standardPackage &&
-                    standardPackage?.subServices.map(
+                    standardPackage?.subServices?.map(
                       (val: any, index: number) => (
                         <React.Fragment key={index}>
                           <li className="flex space-x-3" key={val._id}>
@@ -196,7 +196,7 @@ const SelectedService = () => {
                 </p>
                 <p className="mt-8">
                   <span className="text-4xl font-bold text-slate-900 tracking-tighter">
-                    ₹{standardPackage?.detail.price || "0"}
+                    ₹{standardPackage?.detail?.price || "0"}
                   </span>
 
                   <span className="text-base font-medium text-slate-500">
@@ -204,7 +204,7 @@ const SelectedService = () => {
                   </span>
                   <br />
                   <span className="text-gray-500">
-                    - takes {standardPackage?.detail.workingHours} hours
+                    - takes {standardPackage?.detail?.workingHours} hours
                   </span>
                 </p>
                 <a
@@ -220,7 +220,7 @@ const SelectedService = () => {
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
                   {standardPackage &&
-                    standardPackage?.subServices.map(
+                    standardPackage?.subServices?.map(
                       (val: any, index: number) => (
                         <React.Fragment key={index}>
                           <li className="flex space-x-3" key={val._id}>
@@ -265,7 +265,7 @@ const SelectedService = () => {
                 </p>
                 <p className="mt-8">
                   <span className="text-4xl font-bold text-slate-900 tracking-tighter">
-                    ₹{premiumPackage?.detail.price || "0"}
+                    ₹{premiumPackage?.detail?.price || "0"}
                   </span>
 
                   <span className="text-base font-medium text-slate-500">
@@ -273,7 +273,7 @@ const SelectedService = () => {
                   </span>
                   <br />
                   <span className="text-gray-500">
-                    - takes {premiumPackage?.detail.workingHours} hours
+                    - takes {premiumPackage?.detail?.workingHours} hours
                   </span>
                 </p>
                 <a
@@ -289,7 +289,7 @@ const SelectedService = () => {
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
                   {premiumPackage &&
-                    premiumPackage?.subServices.map(
+                    premiumPackage?.subServices?.map(
                       (val: any, index: number) => (
                         <React.Fragment key={index}>
                           <li className="flex space-x-3" key={val._id}>

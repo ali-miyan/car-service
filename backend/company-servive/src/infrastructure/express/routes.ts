@@ -102,7 +102,7 @@ router.get("/get-single-service/:id", (req, res, next) =>
 );
 router.delete(
   "/delete-service/:id",
-  authMiddleware(["admin"]),
+  authMiddleware(["company"]),
   (req, res, next) => serviceController.deleteService(req, res, next)
 );
 router.patch(

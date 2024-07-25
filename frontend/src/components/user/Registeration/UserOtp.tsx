@@ -59,16 +59,19 @@ const OtpForm: React.FC<OtpFormProps> = ({
       </div>
       <form className="grid grid-cols-1 gap-6 w-full" onSubmit={onSubmit}>
         <div>
-          <Input
-            type="text"
-            width="w-full"
-            placeholder="OTP"
-            label="OTP"
-            name="otp"
-            value={otp}
-            onChange={onOtpChange}
-            error={false}
-          />
+          <div className={`flex flex-col w-full`}>
+            <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+              Otp
+            </label>
+            <input
+              type="number"
+              placeholder="otp"
+              name="otp"
+              value={otp}
+              onChange={onOtpChange}
+              className={`bg-white text-gray-600 font-bai-regular p-2 border ${"border-gray-500"} rounded focus:outline-none`}
+            />
+          </div>
         </div>
         <div className="col-span-2 flex items-center justify-center text-center">
           {isLoading ? (
@@ -114,7 +117,13 @@ const OtpForm: React.FC<OtpFormProps> = ({
             <span className="text-black text-sm font-bai-regular">
               didn't get email?
             </span>
-            <span className={`text-sm ${canResend ? 'hover:underline cursor-pointer text-red-800' : 'cursor-not-allowed text-gray-600'}  font-bai-regular`}>
+            <span
+              className={`text-sm ${
+                canResend
+                  ? "hover:underline cursor-pointer text-red-800"
+                  : "cursor-not-allowed text-gray-600"
+              }  font-bai-regular`}
+            >
               {isResending ? (
                 <div className="spinner"></div>
               ) : (

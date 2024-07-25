@@ -29,12 +29,12 @@ const UsersDetails = () => {
 
   const handleToggle = async (id: string, currentStatus: boolean) => {
     try {
-      const updatedStatus = !currentStatus;      
+      const updatedStatus = !currentStatus;
       const res = await updateUserStatus({
         id,
         isBlocked: updatedStatus,
       }).unwrap();
-      
+
       if (res.success) {
         setToggleStates((prevState) => ({ ...prevState, [id]: updatedStatus }));
         notifySuccess("Status updated successfully");
@@ -49,16 +49,20 @@ const UsersDetails = () => {
   };
   return (
     <>
-      <div style={{ height: "100%" }} className="container lowercase font-bai-regular mx-auto p-4">
+      <div
+        style={{ height: "100%" }}
+        className="container lowercase font-bai-regular mx-auto p-4"
+      >
         <div className="overflow-x-auto min-h-screen">
-          <table className="min-w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 border-b">NO.</th>
-                <th className="py-2 px-4 border-b">PROFILE</th>
-                <th className="py-2 px-4 border-b">EMAIL</th>
-                <th className="py-2 px-4 border-b">PHONE</th>
-                <th className="py-2 px-4 border-b">Actions</th>
+          <table className="min-w-full table-auto ">
+            <thead className="bg-gray-800 ">
+              <tr className="pb-5">
+                <th className="py-2 text-white px-4 border-b">NO.</th>
+                <th className="py-2 text-white px-4 border-b">PROFILE</th>
+                <th className="py-2 text-white px-4 border-b">NAME</th>
+                <th className="py-2 text-white px-4 border-b">EMAIL</th>
+                <th className="py-2 text-white px-4 border-b">PHONE</th>
+                <th className="py-2 text-white px-4 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -73,32 +77,41 @@ const UsersDetails = () => {
               ) : posts && posts.length > 0 ? (
                 posts.map((post: any, index: number) => (
                   <tr className="bg-white" key={post._id}>
-                    <td className=" border-b text-center">
+                    <td className=" border-b text-red-900 text-center">
                       {index + 1}.
                     </td>
-                    <td className="py-10 px-4 border-b justify-center flex">
+                    <td className="p-1 py-2 border-b justify-center flex">
                       {post.profileImg ? (
                         <img
                           src={post.profileImg}
                           className="w-16 h-16 object-cover rounded-full"
                           alt="loading..."
                         />
-                    ) : (
-                          <img
-                            src={profileImg}
-                            className="w-16 h-16 object-cover rounded-full"
-                            alt="loading..."
-                          />
+                      ) : (
+                        <img
+                          src={profileImg}
+                          className="w-16 h-16 object-cover rounded-full"
+                          alt="loading..."
+                        />
                       )}
                     </td>
 
-                    <td className="py-2 px-4 border-b text-center">
+                    <td className="p-1 border-b text-center">
                       {post.username}
                     </td>
-                    <td className="py-2 px-4 w-1/6 border-b text-center">
+                    <td className="p-1 w-1/6 border-b text-center">
                       {post.email}
                     </td>
-                    <td className="py-2 px-4 border-b text-center">
+                    <td
+                      className={
+                        post.phone
+                          ? "p-1 w-1/6 border-b text-center"
+                          : "p-1 w-1/6 border-b text-center text-red-900"
+                      }
+                    >
+                      {post.phone ? post.phone : "not added"}
+                    </td>
+                    <td className="p-1 border-b text-center">
                       <span
                         className={`inline-block px-2 pt-2 pb-1 rounded ${
                           !toggleStates[post._id]

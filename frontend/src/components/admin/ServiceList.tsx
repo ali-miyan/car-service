@@ -106,7 +106,7 @@ const ServiceTable = () => {
             ) : posts && posts.length > 0 ? (
               posts.map((post: any, index: number) => (
                 <tr className="bg-white" key={post._id}>
-                  <td className="py-2 px-4 border-b text-center">{index + 1}.</td>
+                  <td className=" border-b text-center">{index + 1}.</td>
                   <td className="py-10 px-4 border-b justify-center flex">
                     <img
                       src={post.logoUrl}
@@ -114,11 +114,11 @@ const ServiceTable = () => {
                       alt="loading..."
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-center">{post.serviceName}</td>
-                  <td className="py-2 px-4 w-1/6 border-b text-center">
+                  <td className=" border-b text-center">{post.serviceName}</td>
+                  <td className=" w-1/6 border-b text-center">
                     {truncateDescription(post.description, 6)}
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className=" border-b text-center">
                     <Tooltip
                       content={post.subServices
                         ?.map((subService: { name: unknown }) => subService.name)
@@ -131,7 +131,7 @@ const ServiceTable = () => {
                       </span>
                     </Tooltip>
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className=" border-b text-center">
                     <span
                       className={`inline-block px-2 pt-2 pb-1 rounded ${
                         !toggleStates[post._id]
@@ -154,7 +154,7 @@ const ServiceTable = () => {
                       </label>
                     </span>
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className=" border-b text-center">
                     <DeleteConfirmationModal
                       body="Are you sure you want to delete this item?"
                       onConfirm={() => handleDelete(post._id)}

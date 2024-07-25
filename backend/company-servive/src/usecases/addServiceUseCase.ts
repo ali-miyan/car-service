@@ -1,9 +1,4 @@
-import { Company } from "../entities/companyEntity";
-import { ICompanyRepository } from "../repositories/interfaces";
-import { isLicenseExpired } from "../utils/dateUtil";
 import { S3Service } from "../infrastructure/services";
-import { BadRequestError, TokenService } from "tune-up-library";
-import { hashPassword } from "../utils/bcrypt";
 import { parseSubService } from "../utils/parseData";
 import { Service } from "../entities";
 import { ServiceRepository } from "../repositories/implementation";
@@ -15,6 +10,7 @@ export class AddServiceUseCase {
   ) {}
 
   async execute(
+    _id:string | null,
     generalServiceId: string,
     companyId: string,
     selectedHours: string,
@@ -34,6 +30,7 @@ export class AddServiceUseCase {
     
     
     const service = new Service({
+      _id,
       generalServiceId,
       companyId,
       selectedHours,

@@ -9,13 +9,18 @@ export interface IUserData extends Document {
   isBlocked: boolean;
 }
 
-const userSchema = new Schema<IUserData>({
-  username: { type: String, required: true },
-  email: { type: String, required: true },
-  phone: { type: Number, default: null },
-  profileImg: { type: String, default: null },
-  password: { type: String, required: true },
-  isBlocked: { type: Boolean, default: false },
-});
+const userSchema = new Schema<IUserData>(
+  {
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: Number, default: null },
+    profileImg: { type: String, default: null },
+    password: { type: String, required: true },
+    isBlocked: { type: Boolean, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default model<IUserData>("User", userSchema);

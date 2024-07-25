@@ -8,12 +8,17 @@ export interface ServiceDocument extends Document {
   isBlocked: boolean;
 }
 
-const companySchema = new Schema<ServiceDocument>({
-  serviceName: { type: String, required: true },
-  description: { type: String, required: true },
-  logoUrl: { type: String },
-  subServices: [{ name: { type: String, required: true } }],
-  isBlocked: { type: Boolean, default: false },
-});
+const companySchema = new Schema<ServiceDocument>(
+  {
+    serviceName: { type: String, required: true },
+    description: { type: String, required: true },
+    logoUrl: { type: String },
+    subServices: [{ name: { type: String, required: true } }],
+    isBlocked: { type: Boolean, default: false },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default model<ServiceDocument>("Company", companySchema);

@@ -19,6 +19,9 @@ const PackageContent = ({
   const [workingHours, setWorkingHours] = useState<string>(setData.workingHours || "");
   const [errors, setErrors] = useState<{ price?: string; workingHours?: string }>({});
 
+  console.log(subservices,'inside modaaal');
+  
+
   useEffect(() => {
     setCheckedItems(alreadyChecked);
     if (setData.workingHours) {
@@ -62,7 +65,7 @@ const PackageContent = ({
       <div className="w-full max-h-72 font-bai-regular lowercase overflow-y-auto p-4 bg-white rounded-lg shadow-md">
         <h2 className="text-lg font-bold text-center mb-4">Select Subservices</h2>
         <div className="space-y-2">
-          {subservices.map((service: any) => (
+          {subservices && subservices.map((service: any) => (
             <div key={service._id} className="flex items-center">
               <input
                 type="checkbox"

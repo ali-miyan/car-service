@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "../../common/Input";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   hasFormErrors,
   isFormEmpty,
@@ -18,7 +18,12 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility((prevState) => !prevState);
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -76,11 +81,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     if (!hasError && !isEmpty) {
       try {
         const res = await loginUser(formData).unwrap();
-        console.log(res,'dfdfdfdfdfdfdfd');
+        console.log(res, "dfdfdfdfdfdfdfd");
 
         if (res.success) {
           notifySuccess("you have logged in");
-          navigate('/home')
+          navigate("/home");
         } else {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -111,16 +116,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   return (
     <form className="grid grid-cols-2 gap-4 w-full" onSubmit={handleSubmit}>
       <div>
-        <Input
-          type="text"
-          width="w-full"
-          placeholder="Email"
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          error={errorFields.email}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            Email
+          </label>
+          <input
+            type="text"
+            placeholder="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+              errorFields.email ? "border-red-500" : "border-gray-500"
+            } rounded focus:outline-none`}
+          />
+        </div>
         {errors.email && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.email}
@@ -128,16 +138,26 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
         )}
       </div>
       <div>
-        <Input
-          type="password"
-          width="w-full"
-          placeholder="Password"
-          label="Password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          error={errorFields.password}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            Password
+          </label>
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+                errorFields.password ? "border-red-500" : "border-gray-500"
+              } rounded focus:outline-none pr-10`}
+            />
+            <span className="absolute inset-y-0 right-8 bottom-36 pr-3 flex items-center cursor-pointer" onClick={togglePasswordVisibility}>
+              {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+
+        </div>
+
         {errors.password && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.password}
@@ -181,9 +201,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             LOGIN
           </button>
         )}
-      <Link to={'/change-password'}><span className="text-gray-600 text-sm text-end justify-end flex  font-bai-regular hover:underline cursor-pointer">
+        <Link to={"/change-password"}>
+          <span className="text-gray-600 text-sm text-end justify-end flex  font-bai-regular hover:underline cursor-pointer">
             forget password?
-          </span></Link>
+          </span>
+        </Link>
       </div>
       <div className="col-span-2 text-center mb-1">
         <button
@@ -195,7 +217,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             Don't have an account?
           </span>
           <span className="hover:underline">Register</span>
-      
         </button>
       </div>
     </form>

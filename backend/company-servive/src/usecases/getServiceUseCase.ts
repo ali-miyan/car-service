@@ -10,7 +10,8 @@ export class GetServiceUseCase {
     id:string
   ): Promise<any> {
     
-    const data = await this.serviceRepository.getAll(id)
+    const data = await this.serviceRepository.getAll(id);
+    
     if(!data){
       throw new BadRequestError('cant get services')
     }

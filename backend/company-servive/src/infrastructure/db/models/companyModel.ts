@@ -14,32 +14,37 @@ export interface CompanyDocument extends Document {
   licenseImg: string;
   approvedImg: string;
   isBlocked: boolean;
-  description:string,
+  description: string;
   address: object;
-  isApproved: 'pending' | 'accepted' | 'declined';
+  isApproved: "pending" | "accepted" | "declined";
 }
 
-const companySchema = new Schema<CompanyDocument>({
-  ownerName: { type: String, required: true },
-  companyName: { type: String, required: true },
-  year: { type: Number, required: true },
-  logo: { type: String, required: true },
-  contact1: { type: Number, required: true },
-  contact2: { type: Number, required: true },
-  email: { type: String, required: true },
-  description: { type: String, required: true },
-  licenseNumber: { type: String, required: true },
-  licenseExpiry: { type: String, required: true },
-  address: { type: Object },
-  password: { type: String, required: true },
-  licenseImg: { type: String, required: true },
-  approvedImg: { type: String, required: true },
-  isBlocked: { type: Boolean, default: false },
-  isApproved: { 
-    type: String, 
-    enum: ['pending', 'accepted', 'declined'], 
-    default: 'pending' 
+const companySchema = new Schema<CompanyDocument>(
+  {
+    ownerName: { type: String, required: true },
+    companyName: { type: String, required: true },
+    year: { type: Number, required: true },
+    logo: { type: String, required: true },
+    contact1: { type: Number, required: true },
+    contact2: { type: Number, required: true },
+    email: { type: String, required: true },
+    description: { type: String, required: true },
+    licenseNumber: { type: String, required: true },
+    licenseExpiry: { type: String, required: true },
+    address: { type: Object },
+    password: { type: String, required: true },
+    licenseImg: { type: String, required: true },
+    approvedImg: { type: String, required: true },
+    isBlocked: { type: Boolean, default: false },
+    isApproved: {
+      type: String,
+      enum: ["pending", "accepted", "declined"],
+      default: "pending",
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export default model<CompanyDocument>("Company", companySchema);

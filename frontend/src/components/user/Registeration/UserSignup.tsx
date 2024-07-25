@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import Input from "../../common/Input";
-import { hasFormErrors, isFormEmpty, validateInput } from "../../../helpers/userValidation";
+import {
+  hasFormErrors,
+  isFormEmpty,
+  validateInput,
+} from "../../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../../store/slices/userApiSlice";
 import { CustomError } from "../../../schema/error";
 import { notifyError } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface SignupFormProps {
   onOtpRequest: () => void;
@@ -13,6 +18,18 @@ interface SignupFormProps {
 
 const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
+
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+  const [isConfirmPasswordVisible, setConfirmPasswordVisibility] = useState(false);
+  
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility((prevState) => !prevState);
+  };
+  
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisibility((prevState) => !prevState);
+  };
+  
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -67,20 +84,22 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       email: validateInput("email", formData.email),
       password: validateInput("password", formData.password),
       global: "",
-      confirmPassword: formData.confirmPassword !== formData.password ? 'password not matching' : '',
-
+      confirmPassword:
+        formData.confirmPassword !== formData.password
+          ? "password not matching"
+          : "",
     };
 
     setErrors(newErrors);
 
     const hasError = hasFormErrors(newErrors);
-    const isEmpty = isFormEmpty(formData)
+    const isEmpty = isFormEmpty(formData);
 
     if (!hasError && !isEmpty) {
       try {
         const res = await registerPost(formData).unwrap();
         console.log(res);
-        
+
         if (res.success) {
           onOtpRequest();
         }
@@ -114,16 +133,21 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       onSubmit={handleSubmit}
     >
       <div>
-        <Input
-          type="text"
-          width="w-full"
-          placeholder="username"
-          label="Username"
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-          error={errorFields.username}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            username
+          </label>
+          <input
+            type="username"
+            placeholder="username"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+              errorFields.username ? "border-red-500" : "border-gray-500"
+            } rounded focus:outline-none`}
+          />
+        </div>
         {errors.username && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.username}
@@ -131,16 +155,21 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         )}
       </div>
       <div>
-        <Input
-          type="text"
-          width="w-full"
-          placeholder="email"
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          error={errorFields.email}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            Email
+          </label>
+          <input
+            type="email"
+            placeholder="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+              errorFields.email ? "border-red-500" : "border-gray-500"
+            } rounded focus:outline-none`}
+          />
+        </div>
         {errors.email && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.email}
@@ -148,16 +177,27 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         )}
       </div>
       <div>
-        <Input
-          type="password"
-          width="w-full"
-          placeholder="password"
-          label="Password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          error={errorFields.password}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            Password
+          </label>
+          <input
+            type={isPasswordVisible ? "text" : "password"}
+            placeholder="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+              errorFields.password ? "border-red-500" : "border-gray-500"
+            } rounded focus:outline-none`}
+          />
+        </div>
+        <span
+          className="absolute inset-y-0 left-44  bottom-12 pr-3 flex items-center cursor-pointer"
+          onClick={togglePasswordVisibility}
+        >
+          {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+        </span>
         {errors.password && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.password}
@@ -165,16 +205,27 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         )}
       </div>
       <div>
-        <Input
-          type="password"
-          width="w-full"
-          placeholder="confirm password"
-          label="confirm"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleInputChange}
-          error={errorFields.confirmPassword}
-        />
+        <div className={`flex flex-col w-full`}>
+          <label className="text-black mb-1 ml-0.5 uppercase font-bai-regular text-xs">
+            Password
+          </label>
+          <input
+            type={isConfirmPasswordVisible ? "text":"password"}
+            placeholder="confirm"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            className={`bg-white text-gray-600 font-bai-regular p-2 border ${
+              errorFields.confirmPassword ? "border-red-500" : "border-gray-500"
+            } rounded focus:outline-none`}
+          />
+          <span
+          className="absolute inset-y-0 right-9  bottom-12 pr-3 flex items-center cursor-pointer"
+          onClick={toggleConfirmPasswordVisibility}
+        >
+          {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+        </span>
+        </div>
         {errors.confirmPassword && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.confirmPassword}
@@ -188,7 +239,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
       )}
       <div className="col-span-2 flex items-center justify-center text-center">
         {isLoading ? (
-          <button className="bg-red-800  text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center" disabled>
+          <button
+            className="bg-red-800  text-white font-bold py-2 px-4 rounded w-full h-12 flex items-center justify-center"
+            disabled
+          >
             <svg
               className="animate-spin h-5 w-5 mr-3 text-white"
               xmlns="http://www.w3.org/2000/svg"

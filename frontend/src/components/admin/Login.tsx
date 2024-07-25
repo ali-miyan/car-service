@@ -125,6 +125,7 @@ const Login: React.FC = () => {
           buttonText="submit"
           isLoading={isLoading}
           onClick={handleSubmit}
+          color="bg-black"
           width="w-full"
           height="h-10"
         />
