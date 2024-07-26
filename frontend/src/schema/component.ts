@@ -10,6 +10,14 @@ export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export interface ModalPopsCustom {
+  isOpen: boolean;
+  onClose: () => void;
+  refetch?:()=>void;
+  data?:string;
+  servicePlace?:string
+  id?:string;
+}
 
 export interface MainLayoutProps {
     children: ReactNode;
@@ -25,6 +33,16 @@ export interface ModalProps {
   disableClose?:boolean
   onClose?: () => void | undefined | void;
   packages?:object[]
+}
+
+export interface PlaceCard {
+  title: string;
+  subtitle: string;
+  imageSrc: string;
+  features: string[];
+  style?: string;
+  isDisabled?:boolean;
+  handleNext?: () => void
 }
 
 export interface ButtonProps {

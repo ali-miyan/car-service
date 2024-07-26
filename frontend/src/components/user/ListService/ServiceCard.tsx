@@ -23,18 +23,18 @@ const ServiceCard = ({
             alt="Company Logo"
             className="w-20 h-20 -mb-2 mx-7 object-cover"
           />
-          <p className="lowercase text-sm text-gray-500 ml-6 ">{service.name}</p>
+          <p className="lowercase text-sm text-gray-500 ml-6 ">{service?.name}</p>
         </div>
         <div className="flex flex-col font-bai-regular lowercase justify-between p-3 flex-grow">
           <div className="">
             <div className="flex items-center">
               <img
-                src={company.logo}
+                src={company?.logo}
                 alt="Service Provider"
                 className="w-20 h-20 object-cover rounded-full mr-3"
               />
               <p className="text-md uppercase font-bai-bold">
-                {company.companyName}
+                {company?.companyName}
               </p>
             </div>
 

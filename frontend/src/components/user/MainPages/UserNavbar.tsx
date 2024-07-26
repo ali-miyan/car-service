@@ -1,6 +1,6 @@
 import "../../../styles/NavbarStyle.css";
 import { Link, useLocation } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BasicModal from "../Registeration/RegisterModal";
 import {
   FaFacebook,
@@ -14,6 +14,8 @@ import {
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
+import { FaMapMarkedAlt } from "react-icons/fa";
+
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +25,12 @@ const UserNavbar = () => {
   const location = useLocation();
 
   const currentPath = useMemo(() => location.pathname, [location.pathname]);
+
+  useEffect(() => {
+    if (location.state && location.state.openModal) {
+      setIsModalOpen(true);
+    }
+  }, [location.state]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -59,7 +67,7 @@ const UserNavbar = () => {
           <ServiceMap />
         </div>
       )}
-      <header className="w-full bg-red-900 font-bai-regular text-white">
+      <header className="w-full bg-[#ab0000] font-bai-regular text-white">
         <div className="flex justify-around items-center py-2 px-4 lg:px-8">
           <div className="flex items-center space-x-2 lg:space-x-4">
             <a href="#" className="text-xl text-white">
@@ -91,14 +99,10 @@ const UserNavbar = () => {
             </Link>
           </div>
         </div>
-        <div className="flex items-center justify-around py-4 px-4 lg:px-8 bg-gray-900 text-red-900">
-          <div className="flex items-center space-x-4">
-            <img
-              src="../../../public/assets/_f91ac4f4-f43a-4549-9339-b2d9e4be63d9.jpeg"
-              alt="Ripara"
-              className="h-20"
-            />
-            <button onClick={handleMap}>open map</button>
+        <div className="flex items-center justify-around p-6 lg:px-8 bg-gray-900 ">
+          <div onClick={handleMap} className="items-center cursor-pointer space-x-4">
+            <FaMapMarkedAlt className="text-2xl  mx-auto mr-8" />
+            <button className="mx-auto text-white text-xs">services near me</button>
           </div>
           <nav className="hidden lg:flex items-center space-x-4">
             <Link
@@ -113,7 +117,7 @@ const UserNavbar = () => {
             <Link
               to="/services"
               className={`text-white font-bai-regular px-3 py-2 custom-underline ${
-                currentPath === "/services" ? "active" : ""
+                currentPath === " /services" ? "active" : ""
               }`}
             >
               SERVICES
@@ -167,28 +171,28 @@ const UserNavbar = () => {
         >
           <Link
             to="/"
-            className="block py-2 hover:bg-red-500"
+            className="block py-2 hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             HOME
           </Link>
           <Link
             to="/company/services"
-            className="block py-2 hover:bg-red-500"
+            className="block py-2 hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             SERVICES
           </Link>
           <Link
             to="/for-business"
-            className="block py-2 hover:bg-red-500"
+            className="block py-2 hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             FOR BUSINESS
           </Link>
           <Link
             to="/about-us"
-            className="block py-2 hover:bg-red-500"
+            className="block py-2 hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             ABOUT US

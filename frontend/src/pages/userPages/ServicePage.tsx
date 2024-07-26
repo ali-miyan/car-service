@@ -4,7 +4,7 @@ import MainLayout from "../../layouts/MainLayout";
 const ServiceList = () => {
   return (
     <MainLayout>
-      <div>
+      <div className="bg-gray-100">
         <Service />
       </div>
     </MainLayout>

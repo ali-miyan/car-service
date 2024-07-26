@@ -102,7 +102,7 @@ const ServiceMap: React.FC = () => {
               longitude={center.address.longitude}
               anchor="bottom"
             >
-              <div className="flex flex-col items-center bg-white rounded">
+              <div className="flex flex-col items-center bg-white">
                 <img
                   src={center.logo}
                   alt="Car Service Center"
@@ -138,7 +138,7 @@ const ServiceMap: React.FC = () => {
         </div>
       </ReactMapGL>
       <div
-        className="absolute font-bai-regular top-11  sm:top-16 sm:left-24 w-72 h-56 bg-white border border-gray-300 rounded shadow-lg overflow-y-auto p-2"
+        className="absolute font-bai-regular top-11  sm:top-13 border-red-900 sm:left-16 w-72 h-56 bg-white border  shadow-lg overflow-y-auto p-2"
         style={{
           maxHeight: "200px",
         }}

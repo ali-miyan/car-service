@@ -4,22 +4,24 @@ import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
 import Filters from "./Filter";
 import ServiceList from "./ServiceList";
 import { Link, useSearchParams } from "react-router-dom";
+import Loader from "../../common/Loader";
 
 const ServiceHeader = () => {
   const scrollRef = useRef(null);
-  const { data: services } = useGetServiceQuery({
+  const { data: services, isLoading } = useGetServiceQuery({
     refetchOnMountOrArgChange: false,
-  });  
+  });
+  
   const [serviceData, setServiceData] = useState<object[]>([]);
-
+  
   useEffect(() => {
     if (services) {
       const transformedData = services.map((service) => ({
         id: service._id,
         name: service.serviceName,
-        image:service.logoUrl
+        image: service.logoUrl,
       }));
-
+      
       setServiceData(transformedData);
     } else {
       setServiceData([]);
@@ -39,6 +41,7 @@ const ServiceHeader = () => {
     }),
     []
   );
+
 
   return (
     <>
@@ -74,7 +77,6 @@ const ServiceHeader = () => {
       </div>
       <hr className="mt-5 w-11/12 mx-auto " />
       <div className="flex flex-col md:flex-row justify-evenly p-4 md:p-10">
-
         <ServiceList serviceData={serviceData} />
       </div>
     </>

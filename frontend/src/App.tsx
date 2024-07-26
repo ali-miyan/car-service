@@ -1,20 +1,22 @@
 import { Provider } from "react-redux";
 import Router from "./routes/MainRouter";
-import store from "./store/store";
+import store, { persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { Toast } from "./components/common/Toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-const {VITE_REACT_GOOGLE_TOKEN} = import.meta.env
+const { VITE_REACT_GOOGLE_TOKEN } = import.meta.env;
 
 function App() {
-
   return (
     <>
-        <GoogleOAuthProvider clientId={VITE_REACT_GOOGLE_TOKEN}>
-          <Provider store={store}>
+      <GoogleOAuthProvider clientId={VITE_REACT_GOOGLE_TOKEN}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
             <Router />
             <Toast />
-          </Provider>
-        </GoogleOAuthProvider>
+          </PersistGate>
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   );
 }

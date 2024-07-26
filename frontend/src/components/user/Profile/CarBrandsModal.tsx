@@ -22,6 +22,7 @@ import { notifyError, notifySuccess } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
 import { useAddCarMutation } from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
+import {  ModalPopsCustom } from "../../../schema/component";
 
 const brandToCarsMap: any = {
   Audi,
@@ -48,13 +49,8 @@ interface Car {
   imgAlt: string;
 }
 
-interface CarBrandsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  refetch:()=>void;
-}
 
-const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose ,refetch }) => {
+const CarBrandsModal: React.FC<ModalPopsCustom> = ({ isOpen, onClose ,refetch }) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedCars, setSelectedCars] = useState<Car[]>([]);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -110,7 +106,9 @@ const CarBrandsModal: React.FC<CarBrandsModalProps> = ({ isOpen, onClose ,refetc
         if (res.success) {
           notifySuccess("Car added");
           onClose();
-          await refetch();
+          if(refetch){
+            await refetch();
+          }
         }
       } catch (error) {
         console.log(error);

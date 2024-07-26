@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useGetEveryServicesQuery } from "../../../store/slices/companyApiSlice";
 import ServiceCard from "./ServiceCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Filters from "./Filter";
+import Loader from "../../common/Loader";
 
 const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   const [searchParams] = useSearchParams();
-  const { data: servicesData } = useGetEveryServicesQuery({
+  const { data: servicesData, isLoading } = useGetEveryServicesQuery({
     type: searchParams.get("service") ? "service" : "company",
-    id: searchParams.get("service") || searchParams.get("company")
+    id: searchParams.get("service") || searchParams.get("company"),
   });
-  
-  console.log(servicesData, "....");
 
-  
+  if (isLoading) {
+    return(
+      
+      <Loader />
+    )
+  }
+
   return (
     <>
       <Filters />
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 ">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
           {servicesData && servicesData.length > 0 ? (
             servicesData.map((service) => (

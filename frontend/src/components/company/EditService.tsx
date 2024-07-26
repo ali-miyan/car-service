@@ -14,6 +14,8 @@ import { FaDotCircle, FaPlus } from "react-icons/fa";
 import CustomModal from "../common/Modal";
 import PackageContent from "./PackageContent";
 import { getInitialToken } from "../../helpers/getToken";
+import { CustomError } from "../../schema/error";
+import { errMessage } from "../../constants/errorMessage";
 
 const AddYourService: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -137,7 +139,7 @@ const AddYourService: React.FC = () => {
       setFormData((prevData: any) => ({
         ...prevData,
         workImages: prevData.workImages
-          ? [...prevData.workImages, ...files]
+          ? [...files]
           : files,
       }));
       setErrors((prevErrors) => ({
@@ -371,7 +373,7 @@ const AddYourService: React.FC = () => {
                     (image: any, index: number) => (
                       <img
                         key={index}
-                        src={image}
+                        src={typeof image === 'string' ? image : URL.createObjectURL(image)} 
                         alt={`Work Image ${index + 1}`}
                         className="w-16 h-16 mt-8 object-cover m-2 rounded"
                       />

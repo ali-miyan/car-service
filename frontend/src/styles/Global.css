@@ -1,0 +1,13 @@
+/* custom-calendar.css */
+
+/* Override the color for the month name inside the calendar__month-content */
+.calendar__month-content span {
+    color: rgb(187, 0, 0) !important; /* Ensure the color is applied */
+    text-transform: uppercase !important;
+    font-size: medium !important;
+  }
+  
+  .calendar__day-reservation{
+    background: #ff000017 !important;
+    color: black !important;
+  }

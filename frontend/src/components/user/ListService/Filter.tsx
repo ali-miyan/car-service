@@ -14,8 +14,8 @@ function Filters() {
     return filterData.map((company: { _id: any; companyName: any; logo: any; }) => {
       const { _id, companyName, logo } = company;      
       return (
-        <Link to={`/services?company=${_id}`}>
-        <div key={_id} className="flex items-center  hover:bg-red-50 cursor-pointer mt-3 space-x-2 mb-2">
+        <Link key={_id} to={`/services?company=${_id}`}>
+        <div className="flex items-center  hover:bg-red-50 cursor-pointer mt-3 space-x-2 mb-2">
           <img src={logo} alt={companyName} className="w-10 h-10 rounded-full" />
           <span className="text-sm">{companyName}</span>
         </div>
@@ -25,6 +25,9 @@ function Filters() {
   };
 
   return (
+    <>
+    
+
     <div className="bg-white p-4 rounded-lg font-bai-regular lowercase shadow-md md:w-1/5 md:flex-shrink-0 md:mr-4">
       <h2 className="text-lg font-bold mb-4 text-center underline underline-offset-2">FILTERS</h2>
 
@@ -56,6 +59,12 @@ function Filters() {
         </div>
       </div>
     </div>
+
+
+
+
+
+    </>
   );
 }
 

@@ -9,6 +9,8 @@ import ForBusiness from "../pages/userPages/ForBusinessPage";
 import Services from "../pages/userPages/ServicePage";
 import AboutCompany from "../pages/userPages/AboutCompany";
 import SelectedService from "../pages/userPages/SelectedServicePage";
+import SetSpot from "../pages/userPages/SetSpotPage";
+import ShedulePage from "../pages/userPages/ShedulePage";
 
 const UserRoutes = () => (
   <Routes>
@@ -21,6 +23,8 @@ const UserRoutes = () => (
     <Route path="/reset-password/:token" element={<Verify element={NewPasswordPage} />} />
     <Route path="/about-company/:id" element={<AboutCompany />} />
     <Route path="/selected-service/:id" element={<SelectedService />} />
+    <Route path="/set-spot/:id" element={<SetSpot />} />
+    <Route path="/service-shedule/:id" element={<ShedulePage />} />
   </Routes>
 );
 
