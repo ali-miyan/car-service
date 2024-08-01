@@ -8,6 +8,8 @@ import { FaUserFriends, FaStar, FaLock } from "react-icons/fa";
 import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError } from "../../common/Toast";
 import TermsAndService from "./TermsAndService";
+import { useDispatch } from "react-redux";
+import { setPackage } from "../../../context/OrderContext";
 
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,10 +18,13 @@ const SelectedService = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleClick = () => {
+
+  const handleClick = (name?:string) => {
     if (token) {
       setIsModalOpen(true);
+      dispatch(setPackage(name))
     } else {
       notifyError("You need to log in to continue");
       navigate("/", { state: { openModal: true } });
@@ -100,7 +105,7 @@ const SelectedService = () => {
               </div>
 
               <button
-                onClick={token ? scrollToRef : handleClick}
+                onClick={token ? scrollToRef : ()=>handleClick()}
                 className="px-6 py-3 bg-[#ab0000] text-white font-semibold  shadow-md hover:bg-red-900 focus:outline-none transition ease-in-out duration-300"
               >
                 Book Service
@@ -178,7 +183,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={handleClick}
+                    onClick={()=>handleClick('basic')}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now
@@ -247,7 +252,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={handleClick}
+                    onClick={()=>handleClick('standard')}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now
@@ -317,7 +322,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={handleClick}
+                    onClick={()=>handleClick('premium')}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now

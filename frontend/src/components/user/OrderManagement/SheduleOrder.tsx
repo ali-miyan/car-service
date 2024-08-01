@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { BookingCalendar } from "./Calender";
 
 const SheduleOrder = () => {
-  const { selectedPlace, serviceId } = useSelector((state: any) => state.order);
-  console.log(selectedPlace, "service shedule page", serviceId);
+  const { selectedPlace, serviceId, servicePlace } = useSelector((state: any) => state.order);
+  console.log(selectedPlace, "service shedule page", serviceId,servicePlace);
   const navigate = useNavigate();
 
   const handleNext = useCallback(() => {

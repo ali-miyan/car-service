@@ -81,6 +81,10 @@ const userController = new UserController(
   upadtePasswordUseCase
 );
 
+import Stripe from 'stripe';
+
+const stripe = new Stripe('sk_test_51Piw5m09257pZrXUKk2nim4wMxF9Jvi5d4DdO9OqPD4zuWhBxmJpXMOI52GsRxrJkJnr63J0mj3jTMKf01dQtTM000kWJUkdVz');
+
 const router = Router();
 
 router.post("/register", (req, res, next) =>
@@ -139,5 +143,32 @@ router.patch(
   authMiddleware(["user"]),
   (req, res, next) => userController.updatePassword(req, res, next)
 );
+router.post("/order",async(req,res)=>{
+  console.log('hi');
+  const items = [
+    {
+      price_data:{
+        currency:"usd",
+        product_data:{
+          name:'ali',
+          images:['image.jpg']
+        },
+        unit_amount:3000
+      },
+      quantity:3
+    },   
+  ]
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types:["card"],
+    line_items:items,
+    mode:"payment",
+    success_url:'https://your-domain.com/success',
+    cancel_url:'https://your-domain.com/success'
+  })
+
+  res.json({ id: session.id });
+});
+
 
 export default router;

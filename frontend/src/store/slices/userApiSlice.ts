@@ -111,6 +111,13 @@ export const userApiSlice = createApi({
         body:formData,
       }),
     }),
+    makeOrder: builder.mutation({
+      query: (formData) => ({
+        url: `/order`,
+        method: HttpMethod.POST,
+        body:formData,
+      }),
+    }),
   }),
 });
 
@@ -131,5 +138,6 @@ export const {
   useGetCarByIdQuery,
   useDeleteCarMutation,
   useChangePasswordMutation,
-  useGetSelectedCarQuery
+  useGetSelectedCarQuery,
+  useMakeOrderMutation
 } = userApiSlice;

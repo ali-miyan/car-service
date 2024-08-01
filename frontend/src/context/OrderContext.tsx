@@ -10,7 +10,7 @@ const orderSlice = createSlice({
     serviceDate: "",
     address: {},
     carModel: "",
-    additionalNotes: "",
+    package: "",
   },
   reducers: {
     setServiceId(state, action) {
@@ -31,8 +31,8 @@ const orderSlice = createSlice({
     setCarModel(state, action) {
       state.carModel = action.payload;
     },
-    setAdditionalNotes(state, action) {
-      state.additionalNotes = action.payload;
+    setPackage(state, action) {
+      state.package = action.payload;
     },
     resetOrder(state) {
       return {
@@ -42,7 +42,7 @@ const orderSlice = createSlice({
         serviceDate: "",
         address: {},
         carModel: "",
-        additionalNotes: "",
+        package: "",
       };
     },
   },
@@ -55,7 +55,7 @@ export const {
   setServiceDate,
   setAddress,
   setCarModel,
-  setAdditionalNotes,
+  setPackage,
   resetOrder,
 } = orderSlice.actions;
 
