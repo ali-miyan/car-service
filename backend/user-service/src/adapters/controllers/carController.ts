@@ -4,6 +4,7 @@ import {
   AddCarUseCase,
   DeleteCarUseCase,
   GetCarByIdUseCase,
+  GetOneCarUseCase
 } from "../../usecases";
 
 export class CarController {
@@ -11,6 +12,7 @@ export class CarController {
     private addCarUseCase: AddCarUseCase,
     private getCarByIdUseCase: GetCarByIdUseCase,
     private deleteCarUseCase: DeleteCarUseCase,
+    private getOneCarUseCase: GetOneCarUseCase
   ) {}
 
   async addCar(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -34,6 +36,16 @@ export class CarController {
 
     try {
       const response = await this.getCarByIdUseCase.execute(id);
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getOneCar(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      const response = await this.getOneCarUseCase.execute(id);
       res.status(201).json(response);
     } catch (error) {
       next(error);

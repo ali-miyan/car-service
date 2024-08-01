@@ -18,6 +18,9 @@ export const userApiSlice = createApi({
     getCarById: builder.query({
       query: (id:string) => `/get-car/${id}`,
     }),
+    getSelectedCar: builder.query({
+      query: (id:string) => `/get-one-car/${id}`,
+    }),
     registerPost: builder.mutation({
       query: (postData) => ({
         url: "/register",
@@ -127,5 +130,6 @@ export const {
   useAddCarMutation,
   useGetCarByIdQuery,
   useDeleteCarMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
+  useGetSelectedCarQuery
 } = userApiSlice;

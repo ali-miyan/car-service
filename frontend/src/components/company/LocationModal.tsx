@@ -1,18 +1,21 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { validateInput } from "../../helpers/userValidation";
 import { AddressData } from "../../schema/address";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 import MiniMap from "./MapBox";
 import { useLocation } from "../../context/MapContext";
 import { useForm } from "../../context/RegisterContext";
 
-const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> = ({setIsAddressFilled,onClose}) => {
+const LocationModal: React.FC<{
+  onClose: () => void;
+  setIsAddressFilled?: () => void;
+  handleAddress?: (prop: object) => void;
+}> = ({ setIsAddressFilled, onClose, handleAddress }) => {
   const { formData, setFormData } = useForm();
   const [message, setMessage] = useState<boolean>(false);
   const { address, latitude, longitude } = useLocation();
 
-  console.log(latitude,longitude,'latitutdededede');
-  
+  console.log(latitude, longitude, "latitutdededede");
 
   const [locationData, setLocationData] = useState<AddressData>({
     address: "",
@@ -47,7 +50,7 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
   }, [address, latitude, longitude]);
 
   useEffect(() => {
-    console.log(address, 'address data');
+    console.log(address, "address data");
   }, [message, setFormData]);
 
   const mapChanged = (data: boolean) => {
@@ -92,14 +95,21 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
       ...prevData,
       address: locationData,
     }));
-
-    setIsAddressFilled();
+    if (handleAddress) {
+      handleAddress(locationData);
+    }
+    if (setIsAddressFilled) {
+      setIsAddressFilled();
+    }
     onClose();
   };
 
   return (
     <div className="flex  md:flex-row lowercase items-center justify-start font-bai-medium">
-      <form className="p-2 rounded-lg text-gray-700  w-9/12 max-w-sm ml-20 md:ml-0" onSubmit={handleSubmit}>
+      <form
+        className="p-2 rounded-lg text-gray-700  w-9/12 max-w-sm ml-20 md:ml-0"
+        onSubmit={handleSubmit}
+      >
         <div className="">
           <label htmlFor="address" className="block text-gray-700 text-xs">
             Address:
@@ -110,7 +120,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="address"
             value={locationData.address}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.address ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.address ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.address && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -129,7 +141,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="city"
             value={locationData.city}
             onChange={handleChange}
-            className={`w-full px-3  border ${errors.city ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3  border ${
+              errors.city ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.city && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -148,7 +162,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="streetRegion"
             value={locationData.streetRegion}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.streetRegion ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.streetRegion ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.streetRegion && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -167,7 +183,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="postcode"
             value={locationData.postcode}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.postcode ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.postcode ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.postcode && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -186,7 +204,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="country"
             value={locationData.country}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.country ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.country ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.country && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -205,7 +225,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="latitude"
             value={locationData.latitude}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.latitude ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.latitude ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.latitude && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">
@@ -224,7 +246,9 @@ const LocationModal: React.FC<{onClose: ()=> void,setIsAddressFilled:()=>void}> 
             name="longitude"
             value={locationData.longitude}
             onChange={handleChange}
-            className={`w-full px-3 border ${errors.longitude ? "border-red-500" : "border-gray-300"} rounded focus:outline-none`}
+            className={`w-full px-3 border ${
+              errors.longitude ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none`}
           />
           {errors.longitude && (
             <p className="text-red-500 font-bai-regular lowercase text-xs">

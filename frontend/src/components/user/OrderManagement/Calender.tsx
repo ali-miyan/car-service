@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Calendar } from "@demark-pro/react-booking-calendar";
 import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 import "../../../styles/Global.css";
+import { useDispatch } from "react-redux";
+import { setServiceDate } from "../../../context/OrderContext";
 const today = new Date();
 const thisMonth = today.getMonth();
 const thisYear = today.getFullYear();
@@ -20,16 +22,26 @@ const reserved = [
 export const BookingCalendar = () => {
   const [selectedDates, setSelectedDates] = useState([]);
 
+  const dispatch = useDispatch();
+
+  const handleDateChange = (newDates) => {
+    setSelectedDates(newDates);
+    const date = new Date(newDates);
+    const options:any = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+    dispatch(setServiceDate(formattedDate));
+  };
+
   return (
     <>
       <h2 className="text-xl font-bai-bold font-semibold mb-4 text-center text-gray-800 uppercase">
         choose a date
       </h2>
       <div className="w-full max-w-md mx-auto p-4 bg-white shadow-lg lowercase font-bai-regular  border border-gray-300">
-        <Calendar   
+        <Calendar
           selected={selectedDates}
           reserved={reserved}
-          onChange={setSelectedDates}
+          onChange={handleDateChange}
           className=" text-black rounded-lg  font-bai-regular"
         />
         <div className="mt-4 text-center">

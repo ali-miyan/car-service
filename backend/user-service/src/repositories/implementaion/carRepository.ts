@@ -18,6 +18,13 @@ export class CarRepository implements ICarRepository {
       throw new Error("error in db");
     }
   }
+  async getOne(id: string): Promise<ICarData[] | null> {
+    try {
+      return await carModel.findOne({ _id: id });
+    } catch (error) {
+      throw new Error("error in db");
+    }
+  }
 
   async deleteById(id: string): Promise<void> {
     try {

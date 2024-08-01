@@ -1,14 +1,16 @@
 // src/slices/orderSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const orderSlice = createSlice({
-  name: 'order',
+  name: "order",
   initialState: {
-    serviceId:'',
-    servicePlace: '',
-    address: '',
-    carModel: '',
-    additionalNotes: '',
+    serviceId: "",
+    servicePlace: "",
+    selectedPlace:"",
+    serviceDate: "",
+    address: {},
+    carModel: "",
+    additionalNotes: "",
   },
   reducers: {
     setServiceId(state, action) {
@@ -16,6 +18,12 @@ const orderSlice = createSlice({
     },
     setServicePlace(state, action) {
       state.servicePlace = action.payload;
+    },
+    SetSelectedPlace(state, action) {
+      state.selectedPlace = action.payload;
+    },
+    setServiceDate(state, action) {
+      state.serviceDate = action.payload;
     },
     setAddress(state, action) {
       state.address = action.payload;
@@ -28,11 +36,13 @@ const orderSlice = createSlice({
     },
     resetOrder(state) {
       return {
-        serviceId:'',
-        servicePlace: '',
-        address: '',
-        carModel: '',
-        additionalNotes: '',
+        serviceId: "",
+        servicePlace: "",
+        selectedPlace:"",
+        serviceDate: "",
+        address: {},
+        carModel: "",
+        additionalNotes: "",
       };
     },
   },
@@ -41,6 +51,8 @@ const orderSlice = createSlice({
 export const {
   setServiceId,
   setServicePlace,
+  SetSelectedPlace,
+  setServiceDate,
   setAddress,
   setCarModel,
   setAdditionalNotes,

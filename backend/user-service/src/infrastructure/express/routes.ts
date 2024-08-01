@@ -16,7 +16,8 @@ import {
   GetCarByIdUseCase,
   DeleteCarUseCase,
   UpadtePasswordUseCase,
-  AddCarUseCase
+  AddCarUseCase,
+  GetOneCarUseCase
 } from "../../usecases";
 import { RedisOtpRepository, UserRepository } from "../../repositories";
 import { OtpService, S3Service } from "../../infrastructure/services";
@@ -57,11 +58,12 @@ const carRepository = new CarRepository();
 const addCarUseCase = new AddCarUseCase(carRepository);
 const deleteCarUseCase = new DeleteCarUseCase(carRepository);
 const getCarByIdUseCase = new GetCarByIdUseCase(carRepository);
-const updatePasswordUsecase = new UpadtePasswordUseCase(userRepository);
+const getOneCarUseCase = new GetOneCarUseCase(carRepository);
 const carController = new CarController(
   addCarUseCase,
   getCarByIdUseCase,
   deleteCarUseCase,
+  getOneCarUseCase
 );
 const userController = new UserController(
   signupUseCase,
@@ -125,6 +127,9 @@ router.post("/add-car", authMiddleware(["user"]), (req, res, next) =>
 );
 router.get("/get-car/:id", authMiddleware(["user"]), (req, res, next) =>
   carController.getCar(req, res, next)
+);
+router.get("/get-one-car/:id", authMiddleware(["user"]), (req, res, next) =>
+  carController.getOneCar(req, res, next)
 );
 router.delete("/delete-car/:id", authMiddleware(["user"]), (req, res, next) =>
   carController.deleteCar(req, res, next)

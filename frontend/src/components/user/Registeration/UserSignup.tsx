@@ -20,16 +20,17 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
 
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
-  const [isConfirmPasswordVisible, setConfirmPasswordVisibility] = useState(false);
-  
+  const [isConfirmPasswordVisible, setConfirmPasswordVisibility] =
+    useState(false);
+
   const togglePasswordVisibility = () => {
     setPasswordVisibility((prevState) => !prevState);
   };
-  
+
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisibility((prevState) => !prevState);
   };
-  
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -210,7 +211,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
             Password
           </label>
           <input
-            type={isConfirmPasswordVisible ? "text":"password"}
+            type={isConfirmPasswordVisible ? "text" : "password"}
             placeholder="confirm"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -220,11 +221,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
             } rounded focus:outline-none`}
           />
           <span
-          className="absolute inset-y-0 right-9  bottom-12 pr-3 flex items-center cursor-pointer"
-          onClick={toggleConfirmPasswordVisibility}
-        >
-          {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-        </span>
+            className="absolute inset-y-0 right-9  bottom-12 pr-3 flex items-center cursor-pointer"
+            onClick={toggleConfirmPasswordVisibility}
+          >
+            {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+          </span>
         </div>
         {errors.confirmPassword && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">

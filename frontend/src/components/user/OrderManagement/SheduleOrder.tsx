@@ -5,12 +5,16 @@ import { useSelector } from "react-redux";
 import { BookingCalendar } from "./Calender";
 
 const SheduleOrder = () => {
-  const { servicePlace, serviceId } = useSelector((state: any) => state.order);
-  console.log(servicePlace, "service shedule page", serviceId);
+  const { selectedPlace, serviceId } = useSelector((state: any) => state.order);
+  console.log(selectedPlace, "service shedule page", serviceId);
   const navigate = useNavigate();
 
   const handleNext = useCallback(() => {
-    navigate(`/service-shedule/${serviceId}`);
+    if (selectedPlace === "home") {
+      navigate(`/service-at-home/${serviceId}`);
+    } else {
+      navigate(`/service-at-center/${serviceId}`);
+    }
   }, [navigate, serviceId]);
 
   return (

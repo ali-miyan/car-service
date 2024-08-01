@@ -1,17 +1,25 @@
 import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PlaceCard } from "../../../schema/component";
 import { useNavigate } from "react-router-dom";
 import { RegistrationStep } from "../../common/OrderHeader";
+import { SetSelectedPlace } from "../../../context/OrderContext";
 
 const ServiceOptions = React.memo(() => {
   const { servicePlace, serviceId } = useSelector((state: any) => state.order);
   console.log(servicePlace, "service type", serviceId);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleNext = useCallback(() => {
-    navigate(`/service-shedule/${serviceId}`);
-  }, [navigate, serviceId]);
+  const handleNext = useCallback(
+    (name: string) => {
+      console.log(name,'name');
+      
+      dispatch(SetSelectedPlace(name))
+      navigate(`/service-shedule/${serviceId}`);
+    },
+    [navigate, serviceId]
+  );
 
   return (
     <>
@@ -51,7 +59,8 @@ const ServiceOptions = React.memo(() => {
               "Experienced staff to handle a wide range of car issues",
               "Convenient scheduling with flexible appointment times",
             ]}
-            handleNext={handleNext}
+            handleNext={() => handleNext("service")}
+            isDisabled={servicePlace === "home"}
           />
           <ServiceCard
             title="Mobile Pick-Up"
@@ -66,8 +75,8 @@ const ServiceOptions = React.memo(() => {
               "Expert handling of a wide range of car issues",
               "Flexible scheduling to fit your busy lifestyle",
             ]}
-            handleNext={handleNext}
-            isDisabled={servicePlace !== "both"}
+            handleNext={() => handleNext("home")}
+            isDisabled={servicePlace === "service"}
           />
         </div>
       </div>
@@ -117,7 +126,5 @@ const ServiceCard = React.memo(
     );
   }
 );
-
-
 
 export default ServiceOptions;

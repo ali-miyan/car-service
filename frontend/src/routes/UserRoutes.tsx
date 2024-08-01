@@ -11,6 +11,9 @@ import AboutCompany from "../pages/userPages/AboutCompany";
 import SelectedService from "../pages/userPages/SelectedServicePage";
 import SetSpot from "../pages/userPages/SetSpotPage";
 import ShedulePage from "../pages/userPages/ShedulePage";
+import AtHome from "../pages/userPages/AtHome";
+import AtServiceCenter from "../pages/userPages/AtServiceCenter";
+import CheckoutPage from "../pages/userPages/CheckoutPage";
 
 const UserRoutes = () => (
   <Routes>
@@ -25,6 +28,9 @@ const UserRoutes = () => (
     <Route path="/selected-service/:id" element={<SelectedService />} />
     <Route path="/set-spot/:id" element={<SetSpot />} />
     <Route path="/service-shedule/:id" element={<ShedulePage />} />
+    <Route path="/service-at-home/:id" element={<AtHome />} />
+    <Route path="/service-at-center/:id" element={<AtServiceCenter />} />
+    <Route path="/checkout/:id" element={<CheckoutPage />} />
   </Routes>
 );
 
