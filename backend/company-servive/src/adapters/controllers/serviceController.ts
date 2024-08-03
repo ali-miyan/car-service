@@ -32,6 +32,7 @@ export class ServiceController {
       selectedHours,
       terms,
       servicePlace,
+      servicesPerDay,
       basicSubService,
       standardSubService,
       premiumSubService,
@@ -39,7 +40,7 @@ export class ServiceController {
 
     const { files } = req as any;
 
-    console.log(files,'files and body',req.body);
+    console.log('files and body',req.body);
     
 
     try {
@@ -49,6 +50,7 @@ export class ServiceController {
         companyId,
         selectedHours,
         servicePlace,
+        servicesPerDay,
         terms,
         basicSubService,
         standardSubService,

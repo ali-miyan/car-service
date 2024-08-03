@@ -17,14 +17,17 @@ export const sequelize = new Sequelize({
       rejectUnauthorized: false,
     },
   },
+  logging: console.log,
 });
 
 export const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection to PostgreSQL.");
-    const result = await sequelize.query("SELECT NOW()");
-    console.log("Current time from database:", result[0][0]);
+    console.log("Connection to PostgreSQL established.");
+
+    await sequelize.sync();
+    console.log("Database synced.");
+
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }

@@ -2,10 +2,11 @@ import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../postgreConfig/connectDb";
 
 interface BookingAttributes {
-  id: number;
+  id: string;
   userId: string;
   date: string;
-  serviceType: string;
+  payment:string;
+  address: object;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   serviceId: string;
   typeOfPackage: string;
@@ -20,10 +21,11 @@ class Booking
   extends Model<BookingAttributes, BookingCreationAttributes>
   implements BookingAttributes
 {
-  public id!: number;
+  public id!: string;
   public userId!: string;
   public date!: string;
-  public serviceType!: string;
+  public payment!:string;
+  public address!: object;
   public status!: "pending" | "confirmed" | "completed" | "cancelled";
   public serviceId!: string;
   public typeOfPackage!: string;
@@ -37,8 +39,8 @@ class Booking
 Booking.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue:DataTypes.UUIDV4,
       primaryKey: true,
     },
     userId: {
@@ -57,8 +59,12 @@ Booking.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    serviceType: {
+    payment: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.JSON,
       allowNull: false,
     },
     status: {

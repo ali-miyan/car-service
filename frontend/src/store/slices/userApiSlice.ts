@@ -117,7 +117,7 @@ export const userApiSlice = createApi({
         method: HttpMethod.POST,
         body:formData,
       }),
-    }),
+    })
   }),
 });
 
@@ -139,5 +139,7 @@ export const {
   useDeleteCarMutation,
   useChangePasswordMutation,
   useGetSelectedCarQuery,
-  useMakeOrderMutation
+  useMakeOrderMutation,
+  useUpdateOrderMutation
+
 } = userApiSlice;

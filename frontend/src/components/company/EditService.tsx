@@ -45,6 +45,10 @@ const AddYourService: React.FC = () => {
         ...prev,
         workImages: curretService.images,
       }));
+      setFormData((prev) => ({
+        ...prev,
+        servicesPerDay: curretService.servicesPerDay,
+      }));
       setBasicData(curretService.basicPackage.detail);
       setStandardData(curretService.standardPackage.detail);
       setPremiumData(curretService.premiumPackage.detail);
@@ -108,6 +112,7 @@ const AddYourService: React.FC = () => {
     terms: "",
     workImages: [],
     subServices: [],
+    servicesPerDay:'',
   });
 
   const [errors, setErrors] = useState({
@@ -118,6 +123,7 @@ const AddYourService: React.FC = () => {
     packageError: "",
     servicePlaceError: "",
     global: "",
+    servicesPerDay:""
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,6 +168,7 @@ const AddYourService: React.FC = () => {
     const selecetedHoursError = validateInput("selecetedHours", selectedHours);
     const servicePlaceError = validateInput("servicePlace", servicePlace);
     const termsError = validateInput("terms", formData.terms);
+    const servicesPerDayError = validateInput("servicesPerDay", formData.servicesPerDay);
     const logoError =
       (formData.workImages as []).length > 0
         ? ""
@@ -180,10 +187,11 @@ const AddYourService: React.FC = () => {
       selecetedHours: selecetedHoursError,
       selectedService: selectedServiceError,
       servicePlaceError: servicePlaceError,
+      servicesPerDay:servicesPerDayError,
       global: "",
     });
 
-    if (termsError || logoError || packageError || servicePlaceError) {
+    if (termsError || logoError || packageError || servicePlaceError || servicesPerDayError) {
       return;
     }
 
@@ -196,6 +204,7 @@ const AddYourService: React.FC = () => {
     data.append("selectedHours", selectedHours);
     data.append("servicePlace", servicePlace);
     data.append("terms", formData.terms);
+    data.append("servicesPerDay", formData.servicesPerDay as string);
     (formData.workImages as []).forEach((image: File) => {
       data.append("images", image);
     });
@@ -297,6 +306,24 @@ const AddYourService: React.FC = () => {
                 </p>
               )}
             </div>
+            <div className="form-group">
+              <label htmlFor="services-per-day">
+                Number of Services Per Day
+              </label>
+              <input
+                onChange={handleInputChange}
+                value={formData.servicesPerDay}
+                type="number"
+                className="border p-2 rounded w-full"
+                placeholder="services per day"
+                name="servicesPerDay"
+              />
+              {errors.servicesPerDay && (
+                <p className="text-red-500 font-bai-regular lowercase text-xs">
+                  {errors.servicesPerDay}
+                </p>
+              )}
+            </div>
             <div className="form-group ">
               <label htmlFor="working-hours">service place</label>
               <select
@@ -341,22 +368,7 @@ const AddYourService: React.FC = () => {
                 </p>
               )}
             </div>
-            <div className="form-group">
-              <label htmlFor="terms">Terms</label>
-              <input
-                onChange={handleInputChange}
-                value={formData.terms}
-                type="text"
-                className="border p-2 rounded w-full"
-                placeholder="Type here"
-                name="terms"
-              />
-              {errors.terms && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.terms}
-                </p>
-              )}
-            </div>
+            
           </div>
           <div className="w-full sm:w-8/12 sm:pl-5 mt-4 sm:mt-0">
             <div className="h-36 border-4 mt-7 relative">
@@ -393,6 +405,23 @@ const AddYourService: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="form-group">
+              <label htmlFor="terms">Terms</label>
+              <input
+                onChange={handleInputChange}
+                value={formData.terms}
+                type="text"
+                className="border p-2 rounded w-full"
+                placeholder="Type here"
+                name="terms"
+              />
+              {errors.terms && (
+                <p className="text-red-500 font-bai-regular lowercase text-xs">
+                  {errors.terms}
+                </p>
+              )}
+            </div>
 
         <div className="form-group mt-5">
           <h3 className="font-bai-bold uppercase text-center mb-2">

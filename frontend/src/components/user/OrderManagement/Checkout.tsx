@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  useGetSelectedCarQuery,
-} from "../../../store/slices/userApiSlice";
-import {
-  useMakeOrderMutation,
-} from "../../../store/slices/orderApiSlice";
+import { useGetSelectedCarQuery } from "../../../store/slices/userApiSlice";
+import { useMakeOrderMutation } from "../../../store/slices/orderApiSlice";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { loadStripe } from "@stripe/stripe-js";
@@ -19,15 +15,20 @@ const Checkout = () => {
     serviceDate,
     serviceId,
     selectedPlace,
+    generalServiceId,
   } = useSelector((state: any) => state.order);
 
-  console.log(address,
+  console.log(
+    address,
     carModel,
     selectedPackage,
     serviceDate,
     serviceId,
-    selectedPlace);
-  
+    selectedPlace
+  );
+
+  console.log(carModel, "dcacacad");
+
   const token = getInitialToken("userToken");
 
   const { data: car } = useGetSelectedCarQuery(carModel);
@@ -59,29 +60,37 @@ const Checkout = () => {
         );
         const res = await makeOrder({
           userId: token,
+          generalServiceId,
           payment: selectedPaymentMethod,
           address,
-          selectedPlace,
-          package: selectedPackage,
-          bookingData: serviceDate,
+          servicePlace: selectedPlace,
+          typeOfPackage: selectedPackage,
+          date: serviceDate,
           carId: carModel,
           serviceId,
+          totalPrice: serviceDetails?.detail?.price + 50,
         }).unwrap();
-        const result = stripe?.redirectToCheckout({
+        stripe?.redirectToCheckout({
           sessionId: res.id,
         });
+
+        localStorage.setItem('orderToken',res.orderToken)
       } else if (selectedPaymentMethod === "cash") {
         console.log("Cash payment selected");
         const res = await makeOrder({
           userId: token,
+          generalServiceId,
           payment: selectedPaymentMethod,
           address,
-          selectedPlace,
-          package: selectedPackage,
-          bookingData: serviceDate,
+          servicePlace: selectedPlace,
+          typeOfPackage: selectedPackage,
+          date: serviceDate,
           carId: carModel,
           serviceId,
+          totalPrice: serviceDetails?.detail?.price,
         }).unwrap();
+
+        console.log(res);
       }
     } catch (error) {
       console.log(error);
@@ -117,7 +126,7 @@ const Checkout = () => {
           <div className="flex flex-col md:flex-row gap-6">
             <form className="flex-1 space-y-6">
               <h3 className="font-semibold text-center text-gray-900 uppercase">
-                Service Car and Address
+                Service Car {selectedPlace === "home" ? "and Address" : ""}
               </h3>
               <div className="flex justify-evenly">
                 {car && (
@@ -149,24 +158,26 @@ const Checkout = () => {
                     </div>
                   </div>
                 )}
-                <div className="p-4 shadow-md mx-3 mb-4 bg-white w-full ">
-                  <h3 className="text-lg font-semibold mb-2">Address</h3>
-                  <p className="text-gray-700">
-                    <strong>Address:</strong> {address.address}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>City:</strong> {address.city}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Country:</strong> {address.country}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Postcode:</strong> {address.postcode}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Street Region:</strong> {address.streetRegion}
-                  </p>
-                </div>{" "}
+                {selectedPlace === "home" && (
+                  <div className="p-4 shadow-md mx-3 mb-4 bg-white w-full ">
+                    <h3 className="text-lg font-semibold mb-2">Address</h3>
+                    <p className="text-gray-700">
+                      <strong>Address:</strong> {address.address}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>City:</strong> {address.city}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Country:</strong> {address.country}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Postcode:</strong> {address.postcode}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Street Region:</strong> {address.streetRegion}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <h3 className="font-semibold text-center text-gray-900 uppercase">

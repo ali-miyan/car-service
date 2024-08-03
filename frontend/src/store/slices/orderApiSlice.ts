@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseOrderUrl } from "../../constants/api";
 import { HttpMethod } from "../../schema/httpMethods";
+import { get } from "http";
 
 export const orderApiSlice = createApi({
   reducerPath: "orderApi",
@@ -9,11 +10,8 @@ export const orderApiSlice = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getUsers: builder.query({
-      query: () => "/get-users",
-    }),
-    getUserById: builder.query({
-      query: (id:string) => `/get-user/${id}`,
+    getOrders: builder.query({
+      query: () => "/get-orders",
     }),
     makeOrder: builder.mutation({
       query: (formData) => ({
@@ -22,12 +20,18 @@ export const orderApiSlice = createApi({
         body:formData,
       }),
     }),
+    updateOrder: builder.mutation({
+      query: (formData) => ({
+        url: `/update-booking`,
+        method: HttpMethod.POST,
+        body:formData,
+      }),
+    }),
   }),
 });
 
 export const {
-
-  useGetUsersQuery,
-  useGetUserByIdQuery,
-  useMakeOrderMutation
+  useMakeOrderMutation,
+  useUpdateOrderMutation,
+  useGetOrdersQuery
 } = orderApiSlice;

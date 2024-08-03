@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Calendar } from "@demark-pro/react-booking-calendar";
 import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 import "../../../styles/Global.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setServiceDate } from "../../../context/OrderContext";
+import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 const today = new Date();
 const thisMonth = today.getMonth();
 const thisYear = today.getFullYear();
@@ -20,6 +21,13 @@ const reserved = [
 ];
 
 export const BookingCalendar = () => {
+
+  const { serviceId } = useSelector((state: any) => state.order);
+
+  const {data:dates} = useGetSinglServicesQuery(serviceId as string)
+  console.log(dates);
+  
+
   const [selectedDates, setSelectedDates] = useState([]);
 
   const dispatch = useDispatch();

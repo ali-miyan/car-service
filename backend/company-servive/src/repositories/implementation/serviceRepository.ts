@@ -35,7 +35,9 @@ export class ServiceRepository implements IServiecRepository {
   }
   async getEveryService(): Promise<IService[] | null> {
     try {
-      const newService = await serviceModal.find({isBlocked:false}).populate("companyId");
+      const newService = await serviceModal
+        .find({ isBlocked: false })
+        .populate("companyId");
       return newService;
     } catch (error) {
       console.log(error);
@@ -46,6 +48,23 @@ export class ServiceRepository implements IServiecRepository {
     try {
       const newService = await serviceModal.findOne({ _id: id });
       return newService;
+    } catch (error) {
+      console.log(error);
+      throw new Error("error in db");
+    }
+  }
+  async checkSlotAvailabilityInDb(id: string): Promise<boolean> {
+    try {
+      const newService = await serviceModal.findOne({ _id: id });
+      if (!newService) {
+        return false;
+      }
+      const availableSlots = parseInt(newService.servicesPerDay, 10);
+      if (isNaN(availableSlots)) {
+        return false;
+      }
+
+      return availableSlots > 0;
     } catch (error) {
       console.log(error);
       throw new Error("error in db");
@@ -74,7 +93,6 @@ export class ServiceRepository implements IServiecRepository {
   async save(service: Service): Promise<void> {
     try {
       const { _id, ...serviceData } = service;
-
 
       const newService = _id
         ? await serviceModal.findByIdAndUpdate(_id, serviceData, {

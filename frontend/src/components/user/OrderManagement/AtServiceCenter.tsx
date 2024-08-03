@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 const AtServiceCenter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+
+  console.log(selectedCarId, "selectedcarid");
+
   const { serviceId } = useSelector((state: any) => state.order);
 
   const token = getInitialToken("userToken");
@@ -22,10 +25,10 @@ const AtServiceCenter = () => {
 
   const dispatch = useDispatch();
 
-  const handleNext = useCallback(() => {
+  const handleNext = () => {
     dispatch(setCarModel(selectedCarId));
     navigate(`/checkout/${serviceId}`);
-  }, [navigate, serviceId]);
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

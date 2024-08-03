@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import {  useNavigate, useParams } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
@@ -9,22 +9,26 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError } from "../../common/Toast";
 import TermsAndService from "./TermsAndService";
 import { useDispatch } from "react-redux";
-import { setPackage } from "../../../context/OrderContext";
+import { setGeneralService, setPackage } from "../../../context/OrderContext";
 
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
   const token = getInitialToken("userToken");
   const { data: posts } = useGetSinglServicesQuery(id as string);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
+  const { generalServiceId } = location.state || {};
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  console.log(name,'namemememe',generalServiceId);
 
   const handleClick = (name?:string) => {
     if (token) {
-      console.log(name,'namemememe');
       
+      dispatch(setGeneralService(generalServiceId))
       dispatch(setPackage(name))
       setIsModalOpen(true);
     } else {

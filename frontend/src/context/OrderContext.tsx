@@ -11,6 +11,7 @@ const orderSlice = createSlice({
     address: {},
     carModel: "",
     selectedPackage: "",
+    generalServiceId:"",
   },
   reducers: {
     setServiceId(state, action) {
@@ -34,6 +35,9 @@ const orderSlice = createSlice({
     setPackage(state, action) {
       state.selectedPackage = action.payload;
     },
+    setGeneralService(state, action) {
+      state.generalServiceId = action.payload;
+    },
     resetOrder(state) {
       return {
         serviceId: "",
@@ -43,6 +47,7 @@ const orderSlice = createSlice({
         address: {},
         carModel: "",
         selectedPackage: "",
+        generalServiceId:""
       };
     },
   },
@@ -57,6 +62,7 @@ export const {
   setCarModel,
   setPackage,
   resetOrder,
+  setGeneralService
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

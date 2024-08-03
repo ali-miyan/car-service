@@ -1,32 +1,84 @@
 import { BadRequestError } from "tune-up-library";
-import { IBookingRepository} from "../repositories";
+import { IBookingRepository } from "../repositories";
 import { Booking } from "../entities";
+import { v4 as uuidv4 } from "uuid";
+import { checkSlotAvailability, StripeService } from "../infrastructure/services";
 
 export class BookingUseCase {
   constructor(
-    private bookingRepository: IBookingRepository
+    private bookingRepository: IBookingRepository,
+    private stripeService: StripeService,
   ) {}
 
   async execute(
     userId: string,
-    generalServiceId:string,
-    serviceId:string,
+    generalServiceId: string,
+    serviceId: string,
     date: string,
-    servicePlace:string,
-    serviceType: string,
+    payment: string,
+    servicePlace: string,
+    address: object,
     typeOfPackage: string,
+    carId: string,
     totalPrice: number
   ): Promise<any> {
-
-    if(!userId || !date || !generalServiceId || !serviceId || !servicePlace || !serviceType || !typeOfPackage || !totalPrice){
-        throw new BadRequestError("invalid input");
+    if (
+      !userId ||
+      !date ||
+      !generalServiceId ||
+      !serviceId ||
+      !servicePlace ||
+      !address ||
+      !typeOfPackage ||
+      !totalPrice ||
+      !payment ||
+      !carId
+    ) {
+      throw new BadRequestError("Invalid input");
     }
 
-    const booking = new Booking({userId,generalServiceId,serviceId,date,servicePlace,serviceType,status:"pending",totalPrice,typeOfPackage})
+    const slotAvailability = await checkSlotAvailability(serviceId);
 
+    if (!slotAvailability.available) {
+      throw new BadRequestError("No slots available for the selected service.");
+    }
+
+    let status: "pending" | "confirmed" | "completed" | "cancelled" = payment.toLowerCase() === "cash" ? "confirmed" : "pending";
+    let response: any = { success: false };
+
+    const booking = new Booking({
+      userId,
+      generalServiceId,
+      serviceId,
+      date,
+      payment,
+      address,
+      status,
+      typeOfPackage,
+      servicePlace,
+      carId,
+      totalPrice,
+    });
+
+    const order = await this.bookingRepository.save(booking);
+
+    console.log('my order' , order);
     
-    await this.bookingRepository.save(booking)
-    
-    return { success: true };
+
+    if (payment.toLowerCase() === "online") {
+      try {
+        const sessionId = await this.stripeService.createCheckoutSession(
+          totalPrice,
+          order.id
+        );
+        response = { id: sessionId, orderToken: order.id };
+      } catch (error) {
+        throw new BadRequestError(
+          "Error creating Stripe checkout session: " + error
+        );
+      }
+    }
+
+    return response;
   }
 }

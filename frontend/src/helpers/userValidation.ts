@@ -41,6 +41,11 @@ export const validateInput = (name: string, value: any | undefined) => {
         error = "At least 3 characters";
       }
       break;
+    case "servicesPerDay":
+      if (!value) {
+        error = "services per day is required";
+      }
+      break;
     case "username":
       if (!value) {
         error = "Username is required";

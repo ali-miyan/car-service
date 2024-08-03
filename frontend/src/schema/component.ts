@@ -63,6 +63,7 @@ export interface FormState {
 export interface serviceForm {
   terms: string;
   workImages: File | [];
+  servicesPerDay?: string,
   subServices: string[];
 }
 

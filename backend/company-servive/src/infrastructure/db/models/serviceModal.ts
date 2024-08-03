@@ -18,6 +18,7 @@ export interface IService extends Document {
   companyId: mongoose.Types.ObjectId;
   selectedHours: string;
   servicePlace: string;
+  servicesPerDay:string;
   terms: string;
   images: string[];
   basicPackage: SubService;
@@ -55,6 +56,7 @@ const serviceSchema: Schema = new Schema(
     companyId: { type: Schema.Types.ObjectId, ref: "Company", required: true },
     selectedHours: { type: String, required: true },
     servicePlace: { type: String, required: true },
+    servicesPerDay: { type: String, required: true },
     terms: { type: String, required: true },
     images: { type: [String], required: true },
     basicPackage: { type: SubServiceSchema, required: true },

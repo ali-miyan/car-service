@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package booking;
+
+service BookingService {
+  rpc CheckSlotAvailability (CheckSlotRequest) returns (CheckSlotResponse);
+}
+
+message CheckSlotRequest {
+  string serviceId = 1;
+}
+
+message CheckSlotResponse {
+  bool available = 1;
+}

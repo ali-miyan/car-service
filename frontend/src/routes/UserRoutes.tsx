@@ -14,6 +14,8 @@ import ShedulePage from "../pages/userPages/ShedulePage";
 import AtHome from "../pages/userPages/AtHome";
 import AtServiceCenter from "../pages/userPages/AtServiceCenter";
 import CheckoutPage from "../pages/userPages/CheckoutPage";
+import SuccessPage from "../pages/userPages/SuccessPage";
+import FailurePage from "../pages/userPages/FailurePage";
 
 const UserRoutes = () => (
   <Routes>
@@ -31,6 +33,8 @@ const UserRoutes = () => (
     <Route path="/service-at-home/:id" element={<AtHome />} />
     <Route path="/service-at-center/:id" element={<AtServiceCenter />} />
     <Route path="/checkout/:id" element={<CheckoutPage />} />
+    <Route path="/checkout-success/:id" element={<SuccessPage />} />
+    <Route path="/checkout-failure" element={<FailurePage />} />
   </Routes>
 );
 
