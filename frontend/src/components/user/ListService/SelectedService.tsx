@@ -23,8 +23,10 @@ const SelectedService = () => {
 
   const handleClick = (name?:string) => {
     if (token) {
-      setIsModalOpen(true);
+      console.log(name,'namemememe');
+      
       dispatch(setPackage(name))
+      setIsModalOpen(true);
     } else {
       notifyError("You need to log in to continue");
       navigate("/", { state: { openModal: true } });

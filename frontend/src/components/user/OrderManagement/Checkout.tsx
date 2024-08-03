@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetSelectedCarQuery,
-  useMakeOrderMutation,
 } from "../../../store/slices/userApiSlice";
+import {
+  useMakeOrderMutation,
+} from "../../../store/slices/orderApiSlice";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { loadStripe } from "@stripe/stripe-js";
@@ -18,6 +20,14 @@ const Checkout = () => {
     serviceId,
     selectedPlace,
   } = useSelector((state: any) => state.order);
+
+  console.log(address,
+    carModel,
+    selectedPackage,
+    serviceDate,
+    serviceId,
+    selectedPlace);
+  
   const token = getInitialToken("userToken");
 
   const { data: car } = useGetSelectedCarQuery(carModel);

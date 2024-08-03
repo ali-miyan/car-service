@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { userApiSlice } from "./slices/userApiSlice";
 import { companyApiSlice } from "./slices/companyApiSlice";
+import { orderApiSlice } from "./slices/orderApiSlice";
 import { adminApiSlice } from "./slices/adminApiSlice";
 import {
   persistStore,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [companyApiSlice.reducerPath]: companyApiSlice.reducer,
   [adminApiSlice.reducerPath]: adminApiSlice.reducer,
+  [orderApiSlice.reducerPath]: orderApiSlice.reducer,
   order: orderReducer,
 });
 
@@ -40,7 +42,9 @@ const store = configureStore({
     }).concat(
       userApiSlice.middleware,
       companyApiSlice.middleware,
-      adminApiSlice.middleware
+      adminApiSlice.middleware,
+      orderApiSlice.middleware,
+      
     ),
 });
 
