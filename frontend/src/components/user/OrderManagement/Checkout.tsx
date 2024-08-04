@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useGetSelectedCarQuery } from "../../../store/slices/userApiSlice";
 import { useMakeOrderMutation } from "../../../store/slices/orderApiSlice";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { loadStripe } from "@stripe/stripe-js";
 import { getInitialToken } from "../../../helpers/getToken";
+import LoadingButton from "../../common/Loading";
+import { CustomError } from "../../../schema/error";
+import { notifyError } from "../../common/Toast";
+import { useNavigate } from "react-router-dom";
+import { resetOrder } from "../../../context/OrderContext";
 
 const Checkout = () => {
   const {
@@ -16,24 +21,34 @@ const Checkout = () => {
     serviceId,
     selectedPlace,
     generalServiceId,
+    companyId
   } = useSelector((state: any) => state.order);
 
-  console.log(
-    address,
-    carModel,
-    selectedPackage,
-    serviceDate,
-    serviceId,
-    selectedPlace
-  );
-
-  console.log(carModel, "dcacacad");
+  console.log(companyId,'ciompnay');
+  
 
   const token = getInitialToken("userToken");
+  const navigate = useNavigate();
 
   const { data: car } = useGetSelectedCarQuery(carModel);
   const { data: service } = useGetSinglServicesQuery(serviceId);
-  const [makeOrder] = useMakeOrderMutation();
+  const [makeOrder, { isLoading }] = useMakeOrderMutation();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      !address ||
+      !carModel ||
+      !selectedPackage ||
+      !serviceDate ||
+      !serviceId ||
+      !selectedPlace ||
+      !generalServiceId
+    ) {
+      navigate("/home");
+    }
+  }, []);
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
@@ -60,6 +75,7 @@ const Checkout = () => {
         );
         const res = await makeOrder({
           userId: token,
+          companyId,
           generalServiceId,
           payment: selectedPaymentMethod,
           address,
@@ -70,15 +86,17 @@ const Checkout = () => {
           serviceId,
           totalPrice: serviceDetails?.detail?.price + 50,
         }).unwrap();
+        dispatch(resetOrder());
         stripe?.redirectToCheckout({
           sessionId: res.id,
         });
 
-        localStorage.setItem('orderToken',res.orderToken)
+        localStorage.setItem("orderToken", res.orderToken);
       } else if (selectedPaymentMethod === "cash") {
         console.log("Cash payment selected");
         const res = await makeOrder({
           userId: token,
+          companyId,
           generalServiceId,
           payment: selectedPaymentMethod,
           address,
@@ -90,9 +108,16 @@ const Checkout = () => {
           totalPrice: serviceDetails?.detail?.price,
         }).unwrap();
 
-        console.log(res);
+        if (res.success) {
+          dispatch(resetOrder());
+          navigate("/checkout-success/done");
+        }
+
+        console.log(res, "ress");
       }
-    } catch (error) {
+    } catch (err) {
+      const error = err as CustomError;
+      notifyError(error.data.error);
       console.log(error);
     }
   };
@@ -363,7 +388,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-              <div className="flow-root">
+              <div className="flow-root pb-6">
                 <div className="-my-3 divide-y divide-gray-200">
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500">
@@ -393,12 +418,15 @@ const Checkout = () => {
                   </dl>
                 </div>
               </div>
-              <button
+
+              <LoadingButton
+                buttonText="book service"
+                height="h-12"
+                isLoading={isLoading}
+                width="w-full"
+                color="bg-black"
                 onClick={handleSubmit}
-                className="flex w-full mt-5 items-center justify-center bg-primary-700 px-5 py-2.5 text-sm font-medium bg-black text-white hover:bg-primary-800"
-              >
-                Proceed to Payment
-              </button>
+              />
             </div>
           </div>
         </div>

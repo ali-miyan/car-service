@@ -38,4 +38,27 @@ export class BookingRepository implements IBookingRepository {
       throw new Error("Error in db: " + error);
     }
   }
+
+  async getAll(companyId: string): Promise<bookingModel[]> {
+    try {
+      const bookings = await bookingModel.findAll({
+        where: { companyId }  
+      });
+      return bookings as bookingModel[];
+    } catch (error) {
+      console.error("Error retrieving all bookings for company:", error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+  async getSingle(id: string): Promise<bookingModel> {
+    try {
+      const bookings = await bookingModel.findOne({
+        where: { id }  
+      });
+      return bookings as bookingModel;
+    } catch (error) {
+      console.error("Error retrieving  bookings for company:", error);
+      throw new Error("Error in db: " + error);
+    }
+  }
 }

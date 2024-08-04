@@ -4,6 +4,7 @@ import { connectDB } from "./infrastructure/db";
 import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { startGrpcServer } from "./infrastructure/grpc/grpcServices/getUserDetails";
 require("dotenv").config();
 
 const PORT = 3000;
@@ -28,6 +29,7 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+  startGrpcServer()
 };
 
 startServer();

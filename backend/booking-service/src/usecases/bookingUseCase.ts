@@ -12,6 +12,7 @@ export class BookingUseCase {
 
   async execute(
     userId: string,
+    companyId:string,
     generalServiceId: string,
     serviceId: string,
     date: string,
@@ -38,16 +39,19 @@ export class BookingUseCase {
     }
 
     const slotAvailability = await checkSlotAvailability(serviceId);
+    console.log(slotAvailability,'slot avaialbility');
+    
 
     if (!slotAvailability.available) {
       throw new BadRequestError("No slots available for the selected service.");
     }
 
     let status: "pending" | "confirmed" | "completed" | "cancelled" = payment.toLowerCase() === "cash" ? "confirmed" : "pending";
-    let response: any = { success: false };
+    let response: any = { success: true };
 
     const booking = new Booking({
       userId,
+      companyId,
       generalServiceId,
       serviceId,
       date,
@@ -60,10 +64,7 @@ export class BookingUseCase {
       totalPrice,
     });
 
-    const order = await this.bookingRepository.save(booking);
-
-    console.log('my order' , order);
-    
+    const order = await this.bookingRepository.save(booking);    
 
     if (payment.toLowerCase() === "online") {
       try {

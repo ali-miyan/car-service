@@ -13,7 +13,6 @@ export class GetByIdUseCase {
     }
       
       const data = await this.companyRepository.getById(id)
-      console.log('company details page',data);
     if(!data){
       throw new BadRequestError('cant get approvals')
     }

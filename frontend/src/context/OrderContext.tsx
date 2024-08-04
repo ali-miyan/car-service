@@ -6,6 +6,7 @@ const orderSlice = createSlice({
   initialState: {
     serviceId: "",
     servicePlace: "",
+    companyId:"",
     selectedPlace:"",
     serviceDate: "",
     address: {},
@@ -16,6 +17,9 @@ const orderSlice = createSlice({
   reducers: {
     setServiceId(state, action) {
       state.serviceId = action.payload;
+    },
+    setCompanyId(state, action) {
+      state.companyId = action.payload;
     },
     setServicePlace(state, action) {
       state.servicePlace = action.payload;
@@ -38,10 +42,11 @@ const orderSlice = createSlice({
     setGeneralService(state, action) {
       state.generalServiceId = action.payload;
     },
-    resetOrder(state) {
+    resetOrder() {
       return {
         serviceId: "",
         servicePlace: "",
+        companyId:"",
         selectedPlace:"",
         serviceDate: "",
         address: {},
@@ -56,6 +61,7 @@ const orderSlice = createSlice({
 export const {
   setServiceId,
   setServicePlace,
+  setCompanyId,
   SetSelectedPlace,
   setServiceDate,
   setAddress,

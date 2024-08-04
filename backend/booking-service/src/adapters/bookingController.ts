@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { BookingUseCase } from "../usecases";
+import { BookingUseCase, GetBookingUseCase, GetSingleBookingUseCase } from "../usecases";
 import { UpdateBookingStatusUseCase } from "../usecases/updateBookingUseCase";
 
 export class BookingController {
   constructor(
     private bookingRepository: BookingUseCase,
-    private updateBookingRepository: UpdateBookingStatusUseCase
+    private updateBookingRepository: UpdateBookingStatusUseCase,
+    private getBookingUseCase:GetBookingUseCase,
+    private getSingleBookingUseCase:GetSingleBookingUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -13,6 +15,7 @@ export class BookingController {
     const {
       userId,
       serviceId,
+      companyId,
       date,
       address,
       payment,
@@ -23,11 +26,13 @@ export class BookingController {
       generalServiceId,
     } = req.body;
 
-    console.log(req.body);
+    console.log(req.body,'reqboddy');
+    
 
     try {
       const response = await this.bookingRepository.execute(
         userId,
+        companyId,
         generalServiceId,
         serviceId,
         date,
@@ -52,11 +57,37 @@ export class BookingController {
   ): Promise<void> {
     const { id } = req.body;
 
-    console.log(req.body, "id gotted");
-
     try {
       await this.updateBookingRepository.execute(id);
       res.status(200).json({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBookings(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      const data = await this.getBookingUseCase.execute(id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getSingleBooking(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      const data = await this.getSingleBookingUseCase.execute(id);
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }

@@ -7,8 +7,6 @@ export class LoginUseCase {
 
   async execute(email: string, password: string): Promise<any> {
     const company = await this.companyRepository.find(email);
-
-    console.log(company,'comapeny');
     
 
     if (!company) {

@@ -4,6 +4,8 @@ import { sequelize } from "../postgreConfig/connectDb";
 interface BookingAttributes {
   id: string;
   userId: string;
+  carId:string;
+  companyId:string;
   date: string;
   payment:string;
   address: object;
@@ -23,6 +25,8 @@ class Booking
 {
   public id!: string;
   public userId!: string;
+  public carId!: string;
+  public companyId!: string;
   public date!: string;
   public payment!:string;
   public address!: object;
@@ -44,6 +48,14 @@ Booking.init(
       primaryKey: true,
     },
     userId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    carId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    companyId: {
       type: DataTypes.STRING,
       allowNull: false,
     },

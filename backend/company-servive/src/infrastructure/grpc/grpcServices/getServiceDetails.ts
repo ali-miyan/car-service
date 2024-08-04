@@ -3,7 +3,7 @@ import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
 import { ServiceRepository } from "../../../repositories/implementation";
 const serviceRepository = new ServiceRepository();
-const PROTO_PATH = path.resolve(__dirname, "../protos/booking.proto");
+const PROTO_PATH = path.resolve(__dirname, "../protos/service.proto");
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -13,17 +13,18 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-const bookingProto = grpc.loadPackageDefinition(packageDefinition).booking;
+const bookingProto = grpc.loadPackageDefinition(packageDefinition).services;
 
-const checkSlotAvailability = async (call: any, callback: any) => {
-  const { serviceId } = call.request;
-  console.log('reached request here', serviceId);
+const getService = async (call: any, callback: any) => {
+  const { serviceId, typeOfPackage } = call.request;
+  console.log('reached request here', serviceId, typeOfPackage);
   
   try {
-    const available = await serviceRepository.checkSlotAvailabilityInDb(
-      serviceId
+    const data = await serviceRepository.getPackageDetails(
+      serviceId, typeOfPackage
     );
-    callback(null, { available });
+    
+    callback(null, {standardPackage:data});
   } catch (error:any) {
     console.log(error,'error in ggrrppc');
     
@@ -35,12 +36,12 @@ const checkSlotAvailability = async (call: any, callback: any) => {
 };
 
 const server = new grpc.Server();
-server.addService((bookingProto as any).BookingService.service, {
-  checkSlotAvailability,
+server.addService((bookingProto  as any).StandardService.service, {
+    GetPackage: getService,
 });
-export const startSlotGrpcServer = () => {
+export const startServiceGrpcServer = () => {
   server.bindAsync(
-    "0.0.0.0:50051",
+    "0.0.0.0:6001",
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
       if (error) {

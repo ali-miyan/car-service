@@ -1,6 +1,7 @@
 export interface IBookingData {
   id?:string;
   userId: string;
+  companyId:string;
   generalServiceId: string;
   serviceId: string;
   date: string;
@@ -16,6 +17,7 @@ export interface IBookingData {
 export class Booking {
   id?:string;
   userId: string;
+  companyId:string;
   serviceId: string;
   generalServiceId: string;
   date: string;
@@ -30,6 +32,7 @@ export class Booking {
   constructor({
     id,
     userId,
+    companyId,
     generalServiceId,
     serviceId,
     date,
@@ -43,6 +46,7 @@ export class Booking {
   }: IBookingData) {
     this.id = id
     this.userId = userId;
+    this.companyId = companyId;
     this.generalServiceId = generalServiceId;
     this.serviceId = serviceId;
     this.date = date;

@@ -11,7 +11,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${color ? color : "bg-red-800"} text-white font-bai-regular lowercase rounded ${width} ${height}`}
+      className={`${color ? color : "bg-black"} text-white font-bai-regular lowercase rounded ${width} ${height}`}
       disabled={isLoading}
       onClick={!isLoading ? onClick : undefined}
     >

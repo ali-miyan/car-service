@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package services;
+
+service StandardService {
+  rpc GetPackage(StandardRequest) returns (StandardResponse);
+}
+
+message StandardRequest {
+  string serviceId = 1;
+  string typeOfPackage = 2;
+}
+
+message StandardResponse {
+  StandardPackage standardPackage = 1;
+}
+
+message StandardPackage {
+  repeated SubService subServices = 1;
+  Details detail = 2;
+}
+
+message SubService {
+  string _id = 1;
+  string name = 2;
+}
+
+message Details {
+  double price = 1;
+  double workingHours = 2;
+}

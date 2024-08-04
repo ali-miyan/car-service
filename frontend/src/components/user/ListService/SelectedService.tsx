@@ -9,7 +9,7 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError } from "../../common/Toast";
 import TermsAndService from "./TermsAndService";
 import { useDispatch } from "react-redux";
-import { setGeneralService, setPackage } from "../../../context/OrderContext";
+import { setCompanyId, setGeneralService, setPackage } from "../../../context/OrderContext";
 
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,11 +23,13 @@ const SelectedService = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(name,'namemememe',generalServiceId);
+  console.log(name,'namemememe',generalServiceId,'comapntID',);
 
   const handleClick = (name?:string) => {
     if (token) {
+      console.log(posts.companyId._id,'comapnyID');
       
+      dispatch(setCompanyId(posts.companyId._id))
       dispatch(setGeneralService(generalServiceId))
       dispatch(setPackage(name))
       setIsModalOpen(true);

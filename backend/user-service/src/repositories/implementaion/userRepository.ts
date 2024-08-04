@@ -80,6 +80,20 @@ export class UserRepository implements IUserRepository {
     }
   }
 
+  async getUserDetails(id: string): Promise<{ username: string; email: string; phone: number | null } | null> {
+    try {
+      const user = await userModel.findById(id).select("username email phone");      
+      if (!user) return null;
+      return {
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+      };
+    } catch (error) {
+      throw new BadRequestError("error in db");
+    }
+  }
+
 
   async save(user: User): Promise<User> {
     try {

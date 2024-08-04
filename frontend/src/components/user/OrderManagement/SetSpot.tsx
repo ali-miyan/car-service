@@ -6,8 +6,8 @@ import { RegistrationStep } from "../../common/OrderHeader";
 import { SetSelectedPlace } from "../../../context/OrderContext";
 
 const ServiceOptions = React.memo(() => {
-  const { servicePlace, serviceId } = useSelector((state: any) => state.order);
-  console.log(servicePlace, "service type", serviceId);
+  const { servicePlace, serviceId,companyId } = useSelector((state: any) => state.order);
+  console.log(servicePlace, "service type", companyId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

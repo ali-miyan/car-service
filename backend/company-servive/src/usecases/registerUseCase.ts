@@ -30,7 +30,6 @@ export class RegisterUseCase {
     }
 
     const [logo,licenseImgFile, approvedImgFile] = files;
-    console.log(licenseImgFile, "--->>", approvedImgFile);
 
     const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
       "tune-up",

@@ -64,7 +64,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <div className="flex font-bai-regular  uppercase">
+      <div className="flex font-bai-regular uppercase">
         <div
           className={`${
             open ? "w-72" : "w-20"

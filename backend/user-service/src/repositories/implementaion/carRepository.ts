@@ -18,9 +18,10 @@ export class CarRepository implements ICarRepository {
       throw new Error("error in db");
     }
   }
-  async getOne(id: string): Promise<ICarData[] | null> {
+  async getOne(id: string): Promise<ICarData | null> {
     try {
-      return await carModel.findOne({ _id: id });
+      const car =  await carModel.findOne({ _id: id }).select("userId name color src vin");
+      return (car as ICarData).toObject();
     } catch (error) {
       throw new Error("error in db");
     }

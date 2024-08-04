@@ -33,6 +33,19 @@ export class ServiceRepository implements IServiecRepository {
       throw new Error("error in db");
     }
   }
+  async getPackageDetails(
+    serviceId: string,
+    packageName: "basic" | "standard" | "premium"
+  ) {
+    try {
+      const service = await serviceModal.findOne({ _id: serviceId });
+      return service ? service[`${packageName}Package`] : null;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db");
+    }
+  }
+
   async getEveryService(): Promise<IService[] | null> {
     try {
       const newService = await serviceModal
@@ -53,21 +66,27 @@ export class ServiceRepository implements IServiecRepository {
       throw new Error("error in db");
     }
   }
+
   async checkSlotAvailabilityInDb(id: string): Promise<boolean> {
     try {
-      const newService = await serviceModal.findOne({ _id: id });
-      if (!newService) {
-        return false;
-      }
-      const availableSlots = parseInt(newService.servicesPerDay, 10);
-      if (isNaN(availableSlots)) {
+      const service = await serviceModal.findOne({ _id: id });
+      if (!service) {
         return false;
       }
 
-      return availableSlots > 0;
+      const availableSlots = parseInt(service.servicesPerDay, 10);
+      if (isNaN(availableSlots) || availableSlots <= 0) {
+        return false;
+      }
+
+      service.servicesPerDay = (availableSlots - 1).toString();
+
+      await service.save();
+
+      return true;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new Error("Error in db");
     }
   }
 

@@ -7,6 +7,8 @@ import Home from "../pages/companyPages/Home";
 import Services from "../pages/companyPages/ServicesPage";
 import AddServices from "../pages/companyPages/AddServicesPage";
 import EditService from "../pages/companyPages/EditServicePage";
+import ListBookingPage from "../pages/companyPages/ListBookingPage";
+import orderDetailsPage from "../pages/companyPages/orderDetailsPage";
 import CompanyVerifyRoute from "./protectedRoutes/CompanyVerifyRoute";
 import CompanyProtectedRoute from "./protectedRoutes/CompanyProtectedRoute";
 
@@ -20,6 +22,8 @@ const CompanyRoutes = () => (
     <Route path="services" element={<CompanyProtectedRoute element={Services} />} />
     <Route path="add-services" element={<CompanyProtectedRoute element={AddServices} />} />
     <Route path="edit-service/:id" element={<CompanyProtectedRoute element={EditService} />} />
+    <Route path="/notification" element={<CompanyProtectedRoute element={ListBookingPage} />} />
+    <Route path="/order-details/:id" element={<CompanyProtectedRoute element={orderDetailsPage} />} />
   </Routes>
 );
 

@@ -4,7 +4,7 @@ import { ICarData } from "../../infrastructure/db";
 export interface ICarRepository {
   getAll(): Promise<ICarData[] | null>;
   getById(id: string): Promise<ICarData[] | null>;
-  getOne(id: string): Promise<ICarData[] | null>;
+  getOne(id: string): Promise<ICarData | null>;
   updateStatus(id: string,data:object): Promise<void>;
   findByPhone(phone: number): Promise<boolean | null>;
   updateImage(id: string, profileImg: string): Promise<void>;

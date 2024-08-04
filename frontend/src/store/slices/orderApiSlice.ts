@@ -11,7 +11,10 @@ export const orderApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getOrders: builder.query({
-      query: () => "/get-orders",
+      query: (id:string) => `/get-bookings/${id}`,
+    }),
+    getSingleOrder: builder.query({
+      query: (id:string) => `/get-single-order/${id}`,
     }),
     makeOrder: builder.mutation({
       query: (formData) => ({
@@ -33,5 +36,6 @@ export const orderApiSlice = createApi({
 export const {
   useMakeOrderMutation,
   useUpdateOrderMutation,
-  useGetOrdersQuery
+  useGetOrdersQuery,
+  useGetSingleOrderQuery
 } = orderApiSlice;

@@ -1,5 +1,5 @@
 import Sidebar from "../../components/company/SideBar";
-import Service from "../../components/company/Services";
+import ListBookings from "../../components/company/ListBookings";
 
 const RegisterPage3 = () => {
   return (
@@ -8,9 +8,9 @@ const RegisterPage3 = () => {
 
         <div className="w-full min-h-screen h-full bg-gray-200">
           <h1 className="text-center pt-6 font-bai-bold underline underline-offset-2 text-xl ">
-            SERVICES
+            Notification
           </h1>
-          <Service />
+          <ListBookings />
         </div>
       </Sidebar>
     </>
