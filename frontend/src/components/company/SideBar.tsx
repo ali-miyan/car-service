@@ -1,4 +1,4 @@
-import { ReactNode, useState, useMemo, useCallback } from "react";
+import { ReactNode, useState, useMemo, useCallback, useEffect } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { MdBook, MdConstruction, MdDashboard, MdLogout } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -6,10 +6,45 @@ import { useGetCompanyByIdQuery } from "../../store/slices/companyApiSlice";
 import { getInitialToken } from "../../helpers/getToken";
 import { Post } from "../../schema/company";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
+import useSocket from "../../service/socketService";
+import OrderNOtification from "../common/OrderMessage";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
+  const id = useMemo(() => getInitialToken("companyToken"), []);
+
+  const { data: posts } = useGetCompanyByIdQuery(id as string);
+  const companyData: Post = posts;
   const [open, setOpen] = useState(true);
   const location = useLocation();
+
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
+  const [notificationDot, setNotificationDot] = useState(false);
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("order_booked", (message: any) => {
+        console.log("Message received: ", message);
+        if (companyData && companyData._id === message.order.companyId) {
+          setMessage(
+            `A new order has been booked. 
+            Service Place: ${message.order.servicePlace},
+             Date: ${message.order.date}`
+          );
+          setNotificationDot(true);
+          setShowToast(true);
+        }
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("order_booked");
+      }
+    };
+  }, [socket,posts,companyData]);
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -18,43 +53,34 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
   const navigate = useNavigate();
 
-  const id = useMemo(() => getInitialToken("companyToken"), []);
+  const links = [
+    {
+      to: "/company/home",
+      icon: <MdDashboard className="text-2xl" />,
+      label: "Dashboard",
+    },
+    {
+      to: "/company/services",
+      icon: <MdConstruction className="text-2xl" />,
+      label: "Services",
+    },
+    {
+      to: "/company/notification",
+      icon: <MdBook className="text-2xl" />,
+      label: "Notification",
+      badge: notificationDot,
+      onClick: () => setNotificationDot(false),
+    },
+    {
+      to: "/company/logout",
+      icon: <MdLogout className="text-2xl" />,
+      label: "Log-out",
+    },
+  ];
 
-  const {
-    data: posts,
-    isLoading,
-    refetch,
-    error,
-  } = useGetCompanyByIdQuery(id as string, {
-    refetchOnMountOrArgChange: false,
-  });
-  const companyData: Post = posts;
-
-  const links = useMemo(
-    () => [
-      {
-        to: "/company/home",
-        icon: <MdDashboard className="text-2xl" />,
-        label: "Dashboard",
-      },
-      {
-        to: "/company/services",
-        icon: <MdConstruction className="text-2xl" />,
-        label: "Services",
-      },
-      {
-        to: "/company/notification",
-        icon: <MdBook className="text-2xl" />,
-        label: "Notification",
-      },
-      {
-        to: "/company/logout",
-        icon: <MdLogout className="text-2xl" />,
-        label: "Log-out",
-      },
-    ],
-    []
-  );
+  const handleClose = () => {
+    setShowToast(false);
+  };
 
   const handleLogout = useCallback(() => {
     document.cookie =
@@ -64,6 +90,12 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
+      <OrderNOtification
+        show={showToast}
+        message={message}
+        onClose={handleClose}
+        to="/company/notification"
+      />
       <div className="flex font-bai-regular uppercase">
         <div
           className={`${
@@ -117,7 +149,11 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                     </a>
                   </DeleteConfirmationModal>
                 ) : (
-                  <Link to={link.to} className="flex items-center gap-x-2">
+                  <Link
+                    to={link.to}
+                    className="flex items-center gap-x-2"
+                    onClick={link.onClick}
+                  >
                     {link.icon}
                     <span
                       className={`${
@@ -125,6 +161,9 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                       } origin-left duration-200`}
                     >
                       {link.label}
+                      {link.badge && (
+                        <span className="ml-2 inline-flex items-center justify-center w-3 h-3 bg-red-900 rounded-full"></span>
+                      )}
                     </span>
                   </Link>
                 )}

@@ -1,14 +1,8 @@
-import { notifyError, notifySuccess } from "../common/Toast";
-import { errMessage } from "../../constants/errorMessage";
-import { useState, useEffect } from "react";
-
 import { useGetOrdersQuery } from "../../store/slices/orderApiSlice";
-import { profileImg } from "../../constants/imageUrl";
-import CustomModal from "../common/Modal";
-import ListPackages from "./ListPackages";
 import { Link } from "react-router-dom";
 import { getInitialToken } from "../../helpers/getToken";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const ListBooking = () => {
   const companyId = getInitialToken("companyToken");
@@ -50,8 +44,11 @@ const ListBooking = () => {
               {isLoading ? (
                 <tr>
                   <td colSpan={7} className="py-6">
-                    <div className="animate-pulse">
-                      <div className="h-8 bg-gray-200 rounded"></div>
+                    <div className="animate-pulse space-y-2">
+                      <div className="h-10 bg-gray-300 rounded w-full"></div>
+                      <div className="h-10 bg-gray-300 rounded w-full"></div>
+                      <div className="h-10 bg-gray-300 rounded w-full"></div>
+                      <div className="h-10 bg-gray-300 rounded w-full"></div>
                     </div>
                   </td>
                 </tr>
@@ -84,7 +81,7 @@ const ListBooking = () => {
               ) : (
                 <tr>
                   <td colSpan={7} className="py-4 text-center">
-                    <p>No services available.</p>
+                    <p>No ORDERS available.</p>
                   </td>
                 </tr>
               )}

@@ -12,12 +12,13 @@ message StandardRequest {
 }
 
 message StandardResponse {
-  StandardPackage standardPackage = 1;
+  StandardPackage package = 1;
+  CompanyInfo company = 2;
 }
 
 message StandardPackage {
-  repeated SubService subServices = 1;
-  Details detail = 2;
+  Details detail = 1;
+  repeated SubService subServices = 2;
 }
 
 message SubService {
@@ -28,4 +29,11 @@ message SubService {
 message Details {
   double price = 1;
   double workingHours = 2;
+}
+
+message CompanyInfo {
+  double latitude = 1;
+  double longitude = 2;
+  string name = 3;
+  string image = 4;
 }

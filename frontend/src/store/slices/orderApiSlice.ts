@@ -16,6 +16,12 @@ export const orderApiSlice = createApi({
     getSingleOrder: builder.query({
       query: (id:string) => `/get-single-order/${id}`,
     }),
+    getUsersOrder: builder.query({
+      query: (id:string) => `/get-users-order/${id}`,
+    }),
+    getLiveLocation: builder.query({
+      query: (id:string) => `/get-live-location/${id}`,
+    }),
     makeOrder: builder.mutation({
       query: (formData) => ({
         url: `/booking`,
@@ -30,6 +36,20 @@ export const orderApiSlice = createApi({
         body:formData,
       }),
     }),
+    updateStatus: builder.mutation({
+      query: (formData) => ({
+        url: `/update-booking-status`,
+        method: HttpMethod.POST,
+        body:formData,
+      }),
+    }),
+    updateDriverLocation: builder.mutation({
+      query: (formData) => ({
+        url: `/update-driver-location`,
+        method: HttpMethod.POST,
+        body:formData,
+      }),
+    }),
   }),
 });
 
@@ -37,5 +57,9 @@ export const {
   useMakeOrderMutation,
   useUpdateOrderMutation,
   useGetOrdersQuery,
-  useGetSingleOrderQuery
+  useGetSingleOrderQuery,
+  useUpdateStatusMutation,
+  useGetUsersOrderQuery,
+  useUpdateDriverLocationMutation,
+  useGetLiveLocationQuery
 } = orderApiSlice;

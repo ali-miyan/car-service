@@ -1,21 +1,186 @@
-import React from "react";
+import React, { useState, useCallback, memo, useEffect } from "react";
 import { FaUser, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { useGetSingleOrderQuery } from "../../store/slices/orderApiSlice";
+import {
+  useGetSingleOrderQuery,
+  useUpdateDriverLocationMutation,
+  useUpdateStatusMutation,
+} from "../../store/slices/orderApiSlice";
+import { notifySuccess } from "../common/Toast";
 
-const OrderDetail = () => {
-  const { id } = useParams();
-  const { data: order } = useGetSingleOrderQuery(id as string);
-  console.log(order, "order gotted");
+const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
+  if (!visible) return null;
+
+  const statuses =
+    servicePlace === "home"
+      ? [
+          "Driver Assigned",
+          "Driver En Route",
+          "Car Picked Up",
+          "Car Arrived at Service Center",
+          "Service In Progress",
+          "Service Completed",
+          "Car En Route Back",
+          "Car Delivered",
+          "Booking Completed",
+        ]
+      : [
+          "Car Arrived at Service Center",
+          "Service In Progress",
+          "Service Completed",
+          "Ready for Pickup",
+          "Booking Completed",
+        ];
+
+  return (
+    <div className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow min-w-64 mt-2">
+      <ul className="py-2 text-sm text-gray-700">
+        {statuses.map((status) => (
+          <li key={status}>
+            <button
+              type="button"
+              className="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+              onClick={() => onSelect(status)}
+            >
+              {status}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+});
+
+const OrderDetail: React.FC = () => {
+  const [updateStatus] = useUpdateStatusMutation({});
+  const [updateDriverLocation] = useUpdateDriverLocationMutation({});
+  const { id } = useParams<{ id: string }>();
+  const { data: order, refetch } = useGetSingleOrderQuery(id as string);
+
+  // const [driverLocation, setDriverLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const toggleDropdown = useCallback(() => {
+    setDropdownVisible((prev) => !prev);
+  }, []);
+
+  useEffect(() => {
+    let watchId: number | undefined;
+
+    if (
+      order?.data.status === "Driver En Route" ||
+      order?.data.status === "Car En Route Back"
+    ) {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            console.log("changeongcahngeincangen");
+
+            try {
+              await updateDriverLocation({
+                orderId: order.data.id,
+                latitude,
+                longitude,
+              }).unwrap();
+            } catch (error) {
+              console.error("Error updating driver location:", error);
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000,
+          }
+        );
+      }
+    }
+
+    return () => {
+      if (watchId !== undefined) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [order?.data.status, refetch, updateDriverLocation]);
+
+  console.log(order);
+
+  const handleStatusSelect = async (status: string) => {
+    try {
+      const res = await updateStatus({
+        status,
+        orderId: order.data.id,
+      }).unwrap();
+      if (res.success) {
+        console.log(res);
+        notifySuccess("successfully updated");
+        await refetch();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setDropdownVisible(false);
+  };
+
+  if (!order) return <div>Loading...</div>;
+
   return (
     <div className="mx-32 my-20 lowercase">
-      <h1 className="text-2xl font-bold mb-2 uppercase font-bai-bold">
-        Order detail
-      </h1>
-      <p className="text-gray-600 mb-6 uppercase    ">
-        Order ID: {order?.data.id}
-      </p>
-
+      <div className="flex w-full justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold mb-2 uppercase font-bai-bold">
+            Order Detail
+          </h1>
+          <p className="text-gray-600 mb-6 uppercase">
+            Order ID: {order?.data.id}
+          </p>
+        </div>
+        <form>
+          <div className="relative flex items-start">
+            <p className="mx-4 uppercase p-3 bg-green-50 border">
+              <span className="text-sm">
+                STATUS: <strong> {order?.data.status}</strong>
+              </span>
+            </p>
+            <div className="relative">
+              <button
+                id="status-button"
+                onClick={toggleDropdown}
+                className="flex-shrink-0 min-w-64 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
+                type="button"
+              >
+                Change Status
+                <svg
+                  aria-hidden="true"
+                  className="w-4 h-7 ml-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <Dropdown
+                visible={dropdownVisible}
+                onSelect={handleStatusSelect}
+                onClose={() => setDropdownVisible(false)}
+                servicePlace={order?.data.servicePlace}
+              />
+            </div>
+          </div>
+        </form>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white border-2 p-8 mb-8">
         <div className="flex flex-col items-center text-center">
           <div className="bg-red-50 p-4 rounded-full mb-4">
@@ -46,115 +211,83 @@ const OrderDetail = () => {
               <FaMapMarkerAlt className="text-red-900 text-3xl" />
             </div>
             <div>
-              <div>
-                <h2 className="font-semibold text-lg mb-2">User's Home</h2>
-                <p className="mb-1">City: {order.data.address.city}</p>
-                <p className="mb-1">Address: {order.data.address.address}</p>
-                <p className="mb-1">
-                  Street: {order.data.address.streetRegion}
-                </p>
-                <p className="mb-1">Pincode: {order.data.address.postcode}</p>
-              </div>
+              <h2 className="font-semibold text-lg mb-2">User's Home</h2>
+              <p className="mb-1">City: {order?.data.address.city}</p>
+              <p className="mb-1">Address: {order?.data.address.address}</p>
+              <p className="mb-1">Street: {order?.data.address.streetRegion}</p>
+              <p className="mb-1">Pincode: {order?.data.address.postcode}</p>
             </div>
           </div>
         )}
       </div>
-
-      <h2 className="text-xl font-semibold mb-4">SERVICE BOOKED</h2>
       <div className="overflow-x-auto">
-        <h3 className="font-semibold text-center text-gray-900 uppercase">
-          service package
-        </h3>
-        <div className="flex">
-          <div className="border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
-            <div className="p-6">
-              <h2 className="text-xl leading-6 font-bold text-slate-900 uppercase">
-                {}
-              </h2>
-              <p className="mt-8">
-                <span className="text-4xl font-bold text-slate-900 tracking-tighter">
-                  ₹{order?.standardPackage?.detail?.price || "0"}
-                </span>
-
-                <span className="text-base font-medium text-slate-500">
-                  /service
-                </span>
-                <br />
-                <span className="text-gray-500">
-                  - takes {order?.standardPackage?.detail?.workingHours} hours
-                </span>
-              </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="font-semibold text-center text-gray-900 uppercase mb-4">
+            Service Package and Car Type
+          </h3>
+          <div className="flex space-x-4">
+            <div className="flex-1 border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
+              <div className="p-6">
+                <h2 className="text-xl leading-6 font-bold text-slate-900 uppercase">
+                  ₹{order?.standardPackage.detail.price}
+                  <span className="text-base font-medium text-slate-500">
+                    /service
+                  </span>
+                </h2>
+                <p className="mt-4 text-gray-500">
+                  - takes {order?.standardPackage.detail.workingHours} hours
+                </p>
+              </div>
+              <div className="pt-6 pb-8 px-6">
+                <h3 className="text-sm font-bold text-slate-900 tracking-wide uppercase">
+                  What's included
+                </h3>
+                <ul role="list" className="mt-4 space-y-3">
+                  {order?.standardPackage.subServices.map((val, index) => (
+                    <li className="flex items-center space-x-3" key={index}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="flex-shrink-0 h-5 w-5 text-green-400"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l5 5l10 -10" />
+                      </svg>
+                      <span className="text-sm text-slate-700">{val.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className="pt-6 pb-8 px-6">
-              <h3 className="text-sm font-bold text-slate-900 tracking-wide uppercase">
-                What's included
-              </h3>
-              <ul role="list" className="mt-4 space-y-3">
-                {order?.standardPackage &&
-                  order?.standardPackage.subServices?.map(
-                    (val: any, index: number) => (
-                      <React.Fragment key={index}>
-                        <li className="flex space-x-3" key={val._id}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="flex-shrink-0 h-5 w-5 text-green-400"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            strokeWidth="2"
-                            stroke="currentColor"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <path
-                              stroke="none"
-                              d="M0 0h24v24H0z"
-                              fill="none"
-                            ></path>
-                            <path d="M5 12l5 5l10 -10"></path>
-                          </svg>
-                          <span className="text-sm text-slate-700">
-                            {val.name}
-                          </span>
-                        </li>
-                      </React.Fragment>
-                    )
-                  )}
-              </ul>
-            </div>
-          </div>
-          <div className="flex justify-evenly">
-                {order && (
-                  <div
-                    key={order._id}
-                    className="p-4 shadow-md mx-3 mb-4 bg-white w-full "
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <div className="flex justify-center mb-2">
-                      <img
-                        src={order.src}
-                        alt={order.name}
-                        className="object-cover w-auto"
-                      />
-                    </div>
-                    <div className="flex items-center mb-2">
-                      <label htmlFor={`car-${order._id}`} className="flex-grow">
-                        <h2 className="text-sm font-semibold">
-                          <strong>Brand:</strong> {order.name}
-                        </h2>
-                        <p className="text-gray-700">
-                          <strong>Color:</strong> {order.color}
-                        </p>
-                        <p className="text-gray-700">
-                          <strong>Number:</strong> {order.vin}
-                        </p>
-                      </label>
-                    </div>
+            {order?.data && (
+              <div className="flex-1 bg-white text-center  border border-slate-200 rounded-lg shadow-sm">
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-slate-900 mb-4">
+                    Car Detail
+                  </h2>
+                  <img
+                    src={order?.src}
+                    alt="car"
+                    className="w-22 h-22 object-cover mb-4 mx-auto rounded-md"
+                  />
+                  <div className="space-y-2 uppercase tex">
+                    <p className="text-sm text-gray-600">Name: {order?.name}</p>
+                    <p className="text-sm text-gray-600">
+                      Color: {order?.color}
+                    </p>
+                    <p className="text-sm text-gray-600">VIN: {order?.vin}</p>
                   </div>
-                )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

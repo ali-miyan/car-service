@@ -2,7 +2,6 @@ import React, { useState, useRef, useCallback } from "react";
 import {
   FiSettings,
   FiLogOut,
-  FiUser,
   FiPackage,
   FiMapPin,
   FiTool,
@@ -177,7 +176,7 @@ const Profile = () => {
             onClick={() => setSelectedSection("garage")}
           >
             <FiTool size={24} color="#718096" />
-            <span className="font-bai-medium">My Garage</span>
+            <span className="font-bai-medium">My Bookings</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${

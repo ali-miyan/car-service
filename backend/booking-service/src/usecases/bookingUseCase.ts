@@ -2,17 +2,21 @@ import { BadRequestError } from "tune-up-library";
 import { IBookingRepository } from "../repositories";
 import { Booking } from "../entities";
 import { v4 as uuidv4 } from "uuid";
-import { checkSlotAvailability, StripeService } from "../infrastructure/services";
+import {
+  checkSlotAvailability,
+  StripeService,
+} from "../infrastructure/services";
+import { io } from "..";
 
 export class BookingUseCase {
   constructor(
     private bookingRepository: IBookingRepository,
-    private stripeService: StripeService,
+    private stripeService: StripeService
   ) {}
 
   async execute(
     userId: string,
-    companyId:string,
+    companyId: string,
     generalServiceId: string,
     serviceId: string,
     date: string,
@@ -32,6 +36,7 @@ export class BookingUseCase {
       !address ||
       !typeOfPackage ||
       !totalPrice ||
+      !companyId ||
       !payment ||
       !carId
     ) {
@@ -39,14 +44,16 @@ export class BookingUseCase {
     }
 
     const slotAvailability = await checkSlotAvailability(serviceId);
-    console.log(slotAvailability,'slot avaialbility');
-    
+    console.log(slotAvailability, "slot avaialbility");
 
     if (!slotAvailability.available) {
       throw new BadRequestError("No slots available for the selected service.");
     }
 
-    let status: "pending" | "confirmed" | "completed" | "cancelled" = payment.toLowerCase() === "cash" ? "confirmed" : "pending";
+    let status: "Booking Pending" | "Booking Confirmed" =
+      payment.toLowerCase() === "cash"
+        ? "Booking Confirmed"
+        : "Booking Pending";
     let response: any = { success: true };
 
     const booking = new Booking({
@@ -64,7 +71,7 @@ export class BookingUseCase {
       totalPrice,
     });
 
-    const order = await this.bookingRepository.save(booking);    
+    const order = await this.bookingRepository.save(booking);
 
     if (payment.toLowerCase() === "online") {
       try {
@@ -79,6 +86,11 @@ export class BookingUseCase {
         );
       }
     }
+
+    io.emit("order_booked", {
+      message: "Order has been booked",
+      order
+    });
 
     return response;
   }

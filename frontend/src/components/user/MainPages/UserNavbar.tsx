@@ -15,12 +15,39 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import useSocket from "../../../service/socketService";
+import OrderNOtification from "../../common/OrderMessage";
 
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
+
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
+  const handleClose = () => {
+    setShowToast(false);
+  };
+
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("order_updated", (message: any) => {
+        console.log("Message received: ", message);
+        setMessage(`${message.message}Status info: ${message.status}`);
+          setShowToast(true);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("order_booked");
+      }
+    };
+  },[socket])
 
   const location = useLocation();
 
@@ -56,6 +83,12 @@ const UserNavbar = () => {
 
   return (
     <>
+    <OrderNOtification
+        show={showToast}
+        message={message}
+        onClose={handleClose}
+        to="/profile"
+      />
       {showMap && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <button

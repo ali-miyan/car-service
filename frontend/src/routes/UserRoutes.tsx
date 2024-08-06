@@ -16,6 +16,8 @@ import AtServiceCenter from "../pages/userPages/AtServiceCenter";
 import CheckoutPage from "../pages/userPages/CheckoutPage";
 import SuccessPage from "../pages/userPages/SuccessPage";
 import FailurePage from "../pages/userPages/FailurePage";
+import OrderDetails from "../pages/userPages/OrderDetails";
+import LiveTrackPage from "../pages/userPages/LiveTrackPage";
 
 const UserRoutes = () => (
   <Routes>
@@ -35,6 +37,8 @@ const UserRoutes = () => (
     <Route path="/checkout/:id" element={<CheckoutPage />} />
     <Route path="/checkout-success/:id" element={<SuccessPage />} />
     <Route path="/checkout-failure" element={<FailurePage />} />
+    <Route path="/order-details/:id" element={<OrderDetails />} />
+    <Route path="/live-track/:id" element={<LiveTrackPage />} />
   </Routes>
 );
 

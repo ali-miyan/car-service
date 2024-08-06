@@ -7,7 +7,7 @@ export class GetSingleBookingUseCase {
   constructor(private bookingRepository: IBookingRepository) {}
 
   async execute(companyId: string): Promise<any> {
-    const data = await this.bookingRepository.getSingle(companyId);
+    const data = await this.bookingRepository.getSingle(companyId);    
 
     const { userDetails } = await getUsersDetails(data.userId,data.carId);
     const  standardPackage  = await getServiceDetails(
@@ -15,8 +15,9 @@ export class GetSingleBookingUseCase {
       data.typeOfPackage
     );
 
-    console.log(userDetails, "got userDetailss", standardPackage);
-
+    console.log(standardPackage,'logstandardpackage');
+    
+    
     if (!data) {
       throw new BadRequestError("cant get bookings");
     }

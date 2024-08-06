@@ -1,13 +1,25 @@
 import { NextFunction, Request, Response } from "express";
-import { BookingUseCase, GetBookingUseCase, GetSingleBookingUseCase } from "../usecases";
+import {
+  BookingUseCase,
+  GetBookingUseCase,
+  GetLiveLocationUseCase,
+  GetSingleBookingUseCase,
+  UpdateDriverLocationUseCase,
+  UpdateStatusUseCase,
+} from "../usecases";
 import { UpdateBookingStatusUseCase } from "../usecases/updateBookingUseCase";
+import { GetUsersBookingUseCase } from "../usecases/getUsersBookingUseCase";
 
 export class BookingController {
   constructor(
     private bookingRepository: BookingUseCase,
     private updateBookingRepository: UpdateBookingStatusUseCase,
-    private getBookingUseCase:GetBookingUseCase,
-    private getSingleBookingUseCase:GetSingleBookingUseCase
+    private getBookingUseCase: GetBookingUseCase,
+    private getSingleBookingUseCase: GetSingleBookingUseCase,
+    private updateStatusUseCase: UpdateStatusUseCase,
+    private getUsersBookingUseCase: GetUsersBookingUseCase,
+    private updateDriverLocationUseCase: UpdateDriverLocationUseCase,
+    private getLiveLocationUseCase: GetLiveLocationUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -26,8 +38,7 @@ export class BookingController {
       generalServiceId,
     } = req.body;
 
-    console.log(req.body,'reqboddy');
-    
+    console.log(req.body, "reqboddy");
 
     try {
       const response = await this.bookingRepository.execute(
@@ -50,7 +61,7 @@ export class BookingController {
     }
   }
 
-  async updateStatus(
+  async updateBooking(
     req: Request,
     res: Response,
     next: NextFunction
@@ -59,6 +70,21 @@ export class BookingController {
 
     try {
       await this.updateBookingRepository.execute(id);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateStatus(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { orderId, status } = req.body;
+    console.log(req.body, "reqbody");
+
+    try {
+      await this.updateStatusUseCase.execute(orderId, status);
       res.status(200).json({ success: true });
     } catch (error) {
       next(error);
@@ -87,6 +113,52 @@ export class BookingController {
 
     try {
       const data = await this.getSingleBookingUseCase.execute(id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getUsersBooking(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      const data = await this.getUsersBookingUseCase.execute(id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateDriversLocation(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { orderId, latitude, longitude } = req.body;
+    console.log(req.body, "reqqestr body");
+
+    try {
+      await this.updateDriverLocationUseCase.execute(
+        orderId,
+        latitude,
+        longitude
+      );
+      res.status(200).json({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getLiveLocation(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+    try {
+      const data  = await this.getLiveLocationUseCase.execute(id);
       res.status(200).json(data);
     } catch (error) {
       next(error);

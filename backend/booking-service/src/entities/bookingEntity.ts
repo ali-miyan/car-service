@@ -1,32 +1,56 @@
 export interface IBookingData {
-  id?:string;
+  id?: string;
   userId: string;
-  companyId:string;
+  companyId: string;
   generalServiceId: string;
   serviceId: string;
   date: string;
   payment: string;
   address: object;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  status:
+    | "Booking Pending"
+    | "Booking Confirmed"
+    | "Driver Assigned"
+    | "Driver En Route"
+    | "Car Picked Up"
+    | "Car Arrived at Service Center"
+    | "Service In Progress"
+    | "Service Completed"
+    | "Car En Route Back"
+    | "Car Delivered"
+    | "Ready for Pickup"
+    | "Booking Completed";
   typeOfPackage: string;
   servicePlace: string;
-  carId:string;
+  carId: string;
   totalPrice: number;
 }
 
 export class Booking {
-  id?:string;
+  id?: string;
   userId: string;
-  companyId:string;
+  companyId: string;
   serviceId: string;
   generalServiceId: string;
   date: string;
   payment: string;
   address: object;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  status:
+    | "Booking Pending"
+    | "Booking Confirmed"
+    | "Driver Assigned"
+    | "Driver En Route"
+    | "Car Picked Up"
+    | "Car Arrived at Service Center"
+    | "Service In Progress"
+    | "Service Completed"
+    | "Car En Route Back"
+    | "Car Delivered"
+    | "Ready for Pickup"
+    | "Booking Completed";
   typeOfPackage: string;
   servicePlace: string;
-  carId:string;
+  carId: string;
   totalPrice: number;
 
   constructor({
@@ -44,7 +68,7 @@ export class Booking {
     carId,
     totalPrice,
   }: IBookingData) {
-    this.id = id
+    this.id = id;
     this.userId = userId;
     this.companyId = companyId;
     this.generalServiceId = generalServiceId;
@@ -55,7 +79,7 @@ export class Booking {
     this.status = status;
     this.typeOfPackage = typeOfPackage;
     this.servicePlace = servicePlace;
-    this.carId = carId
+    this.carId = carId;
     this.totalPrice = totalPrice;
   }
 }

@@ -23,8 +23,11 @@ const getService = async (call: any, callback: any) => {
     const data = await serviceRepository.getPackageDetails(
       serviceId, typeOfPackage
     );
+
+  console.log(data,'this is the datatata of location');
+  
     
-    callback(null, {standardPackage:data});
+    callback(null, data);
   } catch (error:any) {
     console.log(error,'error in ggrrppc');
     

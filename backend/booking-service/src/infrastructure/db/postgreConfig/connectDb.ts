@@ -17,7 +17,6 @@ export const sequelize = new Sequelize({
       rejectUnauthorized: false,
     },
   },
-  logging: console.log,
 });
 
 export const connectDB = async () => {

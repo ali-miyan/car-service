@@ -75,3 +75,18 @@ export interface LoadingButtonProps {
   width: string;
   height: string;
 }
+
+export const statusMessages: { [key: string]: string } = {
+  "Booking Pending": "Your booking is in the queue and awaiting confirmation.",
+  "Booking Confirmed": "Your booking has been confirmed. We will update you shortly.",
+  "Driver Assigned": "A driver has been assigned to your booking.",
+  "Driver En Route": "The driver is on their way to your location.",
+  "Car Picked Up": "Your car has been picked up and is en route to the service center.",
+  "Car Arrived at Service Center": "Your car has arrived at the service center.",
+  "Service In Progress": "The service on your car is currently in progress.",
+  "Service Completed": "The service on your car has been completed.",
+  "Car En Route Back": "Your car is on its way back to you.",
+  "Car Delivered": "Your car has been delivered back to you.",
+  "Booking Completed": "Your booking process is complete. Thank you for choosing us!",
+  "Ready for Pickup": "Your car is ready for pickup."
+};

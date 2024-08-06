@@ -4,12 +4,24 @@ import { sequelize } from "../postgreConfig/connectDb";
 interface BookingAttributes {
   id: string;
   userId: string;
-  carId:string;
-  companyId:string;
+  carId: string;
+  companyId: string;
   date: string;
-  payment:string;
+  payment: string;
   address: object;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  status:
+    | "Booking Pending"
+    | "Booking Confirmed"
+    | "Driver Assigned"
+    | "Driver En Route"
+    | "Car Picked Up"
+    | "Car Arrived at Service Center"
+    | "Service In Progress"
+    | "Service Completed"
+    | "Car En Route Back"
+    | "Car Delivered"
+    | "Ready for Pickup"
+    | "Booking Completed";
   serviceId: string;
   typeOfPackage: string;
   generalServiceId: string;
@@ -28,9 +40,21 @@ class Booking
   public carId!: string;
   public companyId!: string;
   public date!: string;
-  public payment!:string;
+  public payment!: string;
   public address!: object;
-  public status!: "pending" | "confirmed" | "completed" | "cancelled";
+  public status!:
+    | "Booking Pending"
+    | "Booking Confirmed"
+    | "Driver Assigned"
+    | "Driver En Route"
+    | "Car Picked Up"
+    | "Car Arrived at Service Center"
+    | "Service In Progress"
+    | "Service Completed"
+    | "Car En Route Back"
+    | "Car Delivered"
+    | "Ready for Pickup"
+    | "Booking Completed";
   public serviceId!: string;
   public typeOfPackage!: string;
   public generalServiceId!: string;
@@ -44,7 +68,7 @@ Booking.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue:DataTypes.UUIDV4,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     userId: {
@@ -80,8 +104,21 @@ Booking.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "completed", "cancelled"),
-      defaultValue: "pending",
+      type: DataTypes.ENUM(
+        "Booking Pending",
+        "Booking Confirmed",
+        "Driver Assigned",
+        "Driver En Route",
+        "Car Picked Up",
+        "Car Arrived at Service Center",
+        "Service In Progress",
+        "Service Completed",
+        "Car En Route Back",
+        "Car Delivered",
+        "Booking Completed",
+        "Ready for Pickup"
+      ),
+      defaultValue: "Booking Pending",
     },
     typeOfPackage: {
       type: DataTypes.STRING,

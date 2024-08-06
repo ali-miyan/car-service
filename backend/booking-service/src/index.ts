@@ -1,9 +1,11 @@
-import express ,{Request,Response} from "express";
+import express from "express";
 import bookingRoute from "./infrastructure/express/routes";
 import { connectDB } from "./infrastructure/db";
 import { errorHandler } from "tune-up-library";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import http from "http";
+import setupSocketServer from "./infrastructure/services/socketService";
 
 const PORT = 3003;
 
@@ -12,21 +14,30 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:8080",
-    credentials:true,
+    credentials: true,
   })
 );
 
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/order", bookingRoute);
+app.use(errorHandler);
 
-app.use(errorHandler)
+const server = http.createServer(app);
+const io = setupSocketServer(server);
 
 const startServer = async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+  try {
+    await connectDB();
+    server.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+    process.exit(1);
+  }
 };
 
 startServer();
+
+export { io };

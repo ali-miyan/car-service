@@ -38,8 +38,24 @@ export class ServiceRepository implements IServiecRepository {
     packageName: "basic" | "standard" | "premium"
   ) {
     try {
-      const service = await serviceModal.findOne({ _id: serviceId });
-      return service ? service[`${packageName}Package`] : null;
+      const service = await (serviceModal as any).findOne({ _id: serviceId }).populate({
+        path:'companyId',
+        select: 'companyName logo address.latitude address.longitude'
+      });
+      if(!service){
+        throw new Error('service is null');
+      }
+      const packageData = service ? service[`${packageName}Package`] : null;
+
+      return {
+        package: packageData,
+        company: {
+          name: service.companyId?.companyName,
+          image: service.companyId?.logo,
+          latitude: service.companyId?.address.latitude,
+          longitude: service.companyId?.address.longitude,
+        },
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Error in db");
