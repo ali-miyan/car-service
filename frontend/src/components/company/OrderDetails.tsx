@@ -229,13 +229,13 @@ const OrderDetail: React.FC = () => {
             <div className="flex-1 border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
               <div className="p-6">
                 <h2 className="text-xl leading-6 font-bold text-slate-900 uppercase">
-                  ₹{order?.standardPackage.detail.price}
+                  ₹{order?.package.detail.price}
                   <span className="text-base font-medium text-slate-500">
                     /service
                   </span>
                 </h2>
                 <p className="mt-4 text-gray-500">
-                  - takes {order?.standardPackage.detail.workingHours} hours
+                  - takes {order?.package.detail.workingHours} hours
                 </p>
               </div>
               <div className="pt-6 pb-8 px-6">
@@ -243,7 +243,7 @@ const OrderDetail: React.FC = () => {
                   What's included
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
-                  {order?.standardPackage.subServices.map((val, index) => (
+                  {order?.package.subServices.map((val, index) => (
                     <li className="flex items-center space-x-3" key={index}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -1,32 +1,45 @@
 import React from "react";
 import MapboxMap from "./LiveMap";
 import { useGetLiveLocationQuery } from "../../../store/slices/orderApiSlice";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const LiveTrack = () => {
   const { id } = useParams();
   const location = useLocation();
   const company = location.state?.company;
+  const user = location.state?.user;
 
-  console.log(id, "paramma", company);
+  const navigate = useNavigate();
 
-  const { data, isLoading } = useGetLiveLocationQuery(id as string);
+
+  const { data, isLoading } = useGetLiveLocationQuery(id as string, {
+    // pollingInterval:2000
+  });
 
   if (isLoading) return <div>Loading...</div>;
 
   if (!data) return <div>No live location data available</div>;
 
-  console.log(data, "dadaddaadad");
-
   return (
-    <div className="w-full h-screen font-bai-regular">
-      <h1 className="text-2xl font-bold mb-4">Live Car Location</h1>
+    <div className="w-full h-screen font-bai-bold">
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-40 mt-1 z-50 left-4 bg-gray-200 text-red-900 px-4 py-2 shadow-md hover:bg-gray-100"
+      >
+        Back
+      </button>
+
+      {/* Overlay heading */}
+      <div className="absolute top-36 z-40 left-1/2 transform -translate-x-1/2 mt-4 text-center w-full">
+        <h1 className="text-2xl font-bold text-white bg-black bg-opacity-70 p-2">
+          Live Car Location
+        </h1>
+      </div>
       <MapboxMap
         liveLongitude={data?.liveLocation.longitude}
         liveLatittude={data?.liveLocation.latitude}
-        userLatitude={data?.userLocation.latitude}
-        userLongitude={data?.userLocation.longitude}
-        companyDetails = {company}
+        userDetails={user}
+        companyDetails={company}
       />
     </div>
   );

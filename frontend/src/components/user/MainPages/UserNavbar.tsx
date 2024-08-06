@@ -87,7 +87,7 @@ const UserNavbar = () => {
         show={showToast}
         message={message}
         onClose={handleClose}
-        to="/profile"
+        to="/profile?section=garage"
       />
       {showMap && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
@@ -177,7 +177,7 @@ const UserNavbar = () => {
 
           <div className="flex items-center text-white space-x-4">
             {token ? (
-              <Link to={"/profile"}>
+              <Link to={"/profile?section=car"}>
                 <div className="flex justify-start">
                   <FaUserCircle className="w-8 h-8 cursor-pointer" />
                 </div>

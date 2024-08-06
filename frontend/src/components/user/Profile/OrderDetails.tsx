@@ -17,7 +17,7 @@ const OrderDetail: React.FC = () => {
   if (!order) return <div>Loading...</div>;
 
   const handleTrackCar = () => {
-    navigate(`/live-track/${order.data.id}`, { state: { company: order.company } });
+    navigate(`/live-track/${order.data.id}`, { state: { company: order.company,user:order.data.address } });
   };  
 
 

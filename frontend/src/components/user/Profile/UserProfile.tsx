@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FiSettings,
   FiLogOut,
@@ -19,22 +20,23 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError, notifySuccess } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
 import EditProfileModal from "./EditProfileModal";
-import { useNavigate } from "react-router-dom";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
 
 const Profile = () => {
-  const token = getInitialToken("userToken");
-  const { data: posts, refetch } = useGetUserByIdQuery(token as string);
-  const [uploadImage, { isLoading }] = useUploadImageMutation({});
-
+  const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSection = queryParams.get('section') || 'services';
 
-  const [selectedSection, setSelectedSection] = useState("services");
+  const [selectedSection, setSelectedSection] = useState(initialSection);
   const [newProfileImg, setNewProfileImg] = useState<string | null>(null);
   const [showCancel, setShowCancel] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+
+  const { data: posts, refetch } = useGetUserByIdQuery(getInitialToken("userToken") as string);
+  const [uploadImage, { isLoading }] = useUploadImageMutation({});
 
   const renderSection = useCallback(() => {
     switch (selectedSection) {
@@ -67,7 +69,7 @@ const Profile = () => {
   const handleUpload = useCallback(async () => {
     if (file) {
       const form = new FormData();
-      form.append("id", token as string);
+      form.append("id", getInitialToken("userToken") as string);
       form.append("image", file);
 
       try {
@@ -85,7 +87,7 @@ const Profile = () => {
         notifyError(errMessage);
       }
     }
-  }, [file, token, uploadImage]);
+  }, [file, uploadImage]);
 
   const handleCancel = useCallback(() => {
     setNewProfileImg(null);
@@ -104,6 +106,11 @@ const Profile = () => {
   const handleEditClick = useCallback(() => {
     setIsEditModalOpen(true);
   }, []);
+
+  const handleSectionChange = (section: string) => {
+    setSelectedSection(section);
+    navigate(`/profile?section=${section}`);
+  };
 
   return (
     <div className="flex flex-col font-bai-regular lowercase md:flex-row gap-8 my-8 md:my-32 w-full px-4 md:px-10">
@@ -164,7 +171,7 @@ const Profile = () => {
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
               selectedSection === "car" ? "bg-red-100" : "hover:bg-red-100"
             }`}
-            onClick={() => setSelectedSection("car")}
+            onClick={() => handleSectionChange("car")}
           >
             <FiPackage size={24} color="#718096" />
             <span className="font-bai-medium">My Car</span>
@@ -173,7 +180,7 @@ const Profile = () => {
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
               selectedSection === "garage" ? "bg-red-100" : "hover:bg-red-100"
             }`}
-            onClick={() => setSelectedSection("garage")}
+            onClick={() => handleSectionChange("garage")}
           >
             <FiTool size={24} color="#718096" />
             <span className="font-bai-medium">My Bookings</span>
@@ -182,16 +189,16 @@ const Profile = () => {
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
               selectedSection === "address" ? "bg-red-100" : "hover:bg-red-100"
             }`}
-            onClick={() => setSelectedSection("address")}
+            onClick={() => handleSectionChange("address")}
           >
             <FiMapPin size={24} color="#718096" />
-            <span className="font-bai-medium">My services</span>
+            <span className="font-bai-medium">My Services</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
               selectedSection === "settings" ? "bg-red-100" : "hover:bg-red-100"
             }`}
-            onClick={() => setSelectedSection("settings")}
+            onClick={() => handleSectionChange("settings")}
           >
             <FiSettings size={24} color="#718096" />
             <span className="font-bai-medium">Profile Settings</span>
@@ -204,7 +211,7 @@ const Profile = () => {
               className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
                 selectedSection === "logout" ? "bg-red-100" : "hover:bg-red-100"
               }`}
-              onClick={() => setSelectedSection("logout")}
+              onClick={() => handleSectionChange("logout")}
             >
               <FiLogOut size={24} color="#718096" />
               <span className="font-bai-medium">Log-Out</span>

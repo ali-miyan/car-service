@@ -1,3 +1,4 @@
+import { io } from "..";
 import { IRedisRepository } from "../repositories";
 import { BadRequestError } from "tune-up-library";
 
@@ -12,6 +13,11 @@ export class UpdateDriverLocationUseCase {
     if (!orderId || !latitude || !longitude) {
       throw new BadRequestError("Invalid input");
     }
+
+    io.emit("location_updated", {
+      latitude,
+      longitude
+    });
 
     const key = `order:${orderId}`;
     const value = JSON.stringify({

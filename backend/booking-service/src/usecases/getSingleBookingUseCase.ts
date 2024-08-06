@@ -13,10 +13,7 @@ export class GetSingleBookingUseCase {
     const  standardPackage  = await getServiceDetails(
       data.serviceId,
       data.typeOfPackage
-    );
-
-    console.log(standardPackage,'logstandardpackage');
-    
+    );    
     
     if (!data) {
       throw new BadRequestError("cant get bookings");

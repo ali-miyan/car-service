@@ -47,7 +47,7 @@ const ServiceCard = ({
               {servicePlace}
             </div>
             <p className="text-sm text-gray-600">
-              <span className="font-semibold ">Since</span> {company.year}
+              <span className="font-semibold ">Since</span> {company?.year}
             </p>
             <p className="text-sm text-gray-600">
               <span className="font-semibold ">service Type:</span>{" "}
@@ -55,7 +55,7 @@ const ServiceCard = ({
             </p>
             <p className="text-sm text-gray-600">
               <span className="font-semibold ">location:</span>{" "}
-              {company.address.city}, {company.address.address}
+              {company?.address.city}, {company?.address.address}
             </p>
           </div>
         </div>
