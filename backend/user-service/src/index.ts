@@ -5,6 +5,7 @@ import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { startGrpcServer } from "./infrastructure/grpc/grpcServices/getUserDetails";
+import { createConsumerService } from "./infrastructure/rabbitMQ";
 require("dotenv").config();
 
 const PORT = 3000;
@@ -14,7 +15,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:8080",
-    credentials:true,
+    credentials: true,
   })
 );
 
@@ -29,7 +30,8 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-  startGrpcServer()
+  startGrpcServer();
+  const consumerService = createConsumerService();
 };
 
 startServer();

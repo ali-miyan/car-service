@@ -1,5 +1,5 @@
 import "../../../styles/NavbarStyle.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import BasicModal from "../Registeration/RegisterModal";
 import {
@@ -17,41 +17,19 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import useSocket from "../../../service/socketService";
 import OrderNOtification from "../../common/OrderMessage";
-
+import NotificationModal from "./SideNotifacation";
+import { ReactNotifications } from "react-notifications-component";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
-
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState("");
-  const handleClose = () => {
-    setShowToast(false);
-  };
-
-
-  const socket = useSocket();
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("order_updated", (message: any) => {
-        console.log("Message received: ", message);
-        setMessage(`${message.message}Status info: ${message.status}`);
-          setShowToast(true);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("order_booked");
-      }
-    };
-  },[socket])
+ 
 
   const location = useLocation();
-
   const currentPath = useMemo(() => location.pathname, [location.pathname]);
+
+  console.log(currentPath, "current path");
 
   useEffect(() => {
     if (location.state && location.state.openModal) {
@@ -83,16 +61,11 @@ const UserNavbar = () => {
 
   return (
     <>
-    <OrderNOtification
-        show={showToast}
-        message={message}
-        onClose={handleClose}
-        to="/profile?section=garage"
-      />
+      <ReactNotifications />
       {showMap && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <button
-            className="absolute top-14 z-50 right-3 text-black  text-4xl"
+            className="absolute top-14 z-50 right-3 text-black text-4xl"
             onClick={handleMapClose}
           >
             <IoIosCloseCircleOutline />
@@ -132,16 +105,21 @@ const UserNavbar = () => {
             </Link>
           </div>
         </div>
-        <div className="flex items-center justify-around p-6 lg:px-8 bg-gray-900 ">
-          <div onClick={handleMap} className="items-center cursor-pointer space-x-4">
-            <FaMapMarkedAlt className="text-2xl  mx-auto mr-8" />
-            <button className="mx-auto text-white text-xs">services near me</button>
+        <div className="flex items-center justify-around p-6 lg:px-8 bg-gray-900">
+          <div
+            onClick={handleMap}
+            className="items-center cursor-pointer space-x-4"
+          >
+            <FaMapMarkedAlt className="text-2xl mx-auto mr-8" />
+            <button className="mx-auto text-white text-xs">
+              services near me
+            </button>
           </div>
           <nav className="hidden lg:flex items-center space-x-4">
             <Link
               to="/"
               className={`text-white font-bai-regular px-3 py-2 custom-underline ${
-                currentPath === "/home" ? "active" : ""
+                currentPath === "/" ? "active" : ""
               }`}
             >
               HOME
@@ -150,7 +128,7 @@ const UserNavbar = () => {
             <Link
               to="/services"
               className={`text-white font-bai-regular px-3 py-2 custom-underline ${
-                currentPath === " /services" ? "active" : ""
+                currentPath === "/services" ? "active" : ""
               }`}
             >
               SERVICES
@@ -188,12 +166,14 @@ const UserNavbar = () => {
                 onClick={handleModalOpen}
               />
             )}
+
             <button
               className="text-3xl text-gray-900 lg:hidden"
               onClick={handleMenuToggle}
             >
               &#9776;
             </button>
+            <NotificationModal />
           </div>
         </div>
 

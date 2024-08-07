@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BookingCalendar } from "./Calender";
 
-const SheduleOrder = () => {
+const ScheduleOrder = () => {
   const { selectedPlace, serviceId, servicePlace } = useSelector((state: any) => state.order);
-  console.log(selectedPlace, "service shedule page", serviceId,servicePlace);
+  console.log(selectedPlace, "service schedule page", serviceId,servicePlace);
   const navigate = useNavigate();
 
   const handleNext = useCallback(() => {
@@ -52,4 +52,4 @@ const SheduleOrder = () => {
   );
 };
 
-export default SheduleOrder;
+export default ScheduleOrder;

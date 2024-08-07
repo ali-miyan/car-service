@@ -33,7 +33,7 @@ const ListBooking = () => {
               <tr>
                 <th className="py-2 px-4 border-b">NO.</th>
                 <th className="py-2 px-4 border-b">order id</th>
-                <th className="py-2 px-4 border-b">sheduled at</th>
+                <th className="py-2 px-4 border-b">scheduled at</th>
                 <th className="py-2 px-4 border-b">service place</th>
                 <th className="py-2 px-4 border-b">payment</th>
                 <th className="py-2 px-4 border-b">status</th>

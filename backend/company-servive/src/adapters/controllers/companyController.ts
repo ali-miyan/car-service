@@ -112,6 +112,8 @@ export class CompanyController {
   ): Promise<void> {
     try {
       const id = req.params.id as string;
+      console.log((req as any).user);
+      
       console.log('query id',id);
       
       const response = await this.getcompany.execute(id);

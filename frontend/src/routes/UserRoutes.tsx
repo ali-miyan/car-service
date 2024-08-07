@@ -10,7 +10,7 @@ import Services from "../pages/userPages/ServicePage";
 import AboutCompany from "../pages/userPages/AboutCompany";
 import SelectedService from "../pages/userPages/SelectedServicePage";
 import SetSpot from "../pages/userPages/SetSpotPage";
-import ShedulePage from "../pages/userPages/ShedulePage";
+import SchedulePage from "../pages/userPages/SchedulePage";
 import AtHome from "../pages/userPages/AtHome";
 import AtServiceCenter from "../pages/userPages/AtServiceCenter";
 import CheckoutPage from "../pages/userPages/CheckoutPage";
@@ -35,14 +35,11 @@ const UserRoutes = () => (
       element={<Verify element={NewPasswordPage} />}
     />
     <Route path="/about-company/:id" element={<AboutCompany />} />
-    <Route
-      path="/selected-service/:id"
-      element={<Protect element={SelectedService} />}
-    />
+    <Route path="/selected-service/:id" element={<SelectedService />} />
     <Route path="/set-spot/:id" element={<Protect element={SetSpot} />} />
     <Route
-      path="/service-shedule/:id"
-      element={<Protect element={ShedulePage} />}
+      path="/service-schedule/:id"
+      element={<Protect element={SchedulePage} />}
     />
     <Route path="/service-at-home/:id" element={<Protect element={AtHome} />} />
     <Route

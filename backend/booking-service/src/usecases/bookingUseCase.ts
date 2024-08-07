@@ -7,11 +7,13 @@ import {
   StripeService,
 } from "../infrastructure/services";
 import { io } from "..";
+import { RabbitMQService } from "../infrastructure/rabbitMQ/rabbitMQConfig";
 
 export class BookingUseCase {
   constructor(
     private bookingRepository: IBookingRepository,
-    private stripeService: StripeService
+    private stripeService: StripeService,
+    private rabbitMQService:RabbitMQService
   ) {}
 
   async execute(
@@ -91,6 +93,8 @@ export class BookingUseCase {
       message: "Order has been booked",
       order
     });
+
+    await this.rabbitMQService.sendMessage(order.userId)
 
     return response;
   }

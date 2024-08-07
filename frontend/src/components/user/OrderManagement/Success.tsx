@@ -11,7 +11,6 @@ const Success = () => {
   useEffect(() => {
     const updateStatus = async () => {
       if (orderToken && id === orderToken) {
-        console.log(id, "got id");
         try {
           const res = await updateOrder({ id }).unwrap();
           localStorage.removeItem("orderToken");
@@ -39,10 +38,10 @@ const Success = () => {
           </path>
         </svg>
         <div className="text-center">
-          <h3 className="md:text-2xl text-base text-gray-900 font-semibold uppercase">Payment Done!</h3>
-          <p className="text-gray-600 my-2 mx-3">Thank you for completing your secure online payment.</p>
+          <h3 className="md:text-2xl text-base text-gray-900 font-semibold uppercase">Booking Done!</h3>
+          <p className="text-gray-600 my-2 mx-3">Thank you for completing your booking, We will update soon.</p>
           <div className="py-10 text-center">
-            <Link to={'/'} className="px-12 bg-black text-white font-semibold py-3">
+            <Link to={'/profile?section=garage'} className="px-12 bg-black text-white font-semibold py-3">
               see my booking
             </Link>
           </div>

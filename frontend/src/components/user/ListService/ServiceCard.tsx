@@ -39,11 +39,11 @@ const ServiceCard = ({
             </div>
 
             <div className="text-sm text-gray-600 ">
-              <span className="font-semibold">Working Hours:</span>{" "}
+              <span className="font-semibold">Working Hours:</span>
               {selectedHours}
             </div>
             <div className="text-sm text-gray-600">
-              <span className="font-semibold">Service Area:</span>{" "}
+              <span className="font-semibold">Service Area:</span>
               {servicePlace}
             </div>
             <p className="text-sm text-gray-600">

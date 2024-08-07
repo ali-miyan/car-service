@@ -5,8 +5,27 @@ import { Link } from "react-router-dom";
 
 const MyBookings = () => {
   const token = getInitialToken("userToken");
-  const { data: orders } = useGetUsersOrderQuery(token as string);
-  console.log(orders, "mu");
+  const { data: orders, isLoading } = useGetUsersOrderQuery(token as string);
+
+  if (isLoading) {
+    return (
+      <div className="p-4">
+        <h1 className="text-xl font-bold mb-4">Order List</h1>
+        <div className="space-y-4">
+          {[...Array(5)].map((_, index) => (
+            <div key={index} className="flex justify-between items-center p-4 border border-gray-300 rounded-lg bg-gray-100 animate-pulse">
+              <div className="w-12 h-4 bg-gray-200 rounded"></div>
+              <div className="w-24 h-4 bg-gray-200 rounded"></div>
+              <div className="w-48 h-4 bg-gray-200 rounded"></div>
+              <div className="w-24 h-4 bg-gray-200 rounded"></div>
+              <div className="w-24 h-4 bg-gray-200 rounded"></div>
+              <div className="w-16 h-4 bg-gray-200 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
@@ -32,7 +51,9 @@ const MyBookings = () => {
                 <td className="py-2 px-4">{order?.date}</td>
                 <td className="py-2 px-4">{order?.payment}</td>
                 <td className="py-2 px-4">
-                  <button className="text-red-900 hover:underline"><Link to={`/order-details/${order.id}`}> View</Link></button>
+                  <button className="text-red-900 hover:underline">
+                    <Link to={`/order-details/${order.id}`}>View</Link>
+                  </button>
                 </td>
               </tr>
             ))}

@@ -16,7 +16,7 @@ const ServiceOptions = React.memo(() => {
       console.log(name,'name');
       
       dispatch(SetSelectedPlace(name))
-      navigate(`/service-shedule/${serviceId}`);
+      navigate(`/service-schedule/${serviceId}`);
     },
     [navigate, serviceId]
   );

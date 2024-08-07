@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Toast } from "./components/common/Toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 const { VITE_REACT_GOOGLE_TOKEN } = import.meta.env;
+import 'react-notifications-component/dist/theme.css';
 
 function App() {
   return (

@@ -17,10 +17,12 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
     return <Loader />;
   }
 
-  const handleServiceClick = (id: string,generalServiceId:string) => {
-    navigate(`/selected-service/${id}`,{state:{
-      generalServiceId
-    }});
+  const handleServiceClick = (id: string, generalServiceId: string) => {
+    navigate(`/selected-service/${id}`, {
+      state: {
+        generalServiceId,
+      },
+    });
   };
 
   return (
@@ -32,7 +34,9 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
             servicesData.map((service) => (
               <div
                 key={service._id}
-                onClick={() => handleServiceClick(service._id,service.generalServiceId)}
+                onClick={() =>
+                  handleServiceClick(service._id, service.generalServiceId)
+                }
                 className="cursor-pointer"
               >
                 <ServiceCard

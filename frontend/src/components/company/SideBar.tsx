@@ -8,6 +8,7 @@ import { Post } from "../../schema/company";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
 import useSocket from "../../service/socketService";
 import OrderNOtification from "../common/OrderMessage";
+import { ReactNotifications } from "react-notifications-component";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
   const id = useMemo(() => getInitialToken("companyToken"), []);
@@ -78,10 +79,6 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
     },
   ];
 
-  const handleClose = () => {
-    setShowToast(false);
-  };
-
   const handleLogout = useCallback(() => {
     document.cookie =
       "companyToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -90,10 +87,10 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
+    <ReactNotifications />
       <OrderNOtification
         show={showToast}
         message={message}
-        onClose={handleClose}
         to="/company/notification"
       />
       <div className="flex font-bai-regular uppercase">
