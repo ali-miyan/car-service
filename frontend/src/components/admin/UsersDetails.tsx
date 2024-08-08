@@ -5,8 +5,8 @@ import {
   useGetUsersQuery,
   useUpdateStatusMutation,
 } from "../../store/slices/userApiSlice";
-import { CiUser } from "react-icons/ci";
 import { profileImg } from "../../constants/imageUrl";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const UsersDetails = () => {
   const { data: posts, isLoading, refetch, error } = useGetUsersQuery({});
@@ -55,14 +55,14 @@ const UsersDetails = () => {
       >
         <div className="overflow-x-auto min-h-screen">
           <table className="min-w-full table-auto ">
-            <thead className="bg-gray-800 ">
+            <thead className="bg-gray-200 ">
               <tr className="pb-5">
-                <th className="py-2 text-white px-4 border-b">NO.</th>
-                <th className="py-2 text-white px-4 border-b">PROFILE</th>
-                <th className="py-2 text-white px-4 border-b">NAME</th>
-                <th className="py-2 text-white px-4 border-b">EMAIL</th>
-                <th className="py-2 text-white px-4 border-b">PHONE</th>
-                <th className="py-2 text-white px-4 border-b">Actions</th>
+                <th className="py-2 text-black px-4 border-b">NO.</th>
+                <th className="py-2 text-black px-4 border-b">PROFILE</th>
+                <th className="py-2 text-black px-4 border-b">NAME</th>
+                <th className="py-2 text-black px-4 border-b">EMAIL</th>
+                <th className="py-2 text-black px-4 border-b">PHONE</th>
+                <th className="py-2 text-black px-4 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -88,11 +88,9 @@ const UsersDetails = () => {
                           alt="loading..."
                         />
                       ) : (
-                        <img
-                          src={profileImg}
-                          className="w-16 h-16 object-cover rounded-full"
-                          alt="loading..."
-                        />
+                        <div className="p-2 text-center">
+                          <FaRegUserCircle className="text-5xl" />
+                        </div>
                       )}
                     </td>
 

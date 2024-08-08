@@ -49,11 +49,11 @@ export class UserRepository implements IUserRepository {
       throw new Error("error in db");
     }
   }
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<IUserData | null> {
     try {
       const user = await userModel.findOne({ email });
       if (!user) return null;
-      return new User(user);
+      return user;
     } catch (error) {
       throw new BadRequestError("error in db");
     }

@@ -6,7 +6,7 @@ import { useGetCompanyByIdQuery } from "../../store/slices/companyApiSlice";
 import { getInitialToken } from "../../helpers/getToken";
 import { Post } from "../../schema/company";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
-import useSocket from "../../service/socketService";
+import {useBookingSocket} from "../../service/socketService";
 import OrderNOtification from "../common/OrderMessage";
 import { ReactNotifications } from "react-notifications-component";
 
@@ -22,7 +22,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
   const [message, setMessage] = useState("");
   const [notificationDot, setNotificationDot] = useState(false);
 
-  const socket = useSocket();
+  const socket = useBookingSocket();
 
   useEffect(() => {
     if (socket) {

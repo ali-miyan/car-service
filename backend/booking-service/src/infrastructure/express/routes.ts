@@ -3,19 +3,20 @@ import { authMiddleware } from "tune-up-library";
 import Stripe from "stripe";
 import { BookingController } from "../../adapters/bookingController";
 import { BookingUseCase, GetBookingUseCase, GetLiveLocationUseCase, GetSingleBookingUseCase, GetUsersBookingUseCase, UpdateDriverLocationUseCase, UpdateStatusUseCase } from "../../usecases";
-import { BookingRepository, RedisOtpRepository } from "../../repositories";
+import { BookingRepository, RedisOtpRepository, UserRepository } from "../../repositories";
 import { StripeService } from "../services";
 import { UpdateBookingStatusUseCase } from "../../usecases/updateBookingUseCase";
 import { RabbitMQService } from "../rabbitMQ/rabbitMQConfig";
 
 const bookingRepository = new BookingRepository()
 const redisRepository = new RedisOtpRepository()
+const userRepository = new UserRepository()
 const stripeService = new StripeService()
 const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository)
 const updateDriverLocationUseCase = new UpdateDriverLocationUseCase(redisRepository)
 const updateStatusUseCase = new UpdateStatusUseCase(bookingRepository)
 const getBookingUseCase = new GetBookingUseCase(bookingRepository)
-const getSingleBookingUseCase = new GetSingleBookingUseCase(bookingRepository)
+const getSingleBookingUseCase = new GetSingleBookingUseCase(bookingRepository,userRepository)
 const getLiveLocationUseCase = new GetLiveLocationUseCase(redisRepository)
 const getUsersBookingUseCase = new GetUsersBookingUseCase(bookingRepository)
 const rabbitMQService = new RabbitMQService()

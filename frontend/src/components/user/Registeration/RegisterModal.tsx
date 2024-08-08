@@ -29,7 +29,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   };
 
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
-  const [googleRegister] = useGoogleRegisterMutation();
+  const [googleRegister ,{isLoading:googleLoading}] = useGoogleRegisterMutation();
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOtp(e.target.value);
@@ -61,13 +61,20 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
 
   const handleGoogleSubmit = useGoogleLogin({
     onSuccess: async (codeResponse) => {
-      const res = await googleRegister(codeResponse).unwrap();
-      console.log(res);
-      if (res.success) {
-        notifySuccess("Successfully logged");
-        navigate('/home')
-      } else {
-        notifyError("Something went wrong");
+      try {
+        
+        const res = await googleRegister(codeResponse).unwrap();
+        console.log(res);
+        if (res.success) {
+          notifySuccess("Successfully logged");
+          navigate('/home')
+        } else {
+          notifyError("Something went wrong");
+        }
+      } catch (err) {
+        const error = err as CustomError
+        notifyError(error.data.error)
+        console.log(error);
       }
     },
     onError: (error) => console.log("Login Failed:", error),
@@ -125,9 +132,11 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
               <span className="mr-2 font-bai-extra-light">OR</span>
             </div>
             <div className="flex justify-center w-full mt-2">
+              
               <button
                 onClick={handleGoogleButton}
-                className="flex items-center justify-center border px-5 py-3 rounded shadow-md bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                className={`flex items-center justify-center border px-5 py-3 rounded shadow-md bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200`}
+                disabled={googleLoading}
               >
                 <img
                   src="https://img.icons8.com/color/48/000000/google-logo.png"
@@ -135,7 +144,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
                   className="w-6 h-6 mr-3"
                 />
                 <span className="font-bai-semi-bold uppercase">
-                  Sign up with Google
+                 {googleLoading ? '.....' : 'Sign up with Google'}
                 </span>
               </button>
             </div>

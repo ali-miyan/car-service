@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import {  useLocation, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
@@ -9,29 +9,41 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError } from "../../common/Toast";
 import TermsAndService from "./TermsAndService";
 import { useDispatch } from "react-redux";
-import { setCompanyId, setGeneralService, setPackage } from "../../../context/OrderContext";
+import {
+  setCompanyId,
+  setGeneralService,
+  setPackage,
+} from "../../../context/OrderContext";
+import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
 
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
   const token = getInitialToken("userToken");
-  const { data: posts } = useGetSinglServicesQuery(id as string);
+  const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
   const location = useLocation();
-  const { generalServiceId } = location.state || {};
+  const { generalServiceId, serviceData } = location.state || {};
 
+  useEffect(() => {
+    if (serviceData && generalServiceId) {
+      const details = serviceData.find((val) => val.id === generalServiceId);
+      setGeneralServiceDetails(details);
+    }
+  }, [serviceData, generalServiceId]);
+
+  console.log(generalServiceDetials, generalServiceId, "whyhyhy");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(name,'namemememe',generalServiceId,'comapntID',);
-
-  const handleClick = (name?:string) => {
+  const handleClick = (name?: string) => {
     if (token) {
-      console.log(posts.companyId._id,'comapnyID');
-      
-      dispatch(setCompanyId(posts.companyId._id))
-      dispatch(setGeneralService(generalServiceId))
-      dispatch(setPackage(name))
+      console.log(posts.companyId._id, "comapnyID");
+
+      dispatch(setCompanyId(posts.companyId._id));
+      dispatch(setGeneralService(generalServiceId));
+      dispatch(setPackage(name));
       setIsModalOpen(true);
     } else {
       notifyError("You need to log in to continue");
@@ -42,9 +54,7 @@ const SelectedService = () => {
   console.log(posts, "selected service");
   const scrollRef = useRef(null);
 
-  if (!posts) {
-    return <div></div>;
-  }
+  if (isLoading || !posts) return <OrderDetailSkeleton />;
 
   const {
     basicPackage = {},
@@ -58,66 +68,90 @@ const SelectedService = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center px-4 py-16 font-bai-regular lowercase bg-gray-100">
-        <div className="mx-auto w-full max-w-6xl px-4 py-8 flex justify-center">
-          <div className="mb-8 flex flex-col md:flex-row items-center border border-gray-200 rounded-lg shadow-lg p-6 bg-white">
+      <div className="flex flex-col py-8 font-bai-regular lowercase bg-gray-100">
+        <div className="mx-20 justify-evenly  p-4 flex flex-col  md:flex-row sm:flex-col items-center md:items-start">
+          <div className="md:w-5/12 w-full flex flex-col items-center">
             <img
               src={posts && posts.images && posts.images[0]}
-              alt="Car Service"
-              className="border-4 border-gray-300 w-full md:w-80 h-80 object-cover rounded-lg"
+              alt="Main Product"
+              className="w-full h-auto object-fill mb-4"
             />
 
-            <div className="md:w-1/2 md:ml-8 mt-4 md:mt-0 text-center md:text-left">
+            <div className="flex md:hidden space-x-4 py-16">
               <img
-                src={posts.companyId && posts.companyId.logo}
-                alt="Company Logo"
-                className="w-24 h-24 mx-auto md:mx-0 object-cover"
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 1"
+                className="w-20 h-20 object-cover"
               />
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-4 mb-6 uppercase">
-                {posts?.title || "Our Services"}
-              </h1>
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 2"
+                className="w-20 h-20 object-cover"
+              />
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 3"
+                className="w-20 h-20 object-cover"
+              />
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 4"
+                className="w-20 h-20 object-cover"
+              />
+            </div>
+          </div>
 
-              <div className="flex flex-wrap w-full justify-center md:justify-start items-center space-x-6 mb-6">
-                <div className="flex items-center flex-col mb-4">
-                  <FaUserFriends className="text-2xl mb-2" />
-                  <span className="text-sm font-medium text-gray-600">
-                    1000 Trusted People
-                  </span>
-                </div>
-                <div className="flex items-center flex-col mb-4">
-                  <FaStar className="text-2xl mb-2" />
-                  <span className="text-sm font-medium text-gray-600">
-                    4.7 Rating
-                  </span>
-                </div>
-                <div className="flex items-center flex-col mb-4">
-                  <FaLock className="text-2xl mb-2" />
-                  <span className="text-sm font-medium text-gray-600">
-                    Service Warranty
-                  </span>
-                </div>
-              </div>
+          <div className="md:w-1/2 w-full md:pl-8 ">
+            <img
+              src={posts && posts.companyId.logo}
+              alt=""
+              className="w-28 h-28"
+            />
+            <h2 className="text-[#ab0000] text-sm font-semibold tracking-wide uppercase">
+              {posts && posts.companyId.companyName} company
+            </h2>
+            <h1 className="text-3xl font-bold mt-2">
+              {generalServiceDetials?.name}
+            </h1>
+            <p className="text-gray-600 text-xs mt-4">
+              {generalServiceDetials?.description}
+            </p>
 
-              <div className="text-gray-600 mb-6">
-                <p className="text-lg font-medium">
-                  Working Days: {posts?.selectedHours || "N/A"}
-                </p>
-                <p className="text-lg font-medium">
-                  Service Locations:
-                  {posts?.servicePlace === "both"
-                    ? "Service Center & Home Service"
-                    : posts?.servicePlace === "home"
-                    ? "Home Service"
-                    : "Service Center"}
-                </p>
-              </div>
+            <div className="flex items-center mt-6">
+              <span className="text-3xl font-bold">
+                <span className="text-sm"> between</span> ₹
+                {posts?.basicPackage.detail.price}{" "}
+                <span className="text-sm">to</span> ₹
+                {posts?.premiumPackage.detail.price}
+              </span>
+            </div>
 
-              <button
-                onClick={token ? scrollToRef : ()=>handleClick()}
-                className="px-6 py-3 bg-[#ab0000] text-white font-semibold  shadow-md hover:bg-red-900 focus:outline-none transition ease-in-out duration-300"
-              >
-                Book Service
+            <div className="flex items-center mt-6 space-x-4">
+              <button onClick={scrollToRef} className="bg-[#ab0000] text-white px-6 py-3 font-bold flex items-center hover:bg-[#7c1f1f]">
+                BOOK SERVICE
               </button>
+            </div>
+            <div className="space-x-4 hidden md:flex  py-16">
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 1"
+                className="w-20 h-20 object-cover"
+              />
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 2"
+                className="w-20 h-20 object-cover"
+              />
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 3"
+                className="w-20 h-20 object-cover"
+              />
+              <img
+                src={posts && posts.images && posts.images[0]}
+                alt="Product Thumbnail 4"
+                className="w-20 h-20 object-cover"
+              />
             </div>
           </div>
         </div>
@@ -191,7 +225,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={()=>handleClick('basic')}
+                    onClick={() => handleClick("basic")}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now
@@ -260,7 +294,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={()=>handleClick('standard')}
+                    onClick={() => handleClick("standard")}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now
@@ -330,7 +364,7 @@ const SelectedService = () => {
                     </span>
                   </p>
                   <button
-                    onClick={()=>handleClick('premium')}
+                    onClick={() => handleClick("premium")}
                     className="mt-2 uppercase block bg-black w-full bg-slate-900 rounded py-2 text-sm font-semibold text-white text-center"
                   >
                     book now
@@ -379,7 +413,7 @@ const SelectedService = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <div className="mt-8 mx-20 bg-white rounded-lg shadow-lg p-6">
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Frequently Asked Questions
@@ -409,7 +443,7 @@ const SelectedService = () => {
           </div>
         </div>
 
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <div className="mt-8 mx-20 bg-white rounded-lg shadow-lg p-6">
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Contact Us
@@ -430,7 +464,7 @@ const SelectedService = () => {
         onClose={() => setIsModalOpen(false)}
         data={posts && posts.terms}
         servicePlace={posts?.servicePlace}
-        id = {id}
+        id={id}
       />
     </>
   );

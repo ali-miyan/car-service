@@ -7,6 +7,7 @@ import {
   useUpdateStatusMutation,
 } from "../../store/slices/orderApiSlice";
 import { notifySuccess } from "../common/Toast";
+import OrderDetailSkeleton from "../../layouts/skelotons/OrderDetailSkeleton";
 
 const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
   if (!visible) return null;
@@ -55,9 +56,8 @@ const OrderDetail: React.FC = () => {
   const [updateStatus] = useUpdateStatusMutation({});
   const [updateDriverLocation] = useUpdateDriverLocationMutation({});
   const { id } = useParams<{ id: string }>();
-  const { data: order, refetch } = useGetSingleOrderQuery(id as string);
+  const { data: order, refetch ,isLoading } = useGetSingleOrderQuery(id as string);
 
-  // const [driverLocation, setDriverLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = useCallback(() => {
@@ -127,7 +127,7 @@ const OrderDetail: React.FC = () => {
     setDropdownVisible(false);
   };
 
-  if (!order) return <div>Loading...</div>;
+  if (!order || isLoading) return <OrderDetailSkeleton />;
 
   return (
     <div className="mx-32 my-20 lowercase">
@@ -188,9 +188,9 @@ const OrderDetail: React.FC = () => {
           </div>
           <div>
             <h2 className="font-semibold text-lg mb-2">Customer</h2>
-            <p className="mb-1">Name: {order?.username}</p>
-            <p className="mb-1">Email: {order?.email}</p>
-            <p className="mb-1">Phone: {order?.phone}</p>
+            <p className="mb-1">Name: {order?.userId.username}</p>
+            <p className="mb-1">Email: {order?.userId.email}</p>
+            <p className="mb-1">Phone: {order?.userId.phone}</p>
           </div>
         </div>
         <div className="flex flex-col items-center text-center">

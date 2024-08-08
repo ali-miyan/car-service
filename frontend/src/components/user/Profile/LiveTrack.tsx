@@ -2,6 +2,7 @@ import React from "react";
 import MapboxMap from "./LiveMap";
 import { useGetLiveLocationQuery } from "../../../store/slices/orderApiSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
 
 const LiveTrack = () => {
   const { id } = useParams();
@@ -12,13 +13,10 @@ const LiveTrack = () => {
   const navigate = useNavigate();
 
 
-  const { data, isLoading } = useGetLiveLocationQuery(id as string, {
-    // pollingInterval:2000
-  });
+  const { data, isLoading } = useGetLiveLocationQuery(id as string);
 
-  if (isLoading) return <div>Loading...</div>;
 
-  if (!data) return <div>No live location data available</div>;
+  if (!data || isLoading) return <OrderDetailSkeleton />;
 
   return (
     <div className="w-full h-screen font-bai-bold">
@@ -29,7 +27,6 @@ const LiveTrack = () => {
         Back
       </button>
 
-      {/* Overlay heading */}
       <div className="absolute top-36 z-40 left-1/2 transform -translate-x-1/2 mt-4 text-center w-full">
         <h1 className="text-2xl font-bold text-white bg-black bg-opacity-70 p-2">
           Live Car Location

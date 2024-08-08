@@ -15,8 +15,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import useSocket from "../../../service/socketService";
-import OrderNOtification from "../../common/OrderMessage";
+import {useUserSocket} from "../../../service/socketService";
 import NotificationModal from "./SideNotifacation";
 import { ReactNotifications } from "react-notifications-component";
 
@@ -24,12 +23,29 @@ const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
- 
+
+  const socket = useUserSocket();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('socket',socket);
+    
+    if (socket) {
+      socket.on("user_blocked", (message: any) => {
+        console.log("Message received: ", message);
+        handleLogOut(message.userId);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("user_blocked");
+      }
+    };
+  }, [socket]);
 
   const location = useLocation();
   const currentPath = useMemo(() => location.pathname, [location.pathname]);
-
-  console.log(currentPath, "current path");
 
   useEffect(() => {
     if (location.state && location.state.openModal) {
@@ -57,6 +73,14 @@ const UserNavbar = () => {
 
   const handleMap = () => {
     setShowMap(true);
+  };
+
+  const handleLogOut = (userId: string) => {
+    if (token === userId) {
+      document.cookie =
+        "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      navigate("/");
+    }
   };
 
   return (

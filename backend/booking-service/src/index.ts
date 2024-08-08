@@ -29,7 +29,7 @@ const io = setupSocketServer(server);
 
 const startServer = async () => {
   try {
-    const consumer = createConsumerService()
+    createConsumerService()
     await connectDB();
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
@@ -41,5 +41,4 @@ const startServer = async () => {
 };
 
 startServer();
-
 export { io };

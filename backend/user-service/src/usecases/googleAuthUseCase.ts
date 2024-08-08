@@ -16,7 +16,8 @@ export class GoogleUseCase {
     );
     console.log(name, email);
 
-    let user = await this.googleRepositry.findByEmail(email);
+    let user:any = await this.googleRepositry.findByEmail(email);
+
 
     if (!user) {
       user = await this.googleRepositry.save({
@@ -26,12 +27,17 @@ export class GoogleUseCase {
         password: id,
       });
     }
+
+    if(user.isBlocked){
+      throw new BadRequestError("User is Blocked");
+    }
+
     const token = TokenService.generateToken({
-      user: user._id,
+      user: (user._id as string) || id,
       role: "user",
     });
     const refreshToken = TokenService.generateRefreshToken({
-      user: user._id,
+      user: (user._id as string) || id,
       role: "user",
     });
 

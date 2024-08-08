@@ -7,6 +7,9 @@ const MyBookings = () => {
   const token = getInitialToken("userToken");
   const { data: orders, isLoading } = useGetUsersOrderQuery(token as string);
 
+  console.log(orders);
+  
+
   if (isLoading) {
     return (
       <div className="p-4">
@@ -29,15 +32,15 @@ const MyBookings = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Order List</h1>
+      <h1 className="text-xl font-bold mb-4">services List</h1>
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr className="bg-gray-100 border-b border-gray-300">
             <th className="py-2 px-4 text-left">No</th>
-            <th className="py-2 px-4 text-left">Order ID</th>
-            <th className="py-2 px-4 text-left">Order Place</th>
-            <th className="py-2 px-4 text-left">Order Date</th>
-            <th className="py-2 px-4 text-left">Order Payment</th>
+            <th className="py-2 px-4 text-left">service ID</th>
+            <th className="py-2 px-4 text-left">service Place</th>
+            <th className="py-2 px-4 text-left">service Date</th>
+            <th className="py-2 px-4 text-left">service Payment</th>
             <th className="py-2 px-4 text-left">View</th>
           </tr>
         </thead>
@@ -59,6 +62,7 @@ const MyBookings = () => {
             ))}
         </tbody>
       </table>
+      {orders.length === 0 && <p className="text-center mt-5">you don't have any services </p>}
     </div>
   );
 };

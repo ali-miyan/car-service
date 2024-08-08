@@ -2,11 +2,11 @@ import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../postgreConfig/connectDb";
 
 interface UserId {
-    _id: string;
-    username: string;
-    email: string;
-    phone: string | null;
-  }
+  _id: string;
+  username: string;
+  email: string;
+  phone: string | null;
+}
 
 interface UserAttributes {
   _id: string;

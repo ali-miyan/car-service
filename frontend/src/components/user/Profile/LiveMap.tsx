@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from "axios";
 import polyline from "polyline";
-import useSocket from "../../../service/socketService";
+import {useBookingSocket} from "../../../service/socketService";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
@@ -18,7 +18,7 @@ const MapboxMap = ({
   const [liveMarker, setLiveMarker] = useState<mapboxgl.Marker | null>(null);
   const [companyToLiveRouteSource, setCompanyToLiveRouteSource] =
     useState<mapboxgl.GeoJSONSource | null>(null);
-  const socket = useSocket();
+  const socket = useBookingSocket();
 
   console.log(companyDetails,'detail');
   

@@ -13,31 +13,31 @@ export class LoginUseCase {
     const user = await this.loginRepository.findByEmail(email);
 
     console.log(user);
-    
 
     if (!user) {
       throw new BadRequestError("User not found");
+    }
+    if (user.isBlocked) {
+      throw new BadRequestError("User is Blocked");
     }
 
     const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
-      
-      throw new BadRequestError("invalid password")
+      throw new BadRequestError("invalid password");
     }
 
     const token = TokenService.generateToken({
-      user:user._id,
-      role:'user'
+      user: (user._id as string),
+      role: "user",
     });
     const refreshToken = TokenService.generateRefreshToken({
-      user:user._id,
-      role:'user'
+      user: (user._id as string),
+      role: "user",
     });
 
-    console.log(token,'token');
-    
+    console.log(token, "token");
 
-    return { success: true ,token,refreshToken };
+    return { success: true, token, refreshToken };
   }
 }

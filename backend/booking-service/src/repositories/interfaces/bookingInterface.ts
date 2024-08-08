@@ -6,7 +6,7 @@ export interface IBookingRepository {
     findById(id: string): Promise<bookingModel>;
     updateStatus(id: string): Promise<void>;
     getAll(id:string): Promise<bookingModel[]>;
-    getSingle(id:string): Promise<bookingModel>;
+    getSingle(orderId:string): Promise<bookingModel>;
     getUsersOrder(userId:string): Promise<bookingModel[]>;
     updateBookingStatus(orderId:string,status:string): Promise<void>;
 }

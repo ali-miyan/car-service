@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { TbMessageDots } from "react-icons/tb";
 import "../../../styles/SideBarNotification.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getInitialToken } from "../../../helpers/getToken";
-import useSocket from "../../../service/socketService";
+import {useBookingSocket} from "../../../service/socketService";
 import OrderNotification from "../../common/OrderMessage";
 import { IoMdClose } from "react-icons/io";
 import { resetOrder } from "../../../context/OrderContext";
@@ -23,7 +23,7 @@ const NotificationModal = () => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
 
-  const socket = useSocket();
+  const socket = useBookingSocket();
 
   useEffect(() => {
     if (socket) {
@@ -116,7 +116,7 @@ const NotificationModal = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       {token && (
         <OrderNotification
           show={showToast}

@@ -21,6 +21,7 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
     navigate(`/selected-service/${id}`, {
       state: {
         generalServiceId,
+        serviceData
       },
     });
   };

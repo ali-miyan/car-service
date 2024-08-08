@@ -1,25 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaUser, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { useGetSingleOrderQuery } from "../../../store/slices/orderApiSlice";
 import { statusMessages } from "../../../schema/component";
+import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
+import {useBookingSocket} from "../../../service/socketService";
 
 const OrderDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: order } = useGetSingleOrderQuery(id as string);
+  const {
+    data: order,
+    isLoading,
+    refetch,
+  } = useGetSingleOrderQuery(id as string);
 
+  const socket = useBookingSocket();
 
-  console.log(order,'ordere');
-  
+  useEffect(() => {
+    if (socket) {
+      socket.on("order_updated", async (message: any) => {
+        console.log(message);
+        await refetch();
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("order_updated");
+      }
+    };
+  }, [socket]);
+
+  console.log(order, "ordere");
 
   const navigate = useNavigate();
 
-  if (!order) return <div>Loading...</div>;
+  if (!order || isLoading) return <OrderDetailSkeleton />;
 
   const handleTrackCar = () => {
-    navigate(`/live-track/${order.data.id}`, { state: { company: order.company,user:order.data.address } });
-  };  
-
+    navigate(`/live-track/${order.data.id}`, {
+      state: { company: order.company, user: order.data.address },
+    });
+  };
 
   return (
     <div className="mx-32 my-20 lowercase">
@@ -82,9 +104,9 @@ const OrderDetail: React.FC = () => {
             <h2 className="font-semibold font-bai-bold text-lg mb-2">
               Customer
             </h2>
-            <p className="mb-1">Name: {order?.username}</p>
-            <p className="mb-1">Email: {order?.email}</p>
-            <p className="mb-1">Phone: {order?.phone}</p>
+            <p className="mb-1">Name: {order?.userId.username}</p>
+            <p className="mb-1">Email: {order?.userId.email}</p>
+            <p className="mb-1">Phone: {order?.userId.phone}</p>
           </div>
         </div>
         <div className="flex flex-col items-center text-center">
