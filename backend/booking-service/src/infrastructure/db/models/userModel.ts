@@ -36,8 +36,7 @@ class Users
 Users.init(
   {
     _id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
     userId: {

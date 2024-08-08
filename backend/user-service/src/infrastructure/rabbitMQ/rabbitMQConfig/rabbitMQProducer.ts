@@ -13,7 +13,7 @@ export class ProducerService {
     try {
       const connection: Connection = await amqplib.connect(rabbitMQConfig.uri);
       this.channel = await connection.createChannel();
-      await this.channel.assertQueue(rabbitMQConfig.queueName);
+      await this.channel.assertQueue(rabbitMQConfig.queueName2);
     } catch (error) {
       console.log(error);
       process.exit(1);
@@ -22,7 +22,7 @@ export class ProducerService {
 
   public async sendMessage(message: string) {
     try {
-      this.channel.sendToQueue(rabbitMQConfig.queueName, Buffer.from(message));
+      this.channel.sendToQueue(rabbitMQConfig.queueName2, Buffer.from(message));
       console.log(`User message sent: ${message}`);
     } catch (error) {
       console.log(error, "error while sending");

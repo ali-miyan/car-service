@@ -33,7 +33,7 @@ router.get("/get-single-order/:id",authMiddleware(['company','user']), (req, res
 router.get("/get-users-order/:id",authMiddleware(['company','user']), (req, res, next) =>
   bookingController.getUsersBooking(req,res,next)
 );
-router.post("/booking",authMiddleware(['user']), (req, res, next) =>
+router.post("/booking", (req, res, next) =>
   bookingController.signup(req,res,next)
 );
 router.post("/update-booking",authMiddleware(['user']), (req, res, next) =>

@@ -70,22 +70,17 @@ export class CarRepository implements ICarRepository {
 
   async getUsersDetails(userId: string) {
     try {
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        throw new BadRequestError("Invalid userId");
-      }
-  
-      const userObjectId = new mongoose.Types.ObjectId(userId);
-  
-      const userDetails = await carModel.findOne({ userId: userObjectId })
+      const userDetails = await carModel
+        .findOne({ userId: userId })
         .select("_id name color src vin")
         .populate({
-          path: 'userId',
-          select: 'username email phone'
+          path: "userId",
+          select: "_id username email phone",
         });
-  
+
       return userDetails;
     } catch (error) {
-      console.error('Error fetching user details:', error);
+      console.error("Error fetching user details:", error);
       throw new BadRequestError("Error in DB");
     }
   }

@@ -15,22 +15,21 @@ export class ConsumerService {
   private async init() {
     const connection: Connection = await amqplib.connect(rabbitMQConfig.uri);
     this.channel = await connection.createChannel();
-    await this.channel.assertQueue(rabbitMQConfig.queueName);
+    await this.channel.assertQueue(rabbitMQConfig.queueName2);
     this.startConsuming();
   }
 
   private startConsuming() {
-    this.channel.consume(rabbitMQConfig.queueName, async (message) => {
+    this.channel.consume(rabbitMQConfig.queueName2, async (message) => {
       if (message) {
         try {
-          console.log(`Order message received: ${message.content.toString()}`);
+          console.log(message.content.toString(),'this is consumed from queue2');
           const userDetails = message.content.toString();
           this.channel.ack(message);
 
-          console.log(userDetails,'this is consumed from queue');
           
 
-        //   await this.userRepository.execute();
+          await this.userRepository.execute(JSON.parse(userDetails));
         } catch (error) {
           console.log(error);
           this.channel.nack(message, false, true);

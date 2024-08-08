@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
 import setupSocketServer from "./infrastructure/services/socketService";
+import { createConsumerService } from "./infrastructure/rabbitMQ/rabbitMQServices";
 
 const PORT = 3003;
 
@@ -28,6 +29,7 @@ const io = setupSocketServer(server);
 
 const startServer = async () => {
   try {
+    const consumer = createConsumerService()
     await connectDB();
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
