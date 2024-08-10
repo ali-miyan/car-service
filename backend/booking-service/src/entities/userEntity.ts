@@ -1,5 +1,6 @@
 export interface IUserData {
-  _id: string;
+  id?: string;
+  carId: string;
   userId: {
     _id: string;
     username: string;
@@ -13,7 +14,8 @@ export interface IUserData {
 }
 
 export class User {
-  _id: string;
+  id?: string;
+  carId: string;
   userId: {
     _id: string;
     username: string;
@@ -25,8 +27,9 @@ export class User {
   src: string;
   vin: string;
 
-  constructor({ _id, userId, name, color, src, vin }: IUserData) {
-    this._id = _id;
+  constructor({ id, carId, userId, name, color, src, vin }: IUserData) {
+    this.id = id;
+    this.carId = carId;
     this.userId = userId;
     this.name = name;
     this.color = color;

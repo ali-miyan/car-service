@@ -14,9 +14,13 @@ const ListBooking = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.state && location.state.refetch) {
-      refetch();
-    }
+    const fetchData = async () => {
+      if (location.state && location.state.refetch) {
+        await refetch();
+      }
+    };
+
+    fetchData();
   }, [location.state, refetch]);
 
   console.log(posts, "erererereerrorrr");

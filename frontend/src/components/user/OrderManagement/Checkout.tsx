@@ -9,7 +9,7 @@ import { getInitialToken } from "../../../helpers/getToken";
 import LoadingButton from "../../common/Loading";
 import { CustomError } from "../../../schema/error";
 import { notifyError } from "../../common/Toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { resetOrder } from "../../../context/OrderContext";
 
 const Checkout = () => {
@@ -21,11 +21,13 @@ const Checkout = () => {
     serviceId,
     selectedPlace,
     generalServiceId,
-    companyId
+    companyId,
   } = useSelector((state: any) => state.order);
 
-  console.log(companyId,'ciompnay');
+  console.log(carModel);
   
+
+  console.log(companyId, "ciompnay");
 
   const token = getInitialToken("userToken");
   const navigate = useNavigate();
@@ -133,13 +135,28 @@ const Checkout = () => {
         </p>
 
         <div className="flex flex-col md:flex-row justify-around items-center">
-          <RegistrationStep number={1} text="SELECT SPOT" />
+          <Link to={`/set-spot/${serviceId}`}>
+            <RegistrationStep number={1} text="SELECT SPOT" active />
+          </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={2} text="SCHEDULING" />
+
+          <Link to={`/service-schedule/${serviceId}`}>
+            <RegistrationStep number={2} text="SCHEDULING" active />
+          </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={3} text="ADDRESSING" />
+
+          <Link
+            to={`${
+              selectedPlace === "home"
+                ? `/service-at-home/${serviceId}`
+                : `/service-at-center/${serviceId}`
+            }`}
+          >
+            <RegistrationStep number={3} text="ADDRESSING" active />
+          </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={4} text="CONFIRMATION" active />
+
+            <RegistrationStep number={4} text="CONFIRMATION" filled />
         </div>
       </div>
       <h1 className="text-center text-2xl font-bai-bold underline under">

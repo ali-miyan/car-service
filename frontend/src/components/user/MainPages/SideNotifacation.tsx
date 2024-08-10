@@ -55,6 +55,7 @@ const NotificationModal = () => {
   }, [socket, notifications]);
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const stored = localStorage.getItem("orderUpdateNotifications");
     if (stored) {
       setNotifications(JSON.parse(stored));
@@ -205,7 +206,7 @@ const NotificationModal = () => {
                   </button>
                 </div>
               ))}
-            {notifications.length < 0 && !hasNotification && (
+            {notifications.length == 0 && !hasNotification && (
               <p className="text-center text-gray-500">No notifications</p>
             )}
           </div>

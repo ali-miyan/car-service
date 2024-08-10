@@ -23,8 +23,8 @@ import EditProfileModal from "./EditProfileModal";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
 
 const Profile = () => {
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialSection = queryParams.get('section') || 'services';
 

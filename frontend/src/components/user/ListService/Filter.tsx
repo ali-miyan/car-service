@@ -1,12 +1,13 @@
 import React from 'react';
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Filters() {
   const { data: filterData } = useGetApprovedCompanyQuery({});
 
-  console.log(filterData);
-  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSection = queryParams.get("company");
   
   const renderCompanyImagesAndIds = () => {
     if (!filterData) return null;
@@ -15,7 +16,7 @@ function Filters() {
       const { _id, companyName, logo } = company;      
       return (
         <Link key={_id} to={`/services?company=${_id}`}>
-        <div className="flex items-center  hover:bg-red-50 cursor-pointer mt-3 space-x-2 mb-2">
+        <div className={`${_id === initialSection && 'bg-red-50 '} flex items-center p-1  hover:bg-red-50 cursor-pointer mt-3 space-x-2 mb-2`}>
           <img src={logo} alt={companyName} className="w-10 h-10 rounded-full" />
           <span className="text-sm">{companyName}</span>
         </div>

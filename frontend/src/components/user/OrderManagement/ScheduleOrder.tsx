@@ -1,21 +1,31 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BookingCalendar } from "./Calender";
+import { notifyError } from "../../common/Toast";
 
 const ScheduleOrder = () => {
   const { selectedPlace, serviceId, servicePlace } = useSelector((state: any) => state.order);
   console.log(selectedPlace, "service schedule page", serviceId,servicePlace);
+  const [dateChange,setDateChange] = useState(false)
   const navigate = useNavigate();
+  const { date } = useSelector((state: any) => state.order);
 
+
+  console.log(dateChange,'dar');
   const handleNext = useCallback(() => {
+    
+    if(!date){
+      notifyError('please select a date');
+      return
+    }
     if (selectedPlace === "home") {
       navigate(`/service-at-home/${serviceId}`);
     } else {
       navigate(`/service-at-center/${serviceId}`);
     }
-  }, [navigate, serviceId]);
+  }, [navigate, serviceId,dateChange]);
 
   return (
     <>
@@ -29,10 +39,10 @@ const ScheduleOrder = () => {
 
         <div className="flex flex-col md:flex-row justify-around items-center">
           <Link to={`/set-spot/${serviceId}`}>
-            <RegistrationStep number={1} text="SELECT SPOT" />
+            <RegistrationStep number={1} text="SELECT SPOT" active />
           </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={2} text="SCHEDULING" active={true} />
+          <RegistrationStep number={2} text="SCHEDULING" filled />
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
           <RegistrationStep number={3} text="ADDRESSING" />
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
@@ -40,7 +50,7 @@ const ScheduleOrder = () => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center  bg-gray-100 pb-10">
-        <BookingCalendar />
+        <BookingCalendar setDateChange={setDateChange}/>
         <button
           onClick={handleNext}
           className="bg-black text-white px-5 py-2 mt-4 transition-colors"

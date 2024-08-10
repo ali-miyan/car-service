@@ -15,7 +15,7 @@ const MyBookings = () => {
       <div className="p-4">
         <h1 className="text-xl font-bold mb-4">Order List</h1>
         <div className="space-y-4">
-          {[...Array(5)].map((_, index) => (
+          {[...Array(5)]?.map((_, index) => (
             <div key={index} className="flex justify-between items-center p-4 border border-gray-300 rounded-lg bg-gray-100 animate-pulse">
               <div className="w-12 h-4 bg-gray-200 rounded"></div>
               <div className="w-24 h-4 bg-gray-200 rounded"></div>
@@ -62,7 +62,7 @@ const MyBookings = () => {
             ))}
         </tbody>
       </table>
-      {orders.length === 0 && <p className="text-center mt-5">you don't have any services </p>}
+      {orders?.length === 0 && <p className="text-center mt-5">you don't have any services </p>}
     </div>
   );
 };

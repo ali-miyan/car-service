@@ -15,7 +15,7 @@ const ServiceCard = ({
   console.log(service, "cheat", serviceData);
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:scale-90 transition duration-700 cursor-pointer">
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:scale-95 transition duration-700 cursor-pointer">
       <div className="flex flex-col md:flex-row">
         <div className="my-auto">
           <img

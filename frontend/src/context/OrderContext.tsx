@@ -9,6 +9,7 @@ const orderSlice = createSlice({
     companyId:"",
     selectedPlace:"",
     serviceDate: "",
+    date: "",
     address: {},
     carModel: "",
     selectedPackage: "",
@@ -30,6 +31,9 @@ const orderSlice = createSlice({
     setServiceDate(state, action) {
       state.serviceDate = action.payload;
     },
+    setDate(state, action) {
+      state.date = action.payload;
+    },
     setAddress(state, action) {
       state.address = action.payload;
     },
@@ -49,6 +53,7 @@ const orderSlice = createSlice({
         companyId:"",
         selectedPlace:"",
         serviceDate: "",
+        date:"",
         address: {},
         carModel: "",
         selectedPackage: "",
@@ -64,6 +69,7 @@ export const {
   setCompanyId,
   SetSelectedPlace,
   setServiceDate,
+  setDate,
   setAddress,
   setCarModel,
   setPackage,

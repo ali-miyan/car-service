@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface FormData {
+export interface FormData {
   ownerName?: string;
   companyName?: string;
   year?: string;

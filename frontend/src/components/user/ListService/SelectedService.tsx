@@ -4,7 +4,6 @@ import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice"
 import { FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
-import { FaUserFriends, FaStar, FaLock } from "react-icons/fa";
 import { getInitialToken } from "../../../helpers/getToken";
 import { notifyError } from "../../common/Toast";
 import TermsAndService from "./TermsAndService";
@@ -39,8 +38,6 @@ const SelectedService = () => {
 
   const handleClick = (name?: string) => {
     if (token) {
-      console.log(posts.companyId._id, "comapnyID");
-
       dispatch(setCompanyId(posts.companyId._id));
       dispatch(setGeneralService(generalServiceId));
       dispatch(setPackage(name));
@@ -69,94 +66,96 @@ const SelectedService = () => {
   return (
     <>
       <div className="flex flex-col py-8 font-bai-regular lowercase bg-gray-100">
-        <div className="mx-20 justify-evenly  p-4 flex flex-col  md:flex-row sm:flex-col items-center md:items-start">
-          <div className="md:w-5/12 w-full flex flex-col items-center">
+        <div className="mx-4 lg:mx-20 p-4 flex flex-col lg:flex-row items-center lg:items-start justify-evenly">
+          <div className="w-full lg:w-5/12 flex flex-col items-center">
             <img
-              src={posts && posts.images && posts.images[0]}
+              src={posts?.images?.[0]}
               alt="Main Product"
-              className="w-full h-auto object-fill mb-4"
+              className="lg:w-full h-auto object-cover mb-4"
             />
 
-            <div className="flex md:hidden space-x-4 py-16">
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 1"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 2"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 3"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 4"
-                className="w-20 h-20 object-cover"
-              />
+            <div className="flex lg:hidden space-x-2 py-4">
+              {posts?.images?.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Product Thumbnail ${index + 1}`}
+                  className="w-16 h-16 object-cover"
+                />
+              ))}
             </div>
           </div>
 
-          <div className="md:w-1/2 w-full md:pl-8 ">
+          <div className="w-full lg:w-1/2 lg:pl-8 flex flex-col items-center lg:items-start">
             <img
-              src={posts && posts.companyId.logo}
-              alt=""
-              className="w-28 h-28"
+              src={posts?.companyId?.logo}
+              alt={`${posts?.companyId?.companyName} Logo`}
+              className="w-20 h-20 lg:w-24 lg:h-24 mb-4 lg:-mb-5 "
             />
-            <h2 className="text-[#ab0000] text-sm font-semibold tracking-wide uppercase">
-              {posts && posts.companyId.companyName} company
+            <h2 className="text-[#ab0000] text-xs lg:text-sm font-semibold tracking-wide uppercase text-center lg:text-left">
+              {posts?.companyId?.companyName} company
             </h2>
-            <h1 className="text-3xl font-bold mt-2">
+            <h1 className="text-2xl lg:text-3xl font-bold mt-2 text-center lg:text-left">
               {generalServiceDetials?.name}
             </h1>
-            <p className="text-gray-600 text-xs mt-4">
+            <p className="text-gray-600 text-sm mt-4 text-center lg:text-left">
               {generalServiceDetials?.description}
             </p>
 
-            <div className="flex items-center mt-6">
-              <span className="text-3xl font-bold">
-                <span className="text-sm"> between</span> ₹
-                {posts?.basicPackage.detail.price}{" "}
-                <span className="text-sm">to</span> ₹
-                {posts?.premiumPackage.detail.price}
+            <div className="flex items-center border my-6">
+              <span className="text-xl lg:text-3xl font-bold">
+                <span className="text-base mr-1">Price Range:</span>₹
+                {posts?.basicPackage?.detail?.price}
+                <span className="text-base mx-1">to</span>₹
+                {posts?.premiumPackage?.detail?.price}
               </span>
             </div>
+            <table className="table-auto border-collapse border  border-gray-300">
+              <thead>
+                <tr>
+                  <th className="border text-sm border-red-900 px-4">working hours</th>
+                  <th className="border text-sm border-red-900 px-4">service place</th>
+                  <th className="border text-sm border-red-900 px-4">services per day</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-red-900 text-sm text-center py-1 px-4">
+                    {posts?.selectedHours}
+                  </td>
+                  <td className="border border-red-900 text-sm text-center py-1 px-4">
+                  {posts?.servicePlace}
+                  </td>
+                  <td className="border border-red-900 text-sm text-center py-1 px-4">
+                  {posts?.servicesPerDay}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
             <div className="flex items-center mt-6 space-x-4">
-              <button onClick={scrollToRef} className="bg-[#ab0000] text-white px-6 py-3 font-bold flex items-center hover:bg-[#7c1f1f]">
+              <button
+                onClick={scrollToRef}
+                className="bg-[#ab0000] text-white px-6 py-2 lg:py-3 font-bold flex items-center justify-center hover:bg-[#7c1f1f]"
+              >
                 BOOK SERVICE
               </button>
             </div>
-            <div className="space-x-4 hidden md:flex  py-16">
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 1"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 2"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 3"
-                className="w-20 h-20 object-cover"
-              />
-              <img
-                src={posts && posts.images && posts.images[0]}
-                alt="Product Thumbnail 4"
-                className="w-20 h-20 object-cover"
-              />
+
+            <div className="space-x-2 lg:space-x-4 hidden lg:flex py-8 lg:py-6">
+              {posts?.images?.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Product Thumbnail ${index + 1}`}
+                  className="w-16 h-16 lg:w-20 lg:h-20 object-cover"
+                />
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-6 mx-10 mb-10 text-center">
+        <div className="mt-1 mx-10 mb-10 text-center">
           <ul className="md:flex items-center gap-8 md:gap-12 p-4 md:p-8 text-gray-700">
             <li className="flex flex-col items-center md:w-auto w-full mb-6 md:mb-0">
               <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-200 mb-2">

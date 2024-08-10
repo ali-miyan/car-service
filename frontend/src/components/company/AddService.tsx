@@ -13,7 +13,6 @@ import { FaDotCircle, FaPlus } from "react-icons/fa";
 import CustomModal from "../common/Modal";
 import { Post } from "../../schema/company";
 import PackageContent from "./PackageContent";
-import extractToken from "../../helpers/extractToken";
 import { getInitialToken } from "../../helpers/getToken";
 
 const AddYourService: React.FC = () => {

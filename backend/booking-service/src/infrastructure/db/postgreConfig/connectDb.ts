@@ -26,7 +26,6 @@ export const connectDB = async () => {
 
     await sequelize.sync();
     console.log("Database synced.");
-
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }

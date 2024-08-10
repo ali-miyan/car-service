@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "../../context/RegisterContext";
+import { FormData, useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -123,8 +123,12 @@ const Page2: React.FC = () => {
               onClick={() => setOpenModal(true)}
             >
               <span className="font-bai-regular">
-                {formData.location || "Pick a location"}
-              </span>
+              {Object.keys((formData.address as object)).length === 0
+                ? "Pick a location"
+                : `${((formData.address?.streetRegion) || "")}, ${((formData.address?.city) || "")}, ${
+                  ((formData.address?.postcode) || "")
+                }`}
+            </span>
               <FaMapMarkerAlt className="text-gray-500" />
             </button>
             {errors.location && (
@@ -148,8 +152,8 @@ const Page2: React.FC = () => {
         <CustomModal
           open={openModal}
           onClose={() => setOpenModal(false)}
-          width={600}
-          height={570}
+          width={500}
+          height={560}
           disableClose={false}
           title={"CHOOSE YOUR LOCATION"}
         >

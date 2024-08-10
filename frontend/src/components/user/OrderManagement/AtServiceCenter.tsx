@@ -5,7 +5,8 @@ import { useGetCarByIdQuery } from "../../../store/slices/userApiSlice";
 import CarBrandsModal from "../Profile/CarBrandsModal";
 import { setCarModel } from "../../../context/OrderContext";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { notifyError } from "../../common/Toast";
 
 const AtServiceCenter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +27,10 @@ const AtServiceCenter = () => {
   const dispatch = useDispatch();
 
   const handleNext = () => {
+    if (!selectedCarId) {
+      notifyError("please select a car");
+      return;
+    }
     dispatch(setCarModel(selectedCarId));
     navigate(`/checkout/${serviceId}`);
   };
@@ -53,11 +58,16 @@ const AtServiceCenter = () => {
         </p>
 
         <div className="flex flex-col md:flex-row justify-around items-center">
-          <RegistrationStep number={1} text="SELECT SPOT" />
+          <Link to={`/set-spot/${serviceId}`}>
+            <RegistrationStep number={1} text="SELECT SPOT" active />
+          </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={2} text="SCHEDULING" />
+
+          <Link to={`/service-schedule/${serviceId}`}>
+            <RegistrationStep number={2} text="SCHEDULING" active />
+          </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
-          <RegistrationStep number={3} text="ADDRESSING" active={true} />
+          <RegistrationStep number={3} text="ADDRESSING" filled />
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
           <RegistrationStep number={4} text="CONFIRMATION" />
         </div>
@@ -67,7 +77,7 @@ const AtServiceCenter = () => {
           SELECT YOUR CAR
         </h1>
 
-        <div className="flex flex-wrap justify-center w-full max-w-6xl">
+        <div className="flex flex-wrap justify-center  font-bai-regular w-full max-w-6xl">
           {posts?.car && posts.car.length > 0 ? (
             posts.car.map((car: any) => (
               <div

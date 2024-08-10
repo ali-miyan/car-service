@@ -9,7 +9,8 @@ interface UserId {
 }
 
 interface UserAttributes {
-  _id: string;
+  id: string;
+  carId: string;
   userId: UserId;
   name: string;
   color: string;
@@ -17,13 +18,14 @@ interface UserAttributes {
   vin: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "_id"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
 class Users
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  public _id!: string;
+  public id!: string;
+  public carId!: string;
   public userId!: UserId;
   public name!: string;
   public color!: string;
@@ -35,9 +37,14 @@ class Users
 
 Users.init(
   {
-    _id: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+    },
+    carId: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     userId: {
       type: DataTypes.JSONB,

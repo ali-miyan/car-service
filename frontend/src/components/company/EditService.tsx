@@ -222,7 +222,7 @@ const AddYourService: React.FC = () => {
       if (res.success) {
         notifySuccess("Successfully added");
         navigate("/company/services", { state: { refetch: true } });
-      }
+      } 
       console.log(res, "response");
     } catch (err) {
       console.log(err);

@@ -10,6 +10,7 @@ import Geocoder from "../../company/Geocoder";
 import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
 import { Link } from "react-router-dom";
 import { calculateDistance } from "../../../helpers/getDistance";
+import mapboxgl from "mapbox-gl";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
@@ -25,6 +26,8 @@ const ServiceMap: React.FC = () => {
   const { data: posts } = useGetCompaniesQuery({});
 
   const geolocateControlRef = useRef<any>(null);
+  const mapRef = useRef<any>(null);
+  const routeRef = useRef<any>(null);
 
   const [sortedPosts, setSortedPosts] = useState<any[]>([]);
 
@@ -69,6 +72,51 @@ const ServiceMap: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [geolocateControlRef]);
 
+  const setPath = (center: any) => {
+    const map = mapRef.current.getMap();
+
+    // Remove existing route layer if any
+    if (routeRef.current) {
+      map.removeLayer("route");
+      map.removeSource("route");
+      routeRef.current = null;
+    }
+
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${userLongitude},${userLatitude};${center.address.longitude},${center.address.latitude}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const route = data.routes[0].geometry;
+
+        map.addSource("route", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: route,
+          },
+        });
+
+        map.addLayer({
+          id: "route",
+          type: "line",
+          source: "route",
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#888",
+            "line-width": 8,
+          },
+        });
+
+        routeRef.current = "route";
+      })
+      .catch((error) => console.error("Error fetching route:", error));
+  };
+
   return (
     <>
       <ReactMapGL
@@ -76,7 +124,7 @@ const ServiceMap: React.FC = () => {
         initialViewState={{
           longitude: userLongitude || 0,
           latitude: userLatitude || 0,
-          zoom: 0,
+          zoom: 10,
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         style={{
@@ -85,6 +133,7 @@ const ServiceMap: React.FC = () => {
           margin: "0 auto",
           border: "3px solid #d8d8d8",
         }}
+        ref={mapRef}
       >
         <NavigationControl position="bottom-left" />
         <GeolocateControl
@@ -102,16 +151,19 @@ const ServiceMap: React.FC = () => {
               longitude={center.address.longitude}
               anchor="bottom"
             >
-              <div className="flex flex-col items-center bg-white">
+              <div
+                className="flex flex-col items-center font-bai-regular bg-white cursor-pointer"
+                onClick={() => setPath(center)}
+              >
                 <img
                   src={center.logo}
                   alt="Car Service Center"
                   className="w-8 h-8"
                 />
-                <div className="text-black text-sm font-bold mt-1 text-center">
+                <div className="text-black uppercase text-xs font-bold text-center">
                   {center.companyName}
                 </div>
-                <div className="text-gray-600 text-xs">
+                <div className="text-gray-600 lowercase p-2 text-xs">
                   Distance:{" "}
                   {calculateDistance(
                     userLatitude,
@@ -138,22 +190,23 @@ const ServiceMap: React.FC = () => {
         </div>
       </ReactMapGL>
       <div
-        className="absolute font-bai-regular top-11  sm:top-13 border-red-900 sm:left-16 w-72 h-56 bg-white border  shadow-lg overflow-y-auto p-2"
+        className="absolute font-bai-regular top-11 sm:top-13 sm:left-16 w-72 h-56 bg-white border shadow-lg overflow-y-auto p-2"
         style={{
           maxHeight: "200px",
         }}
       >
-        <h3 className="font-bold text-center underline underline-offset-4 uppercase mb-4">
-          Service Centers
+        <h3 className="font-bold font-bai-bold text-center underline underline-offset-4 uppercase mb-4">
+          Service Centers near me
         </h3>
         {sortedPosts ? (
           sortedPosts.map((center: any) => (
             <div
               key={center._id}
-              className="mb-2 p-2 cursor-pointer hover:bg-red-50"
+              className="mb-2 p-2 cursor-pointer border hover:bg-red-50"
+              onClick={() => setPath(center)}
             >
               <Link to={`/about-company/${center._id}`}>
-                <div className="flex items-center">
+                <div className="flex items-center cursor-pointer">
                   <img
                     src={center.logo}
                     alt="Car Service Center"

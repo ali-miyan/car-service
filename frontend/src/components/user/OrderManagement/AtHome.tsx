@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegistrationStep } from "../../common/OrderHeader";
 import CarBrandsModal from "../Profile/CarBrandsModal";
 import LocationModal from "../../company/LocationModal";
@@ -9,6 +9,7 @@ import { useGetCarByIdQuery } from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import CustomModal from "../../common/Modal";
+import { notifyError } from "../../common/Toast";
 
 const CustomerDetails = () => {
   const [isCarModalOpen, setCarModalOpen] = useState(false);
@@ -22,9 +23,16 @@ const CustomerDetails = () => {
   const { data: posts, refetch } = useGetCarByIdQuery(token as string);
 
   const handleNext = useCallback(() => {
+    if (Object.keys(address).length === 0) {
+      notifyError("please select a address");
+      return;
+    } else if (!selectedCarId) {
+      notifyError("please select a car");
+      return;
+    }
     dispatch(setCarModel(selectedCarId));
     navigate(`/checkout/${serviceId}`);
-  }, [navigate, serviceId, dispatch, selectedCarId]);
+  }, [navigate, serviceId, dispatch, selectedCarId,isLocationModalOpen]);
 
   return (
     <>
@@ -36,9 +44,17 @@ const CustomerDetails = () => {
           PLEASE PROVIDE ALL REQUIRED DETAILS TO BOOK YOUR SERVICE WITH US
         </p>
         <div className="flex flex-col md:flex-row justify-around items-center mb-8">
-          <RegistrationStep number={1} text="SELECT SPOT" />
-          <RegistrationStep number={2} text="SCHEDULING" />
-          <RegistrationStep number={3} text="ADDRESSING" active />
+          <Link to={`/set-spot/${serviceId}`}>
+            <RegistrationStep number={1} text="SELECT SPOT" active />
+          </Link>
+          <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
+
+          <Link to={`/service-schedule/${serviceId}`}>
+            <RegistrationStep number={2} text="SCHEDULING" active />
+          </Link>
+          <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
+          <RegistrationStep number={3} text="ADDRESSING" filled />
+          <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
           <RegistrationStep number={4} text="CONFIRMATION" />
         </div>
       </div>
@@ -52,7 +68,9 @@ const CustomerDetails = () => {
             <span className="font-bai-regular">
               {Object.keys(address).length === 0
                 ? "Pick a location"
-                : `${address.streetRegion || ""}, ${address.city || ""}, ${address.postcode || ""}`}
+                : `${address.streetRegion || ""}, ${address.city || ""}, ${
+                    address.postcode || ""
+                  }`}
             </span>
             <FaMapMarkerAlt className="text-gray-500" />
           </button>
@@ -61,7 +79,7 @@ const CustomerDetails = () => {
       <p className="text-center p-2 w-28 bg-gray-300 font-bai-regular text-red-900 mx-auto">
         ↓ fill both ↑
       </p>
-      <div className="w-full md:w-4/5 mx-auto bg-gray-100 p-6 md:p-12">
+      <div className="w-full md:w-4/5 mx-auto font-bai-regular bg-gray-100 p-6 md:p-12">
         <h1 className="text-xl font-bold mb-4 text-center font-bai-bold uppercase">
           SELECT YOUR CAR
         </h1>
@@ -93,16 +111,16 @@ const CustomerDetails = () => {
                     className="object-cover w-auto"
                   />
                 </div>
-                <div className="flex items-center mb-2">
+                <div className="flex items-center uppercase mb-2">
                   <label htmlFor={`car-${car._id}`} className="flex-grow">
-                    <h2 className="text-sm font-semibold">
-                      <strong>Brand:</strong> {car.name}
+                    <h2 className="text-sm">
+                      <span className="uppercase font-semibold">Brand:</span> {car.name}
                     </h2>
-                    <p className="text-gray-700">
-                      <strong>Color:</strong> {car.color}
+                    <p className="">
+                      <span className="uppercase font-semibold">Color:</span> {car.color}
                     </p>
-                    <p className="text-gray-700">
-                      <strong>Number:</strong> {car.vin}
+                    <p className="">
+                      <span className="uppercase font-semibold">Number:</span> {car.vin}
                     </p>
                   </label>
                 </div>
@@ -112,7 +130,7 @@ const CustomerDetails = () => {
             <p>No cars available</p>
           )}
         </div>
-        <div className="flex flex-col md:flex-row justify-around w-full mt-6">
+        <div className="flex flex-col  md:flex-row justify-around w-full mt-6">
           <button
             onClick={() => setCarModalOpen(true)}
             className="bg-gray-900 text-white py-2 px-4 mx-2 "
@@ -121,7 +139,7 @@ const CustomerDetails = () => {
           </button>
           <button
             onClick={handleNext}
-            className="bg-gray-900 text-white py-2 px-4 mx-2 "
+            className="bg-gray-900 text-white mt-1 py-2 px-4 mx-2 "
           >
             NEXT
           </button>
@@ -131,8 +149,8 @@ const CustomerDetails = () => {
       <CustomModal
         open={isLocationModalOpen}
         onClose={() => setLocationModalOpen(false)}
-        width={600}
-        height={570}
+        width={500}
+        height={540}
         title="CHOOSE YOUR LOCATION"
       >
         <LocationModal

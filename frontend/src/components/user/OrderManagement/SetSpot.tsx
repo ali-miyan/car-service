@@ -32,7 +32,7 @@ const ServiceOptions = React.memo(() => {
         </p>
 
         <div className="flex flex-col md:flex-row justify-around items-center">
-          <RegistrationStep number={1} text="SELECT SPOT" active={true} />
+          <RegistrationStep number={1} text="SELECT SPOT" filled />
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
           <RegistrationStep number={2} text="SCHEDULING" />
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>

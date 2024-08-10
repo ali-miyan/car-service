@@ -15,7 +15,7 @@ const ListPackages = ({
   return (
     <div>
       <section>
-        <div className="!block sm:flex overflow-y-auto my-4 max-h-96">
+        <div className="!block sm:flex font-bai-regular overflow-y-auto my-4 max-h-96">
           <div className="w-full ">
             <div className="flex flex-col my-3 p-6 text-center text-gray-900 bg-gray-100 rounded">
               <h3 className="font-bold uppercase underline-offset-2 underline">

@@ -13,9 +13,13 @@ export class UserRepository implements IUserInterface {
       throw new Error("Error in db: " + error);
     }
   }
-  async findOne(id: string): Promise<any> {
+  async findOne(carId: string): Promise<any> {
     try {
-      const user = await userModel.findByPk(id);
+      console.log(carId);
+      
+      const user = await userModel.findOne({
+        where:{carId}
+      });
       if (!user) {
         throw new BadRequestError("Cannot get user details");
       }
