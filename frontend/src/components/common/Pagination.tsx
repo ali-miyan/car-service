@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import { MdFirstPage, MdLastPage } from "react-icons/md";
 
 interface PaginationProps {
   totalItems: number;
@@ -25,16 +26,18 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:opacity-50"
+        className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
       >
-        
+        <MdFirstPage />
       </button>
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           key={index + 1}
           onClick={() => handlePageChange(index + 1)}
-          className={`px-4 py-2 mx-1 rounded ${
-            index + 1 === currentPage ? 'bg-[#ab0000]  text-white' : 'bg-gray-300'
+          className={`px-3 py-1 mx-1 rounded ${
+            index + 1 === currentPage
+              ? "bg-[#ab0000]  text-white"
+              : "bg-gray-300"
           }`}
         >
           {index + 1}
@@ -43,9 +46,9 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:opacity-50"
+        className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
       >
-        Next
+        <MdLastPage />
       </button>
     </div>
   );

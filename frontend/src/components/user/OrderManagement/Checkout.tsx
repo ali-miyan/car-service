@@ -25,7 +25,6 @@ const Checkout = () => {
   } = useSelector((state: any) => state.order);
 
   console.log(carModel);
-  
 
   console.log(companyId, "ciompnay");
 
@@ -95,7 +94,6 @@ const Checkout = () => {
 
         localStorage.setItem("orderToken", res.orderToken);
       } else if (selectedPaymentMethod === "cash") {
-        console.log("Cash payment selected");
         const res = await makeOrder({
           userId: token,
           companyId,
@@ -109,6 +107,7 @@ const Checkout = () => {
           serviceId,
           totalPrice: serviceDetails?.detail?.price,
         }).unwrap();
+        console.log("Cash payment selected", res);
 
         if (res.success) {
           dispatch(resetOrder());
@@ -156,7 +155,7 @@ const Checkout = () => {
           </Link>
           <div className="hidden md:block flex-grow border-t-2 border-gray-300 mb-5"></div>
 
-            <RegistrationStep number={4} text="CONFIRMATION" filled />
+          <RegistrationStep number={4} text="CONFIRMATION" filled />
         </div>
       </div>
       <h1 className="text-center text-2xl font-bai-bold underline under">

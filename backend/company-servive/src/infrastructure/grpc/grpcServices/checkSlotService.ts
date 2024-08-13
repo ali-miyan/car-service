@@ -40,7 +40,7 @@ server.addService((bookingProto as any).BookingService.service, {
 });
 export const startSlotGrpcServer = () => {
   server.bindAsync(
-    "0.0.0.0:50051",
+    "0.0.0.0:6002",
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
       if (error) {

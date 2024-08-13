@@ -111,7 +111,7 @@ const ServiceList = () => {
         style={{ height: '100%', width: '100%' }}
         className="container lowercase font-bai-regular mx-auto p-9"
       >
-        <div className="overflow-x-auto rounded min-h-screen">
+        <div className="overflow-x-auto rounded">
           <table className="min-w-full">
             <thead className="bg-gray-300">
               <tr>

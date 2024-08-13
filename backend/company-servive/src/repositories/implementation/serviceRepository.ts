@@ -1,8 +1,8 @@
 import { Service } from "../../entities";
-import { IServiecRepository } from "../interfaces";
+import { IServiceRepository } from "../interfaces";
 import { IService, serviceModal } from "../../infrastructure/db";
 
-export class ServiceRepository implements IServiecRepository {
+export class ServiceRepository implements IServiceRepository {
   async find(email: string): Promise<IService | null> {
     try {
       const newService = await serviceModal.findOne({ email: email });
@@ -38,12 +38,14 @@ export class ServiceRepository implements IServiecRepository {
     packageName: "basic" | "standard" | "premium"
   ) {
     try {
-      const service = await (serviceModal as any).findOne({ _id: serviceId }).populate({
-        path:'companyId',
-        select: 'companyName logo address.latitude address.longitude'
-      });
-      if(!service){
-        throw new Error('service is null');
+      const service = await (serviceModal as any)
+        .findOne({ _id: serviceId })
+        .populate({
+          path: "companyId",
+          select: "companyName logo address.latitude address.longitude",
+        });
+      if (!service) {
+        throw new Error("service is null");
       }
       const packageData = service ? service[`${packageName}Package`] : null;
 
@@ -89,19 +91,28 @@ export class ServiceRepository implements IServiecRepository {
       if (!service) {
         return false;
       }
-
       const availableSlots = parseInt(service.servicesPerDay, 10);
       if (isNaN(availableSlots) || availableSlots <= 0) {
         return false;
       }
-
       service.servicesPerDay = (availableSlots - 1).toString();
-
       await service.save();
-
       return true;
     } catch (error) {
       console.log(error);
+      throw new Error("Error in db");
+    }
+  }
+
+  async getGeneralServiceIdsByCompanyId(companyId: string): Promise<object[]> {
+    try {
+      const services = await serviceModal.find(
+        { companyId },
+        { generalServiceId: 1 }
+      );
+      return services.map((service) => service.generalServiceId);
+    } catch (error) {
+      console.error("Error retrieving generalServiceIds:", error);
       throw new Error("Error in db");
     }
   }

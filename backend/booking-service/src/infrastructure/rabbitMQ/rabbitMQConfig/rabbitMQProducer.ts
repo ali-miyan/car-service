@@ -22,11 +22,8 @@ export class RabbitMQService {
 
   public async sendMessage(message: string) {
     await this.initializationPromise;
-    if (!this.channel) {
-      throw new Error('Channel not initialized');
-    }
     try {
-      this.channel.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(message));
+      this.channel?.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(message));
       console.log(`Order message sent: ${message}`);
     } catch (error) {
       console.error('Failed to send message:', error);

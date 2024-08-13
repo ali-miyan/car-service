@@ -45,10 +45,12 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      const { companyId } = req.query;
 
-      
-      const company = await this.getServiceRepository.execute();
-      
+      const company = await this.getServiceRepository.execute(
+        companyId as string | undefined
+      );
+
       res.status(201).json(company);
     } catch (error) {
       next(error);
@@ -61,8 +63,7 @@ export class ServiceController {
   ): Promise<void> {
     const { id } = req.params;
 
-    console.log(req.params,'dsdsd');
-    
+    console.log(req.params, "dsdsd");
 
     if (!id) {
       throw new BadRequestError("id not found");
@@ -80,18 +81,16 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-
     const { id } = req.params;
-    const status = req.body
-    console.log(req.params,'dsdsd',req.body);
-    
+    const status = req.body;
+    console.log(req.params, "dsdsd", req.body);
 
     if (!id) {
       throw new BadRequestError("id not found");
     }
 
     try {
-      const response = await this.updateStatusRepository.execute(id,status);
+      const response = await this.updateStatusRepository.execute(id, status);
       res.status(201).json(response);
     } catch (error) {
       next(error);

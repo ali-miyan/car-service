@@ -10,5 +10,6 @@ export enum BookingStatus {
     CarEnRouteBack = "Car En Route Back",
     CarDelivered = "Car Delivered",
     ReadyForPickup = "Ready for Pickup",
-    BookingCompleted = "Booking Completed"
+    BookingCompleted = "Booking Completed",
+    BookingCancelled = "Booking Cancelled"
   }

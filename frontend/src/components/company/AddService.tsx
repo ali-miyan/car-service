@@ -16,7 +16,10 @@ import PackageContent from "./PackageContent";
 import { getInitialToken } from "../../helpers/getToken";
 
 const AddYourService: React.FC = () => {
-  const { data: posts } = useGetServiceQuery({
+
+  const companyId = getInitialToken('companyToken')
+
+  const { data: posts } = useGetServiceQuery(companyId as string,{
     refetchOnMountOrArgChange: false,
   });
 

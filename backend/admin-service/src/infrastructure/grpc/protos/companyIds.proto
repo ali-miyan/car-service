@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package idservice;
+
+message IdRequest {
+  string companyId = 1;
+}
+
+message IdResponse {
+  repeated string ids = 1;
+}
+
+service IdService {
+  rpc GetIds (IdRequest) returns (IdResponse);
+}

@@ -21,7 +21,8 @@ interface BookingAttributes {
     | "Car En Route Back"
     | "Car Delivered"
     | "Ready for Pickup"
-    | "Booking Completed";
+    | "Booking Completed"
+    | "Booking Cancelled"
   serviceId: string;
   typeOfPackage: string;
   generalServiceId: string;
@@ -54,7 +55,8 @@ class Booking
     | "Car En Route Back"
     | "Car Delivered"
     | "Ready for Pickup"
-    | "Booking Completed";
+    | "Booking Completed"
+    | "Booking Cancelled"
   public serviceId!: string;
   public typeOfPackage!: string;
   public generalServiceId!: string;
@@ -116,7 +118,8 @@ Booking.init(
         "Car En Route Back",
         "Car Delivered",
         "Booking Completed",
-        "Ready for Pickup"
+        "Ready for Pickup",
+        "Booking Cancelled"
       ),
       defaultValue: "Booking Pending",
     },

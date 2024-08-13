@@ -4,7 +4,7 @@ import { connectDB } from "./infrastructure/db/mongoConfig";
 import { errorHandler } from "tune-up-library";
 import cookieParser from 'cookie-parser';
 import cors from "cors";
-import { startSlotGrpcServer,startServiceGrpcServer } from "./infrastructure/grpc/grpcServices";
+import { startSlotGrpcServer,startServiceGrpcServer,startCompanyIdsGrpcServer } from "./infrastructure/grpc/grpcServices";
 
 
 const PORT = 3001;
@@ -29,7 +29,7 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
+  startCompanyIdsGrpcServer()
   startSlotGrpcServer()
   startServiceGrpcServer()
 };

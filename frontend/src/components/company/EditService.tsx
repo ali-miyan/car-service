@@ -20,9 +20,7 @@ import { errMessage } from "../../constants/errorMessage";
 const AddYourService: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: posts } = useGetServiceQuery({
-    refetchOnMountOrArgChange: false,
-  });
+  const { data: posts } = useGetServiceQuery(undefined,{});
   const { data: curretService } = useGetSinglServicesQuery(id as string, {
     refetchOnMountOrArgChange: false,
   });

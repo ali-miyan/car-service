@@ -5,8 +5,8 @@ import {
   useGetUsersQuery,
   useUpdateStatusMutation,
 } from "../../store/slices/userApiSlice";
-import { profileImg } from "../../constants/imageUrl";
 import { FaRegUserCircle } from "react-icons/fa";
+import Pagination from "../common/Pagination";
 
 const UsersDetails = () => {
   const { data: posts, isLoading, refetch, error } = useGetUsersQuery({});
@@ -47,6 +47,14 @@ const UsersDetails = () => {
       console.error("Failed to update the service status:", error);
     }
   };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
+
+  const currentPosts = posts?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <>
       <div
@@ -74,11 +82,11 @@ const UsersDetails = () => {
                     </div>
                   </td>
                 </tr>
-              ) : posts && posts.length > 0 ? (
-                posts.map((post: any, index: number) => (
+              ) : currentPosts && currentPosts.length > 0 ? (
+                currentPosts.map((post: any, index: number) => (
                   <tr className="bg-white" key={post._id}>
                     <td className=" border-b text-red-900 text-center">
-                      {index + 1}.
+                    {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>
                     <td className="p-1 py-2 border-b justify-center flex">
                       {post.profileImg ? (
@@ -145,6 +153,12 @@ const UsersDetails = () => {
               )}
             </tbody>
           </table>
+          <Pagination
+            totalItems={posts?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </div>
     </>

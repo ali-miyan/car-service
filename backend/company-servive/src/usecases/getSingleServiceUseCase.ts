@@ -1,9 +1,9 @@
 import { BadRequestError } from "tune-up-library";
-import { IServiecRepository } from "../repositories";
+import { IServiceRepository } from "../repositories";
 
 export class GetSignleServicesUseCase {
   constructor(
-    private serviceRepository: IServiecRepository
+    private serviceRepository: IServiceRepository
   ) {}
 
   async execute(id:string): Promise<any> {

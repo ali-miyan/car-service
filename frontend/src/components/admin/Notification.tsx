@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Post } from "../../schema/company";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
+import Pagination from "../common/Pagination";
 
 const Notification = () => {
   const location = useLocation();
@@ -31,6 +32,14 @@ const Notification = () => {
     }
   }, [location.state, refetch]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const currentPosts = posts?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
 
   const handleToggle = async (id: string, currentStatus: boolean) => {
     try {
@@ -51,9 +60,7 @@ const Notification = () => {
 
   return (
     <div style={{ height: "100%" }} className="container font-bai-regular lowercase mx-auto p-4">
-    ,
-    ,
-      <div className="overflow-x-auto min-h-screen">
+      <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
@@ -75,13 +82,13 @@ const Notification = () => {
                   </div>
                 </td>
               </tr>
-            ) : posts && posts.length > 0 ? (
-              posts.map((post: Post, index: number) => (
+            ) : currentPosts && currentPosts.length > 0 ? (
+              currentPosts.map((post: Post, index: number) => (
                 <tr className="bg-white" key={post._id}>
                   <td className="py-2 px-4 border-b text-center">
-                    {index + 1}.
+                  {(currentPage - 1) * itemsPerPage + index + 1}.
                   </td>
-                  <td className="py-10 px-4 border-b justify-center flex">
+                  <td className="py-6 px-4 border-b justify-center flex">
                     <img
                       src={post.logo}
                       className="w-20 h-16 object-cover"
@@ -144,6 +151,12 @@ const Notification = () => {
             )}
           </tbody>
         </table>
+        <Pagination
+            totalItems={posts?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
       </div>
     </div>
   );

@@ -30,10 +30,7 @@ export class SignupUseCase {
 
     const user = new User({ username, email, phone:null, password:hashedPassword });
 
-    const otp = this.otpRepository.generateOtp(4);
-
-    console.log(otp,'otp here');
-    
+    const otp = this.otpRepository.generateOtp(4);    
 
     const subject = 'Your OTP Code';
     const message = `Your OTP code is ${otp}`;

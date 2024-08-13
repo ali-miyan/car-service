@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
 import ServiceList from "./ServiceList";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -61,9 +61,11 @@ function SamplePrevArrow(props) {
 }
 
 const ServiceHeader = () => {
-  const { data: services } = useGetServiceQuery({
+  const { data: services } = useGetServiceQuery(undefined,{
     refetchOnMountOrArgChange: false,
   });
+
+  const navigate = useNavigate()
 
   const [serviceData, setServiceData] = useState<object[]>([]);
 
@@ -112,8 +114,13 @@ const ServiceHeader = () => {
   const queryParams = new URLSearchParams(location.search);
   const initialSection = queryParams.get("service");
 
-  console.log(initialSection, "paraprarparparpar");
-
+  const handleNavigate = (id: string) => {
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.set('service', id);
+    const newUrl = `/services?${currentParams.toString()}`;
+    navigate(newUrl);
+  };
+  
   return (
     <>
       <div className="p-4 mx-20 font-bai-regular">
@@ -121,11 +128,11 @@ const ServiceHeader = () => {
           {services && services.length > 0 ? (
             services.map((service, index) => (
               <div key={index}>
-                <Link to={`/services?service=${service._id}`}>
                   <div
                     className={`flex flex-col items-center space-y-1 p-2 hover:bg-red-50 border rounded-lg min-w-[120px] md:min-w-[150px] ${
                       service._id == initialSection ? "bg-red-50 border-1 border-black" : "bg-white"
                     }`}
+                    onClick={()=>handleNavigate(service._id)}
                   >
                     <img
                       src={service.logoUrl}
@@ -136,7 +143,6 @@ const ServiceHeader = () => {
                       {service.serviceName}
                     </p>
                   </div>
-                </Link>
               </div>
             ))
           ) : (

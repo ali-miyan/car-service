@@ -11,8 +11,6 @@ export class AdminController {
       password,
     } = req.body;
 
-    console.log(req.body);
-    
     try {
       const response = await this.registerCompany.execute(
         email,

@@ -1,7 +1,7 @@
 import { Service } from "../../entities";
 import { IService } from "../../infrastructure/db/models";
 
-export interface IServiecRepository {
+export interface IServiceRepository {
   find(email: string): Promise<IService | null>;
   getById(id: string): Promise<IService | null>;
   updateStatus(id: string,data:object): Promise<void>;

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseCompanyUrl } from "../../constants/api";
 import { HttpMethod } from "../../schema/httpMethods";
+import { getQueryParams } from "../../helpers/queries";
 
 export const companyApiSlice = createApi({
   reducerPath: "companyApi",
@@ -18,13 +19,25 @@ export const companyApiSlice = createApi({
       keepUnusedDataFor: 300,
     }),
     getEveryServices: builder.query({
-      query: ({ type, id }: { type: string | null; id: string | null }) =>
-        `/get-all-services${id ? `?${type}=${id}` : ""}`,
-      keepUnusedDataFor: 300,
+      query: () => {
+        const { sort, search, price, company, service } = getQueryParams();
+
+        const queryParams = [];
+
+        if (sort) queryParams.push(`sort=${encodeURIComponent(sort)}`);
+        if (search) queryParams.push(`search=${encodeURIComponent(search)}`);
+        if (price) queryParams.push(`price=${encodeURIComponent(price)}`);
+        if (company) queryParams.push(`company=${encodeURIComponent(company)}`);
+        if (service) queryParams.push(`service=${encodeURIComponent(service)}`);
+
+        const queryString =
+          queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+
+        return `/get-all-services${queryString}`;
+      },
     }),
     getSinglServices: builder.query({
-      query: ( id:string) =>
-        `/get-single-service/${id}`,
+      query: (id: string) => `/get-single-service/${id}`,
       keepUnusedDataFor: 300,
     }),
 
@@ -95,5 +108,5 @@ export const {
   useDeleteServicePostMutation,
   useGetEveryServicesQuery,
   useGetApprovedCompanyQuery,
-  useGetSinglServicesQuery
+  useGetSinglServicesQuery,
 } = companyApiSlice;

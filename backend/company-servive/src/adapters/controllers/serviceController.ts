@@ -15,8 +15,8 @@ export class ServiceController {
     private serviceStatusUseCase: ServiceStatusUseCase,
     private getServiceUseCase: GetServiceUseCase,
     private deleteServiceUseCase: DeleteServiceUseCase,
-    private getEveryServiceUseCase:GetAllServicesUseCase,
-    private getSignleServicesUseCase:GetSignleServicesUseCase
+    private getEveryServiceUseCase: GetAllServicesUseCase,
+    private getSignleServicesUseCase: GetSignleServicesUseCase
   ) {}
 
   async addService(
@@ -40,8 +40,7 @@ export class ServiceController {
 
     const { files } = req as any;
 
-    console.log('files and body',req.body);
-    
+    console.log("files and body", req.body);
 
     try {
       const response = this.addServiceUseCase.execute(
@@ -91,8 +90,8 @@ export class ServiceController {
   ): Promise<void> {
     try {
       const { id } = req.params;
-      console.log('paraamss',id);
-      
+      console.log("paraamss", id);
+
       const service = await this.getServiceUseCase.execute(id);
       res.status(201).json(service);
     } catch (error) {
@@ -118,10 +117,16 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
-
-      const service = req.query.service
-      const company = req.query.company
-      const response = await this.getEveryServiceUseCase.execute(service,company);
+      const service = req.query.service as string | undefined;
+      const company = req.query.company as string | undefined;
+      const search = req.query.search as string | undefined;
+      const price = req.query.price as string | undefined;
+      const response = await this.getEveryServiceUseCase.execute(
+        service,
+        company,
+        search,
+        price
+      );
       res.status(201).json(response);
     } catch (error) {
       next(error);

@@ -15,7 +15,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const bookingProto = grpc.loadPackageDefinition(packageDefinition).booking;
 
 const client = new (bookingProto as any).BookingService(
-  "localhost:50051",
+  "localhost:6002",
   grpc.credentials.createInsecure()
 );
 

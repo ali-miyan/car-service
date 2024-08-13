@@ -19,7 +19,8 @@ export interface IBookingData {
     | "Car En Route Back"
     | "Car Delivered"
     | "Ready for Pickup"
-    | "Booking Completed";
+    | "Booking Completed"
+    | "Booking Cancelled"
   typeOfPackage: string;
   servicePlace: string;
   carId: string;
@@ -47,7 +48,8 @@ export class Booking {
     | "Car En Route Back"
     | "Car Delivered"
     | "Ready for Pickup"
-    | "Booking Completed";
+    | "Booking Completed"
+    | "Booking Cancelled"
   typeOfPackage: string;
   servicePlace: string;
   carId: string;

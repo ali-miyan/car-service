@@ -3,12 +3,14 @@ import { IServiceRepository } from "../interfaces";
 import { serviceModel } from "../../infrastructure/db/";
 
 export class ServiceRepository implements IServiceRepository {
-  async getAll(): Promise<any> {
+  async getAll(ids: string[] | null): Promise<any> {
     try {
-      const service = await serviceModel.find();
-      return service;
+      const query = ids ? { _id: { $nin: ids } } : {};
+      const services = await serviceModel.find(query);
+      return services;
     } catch (error) {
-      throw new Error("error in db");
+      console.error("Error retrieving services:", error);
+      throw new Error("Error in db");
     }
   }
   async getById(id: string): Promise<Service | null> {
