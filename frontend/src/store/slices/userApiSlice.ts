@@ -117,6 +117,13 @@ export const userApiSlice = createApi({
         method: HttpMethod.POST,
         body:formData,
       }),
+    }),
+     makeRating: builder.mutation({
+      query: (formData) => ({
+        url: `/add-rating`,
+        method: HttpMethod.POST,
+        body:formData,
+      }),
     })
   }),
 });
@@ -140,6 +147,6 @@ export const {
   useChangePasswordMutation,
   useGetSelectedCarQuery,
   useMakeOrderMutation,
-  useUpdateOrderMutation
+  useMakeRatingMutation
 
 } = userApiSlice;

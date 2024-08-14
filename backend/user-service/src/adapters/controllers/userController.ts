@@ -13,6 +13,7 @@ import {
   UserImageUseCase,
   EditUSerUseCase,
   UpadtePasswordUseCase,
+  AddRatingUseCase,
 } from "../../usecases/index";
 import { BadRequestError } from "tune-up-library";
 
@@ -30,7 +31,8 @@ export class UserController {
     private getUserByIdUseCase: GetUserByIdUseCase,
     private userImageUseCase: UserImageUseCase,
     private editUSerUseCase: EditUSerUseCase,
-    private upadtePasswordUseCase: UpadtePasswordUseCase
+    private upadtePasswordUseCase: UpadtePasswordUseCase,
+    private addRatingUseCase: AddRatingUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -267,6 +269,20 @@ export class UserController {
         newPassword,
         confirmNewPassword
       );
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async addRating(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { rating, reviewText,serviceId } = req.body;
+    const { user } = (req as any).user;
+    try {
+      const response = await this.addRatingUseCase.execute(rating as number, reviewText as string,user as string,serviceId as string);
       res.status(201).json(response);
     } catch (error) {
       next(error);

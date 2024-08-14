@@ -20,7 +20,8 @@ export const companyApiSlice = createApi({
     }),
     getEveryServices: builder.query({
       query: () => {
-        const { sort, search, price, company, service } = getQueryParams();
+        const { sort, search, price, company, service, page } =
+          getQueryParams();
 
         const queryParams = [];
 
@@ -29,6 +30,7 @@ export const companyApiSlice = createApi({
         if (price) queryParams.push(`price=${encodeURIComponent(price)}`);
         if (company) queryParams.push(`company=${encodeURIComponent(company)}`);
         if (service) queryParams.push(`service=${encodeURIComponent(service)}`);
+        if (page) queryParams.push(`page=${encodeURIComponent(page)}`);
 
         const queryString =
           queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
@@ -38,6 +40,10 @@ export const companyApiSlice = createApi({
     }),
     getSinglServices: builder.query({
       query: (id: string) => `/get-single-service/${id}`,
+      keepUnusedDataFor: 300,
+    }),
+    getRatings: builder.query({
+      query: (id: string) => `/get-ratings/${id}`,
       keepUnusedDataFor: 300,
     }),
 
@@ -109,4 +115,5 @@ export const {
   useGetEveryServicesQuery,
   useGetApprovedCompanyQuery,
   useGetSinglServicesQuery,
+  useGetRatingsQuery
 } = companyApiSlice;

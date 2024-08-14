@@ -1,5 +1,7 @@
-import { default as companyModel } from "./companyModel";
+import { default as companyModal } from "./companyModal";
 import { default as serviceModal } from "./serviceModal";
-export { companyModel, serviceModal };
-export * from "./companyModel";
+import { default as ratingModal } from "./ratingModel";
+export { companyModal, serviceModal, ratingModal };
+export * from "./companyModal";
 export * from "./serviceModal";
+export * from "./ratingModel";

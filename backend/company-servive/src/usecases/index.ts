@@ -10,3 +10,5 @@ export * from './deleteServiceUseCase';
 export * from './getAllServicesUseCase';
 export * from './getSingleServiceUseCase';
 export * from './approvedCompanyUseCase';
+export * from './addRatingUseCase';
+export * from './getRatingUseCase';

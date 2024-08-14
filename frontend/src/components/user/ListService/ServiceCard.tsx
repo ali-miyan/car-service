@@ -7,56 +7,57 @@ const ServiceCard = ({
   servicePlace,
   image,
   serviceData,
-}) => {
+  servicePackage
+}: any) => {
   const service = React.useMemo(
     () => serviceData.find((service) => service.id === id),
     [id, serviceData]
   );
-  console.log(service, "cheat", serviceData);
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:scale-95 transition duration-700 cursor-pointer">
+    <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-95 transition duration-500 cursor-pointer">
       <div className="flex flex-col md:flex-row">
-        <div className="my-auto">
+        <div className="my-auto flex-shrink-0 p-4">
           <img
-            src={service && service.image}
+            src={service?.image || image}
             alt="Company Logo"
-            className="w-20 h-20 -mb-2 mx-7 object-cover"
+            className="w-24 h-24 object-cover rounded-md mx-auto md:mx-0"
           />
-          <p className="lowercase text-sm text-gray-500 ml-6 ">{service?.name}</p>
+          <p className="lowercase text-center md:text-left text-sm text-gray-500 ">
+            {service?.name}
+          </p>
         </div>
-        <div className="flex flex-col font-bai-regular lowercase justify-between p-3 flex-grow">
-          <div className="">
-            <div className="flex items-center">
+        <div className="flex flex-col font-bai-regular lowercase justify-between p-4 flex-grow">
+          <div>
+            <div className="flex items-center mb-4">
               <img
                 src={company?.logo}
                 alt="Service Provider"
-                className="w-20 h-20 object-cover rounded-full mr-3"
+                className="w-16 h-16 object-cover rounded-full mr-4"
               />
-              <p className="text-md uppercase font-bai-bold">
-                {company?.companyName}
-              </p>
+              <div>
+                <p className="text-lg uppercase font-bai-bold -mb-1">
+                  {company?.companyName}
+                </p>
+                <p className="text-sm text-gray-600">Since {company?.year}</p>
+              </div>
             </div>
 
-            <div className="text-sm text-gray-600 ">
-              <span className="font-semibold">Working Hours:</span>
-              {selectedHours}
+            <div className="text-sm text-gray-600 mb-2">
+              <span className="font-semibold">Start from:</span> ₹{servicePackage?.detail.price}
+            </div>
+            <div className="text-sm text-gray-600 mb-2">
+              <span className="font-semibold">Working Hours:</span> {selectedHours}
+            </div>
+            <div className="text-sm text-gray-600 mb-2">
+              <span className="font-semibold">Service Area:</span> {servicePlace}
+            </div>
+            <div className="text-sm text-gray-600 mb-2">
+              <span className="font-semibold">Service Type:</span> {service ? service.name : "Unknown Service"}
             </div>
             <div className="text-sm text-gray-600">
-              <span className="font-semibold">Service Area:</span>
-              {servicePlace}
+              <span className="font-semibold">Location:</span> {company?.address?.city}, {company?.address?.address}
             </div>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold ">Since</span> {company?.year}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold ">service Type:</span>{" "}
-              {service ? service.name : "Unknown Service"}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold ">location:</span>{" "}
-              {company?.address?.city}, {company?.address?.address}
-            </p>
           </div>
         </div>
       </div>

@@ -19,9 +19,7 @@ const AddYourService: React.FC = () => {
 
   const companyId = getInitialToken('companyToken')
 
-  const { data: posts } = useGetServiceQuery(companyId as string,{
-    refetchOnMountOrArgChange: false,
-  });
+  const { data: posts } = useGetServiceQuery(companyId as string);
 
   const [addService, { isLoading }] = useAddServiceMutation();
   const navigate = useNavigate();

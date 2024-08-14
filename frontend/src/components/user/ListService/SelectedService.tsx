@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
-import { FaTruckMoving } from "react-icons/fa";
+import {
+  useGetRatingsQuery,
+  useGetSinglServicesQuery,
+} from "../../../store/slices/companyApiSlice";
+import { FaStar, FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { getInitialToken } from "../../../helpers/getToken";
@@ -19,10 +22,24 @@ const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
   const token = getInitialToken("userToken");
   const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
+  const { data: rating } = useGetRatingsQuery(id as string);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
   const location = useLocation();
   const { generalServiceId, serviceData } = location.state || {};
+
+  const totalRatings = rating.length;
+  const averageRating = totalRatings
+    ? (
+        rating.reduce((acc, { stars }) => acc + stars, 0) / totalRatings
+      ).toFixed(1)
+    : 0;
+  const starCounts = [1, 2, 3, 4, 5].reduce((acc: any, star: any) => {
+    acc[star] = rating.filter((val) => val.stars === star).length;
+    return acc;
+  }, {});
+
+  console.log(rating, "ratings");
 
   useEffect(() => {
     if (serviceData && generalServiceId) {
@@ -30,8 +47,6 @@ const SelectedService = () => {
       setGeneralServiceDetails(details);
     }
   }, [serviceData, generalServiceId]);
-
-  console.log(generalServiceDetials, generalServiceId, "whyhyhy");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -113,9 +128,15 @@ const SelectedService = () => {
             <table className="table-auto border-collapse border  border-gray-300">
               <thead>
                 <tr>
-                  <th className="border text-sm border-red-900 px-4">working hours</th>
-                  <th className="border text-sm border-red-900 px-4">service place</th>
-                  <th className="border text-sm border-red-900 px-4">services per day</th>
+                  <th className="border text-sm border-red-900 px-4">
+                    working hours
+                  </th>
+                  <th className="border text-sm border-red-900 px-4">
+                    service place
+                  </th>
+                  <th className="border text-sm border-red-900 px-4">
+                    services per day
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -124,10 +145,10 @@ const SelectedService = () => {
                     {posts?.selectedHours}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
-                  {posts?.servicePlace}
+                    {posts?.servicePlace}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
-                  {posts?.servicesPerDay}
+                    {posts?.servicesPerDay}
                   </td>
                 </tr>
               </tbody>
@@ -215,9 +236,7 @@ const SelectedService = () => {
                       ₹{basicPackage?.detail?.price || "0"}
                     </span>
 
-                    <span className="text-base font-medium text-slate-500">
-                      /service
-                    </span>
+                    <span className="text-base text-slate-500">/service</span>
                     <br />
                     <span className="text-gray-500">
                       - takes {basicPackage?.detail?.workingHours} hours
@@ -284,9 +303,7 @@ const SelectedService = () => {
                       ₹{standardPackage?.detail?.price || "0"}
                     </span>
 
-                    <span className="text-base font-medium text-slate-500">
-                      /service
-                    </span>
+                    <span className="text-base text-slate-500">/service</span>
                     <br />
                     <span className="text-gray-500">
                       - takes {standardPackage?.detail?.workingHours} hours
@@ -354,9 +371,7 @@ const SelectedService = () => {
                       ₹{premiumPackage?.detail?.price || "0"}
                     </span>
 
-                    <span className="text-base font-medium text-slate-500">
-                      /service
-                    </span>
+                    <span className="text-base text-slate-500">/service</span>
                     <br />
                     <span className="text-gray-500">
                       - takes {premiumPackage?.detail?.workingHours} hours
@@ -412,35 +427,110 @@ const SelectedService = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 mx-20 bg-white rounded-lg shadow-lg p-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <p className="text-gray-700">
-                  <strong className="text-red-900">
-                    Q: How long does the service take?
-                  </strong>
-                  <br />
-                  A: Typically, our service takes 2-3 days depending on the
-                  extent of the damage.
-                </p>
+
+        <section className="py-24 relative">
+          <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
+            <div className="w-full">
+              <h2 className="font-bai-bold font-bold text-xl uppercase text-black mb-8 text-center">
+                Our customer reviews
+              </h2>
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-11 pb-11 border-b  border-gray-100 max-xl:max-w-2xl max-xl:mx-auto">
+                <div className="box flex flex-col gap-y-4 w-full">
+                  {[5, 4, 3, 2, 1].map((value) => (
+                    <div
+                      key={value}
+                      className="flex my-0.5 items-center w-full"
+                    >
+                      <p className=" text-black mr-0.5">{value}</p>
+                      <p className="h-2 w-full sm:min-w-[278px] rounded-3xl bg-white ml-5 mr-3">
+                        <span
+                          className="h-full rounded-3xl bg-red-700 flex"
+                          style={{
+                            width: `${
+                              (starCounts[value] / totalRatings) * 100
+                            }%`,
+                          }}
+                        ></span>
+                      </p>
+
+                      <p className=" text-black mr-0.5">{starCounts[value]}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-6 bg-white rounded-3xl flex items-center justify-center flex-col">
+                  <h2 className="font-manrope font-bold text-5xl text-gray-900 mb-6">
+                    {averageRating}
+                  </h2>
+                  <div className="flex items-center justify-center gap-2 sm:gap-6 mb-4">
+                    {[...Array(Math.round(averageRating))].map((_, index) => (
+                      <FaStar key={index} className="text-[#ab0000] text-4xl" />
+                    ))}
+                  </div>
+                  <p className="text-xl leading-8 text-gray-900 text-center">
+                    {rating?.length} Ratings
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-gray-700">
-                  <strong className="text-red-900">
-                    Q: Are your paints environmentally friendly?
-                  </strong>
-                  <br />
-                  A: Yes, we use eco-friendly paints that comply with
-                  environmental standards.
-                </p>
+              <div className="flex flex-wrap items-center gap-2">
+                {rating &&
+                  rating.map((val) => (
+                    <div
+                      key={val.id}
+                      className="flex-1 px-5 min-w-[calc(50%-1.25rem)] max-w-[calc(50%-1.25rem)] pt-5 pb-4 border border-gray-200 rounded-lg shadow-md bg-white"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center space-x-4">
+                          <img
+                            src={val.profileImg}
+                            alt={val.username}
+                            className="w-14 h-14 rounded-full border-2"
+                          />
+                          <div className="flex-1">
+                            <h6 className="text-lg font-semibold text-gray-800">
+                              {val.username}
+                            </h6>
+                            <p className="text-sm text-gray-500">
+                              {new Date(val.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }
+                              )}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-start ml-auto space-y-2 ">
+                          <div className="flex items-center space-x-1">
+                            {[...Array(val.stars)].map((_, index) => (
+                              <svg
+                                key={index}
+                                className="w-6 h-6 text-[#ab0000] transition-transform transform hover:scale-110"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M12 .587l3.668 7.425 8.2 1.19-5.918 5.783 1.396 8.148L12 17.74 5.654 22.028l1.396-8.148-5.918-5.783 8.2-1.19L12 .587z" />
+                              </svg>
+                            ))}
+                          </div>
+                          <p className="text-gray-600 mx-auto text-sm mt-1">
+                            {val.stars} out of 5
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-700 mt-2 text-center">
+                        '' {val.review}
+                      </p>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <div className="mt-8 mx-20 bg-white rounded-lg shadow-lg p-6">
           <div>

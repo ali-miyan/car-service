@@ -1,4 +1,3 @@
-// userService/modules/producer/producer.service.ts
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from ".";
 

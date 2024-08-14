@@ -8,12 +8,14 @@ export class GetAllServicesUseCase {
     serviceId: any,
     companyId: any,
     search: any,
-    price: any
+    sort: any,
+    page: any = 1,
+    limit: number = 4
+
   ): Promise<any> {
+    console.log(page,'[agepge');
+    
     let services = await this.serviceRepository.getEveryService();
-
-    console.log(services, serviceId, companyId);
-
     if (!services) {
       throw new BadRequestError("Unable to fetch services");
     }
@@ -22,22 +24,33 @@ export class GetAllServicesUseCase {
       services = services.filter(
         (s) => s.generalServiceId.toString() === serviceId
       );
-      console.log(serviceId, "with", services);
     }
 
     if (companyId) {
       services = services.filter(
         (s) => s.companyId._id.toString() === companyId
       );
-      console.log(companyId, "with", services);
     }
 
     if (search) {
       services = services.filter((s: any) =>
         s.companyId.companyName.toLowerCase().includes(search.toLowerCase())
       );
-      console.log("Search with", search, "results:", services);
     }
+
+    if (sort) {
+      if (sort === "low-to-high") {
+        services.sort((a, b) => a.basicPackage.detail.price - b.basicPackage.detail.price);
+      } else if (sort === "high-to-low") {
+        services.sort((a, b) => b.basicPackage.detail.price - a.basicPackage.detail.price );
+      }
+    }
+
+    const offset = (page - 1) * limit;
+    services = services.slice(offset, offset + limit);
+
+    console.log(services.length,'lengtj');
+    
 
 
     return services;

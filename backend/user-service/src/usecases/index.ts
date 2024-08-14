@@ -15,3 +15,4 @@ export * from './getCarByIdUseCase';
 export * from './deleteCarUseCase';
 export * from './changePasswordUseCase';
 export * from './getOneCarUseCase';
+export * from './addRatingUseCase';

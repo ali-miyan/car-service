@@ -36,4 +36,6 @@ message CompanyInfo {
   double longitude = 2;
   string name = 3;
   string image = 4;
+  string contact1 = 5;
+  string contact2 = 6;
 }

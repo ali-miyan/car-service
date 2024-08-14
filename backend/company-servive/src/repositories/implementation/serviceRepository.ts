@@ -42,7 +42,7 @@ export class ServiceRepository implements IServiceRepository {
         .findOne({ _id: serviceId })
         .populate({
           path: "companyId",
-          select: "companyName logo address.latitude address.longitude",
+          select: "companyName logo address.latitude address.longitude contact1 contact2",
         });
       if (!service) {
         throw new Error("service is null");
@@ -56,6 +56,8 @@ export class ServiceRepository implements IServiceRepository {
           image: service.companyId?.logo,
           latitude: service.companyId?.address.latitude,
           longitude: service.companyId?.address.longitude,
+          contact1: service.companyId?.contact1,
+          contact2: service.companyId?.contact2,
         },
       };
     } catch (error) {

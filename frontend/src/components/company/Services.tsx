@@ -27,8 +27,8 @@ const ServiceList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (location.state && location.state.refetch) {
-        await refetch();
+      if (location.state) {
+        refetch();
       }
     };
 
@@ -96,7 +96,7 @@ const ServiceList = () => {
       if (res.success) {
         setToggleStates((prevState) => ({ ...prevState, [id]: updatedStatus }));
         notifySuccess("Status updated successfully");
-        await refetch();
+        refetch();
       } else {
         notifyError(errMessage);
       }
@@ -108,7 +108,7 @@ const ServiceList = () => {
   return (
     <>
       <div
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: "100%", width: "100%" }}
         className="container lowercase font-bai-regular mx-auto p-9"
       >
         <div className="overflow-x-auto rounded">
@@ -178,8 +178,8 @@ const ServiceList = () => {
                       <span
                         className={`inline-block px-2 pt-2 pb-1 rounded ${
                           !toggleStates[post._id]
-                            ? 'bg-green-100 text-green-900'
-                            : 'bg-red-100 text-red-800'
+                            ? "bg-green-100 text-green-900"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         <label className="inline-flex items-center cursor-pointer">
@@ -194,7 +194,7 @@ const ServiceList = () => {
                           />
                           <div className="relative w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gray-600"></div>
                           <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            {toggleStates[post._id] ? 'off' : 'on'}
+                            {toggleStates[post._id] ? "off" : "on"}
                           </span>
                         </label>
                       </span>
@@ -243,7 +243,7 @@ const ServiceList = () => {
       {showModal && (
         <CustomModal
           open={showModal}
-          title={'packages'}
+          title={"packages"}
           width={500}
           height={500}
           onClose={() => setShowModal(false)}

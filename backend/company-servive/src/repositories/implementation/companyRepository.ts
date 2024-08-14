@@ -1,11 +1,11 @@
 import { Company } from "../../entities/companyEntity";
 import { ICompanyRepository } from "../interfaces";
-import { companyModel,CompanyDocument } from "../../infrastructure/db";
+import { companyModal,CompanyDocument } from "../../infrastructure/db";
 
 export class CompanyRepository implements ICompanyRepository {
   async find(email: string): Promise<CompanyDocument | null> {
     try {
-      const newCompany = await companyModel.findOne({ email: email });
+      const newCompany = await companyModal.findOne({ email: email });
       if (!newCompany) return null;
       return newCompany;
     } catch (error) {
@@ -14,7 +14,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async getAll(): Promise<CompanyDocument[] | null> {
     try {
-      const newCompany = await companyModel.find();
+      const newCompany = await companyModal.find();
       return newCompany;
     } catch (error) {
       throw new Error("error in db");
@@ -22,7 +22,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async getApproved(): Promise<CompanyDocument[] | null> {
     try {
-      const newCompany = await companyModel.find({isApproved:"accepted" , isBlocked:false});
+      const newCompany = await companyModal.find({isApproved:"accepted" , isBlocked:false});
       return newCompany;
     } catch (error) {
       throw new Error("error in db");
@@ -30,7 +30,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async getById(id:string): Promise<CompanyDocument | null> {
     try {
-      const newCompany =await companyModel.findOne({_id:id});
+      const newCompany =await companyModal.findOne({_id:id});
       return newCompany;
     } catch (error) {
       throw new Error("error in db");
@@ -39,7 +39,7 @@ export class CompanyRepository implements ICompanyRepository {
 
   async updateStatus(id: string, data: object): Promise<void> {
     try {
-      await companyModel.findByIdAndUpdate(id, data, {
+      await companyModal.findByIdAndUpdate(id, data, {
         new: true,
       });
     } catch (error) {
@@ -48,7 +48,7 @@ export class CompanyRepository implements ICompanyRepository {
   }
   async save(company: Company): Promise<Company> {
     try {
-      const newCompany = new companyModel(company);
+      const newCompany = new companyModal(company);
       await newCompany.save();
       return newCompany;
     } catch (error) {

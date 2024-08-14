@@ -1,5 +1,5 @@
 import { Company } from "../../entities";
-import { CompanyDocument } from "../../infrastructure/db/models/companyModel";
+import { CompanyDocument } from "../../infrastructure/db/models";
 
 export interface ICompanyRepository {
   find(email: string): Promise<CompanyDocument | null>;

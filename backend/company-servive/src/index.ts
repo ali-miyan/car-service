@@ -2,10 +2,14 @@ import express from "express";
 import compnayRoute from "./infrastructure/express/routes";
 import { connectDB } from "./infrastructure/db/mongoConfig";
 import { errorHandler } from "tune-up-library";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import cors from "cors";
-import { startSlotGrpcServer,startServiceGrpcServer,startCompanyIdsGrpcServer } from "./infrastructure/grpc/grpcServices";
-
+import {
+  startSlotGrpcServer,
+  startServiceGrpcServer,
+  startCompanyIdsGrpcServer,
+} from "./infrastructure/grpc/grpcServices";
+import { createConsumerService } from "./infrastructure/rabbitMQ/rabbitMQServices";
 
 const PORT = 3001;
 
@@ -14,7 +18,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:8080",
-    credentials:true,
+    credentials: true,
   })
 );
 
@@ -29,9 +33,10 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-  startCompanyIdsGrpcServer()
-  startSlotGrpcServer()
-  startServiceGrpcServer()
+  startCompanyIdsGrpcServer();
+  startSlotGrpcServer();
+  startServiceGrpcServer();
+  createConsumerService();
 };
 
 startServer();

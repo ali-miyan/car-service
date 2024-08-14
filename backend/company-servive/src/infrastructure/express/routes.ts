@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   CompanyController,
+  RatingController,
   ServiceController,
 } from "../../adapters/controllers";
 import {
@@ -15,10 +16,12 @@ import {
   DeleteServiceUseCase,
   GetAllServicesUseCase,
   GetSignleServicesUseCase,
-  GetApprovedCompanyUseCase
+  GetApprovedCompanyUseCase,
+  GetRatingsUseCase
 } from "../../usecases";
 import {
   CompanyRepository,
+  RatingRepository,
   ServiceRepository,
 } from "../../repositories/implementation";
 import { S3Service } from "../../infrastructure/services";
@@ -28,6 +31,7 @@ const upload = multer();
 
 const companyRepository = new CompanyRepository();
 const serviceRepository = new ServiceRepository();
+const ratingRepository = new RatingRepository();
 const s3Service = new S3Service();
 
 const signupUseCase = new RegisterUseCase(companyRepository, s3Service);
@@ -42,6 +46,7 @@ const getApprovedCompany = new GetApprovedCompanyUseCase(companyRepository);
 const addServiceUseCase = new AddServiceUseCase(s3Service, serviceRepository);
 const updateStatusUseCase = new UpdateStatusUseCase(companyRepository);
 const deleteServiceUseCase = new DeleteServiceUseCase(serviceRepository);
+const getRatingsUseCase = new GetRatingsUseCase(ratingRepository);
 const companyController = new CompanyController(
   signupUseCase,
   loginupUseCase,
@@ -57,6 +62,9 @@ const serviceController = new ServiceController(
   deleteServiceUseCase,
   getAllServiceUseCase,
   getSignleServicesUseCase
+);
+const ratingController = new RatingController(
+  getRatingsUseCase,
 );
 
 const router = Router();
@@ -99,6 +107,9 @@ router.get("/get-all-services", (req, res, next) =>
 );
 router.get("/get-single-service/:id", (req, res, next) =>
   serviceController.getSingleServices(req, res, next)
+);
+router.get("/get-ratings/:id", (req, res, next) =>
+  ratingController.getRatings(req, res, next)
 );
 router.delete(
   "/delete-service/:id",

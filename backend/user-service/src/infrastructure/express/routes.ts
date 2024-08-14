@@ -17,13 +17,15 @@ import {
   DeleteCarUseCase,
   UpadtePasswordUseCase,
   AddCarUseCase,
-  GetOneCarUseCase
+  GetOneCarUseCase,
+  AddRatingUseCase,
 } from "../../usecases";
 import { RedisOtpRepository, UserRepository } from "../../repositories";
 import { OtpService, S3Service } from "../../infrastructure/services";
 import { authMiddleware } from "tune-up-library";
 import multer from "multer";
 import { CarRepository } from "../../repositories/implementaion/carRepository";
+import { ProducerService } from "../rabbitMQ";
 const upload = multer();
 
 const userRepository = new UserRepository();
@@ -54,8 +56,10 @@ const resetPasswordUseCase = new ResetPasswordUseCase(
   userRepository,
   redisRepository
 );
+const rabbitMQService = new ProducerService()
 const carRepository = new CarRepository();
 const addCarUseCase = new AddCarUseCase(carRepository);
+const addRatingUseCase = new AddRatingUseCase(userRepository,rabbitMQService);
 const deleteCarUseCase = new DeleteCarUseCase(carRepository);
 const getCarByIdUseCase = new GetCarByIdUseCase(carRepository);
 const getOneCarUseCase = new GetOneCarUseCase(carRepository);
@@ -78,7 +82,8 @@ const userController = new UserController(
   getUserByIdUseCase,
   userUploadUseCase,
   editUSerUseCase,
-  upadtePasswordUseCase
+  upadtePasswordUseCase,
+  addRatingUseCase
 );
 
 const router = Router();
@@ -134,12 +139,11 @@ router.get("/get-one-car/:id", authMiddleware(["user"]), (req, res, next) =>
 router.delete("/delete-car/:id", authMiddleware(["user"]), (req, res, next) =>
   carController.deleteCar(req, res, next)
 );
-router.patch(
-  "/update-password",
-  authMiddleware(["user"]),
-  (req, res, next) => userController.updatePassword(req, res, next)
+router.patch("/update-password", authMiddleware(["user"]), (req, res, next) =>
+  userController.updatePassword(req, res, next)
 );
-
-
+router.post("/add-rating", authMiddleware(["user"]), (req, res, next) =>
+  userController.addRating(req, res, next)
+);
 
 export default router;

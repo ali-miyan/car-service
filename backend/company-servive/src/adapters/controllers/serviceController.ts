@@ -120,12 +120,14 @@ export class ServiceController {
       const service = req.query.service as string | undefined;
       const company = req.query.company as string | undefined;
       const search = req.query.search as string | undefined;
-      const price = req.query.price as string | undefined;
+      const sort = req.query.sort as string | undefined;
+      const page = req.query.page as number | undefined;
       const response = await this.getEveryServiceUseCase.execute(
         service,
         company,
         search,
-        price
+        sort,
+        page
       );
       res.status(201).json(response);
     } catch (error) {
