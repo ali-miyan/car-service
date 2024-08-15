@@ -22,8 +22,8 @@ const CompanyRoutes = () => (
     <Route path="services" element={<CompanyProtectedRoute element={Services} />} />
     <Route path="add-services" element={<CompanyProtectedRoute element={AddServices} />} />
     <Route path="edit-service/:id" element={<CompanyProtectedRoute element={EditService} />} />
-    <Route path="/notification" element={<CompanyProtectedRoute element={ListBookingPage} />} />
-    <Route path="/order-details/:id" element={<CompanyProtectedRoute element={orderDetailsPage} />} />
+    <Route path="notification" element={<CompanyProtectedRoute element={ListBookingPage} />} />
+    <Route path="order-details/:id" element={<CompanyProtectedRoute element={orderDetailsPage} />} />
   </Routes>
 );
 

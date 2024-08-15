@@ -7,8 +7,14 @@ export interface IRatingData {
   profileImg: string;
   stars: number;
   review: string;
-  likes: number;
-  dislikes: number;
+  likes: {
+    count: number;
+    userIds: string[];
+  };
+  dislikes: {
+    count: number;
+    userIds: string[];
+  };
 }
 export class Rating implements IRatingData {
   _id?: any;
@@ -19,9 +25,14 @@ export class Rating implements IRatingData {
   profileImg: string;
   stars: number;
   review: string;
-  likes: number;
-  dislikes: number;
-
+  likes: {
+    count: number;
+    userIds: string[];
+  };
+  dislikes: {
+    count: number;
+    userIds: string[];
+  };
   constructor({
     _id,
     serviceId,
@@ -31,8 +42,8 @@ export class Rating implements IRatingData {
     profileImg,
     stars,
     review,
-    likes,
-    dislikes,
+    likes = { count: 0, userIds: [] },
+    dislikes = { count: 0, userIds: [] },
   }: IRatingData) {
     this._id = _id;
     this.serviceId = serviceId;

@@ -20,7 +20,7 @@ export const companyApiSlice = createApi({
     }),
     getEveryServices: builder.query({
       query: () => {
-        const { sort, search, price, company, service, page } =
+        const { sort, search, price, company, service } =
           getQueryParams();
 
         const queryParams = [];
@@ -30,7 +30,6 @@ export const companyApiSlice = createApi({
         if (price) queryParams.push(`price=${encodeURIComponent(price)}`);
         if (company) queryParams.push(`company=${encodeURIComponent(company)}`);
         if (service) queryParams.push(`service=${encodeURIComponent(service)}`);
-        if (page) queryParams.push(`page=${encodeURIComponent(page)}`);
 
         const queryString =
           queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
@@ -99,6 +98,13 @@ export const companyApiSlice = createApi({
         method: HttpMethod.DELETE,
       }),
     }),
+    updateRating: builder.mutation({
+      query: (data) => ({
+        url: `/update-rating`,
+        method: HttpMethod.POST,
+        body:data,
+      }),
+    }),
   }),
 });
 
@@ -115,5 +121,6 @@ export const {
   useGetEveryServicesQuery,
   useGetApprovedCompanyQuery,
   useGetSinglServicesQuery,
-  useGetRatingsQuery
+  useGetRatingsQuery,
+  useUpdateRatingMutation
 } = companyApiSlice;

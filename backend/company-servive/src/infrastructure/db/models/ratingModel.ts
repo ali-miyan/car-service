@@ -8,21 +8,33 @@ export interface RatingDocument extends Document {
   profileImg: string;
   stars: number;
   review: string;
-  likes: number;
-  dislikes: number;
+  likes: {
+    count: number;
+    userIds: string[];
+  };
+  dislikes: {
+    count: number;
+    userIds: string[];
+  };
 }
 
 const ratingSchema = new Schema<RatingDocument>(
   {
-    serviceId: { type: String, required: true },  
+    serviceId: { type: String, required: true },
     userId: { type: String, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
     profileImg: { type: String, required: true },
     stars: { type: Number, required: true },
     review: { type: String, required: true },
-    likes: { type: Number, default: 0 },
-    dislikes: { type: Number, default: 0 },
+    likes: {
+      count: { type: Number, default: 0 },
+      userIds: { type: [String], default: [] },
+    },
+    dislikes: {
+      count: { type: Number, default: 0 },
+      userIds: { type: [String], default: [] },
+    },
   },
   {
     timestamps: true,

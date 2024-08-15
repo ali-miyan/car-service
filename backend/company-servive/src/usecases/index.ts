@@ -12,3 +12,4 @@ export * from './getSingleServiceUseCase';
 export * from './approvedCompanyUseCase';
 export * from './addRatingUseCase';
 export * from './getRatingUseCase';
+export * from './updateRatingUseCase';

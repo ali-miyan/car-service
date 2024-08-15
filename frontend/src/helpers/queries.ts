@@ -6,7 +6,6 @@ export const getQueryParams = () => {
       sort: queryParams.get('sort') || '',
       search: queryParams.get('search') || '',
       price: queryParams.get('price') || '',
-      page: queryParams.get('page') || '',
     };
   };
   

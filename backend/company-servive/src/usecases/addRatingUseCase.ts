@@ -23,8 +23,8 @@ export class AddRatingUseCase {
       profileImg,
       stars,
       review,
-      likes: 0,
-      dislikes: 0,
+      likes: { count: 0, userIds: [] },
+      dislikes: { count: 0, userIds: [] },
     });
 
     await this.ratingRepository.save(rating);

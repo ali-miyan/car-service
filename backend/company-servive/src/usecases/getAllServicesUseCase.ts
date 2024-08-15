@@ -9,11 +9,7 @@ export class GetAllServicesUseCase {
     companyId: any,
     search: any,
     sort: any,
-    page: any = 1,
-    limit: number = 4
-
   ): Promise<any> {
-    console.log(page,'[agepge');
     
     let services = await this.serviceRepository.getEveryService();
     if (!services) {
@@ -45,9 +41,6 @@ export class GetAllServicesUseCase {
         services.sort((a, b) => b.basicPackage.detail.price - a.basicPackage.detail.price );
       }
     }
-
-    const offset = (page - 1) * limit;
-    services = services.slice(offset, offset + limit);
 
     console.log(services.length,'lengtj');
     

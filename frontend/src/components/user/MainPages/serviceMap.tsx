@@ -10,7 +10,6 @@ import Geocoder from "../../company/Geocoder";
 import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
 import { Link } from "react-router-dom";
 import { calculateDistance } from "../../../helpers/getDistance";
-import mapboxgl from "mapbox-gl";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";

@@ -5,12 +5,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Filters from "./Filter";
 import Loader from "../../common/Loader";
 import { IoIosSearch } from "react-icons/io";
-import { PaginationNav1Presentation } from "./servicePagination";
+import Pagination from "../../common/Pagination";
 
 const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentParams = new URLSearchParams(location.search);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const {
     data: servicesData,
@@ -18,8 +21,12 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
     refetch,
   } = useGetEveryServicesQuery({});
 
-  console.log(serviceData,'servocedata');
-  
+  const currentPosts = servicesData?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  console.log(serviceData, "servocedata");
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -48,11 +55,6 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
 
   const handleSearchClick = () => {
     currentParams.set("search", searchValue);
-    navigate(`/services?${currentParams.toString()}`);
-  };
-
-  const handlePageChange = (pageIndex: number) => {
-    currentParams.set("page", (pageIndex + 1).toString());
     navigate(`/services?${currentParams.toString()}`);
   };
 
@@ -94,10 +96,9 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
             </button>
           </div>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {servicesData && servicesData.length > 0 ? (
-            servicesData.map((service: any) => (
+          {currentPosts && currentPosts.length > 0 ? (
+            currentPosts.map((service: any) => (
               <div
                 key={service._id}
                 onClick={() =>
@@ -120,9 +121,12 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
             <p className="text-end my-10">No service available</p>
           )}
         </div>
-        <div className="flex justify-center">
-          <PaginationNav1Presentation onPageChange={handlePageChange} serviceCount={servicesData?.length}/>
-        </div>
+        <Pagination
+          totalItems={servicesData?.length || 0}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </>
   );

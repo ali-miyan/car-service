@@ -3,35 +3,35 @@ import { IRatingRepository } from "../interfaces";
 import { ratingModal,RatingDocument } from "../../infrastructure/db";
 
 export class RatingRepository implements IRatingRepository {
-  async find(email: string): Promise<RatingDocument | null> {
+  async find(_id: string): Promise<RatingDocument | null> {
     try {
-      const newCompany = await ratingModal.findOne({ email: email });
-      if (!newCompany) return null;
-      return newCompany;
+      const rating = await ratingModal.findOne({_id});
+      if (!rating) return null;
+      return rating;
     } catch (error) {
       throw new Error("error in db");
     }
   }
   async getAll(): Promise<RatingDocument[] | null> {
     try {
-      const newCompany = await ratingModal.find();
-      return newCompany;
+      const rating = await ratingModal.find();
+      return rating;
     } catch (error) {
       throw new Error("error in db");
     }
   }
   async getApproved(): Promise<RatingDocument[] | null> {
     try {
-      const newCompany = await ratingModal.find({isApproved:"accepted" , isBlocked:false});
-      return newCompany;
+      const rating = await ratingModal.find({isApproved:"accepted" , isBlocked:false});
+      return rating;
     } catch (error) {
       throw new Error("error in db");
     }
   }
   async getById(id:string): Promise<RatingDocument[] | null> {
     try {
-      const newCompany =await ratingModal.find({serviceId:id});
-      return newCompany;
+      const rating =await ratingModal.find({serviceId:id});
+      return rating;
     } catch (error) {
       throw new Error("error in db");
     }
@@ -48,9 +48,9 @@ export class RatingRepository implements IRatingRepository {
   }
   async save(company: Rating): Promise<Rating> {
     try {
-      const newCompany = new ratingModal(company);
-      await newCompany.save();
-      return newCompany;
+      const rating = new ratingModal(company);
+      await rating.save();
+      return rating;
     } catch (error) {
       throw new Error("error in db");
     }

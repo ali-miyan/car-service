@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useGetRatingsQuery,
   useGetSinglServicesQuery,
+  useUpdateRatingMutation,
 } from "../../../store/slices/companyApiSlice";
 import { FaStar, FaTruckMoving } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
@@ -17,27 +18,41 @@ import {
   setPackage,
 } from "../../../context/OrderContext";
 import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
+import {
+  BiLike,
+  BiLikeFill,
+  BiDislike,
+  BiDislikeFill,
+  BiSolidLike,
+  BiSolidDislike,
+} from "react-icons/bi";
 
 const SelectedService = () => {
   const { id } = useParams<{ id: string }>();
   const token = getInitialToken("userToken");
   const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
-  const { data: rating } = useGetRatingsQuery(id as string);
+
+  const [updateRating, { isLoading: isRatingLoading }] =
+    useUpdateRatingMutation();
+
+  const { data: rating, refetch } = useGetRatingsQuery(id as string);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
   const location = useLocation();
   const { generalServiceId, serviceData } = location.state || {};
 
-  const totalRatings = rating.length;
+  const totalRatings = rating?.length;
   const averageRating = totalRatings
     ? (
         rating.reduce((acc, { stars }) => acc + stars, 0) / totalRatings
       ).toFixed(1)
     : 0;
   const starCounts = [1, 2, 3, 4, 5].reduce((acc: any, star: any) => {
-    acc[star] = rating.filter((val) => val.stars === star).length;
+    acc[star] = rating?.filter((val) => val.stars === star)?.length;
     return acc;
   }, {});
+
+  const userId = getInitialToken("userToken");
 
   console.log(rating, "ratings");
 
@@ -63,7 +78,6 @@ const SelectedService = () => {
     }
   };
 
-  console.log(posts, "selected service");
   const scrollRef = useRef(null);
 
   if (isLoading || !posts) return <OrderDetailSkeleton />;
@@ -76,6 +90,22 @@ const SelectedService = () => {
 
   const scrollToRef = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLike = async (stat: string, _id: string) => {
+    if (!userId) {
+      notifyError("You need to log in to continue");
+      navigate("/", { state: { openModal: true } });
+      return;
+    }
+
+    try {
+      const res = await updateRating({ stat, _id, userId }).unwrap();
+      console.log(res);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -430,12 +460,12 @@ const SelectedService = () => {
 
         <section className="py-24 relative">
           <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-            <div className="w-full">
+            <div className="md:mx-15">
               <h2 className="font-bai-bold font-bold text-xl uppercase text-black mb-8 text-center">
                 Our customer reviews
               </h2>
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-11 pb-11 border-b  border-gray-100 max-xl:max-w-2xl max-xl:mx-auto">
-                <div className="box flex flex-col gap-y-4 w-full">
+                <div className="box flex flex-col gap-y-1 w-full">
                   {[5, 4, 3, 2, 1].map((value) => (
                     <div
                       key={value}
@@ -444,7 +474,9 @@ const SelectedService = () => {
                       <p className=" text-black mr-0.5">{value}</p>
                       <p className="h-2 w-full sm:min-w-[278px] rounded-3xl bg-white ml-5 mr-3">
                         <span
-                          className="h-full rounded-3xl bg-red-700 flex"
+                          className={`h-full rounded-3xl flex ${
+                            totalRatings === 0 ? "bg-white" : "bg-red-700"
+                          }`}
                           style={{
                             width: `${
                               (starCounts[value] / totalRatings) * 100
@@ -457,74 +489,101 @@ const SelectedService = () => {
                     </div>
                   ))}
                 </div>
-                <div className="p-6 bg-white rounded-3xl flex items-center justify-center flex-col">
-                  <h2 className="font-manrope font-bold text-5xl text-gray-900 mb-6">
+                <div className="bg-white rounded-lg flex items-center justify-center flex-col">
+                  <h2 className="font-manrope font-bold text-3xl text-gray-900 mb-2">
                     {averageRating}
                   </h2>
                   <div className="flex items-center justify-center gap-2 sm:gap-6 mb-4">
                     {[...Array(Math.round(averageRating))].map((_, index) => (
-                      <FaStar key={index} className="text-[#ab0000] text-4xl" />
+                      <FaStar key={index} className="text-[#ab0000] text-2xl" />
                     ))}
                   </div>
-                  <p className="text-xl leading-8 text-gray-900 text-center">
+                  <p className="text-base text-gray-900 text-center">
                     {rating?.length} Ratings
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {rating &&
                   rating.map((val) => (
                     <div
-                      key={val.id}
-                      className="flex-1 px-5 min-w-[calc(50%-1.25rem)] max-w-[calc(50%-1.25rem)] pt-5 pb-4 border border-gray-200 rounded-lg shadow-md bg-white"
+                      key={val._id}
+                      className="flex flex-col border border-gray-200 bg-white p-6"
                     >
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center space-x-4">
-                          <img
-                            src={val.profileImg}
-                            alt={val.username}
-                            className="w-14 h-14 rounded-full border-2"
-                          />
-                          <div className="flex-1">
-                            <h6 className="text-lg font-semibold text-gray-800">
-                              {val.username}
-                            </h6>
-                            <p className="text-sm text-gray-500">
-                              {new Date(val.createdAt).toLocaleDateString(
-                                "en-US",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-start ml-auto space-y-2 ">
-                          <div className="flex items-center space-x-1">
-                            {[...Array(val.stars)].map((_, index) => (
-                              <svg
-                                key={index}
-                                className="w-6 h-6 text-[#ab0000] transition-transform transform hover:scale-110"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="M12 .587l3.668 7.425 8.2 1.19-5.918 5.783 1.396 8.148L12 17.74 5.654 22.028l1.396-8.148-5.918-5.783 8.2-1.19L12 .587z" />
-                              </svg>
-                            ))}
-                          </div>
-                          <p className="text-gray-600 mx-auto text-sm mt-1">
-                            {val.stars} out of 5
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={val.profileImg}
+                          alt={val.username}
+                          className="w-16 h-16 rounded-lg border-2 border-gray-300"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {val.username}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {new Date(val.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )}
                           </p>
                         </div>
+                        <div className="flex items-center mt-4 space-x-1">
+                          <svg
+                            className={`w-6 h-6 text-red-900 items-center`}
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M12 .587l3.668 7.425 8.2 1.19-5.918 5.783 1.396 8.148L12 17.74 5.654 22.028l1.396-8.148-5.918-5.783 8.2-1.19L12 .587z" />
+                          </svg>
+                          <span className="text-gray-600 ml-2">
+                            {val.stars}.0
+                          </span>
+                        </div>
                       </div>
+                      <hr className="mt-5" />
+                      <div className="text-center">
+                        <p className="text-gray-700 mt-4 font-bai-medium text-sm">
+                          <strong>'' </strong>
+                          {val.review}
+                          <strong> ''</strong>
+                        </p>
 
-                      <p className="text-gray-700 mt-2 text-center">
-                        '' {val.review}
-                      </p>
+                        <div className="flex justify-between mt-5 space-x-2">
+                          <button
+                            className="flex items-center transition-transform transform hover:scale-110"
+                            onClick={() => handleLike("like", val._id)}
+                            aria-label="Like"
+                          >
+                            {val?.likes?.count === 0 ? (
+                              <BiLike className="text-xl transition-colors duration-200" />
+                            ) : (
+                              <BiSolidLike className="text-xl  transition-colors duration-200" />
+                            )}
+                            <span className="font-bai-medium text-sm ml-1 -mt-0.5">
+                              {val?.likes?.count}
+                            </span>
+                          </button>
+                          <button
+                            className="flex items-center transition-transform transform hover:scale-110"
+                            onClick={() => handleLike("dislike", val._id)}
+                            aria-label="Dislike"
+                          >
+                            {val?.dislikes?.count === 0 ? (
+                              <BiDislike className="text-xl transition-colors duration-200" />
+                            ) : (
+                              <BiSolidDislike className="text-xl  transition-colors duration-200" />
+                            )}
+                            <span className="font-bai-medium text-sm ml-1 -mt-0.5">
+                              {val?.dislikes?.count}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
               </div>

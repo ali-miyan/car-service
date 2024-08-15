@@ -3,6 +3,7 @@ import { userApiSlice } from "./slices/userApiSlice";
 import { companyApiSlice } from "./slices/companyApiSlice";
 import { orderApiSlice } from "./slices/orderApiSlice";
 import { adminApiSlice } from "./slices/adminApiSlice";
+import { chatApiSlice } from "./slices/chatApiSlice";
 import {
   persistStore,
   persistReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   [companyApiSlice.reducerPath]: companyApiSlice.reducer,
   [adminApiSlice.reducerPath]: adminApiSlice.reducer,
   [orderApiSlice.reducerPath]: orderApiSlice.reducer,
+  [chatApiSlice.reducerPath]: chatApiSlice.reducer,
   order: orderReducer,
 });
 
@@ -44,7 +46,7 @@ const store = configureStore({
       companyApiSlice.middleware,
       adminApiSlice.middleware,
       orderApiSlice.middleware,
-      
+      chatApiSlice.middleware
     ),
 });
 

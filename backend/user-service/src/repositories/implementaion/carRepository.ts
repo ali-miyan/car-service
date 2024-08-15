@@ -2,7 +2,6 @@ import { Car } from "../../entities";
 import { ICarRepository } from "../interfaces";
 import { carModel, ICarData } from "../../infrastructure/db/";
 import { BadRequestError } from "tune-up-library";
-import mongoose from "mongoose";
 
 export class CarRepository implements ICarRepository {
   async getAll(): Promise<ICarData[] | null> {

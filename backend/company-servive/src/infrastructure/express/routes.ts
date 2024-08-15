@@ -17,7 +17,8 @@ import {
   GetAllServicesUseCase,
   GetSignleServicesUseCase,
   GetApprovedCompanyUseCase,
-  GetRatingsUseCase
+  GetRatingsUseCase,
+  UpdateRatingUseCase,
 } from "../../usecases";
 import {
   CompanyRepository,
@@ -37,7 +38,9 @@ const s3Service = new S3Service();
 const signupUseCase = new RegisterUseCase(companyRepository, s3Service);
 const getServiceUseCase = new GetServiceUseCase(serviceRepository);
 const getAllServiceUseCase = new GetAllServicesUseCase(serviceRepository);
-const getSignleServicesUseCase = new GetSignleServicesUseCase(serviceRepository);
+const getSignleServicesUseCase = new GetSignleServicesUseCase(
+  serviceRepository
+);
 const serviceStatusUseCase = new ServiceStatusUseCase(serviceRepository);
 const loginupUseCase = new LoginUseCase(companyRepository);
 const getApprovalUseCase = new GetApprovalUseCase(companyRepository);
@@ -47,6 +50,7 @@ const addServiceUseCase = new AddServiceUseCase(s3Service, serviceRepository);
 const updateStatusUseCase = new UpdateStatusUseCase(companyRepository);
 const deleteServiceUseCase = new DeleteServiceUseCase(serviceRepository);
 const getRatingsUseCase = new GetRatingsUseCase(ratingRepository);
+const updateRatingUseCase = new UpdateRatingUseCase(ratingRepository);
 const companyController = new CompanyController(
   signupUseCase,
   loginupUseCase,
@@ -65,6 +69,7 @@ const serviceController = new ServiceController(
 );
 const ratingController = new RatingController(
   getRatingsUseCase,
+  updateRatingUseCase
 );
 
 const router = Router();
@@ -76,17 +81,14 @@ router.post("/login", (req, res, next) =>
 router.post("/register", upload.array("image", 3), (req, res, next) =>
   companyController.signup(req, res, next)
 );
-router.get(
-  "/get-approvals",
-  (req, res, next) => companyController.getApprovels(req, res, next)
+router.get("/get-approvals", (req, res, next) =>
+  companyController.getApprovels(req, res, next)
 );
-router.get(
-  "/get-company/:id",
-  (req, res, next) => companyController.getById(req, res, next)
+router.get("/get-company/:id", (req, res, next) =>
+  companyController.getById(req, res, next)
 );
-router.get(
-  "/get-approved-company",
-  (req, res, next) => companyController.getApproved(req, res, next)
+router.get("/get-approved-company", (req, res, next) =>
+  companyController.getApproved(req, res, next)
 );
 router.patch(
   "/company-status/:id",
@@ -110,6 +112,9 @@ router.get("/get-single-service/:id", (req, res, next) =>
 );
 router.get("/get-ratings/:id", (req, res, next) =>
   ratingController.getRatings(req, res, next)
+);
+router.post("/update-rating", (req, res, next) =>
+  ratingController.updateRating(req, res, next)
 );
 router.delete(
   "/delete-service/:id",
