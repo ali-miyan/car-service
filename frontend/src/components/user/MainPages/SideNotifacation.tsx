@@ -1,20 +1,38 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaPlane, FaSpinner, FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import { TbMessageDots } from "react-icons/tb";
 import { IoMdClose } from "react-icons/io";
 import "../../../styles/SideBarNotification.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getInitialToken } from "../../../helpers/getToken";
-import { useBookingSocket } from "../../../service/socketService";
+import {
+  useBookingSocket,
+  useChatSocket,
+} from "../../../service/socketService";
 import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
 import { BsSendFill } from "react-icons/bs";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 
 const NotificationModal = () => {
+  const token = getInitialToken("userToken");
+  const currentPath = useMemo(() => location.pathname, [location.pathname]);
+  const {
+    address,
+    carModel,
+    selectedPackage,
+    serviceDate,
+    serviceId,
+    selectedPlace,
+    generalServiceId,
+    companyId,
+  } = useSelector((state: any) => state.order);
+
   const { data } = useGetApprovedCompanyQuery({});
+  const { data: posts } = useGetUserByIdQuery(token as string);
 
   const [isOpen, setIsOpen] = useState(false);
   const [hasNotification, setHasNotification] = useState(false);
@@ -25,19 +43,29 @@ const NotificationModal = () => {
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const currentPath = useMemo(() => location.pathname, [location.pathname]);
-
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
 
-  const socket = useBookingSocket();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (socket) {
-      socket.on("order_updated", (message: any) => {
+    window.scrollTo(0, 0);
+    const stored = localStorage.getItem("orderUpdateNotifications");
+    if (stored) {
+      setNotifications(JSON.parse(stored));
+    }
+  }, []);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const bookingSocket = useBookingSocket();
+
+  useEffect(() => {
+    if (bookingSocket) {
+      bookingSocket.on("order_updated", (message: any) => {
         const newNotification = {
           message: `${message.message} Status info: ${message.status}`,
           timestamp: new Date().toISOString(),
@@ -54,46 +82,15 @@ const NotificationModal = () => {
           JSON.stringify([newNotification, ...notifications])
         );
       });
-
-      socket.on("chat_message", (message: any) => {
-        if (selectedCompany && message.companyId === selectedCompany._id) {
-          setChatMessages((prevMessages) => [...prevMessages, message]);
-        }
-      });
     }
 
     return () => {
-      if (socket) {
-        socket.off("order_updated");
-        socket.off("chat_message");
+      if (bookingSocket) {
+        bookingSocket.off("order_updated");
+        bookingSocket.off("chat_message");
       }
     };
-  }, [socket, notifications, selectedCompany]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const stored = localStorage.getItem("orderUpdateNotifications");
-    if (stored) {
-      setNotifications(JSON.parse(stored));
-    }
-  }, []);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const token = getInitialToken("userToken");
-
-  const {
-    address,
-    carModel,
-    selectedPackage,
-    serviceDate,
-    serviceId,
-    selectedPlace,
-    generalServiceId,
-    companyId,
-  } = useSelector((state: any) => state.order);
+  }, [bookingSocket, notifications, selectedCompany]);
 
   useEffect(() => {
     const isPending =
@@ -132,14 +129,22 @@ const NotificationModal = () => {
     setNotifications([]);
   };
 
+  const chatSocket = useChatSocket(selectedCompany);
+
   const handleSendMessage = () => {
     if (selectedCompany && newMessage.trim()) {
+      setChatMessages((prevMessages) => [...prevMessages, messageData]);
+      setNewMessage("");
+
       const messageData = {
+        userId: token,
+        username: posts?.username,
+        userImg: posts?.profileImg,
         companyId: selectedCompany._id,
         content: newMessage,
-        timestamp: new Date().toISOString(),
+        timestamp: Date.now(),
       };
-      
+      chatSocket?.emit("user_message_sent", messageData);
     }
   };
 
@@ -190,7 +195,7 @@ const NotificationModal = () => {
               className={`px-4 py-2 border-b-2 ${
                 activeSection === "notifications"
                   ? "border-red-900 text-red-900"
-                  : "border-transparent text-gray-600"
+                  : "border-transparent  text-gray-600"
               } w-full transition-colors duration-300`}
               onClick={() => setActiveSection("notifications")}
             >
@@ -200,7 +205,7 @@ const NotificationModal = () => {
               className={`px-4 py-2 border-b-2 ${
                 activeSection === "chat"
                   ? "border-red-900 text-red-900"
-                  : "border-transparent text-gray-600"
+                  : "border-transparent  text-gray-600"
               } w-full transition-colors duration-300`}
               onClick={() => setActiveSection("chat")}
             >
@@ -294,16 +299,36 @@ const NotificationModal = () => {
                         </div>
                       </div>
 
-                      <div className="flex-1 min-h-96 overflow-y-auto p-4 border-t border-gray-200">
+                      <div className="flex-1 min-h-96 p-4 border-t border-gray-200">
                         {chatMessages.length > 0 ? (
                           chatMessages.map((msg, index) => (
-                            <div key={index} className="mb-2 text-center">
-                              <p className="text-sm text-gray-900">
-                                {msg.content}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {new Date(msg.timestamp).toLocaleTimeString()}
-                              </p>
+                            <div
+                              key={index}
+                              className="flex items-start gap-1 justify-end mb-4"
+                            >
+                              <div className="flex flex-col w-full max-w-[240px] px-4 py-2 border border-gray-400 bg-gray-300 rounded-l-xl rounded-tr-xl">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm uppercase font-bai-bold text-gray-900 ">
+                                    {msg.username}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
+                                    {msg.content}
+                                  </p>
+                                </div>
+                                  <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0 self-end">
+                                    {new Intl.DateTimeFormat("en-US", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }).format(new Date(msg.timestamp))}
+                                  </span>
+                              </div>
+                              <img
+                                src={msg.userImg || "/default-user.png"}
+                                alt="User"
+                                className="w-8 h-8 rounded-full border border-gray-300"
+                              />
                             </div>
                           ))
                         ) : (

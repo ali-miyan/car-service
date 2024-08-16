@@ -1,6 +1,5 @@
 const extractToken = (token: string ): string | null => {
   if (!token) {
-    console.error("Token is null or undefined");
     return null;
   }
 

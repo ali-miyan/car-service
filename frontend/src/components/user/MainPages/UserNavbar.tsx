@@ -15,7 +15,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import {useUserSocket} from "../../../service/socketService";
+import { useUserSocket } from "../../../service/socketService";
 import NotificationModal from "./SideNotifacation";
 import { ReactNotifications } from "react-notifications-component";
 
@@ -28,8 +28,8 @@ const UserNavbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('socket',socket);
-    
+    console.log("socket", socket);
+
     if (socket) {
       socket.on("user_blocked", (message: any) => {
         console.log("Message received: ", message);
@@ -197,7 +197,7 @@ const UserNavbar = () => {
             >
               &#9776;
             </button>
-            <NotificationModal />
+            {token && <NotificationModal />}
           </div>
         </div>
 
