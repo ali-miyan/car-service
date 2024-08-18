@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseChatUrl } from "../../constants/api";
-import { HttpMethod } from "../../schema/httpMethods";
 
 export const chatApiSlice = createApi({
   reducerPath: "chatApi",
@@ -9,21 +8,16 @@ export const chatApiSlice = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getService: builder.query({
-      query: (id?) => (id ? `/get-service?companyId=${id}` : `/get-service`),
-      keepUnusedDataFor: 300,
+    getChat: builder.query({
+      query: ({ userId, companyId }) => `/get-chat/${userId}/${companyId}`,
     }),
-    sendMessage: builder.mutation({
-      query: (postData) => ({
-        url: "/send-message",
-        method: HttpMethod.POST,
-        body: postData,
-      }),
+    getCompanyChat: builder.query({
+      query: (companyId) => `/get-company-chat/${companyId}`,
+    }),
+    getBookedUsers: builder.query({
+      query: (companyId) => `/get-booked-users/${companyId}`,
     }),
   }),
 });
 
-export const {
-  useGetServiceQuery,
-  useSendMessageMutation,
-} = chatApiSlice;
+export const { useGetChatQuery, useGetCompanyChatQuery,useGetBookedUsersQuery } = chatApiSlice;

@@ -7,6 +7,7 @@ import cors from "cors";
 import http from "http";
 import setupSocketServer from "./infrastructure/services/socketService";
 import { createConsumerService } from "./infrastructure/rabbitMQ/rabbitMQServices";
+import { startUsersGrpcServer } from "./infrastructure/grpc/grpcServices";
 
 const PORT = 3003;
 
@@ -29,7 +30,8 @@ const io = setupSocketServer(server);
 
 const startServer = async () => {
   try {
-    // createConsumerService()
+    startUsersGrpcServer()
+    createConsumerService();
     await connectDB();
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

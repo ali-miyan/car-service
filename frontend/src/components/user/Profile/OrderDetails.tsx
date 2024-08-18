@@ -16,7 +16,7 @@ const OrderDetail: React.FC = () => {
   } = useGetSingleOrderQuery(id as string);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const socket = useBookingSocket();
+  const socket = useBookingSocket(id as string);
 
   useEffect(() => {
     if (socket) {

@@ -13,7 +13,7 @@ export class BookingUseCase {
   constructor(
     private bookingRepository: IBookingRepository,
     private stripeService: StripeService,
-    private rabbitMQService:RabbitMQService
+    private rabbitMQService: RabbitMQService
   ) {}
 
   async execute(
@@ -91,10 +91,10 @@ export class BookingUseCase {
 
     io.emit("order_booked", {
       message: "Order has been booked",
-      order
+      order,
     });
 
-    await this.rabbitMQService.sendMessage(order.userId)
+    await this.rabbitMQService.sendMessage(order.carId);
 
     return response;
   }

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package users;
+
+message CompanyIdRequest {
+  string companyId = 1;
+}
+
+message UsersInfo {
+  string userId = 1;
+  string username = 2;
+  string userImg = 3;
+}
+
+message UsersListResponse {
+  repeated UsersInfo users = 1;
+}
+
+service UserService {
+  rpc GetUsersFromBooking(CompanyIdRequest) returns (UsersListResponse);
+}

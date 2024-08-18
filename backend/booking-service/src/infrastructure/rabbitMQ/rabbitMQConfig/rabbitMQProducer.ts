@@ -1,5 +1,5 @@
-import amqplib, { Channel, Connection } from 'amqplib';
-import { rabbitMQConfig } from '.';
+import amqplib, { Channel, Connection } from "amqplib";
+import { rabbitMQConfig } from ".";
 
 export class RabbitMQService {
   private channel?: Channel;
@@ -16,17 +16,20 @@ export class RabbitMQService {
       this.channel = await this.connection.createChannel();
       await this.channel.assertQueue(rabbitMQConfig.queueName1);
     } catch (error) {
-      console.error('Failed to initialize ProducerService:', error);
+      console.error("Failed to initialize ProducerService:", error);
     }
   }
 
-  public async sendMessage(message: string) {
+  public async sendMessage(carId: string) {
     await this.initializationPromise;
     try {
-      this.channel?.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(message));
-      console.log(`Order message sent: ${message}`);
+      this.channel?.sendToQueue(
+        rabbitMQConfig.queueName1,
+        Buffer.from(carId)
+      );
+      console.log(`Order message sent:`, carId);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error("Failed to send message:", error);
     }
   }
 }

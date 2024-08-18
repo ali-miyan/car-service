@@ -22,6 +22,13 @@ export class ChatServer {
 
         await this.saveChatUseCase.execute(userId, username, userImg, companyId, content, timestamp);
       });
+      socket.on("company_message_sent", async (messageData: any) => {
+        console.log(messageData, "messagedata");
+
+        const { chatId, companyId, companyName, companyImg, userId, content, timestamp } = messageData;
+
+        await this.saveChatUseCase.execute(companyId, companyName, companyImg, userId, content, timestamp,chatId);
+      });
 
       socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);

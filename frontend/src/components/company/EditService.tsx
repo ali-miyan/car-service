@@ -21,9 +21,7 @@ const AddYourService: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data: posts } = useGetServiceQuery(undefined,{});
-  const { data: curretService } = useGetSinglServicesQuery(id as string, {
-    refetchOnMountOrArgChange: false,
-  });
+  const { data: curretService } = useGetSinglServicesQuery(id as string);
   useEffect(() => {
     if (curretService && posts) {
 

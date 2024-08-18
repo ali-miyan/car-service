@@ -1,5 +1,9 @@
 const CompanyHome = () => {
-  return <div className="bg-gray-100">ddsadadsd</div>;
+  return (
+    <>
+    <h1>daasshhbooaarrdd</h1>
+    </>
+  )
 };
 
 export default CompanyHome;

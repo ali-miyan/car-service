@@ -33,35 +33,35 @@ export class BookingRepository implements IBookingRepository {
 
       booking.status = "Booking Confirmed";
       await booking.save();
-
     } catch (error) {
       console.error("Error updating booking status:", error);
       throw new Error("Error in db: " + error);
     }
   }
 
-  async updateBookingStatus(orderId: string, status: BookingStatus): Promise<void> {
+  async updateBookingStatus(
+    orderId: string,
+    status: BookingStatus
+  ): Promise<void> {
     try {
       const booking = await bookingModel.findByPk(orderId);
-  
+
       if (!booking) {
         throw new Error("Booking not found");
       }
-  
+
       booking.status = status;
       await booking.save();
-  
     } catch (error) {
       console.error("Error updating booking status:", error);
       throw new Error("Error in db: " + error);
     }
   }
-  
 
   async getAll(companyId: string): Promise<bookingModel[]> {
     try {
       const bookings = await bookingModel.findAll({
-        where: { companyId }  
+        where: { companyId },
       });
       return bookings as bookingModel[];
     } catch (error) {
@@ -72,7 +72,7 @@ export class BookingRepository implements IBookingRepository {
   async getSingle(id: string): Promise<bookingModel> {
     try {
       const bookings = await bookingModel.findOne({
-        where: { id }  
+        where: { id },
       });
       return bookings as bookingModel;
     } catch (error) {
@@ -83,7 +83,7 @@ export class BookingRepository implements IBookingRepository {
   async getUsersOrder(userId: string): Promise<bookingModel[]> {
     try {
       const bookings = await bookingModel.findAll({
-        where: { userId }  
+        where: { userId },
       });
       return bookings as bookingModel[];
     } catch (error) {
@@ -91,4 +91,5 @@ export class BookingRepository implements IBookingRepository {
       throw new Error("Error in db: " + error);
     }
   }
+
 }

@@ -1,6 +1,5 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import {  rabbitMQConfig } from "../rabbitMQConfig";
-import { IUserInterface } from "../../../repositories";
 import { SaveUserDetailsUseCase } from "../../../usecases";
 
 export class ConsumerService {

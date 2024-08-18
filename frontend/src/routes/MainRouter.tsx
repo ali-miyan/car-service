@@ -8,17 +8,17 @@ import { LocationProvider } from "../context/MapContext";
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <FormProvider>
-        <LocationProvider>
-          <Routes>
-            <Route path="/*" element={<UserRoutes />} />
-            <Route path="/admin/*" element={<AdminRoutes />} />
-            <Route path="/company/*" element={<CompanyRoutes />} />
-          </Routes>
-        </LocationProvider>
-      </FormProvider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <FormProvider>
+          <LocationProvider>
+            <Routes>
+              <Route path="/*" element={<UserRoutes />} />
+              <Route path="/admin/*" element={<AdminRoutes />} />
+              <Route path="/company/*" element={<CompanyRoutes />} />
+            </Routes>
+          </LocationProvider>
+        </FormProvider>
+      </BrowserRouter>
   );
 };
 

@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import axios from "axios";
 import polyline from "polyline";
 import {useBookingSocket} from "../../../service/socketService";
+import { getInitialToken } from "../../../helpers/getToken";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
@@ -13,12 +14,13 @@ const MapboxMap = ({
   userDetails,
   companyDetails,
 }: any) => {
+  const token = getInitialToken('userToken')
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const [liveMarker, setLiveMarker] = useState<mapboxgl.Marker | null>(null);
   const [companyToLiveRouteSource, setCompanyToLiveRouteSource] =
     useState<mapboxgl.GeoJSONSource | null>(null);
-  const socket = useBookingSocket();
+  const socket = useBookingSocket(token as string);
 
   console.log(companyDetails,'detail');
   

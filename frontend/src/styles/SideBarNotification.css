@@ -33,3 +33,35 @@
     transform: translateX(0);
   }
   
+  @keyframes scrollToTop {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .scroll-container {
+    max-height: calc(100vh - 200px); /* Adjust as needed */
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .scroll-container.overflow {
+    animation: scrollToTop 0.3s ease-out;
+  }
+  
+  .scroll-container::before {
+    content: "";
+    display: block;
+    height: 100px; /* Adjust height as needed */
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Adjust color and opacity */
+    pointer-events: none; /* Prevents interaction with the pseudo-element */
+    z-index: 1;
+  }
+  

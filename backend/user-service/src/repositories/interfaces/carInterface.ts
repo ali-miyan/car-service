@@ -9,6 +9,6 @@ export interface ICarRepository {
   updateImage(id: string, profileImg: string): Promise<void>;
   updateCredentials(id: string, username: string, phone: null | number): Promise<void>;
   deleteById(id:string):Promise<void>;
-  getUsersDetails(userId:string):Promise<any>;
+  getUsersDetails(carId:string):Promise<any>;
   save(car: Car): Promise<void>;
 }

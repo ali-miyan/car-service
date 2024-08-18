@@ -66,6 +66,40 @@ export interface serviceForm {
   servicesPerDay?: string,
   subServices: string[];
 }
+export interface serviceForm {
+  terms: string;
+  workImages: File | [];
+  servicesPerDay?: string,
+  subServices: string[];
+}
+
+export interface IUserDetails {
+  userId: string;
+  username?: string;
+  userImg?: string;
+}
+
+export interface ICompanyDetails {
+  companyId: string;
+  companyName?: string;
+  companyImg?: string;
+}
+
+export interface IMessageData {
+  _id?:string
+  sender: string;
+  content: string;
+  timestamp: Date;
+  type: "text" | "image" | "file";
+}
+
+export interface IChatData {
+  _id?: string;
+  user: IUserDetails;
+  company: ICompanyDetails;
+  messages: IMessageData[];
+}
+
 
 export interface LoadingButtonProps {
   isLoading: boolean;

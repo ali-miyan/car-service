@@ -13,9 +13,8 @@ import {
 import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
-import { BsSendFill } from "react-icons/bs";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
+import ChatSection from "./ChatSection";
 
 const NotificationModal = () => {
   const token = getInitialToken("userToken");
@@ -31,9 +30,6 @@ const NotificationModal = () => {
     companyId,
   } = useSelector((state: any) => state.order);
 
-  const { data } = useGetApprovedCompanyQuery({});
-  const { data: posts } = useGetUserByIdQuery(token as string);
-
   const [isOpen, setIsOpen] = useState(false);
   const [hasNotification, setHasNotification] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -41,10 +37,10 @@ const NotificationModal = () => {
     "notifications"
   );
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
-  const [chatMessages, setChatMessages] = useState<any[]>([]);
-  const [newMessage, setNewMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
+
+  const { data } = useGetApprovedCompanyQuery({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +57,7 @@ const NotificationModal = () => {
     setIsOpen(!isOpen);
   };
 
-  const bookingSocket = useBookingSocket();
+  const bookingSocket = useBookingSocket(token as string);
 
   useEffect(() => {
     if (bookingSocket) {
@@ -129,24 +125,11 @@ const NotificationModal = () => {
     setNotifications([]);
   };
 
-  const chatSocket = useChatSocket(selectedCompany);
-
-  const handleSendMessage = () => {
-    if (selectedCompany && newMessage.trim()) {
-      setChatMessages((prevMessages) => [...prevMessages, messageData]);
-      setNewMessage("");
-
-      const messageData = {
-        userId: token,
-        username: posts?.username,
-        userImg: posts?.profileImg,
-        companyId: selectedCompany._id,
-        content: newMessage,
-        timestamp: Date.now(),
-      };
-      chatSocket?.emit("user_message_sent", messageData);
-    }
-  };
+  if (isOpen) {
+    document.body.style.overflowY = "hidden";
+  } else {
+    document.body.style.overflowY = "auto";
+  }
 
   return (
     <div className="relative z-50">
@@ -168,7 +151,9 @@ const NotificationModal = () => {
       </button>
 
       <div
-        className={`modal-overlay ${isOpen ? "modal-overlay-open" : ""}`}
+        className={`modal-overlay ${
+          isOpen ? "modal-overlay-open overflow-y-hidden" : ""
+        }`}
         onClick={toggleModal}
       >
         <div
@@ -176,23 +161,16 @@ const NotificationModal = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-black ml-28 font-bai-medium underline underline-offset-4">
-                Chat and Notification
-              </p>
-            </div>
             <button
               aria-label="close modal"
-              className="focus:outline-none"
+              className="focus:outline-none absolute right-4 top-3"
               onClick={toggleModal}
             >
               <FaTimes className="w-4 h-4 text-black" />
             </button>
-          </div>
 
-          <div className="flex mt-4 justify-center w-full">
             <button
-              className={`px-4 py-2 border-b-2 ${
+              className={`px-4 font-bai-bold lowercase py-2 border-b-2 ${
                 activeSection === "notifications"
                   ? "border-red-900 text-red-900"
                   : "border-transparent  text-gray-600"
@@ -202,7 +180,7 @@ const NotificationModal = () => {
               Notifications
             </button>
             <button
-              className={`px-4 py-2 border-b-2 ${
+              className={`px-4 font-bai-bold lowercase py-2 border-b-2 ${
                 activeSection === "chat"
                   ? "border-red-900 text-red-900"
                   : "border-transparent  text-gray-600"
@@ -276,85 +254,11 @@ const NotificationModal = () => {
             {activeSection === "chat" && (
               <div>
                 {selectedCompany ? (
-                  <div className="max-w-4xl mx-auto bg-white shadow-md overflow-hidden">
-                    <div className="flex flex-col h-full">
-                      <div className="flex items-center px-4 py-2 bg-white border-b border-gray-200">
-                        <span className="pr-4">
-                          <IoArrowBackCircleOutline
-                            className="text-3xl text-black"
-                            onClick={() => setSelectedCompany(null)}
-                          />
-                        </span>
-
-                        <img
-                          src={selectedCompany.logo}
-                          alt={`${selectedCompany.companyName} logo`}
-                          className="w-16 h-16 object-cover rounded-full border border-gray-300"
-                        />
-                        <div className="ml-4">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {selectedCompany.companyName}
-                          </h3>
-                          <p className="text-sm text-gray-500 mt-1">online</p>
-                        </div>
-                      </div>
-
-                      <div className="flex-1 min-h-96 p-4 border-t border-gray-200">
-                        {chatMessages.length > 0 ? (
-                          chatMessages.map((msg, index) => (
-                            <div
-                              key={index}
-                              className="flex items-start gap-1 justify-end mb-4"
-                            >
-                              <div className="flex flex-col w-full max-w-[240px] px-4 py-2 border border-gray-400 bg-gray-300 rounded-l-xl rounded-tr-xl">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm uppercase font-bai-bold text-gray-900 ">
-                                    {msg.username}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
-                                    {msg.content}
-                                  </p>
-                                </div>
-                                  <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0 self-end">
-                                    {new Intl.DateTimeFormat("en-US", {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    }).format(new Date(msg.timestamp))}
-                                  </span>
-                              </div>
-                              <img
-                                src={msg.userImg || "/default-user.png"}
-                                alt="User"
-                                className="w-8 h-8 rounded-full border border-gray-300"
-                              />
-                            </div>
-                          ))
-                        ) : (
-                          <p className="text-center text-gray-500">
-                            No messages yet.
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex items-center border-t border-gray-200 p-2 bg-white">
-                        <input
-                          type="text"
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          placeholder="Type a message..."
-                          className="flex-1 p-2 border text-black border-gray-300 shadow-sm rounded-md"
-                        />
-                        <button
-                          onClick={handleSendMessage}
-                          className="ml-2 p-2 text-white transition-colors bg-[#ab0000] hover:bg-[#900000] rounded-md"
-                        >
-                          <BsSendFill size={25} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <ChatSection
+                    selectedCompany={selectedCompany}
+                    setSelectedCompany={setSelectedCompany}
+                    token={token}
+                  />
                 ) : (
                   <div className="max-w-4xl mx-auto">
                     <div className="mb-4">

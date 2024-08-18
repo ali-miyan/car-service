@@ -24,7 +24,9 @@ const UserNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
 
-  const socket = useUserSocket();
+  const token = getInitialToken('userToken')
+
+  const socket = useUserSocket(token);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,8 +70,6 @@ const UserNavbar = () => {
   const handleMapClose = () => {
     setShowMap(false);
   };
-
-  const token = getInitialToken("userToken");
 
   const handleMap = () => {
     setShowMap(true);

@@ -1,13 +1,53 @@
 import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "tune-up-library";
-import { SaveChatUseCase } from "../usecases";
+import { GetChatUseCase, GetCompanyChatUseCase,GetBookedUsersUseCase } from "../usecases";
 
 export class ChatController {
-  constructor(private saveChatUseCase: SaveChatUseCase) {}
+  constructor(
+    private getChatUseCase: GetChatUseCase,
+    private getCompanyChatUseCase: GetCompanyChatUseCase,
+    private getBookedUsersUseCase: GetBookedUsersUseCase,
+  ) {}
 
-  async saveMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getChat(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
-      const response = await this.saveChatUseCase.execute(id);
+      const { userId, companyId } = req.params;
+
+      console.log(userId, companyId, "peatarams");
+
+      const response = await this.getChatUseCase.execute(userId, companyId);
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getCompanyChat(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { companyId } = req.params;
+
+      const response = await this.getCompanyChatUseCase.execute(companyId);
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBookedUSersChat(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { companyId } = req.params;
+
+      const response = await this.getBookedUsersUseCase.execute(companyId);
       res.status(201).json(response);
     } catch (error) {
       next(error);

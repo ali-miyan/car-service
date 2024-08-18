@@ -5,7 +5,7 @@ import { MainLayoutProps } from '../schema/component';
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <div>
+        <div className='scrollable-content no-scrollbar'>
             <Header />
             <main>{children}</main>
             <Footer />

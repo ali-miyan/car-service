@@ -6,9 +6,10 @@ import { useGetCompanyByIdQuery } from "../../store/slices/companyApiSlice";
 import { getInitialToken } from "../../helpers/getToken";
 import { Post } from "../../schema/company";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
-import {useBookingSocket} from "../../service/socketService";
+import { useBookingSocket } from "../../service/socketService";
 import OrderNOtification from "../common/OrderMessage";
 import { ReactNotifications } from "react-notifications-component";
+import CompanyNotificationModal from "./CompnayNotification";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
   const id = useMemo(() => getInitialToken("companyToken"), []);
@@ -22,7 +23,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
   const [message, setMessage] = useState("");
   const [notificationDot, setNotificationDot] = useState(false);
 
-  const socket = useBookingSocket();
+  const socket = useBookingSocket(id as string);
 
   useEffect(() => {
     if (socket) {
@@ -45,7 +46,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
         socket.off("order_booked");
       }
     };
-  }, [socket,posts,companyData]);
+  }, [socket, posts, companyData]);
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -87,7 +88,8 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-    <ReactNotifications />
+      <CompanyNotificationModal id={id} companyData={posts} />
+      <ReactNotifications />
       <OrderNOtification
         show={showToast}
         message={message}

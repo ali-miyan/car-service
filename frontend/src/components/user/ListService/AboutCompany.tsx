@@ -6,9 +6,7 @@ import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
 const AboutCompany = () => {
   const { id } = useParams<{ id: string }>();
   const { data: company } = useGetCompanyByIdQuery(id as string);
-  const { data: services } = useGetServiceQuery(undefined,{
-    refetchOnMountOrArgChange: false,
-  });
+  const { data: services } = useGetServiceQuery(undefined);
 
   return (
     <>

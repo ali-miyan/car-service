@@ -32,7 +32,7 @@ export class AddRatingUseCase {
         review
       });
 
-    await this.rabbitMQService.sendMessage(userData)
+    await this.rabbitMQService.sendRating(userData)
 
 
     return {success:true}

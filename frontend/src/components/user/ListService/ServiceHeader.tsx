@@ -61,9 +61,7 @@ function SamplePrevArrow(props) {
 }
 
 const ServiceHeader = () => {
-  const { data: services } = useGetServiceQuery(undefined,{
-    refetchOnMountOrArgChange: false,
-  });
+  const { data: services } = useGetServiceQuery(undefined);
 
   const navigate = useNavigate()
 

@@ -25,11 +25,11 @@ export class ConsumerService {
       if (message) {
         try {
           console.log(`Order message received: ${message.content.toString()}`);
-          const userId = message.content.toString();
+          const carId = message.content.toString();
 
-          console.log(typeof userId, "dsdsdsdsdsd", userId);
+          console.log(typeof carId);
 
-          const userDetails = await this.carRepository.getUsersDetails(userId);
+          const userDetails = await this.carRepository.getUsersDetails(carId);
           await this.producerService.sendMessage(JSON.stringify(userDetails));
           this.channel.ack(message);
         } catch (error) {

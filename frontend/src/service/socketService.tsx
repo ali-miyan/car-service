@@ -5,37 +5,45 @@ const SOCKET_BOOKING_URL = "http://localhost:3003";
 const SOCKET_USER_URL = "http://localhost:3000";
 const SOCKET_CHAT_URL = "http://localhost:3004";
 
-const useBookingSocket = () => {
+const useBookingSocket = (id: string) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketInstance = io(SOCKET_BOOKING_URL, {
-      withCredentials: true,
-    });
+    if (id) {
+      const socketInstance = io(SOCKET_BOOKING_URL, {
+        withCredentials: true,
+      });
 
-    setSocket(socketInstance);
+      setSocket(socketInstance);
 
-    return () => {
-      socketInstance.disconnect();
-    };
-  }, []);
+      return () => {
+        socketInstance.disconnect();
+      };
+    } else {
+      setSocket(null);
+    }
+  }, [id]);
 
   return socket;
 };
-const useUserSocket = () => {
+const useUserSocket = (id: string) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketInstance = io(SOCKET_USER_URL, {
-      withCredentials: true,
-    });
+    if (id) {
+      const socketInstance = io(SOCKET_USER_URL, {
+        withCredentials: true,
+      });
 
-    setSocket(socketInstance);
+      setSocket(socketInstance);
 
-    return () => {
-      socketInstance.disconnect();
-    };
-  }, []);
+      return () => {
+        socketInstance.disconnect();
+      };
+    } else {
+      setSocket(null);
+    }
+  }, [id]);
 
   return socket;
 };

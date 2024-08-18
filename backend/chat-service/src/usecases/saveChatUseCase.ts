@@ -6,45 +6,77 @@ export class SaveChatUseCase {
   constructor(private chatRepository: IChatRepository) {}
 
   async execute(
-    userId: string,
-    username: string,
-    userImg: string,
-    companyId: string,
+    senderId: string,
+    senderName: string,
+    senderImg: string,
+    recieverId: string,
     content: string,
-    timestamp: number
+    timestamp: number,
+    chatId?: string
   ): Promise<void> {
     try {
-      const existingChat = await this.chatRepository.findByUserAndCompany(
-        userId,
-        companyId
-      );
+      let chat: Chat | null = null;
 
-      if (existingChat) {
-        existingChat.messages.push({
-          sender: userId,
+      if (chatId) {
+        chat = await this.chatRepository.getOneChat(chatId);
+        if (!chat) {
+          throw new NotFoundError("Chat not found");
+        }
+
+        if (!chat.company.companyImg || !chat.company.companyName) {
+          chat.company = {
+            companyId: senderId,
+            companyImg: senderImg,
+            companyName: senderName,
+          };
+        }
+
+        chat.messages.push({
+          sender: senderId,
           content,
           timestamp: new Date(timestamp),
           type: "text",
         });
-        await this.chatRepository.update(existingChat);
+        await this.chatRepository.update(chat);
       } else {
-        const newChat = new Chat({
-          user: { userId, userImg, username },
-          company: { companyId },
-          messages: [
-            {
-              sender: userId,
-              content,
-              timestamp: new Date(timestamp),
-              type: "text",
+        const existingChat = await this.chatRepository.findByUserAndCompany(
+          senderId,
+          recieverId
+        );
+
+        if (existingChat) {
+          existingChat.messages.push({
+            sender: senderId,
+            content,
+            timestamp: new Date(timestamp),
+            type: "text",
+          });
+          await this.chatRepository.update(existingChat);
+        } else {
+          const newChat = new Chat({
+            user: {
+              userId: senderId,
+              userImg: senderImg,
+              username: senderName,
             },
-          ],
-        });
-        await this.chatRepository.save(newChat);
+            company: { companyId: recieverId },
+            messages: [
+              {
+                sender: senderId,
+                content,
+                timestamp: new Date(timestamp),
+                type: "text",
+              },
+            ],
+          });
+          await this.chatRepository.save(newChat);
+        }
       }
+
+      console.log("final chat", chat);
     } catch (error) {
       console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("Error in database operation");
     }
   }
 }

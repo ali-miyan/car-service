@@ -67,15 +67,18 @@ export class CarRepository implements ICarRepository {
     }
   }
 
-  async getUsersDetails(userId: string) {
+  async getUsersDetails(carId: string) {
     try {
       const userDetails = await carModel
-        .findOne({ userId: userId })
+        .findOne({ _id:carId, })
         .select("_id name color src vin")
         .populate({
           path: "userId",
-          select: "_id username email phone",
+          select: "_id username email phone profileImg",
         });
+
+        console.log(userDetails);
+        
 
       return userDetails;
     } catch (error) {
