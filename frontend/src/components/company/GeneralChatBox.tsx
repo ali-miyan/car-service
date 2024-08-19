@@ -44,6 +44,29 @@ const CompanyChat = ({
 
   const chatSocket = useChatSocket(companyId);
 
+  useEffect(() => {
+    if (chatSocket) {
+      chatSocket.on("user_to_company", (messageData: any) => {
+        setChatMessages((prevState) => ({
+          ...prevState,
+          messages: [
+            ...prevState.messages,
+            {
+              sender: messageData.userId,
+              content: messageData.content,
+              timestamp: messageData.timestamp,
+              type: "text",
+            },
+          ],
+        }));
+      });
+
+      return () => {
+        chatSocket.off("user_to_company");
+      };
+    }
+  }, [chatSocket]);
+
   const handleSendMessage = () => {
     setNewMessage("");
 
@@ -103,7 +126,7 @@ const CompanyChat = ({
               </div>
             </div>
 
-            <div className="flex-1 min-h-[calc(95vh-200px)] max-h-[calc(95vh-200px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
+            <div className="flex-1 min-h-[calc(88vh-150px)] max-h-[calc(80vh-100px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
               {chatMessages?.messages?.length > 0 ? (
                 chatMessages?.messages?.map((msg, index) => (
                   <React.Fragment key={index}>
@@ -122,17 +145,13 @@ const CompanyChat = ({
                       <div
                         className={`flex flex-col w-full max-w-[240px] px-4 py-2 border ${
                           msg.sender === companyId
-                            ? "bg-gradient-to-r from-gray-300 to-gray-400 animate-pulse-fast rounded-l rounded-t-xl"
-                            : "bg-gradient-to-r from-gray-300 to-gray-400 animate-pulse-fast rounded-r rounded-t-xl"
+                            ? "company-bg border-gray-400 rounded-l-xl rounded-t-xl"
+                            : "user-bg border-gray-400 rounded-r-xl rounded-t-xl"
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <span
-                            className={`text-sm uppercase font-bai-bold ${
-                              msg.sender === companyId
-                                ? "text-gray-700"
-                                : "text-gray-900"
-                            }`}
+                            className={`text-sm uppercase font-bai-bold text-black`}
                           >
                             {msg.sender === companyId
                               ? data?.company?.companyName ||

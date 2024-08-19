@@ -14,9 +14,11 @@ const BookedCustomerChat = ({
 }: any) => {
   console.log(userData, companyData, companyId, "companuyudd");
 
-  const { data, isLoading } = useGetChatQuery({
+  const { data, isLoading, refetch } = useGetChatQuery({
     userId: userData.userId,
     companyId,
+  },{
+    refetchOnMountOrArgChange:true
   });
 
   console.log(data, "company chaaat");
@@ -44,18 +46,42 @@ const BookedCustomerChat = ({
 
   const chatSocket = useChatSocket(companyId);
 
+  useEffect(() => {
+    if (chatSocket) {
+      chatSocket.on("user_to_company", (messageData: any) => {
+        setChatMessages((prevState) => ({
+          ...prevState,
+          messages: [
+            ...prevState.messages,
+            {
+              sender: messageData.userId,
+              content: messageData.content,
+              timestamp: messageData.timestamp,
+              type: "text",
+            },
+          ],
+        }));
+      });
+
+      return () => {
+        chatSocket.off("user_to_company");
+      };
+    }
+  }, [chatSocket]);
+
   const handleSendMessage = () => {
     setNewMessage("");
 
     const messageData = {
-      chatId: data._id,
       companyId,
       companyName: companyData?.companyName,
       companyImg: companyData?.logo,
-      userId: data?.user.userId,
+      userId: userData.userId || data?.user.userId,
       content: newMessage,
       timestamp: Date.now(),
     };
+    
+    chatSocket?.emit("company_message_sent", messageData);
 
     const newMessageObject: any = {
       sender: companyId,
@@ -69,7 +95,7 @@ const BookedCustomerChat = ({
       messages: [...prevState.messages, newMessageObject],
     }));
 
-    chatSocket?.emit("company_message_sent", messageData);
+    refetch()
   };
 
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
@@ -91,32 +117,49 @@ const BookedCustomerChat = ({
               </span>
 
               <img
-                src={data?.user?.userImg}
+                src={userData.userImg || data?.user?.userImg}
                 alt={`${data?.user?.username} logo`}
                 className="w-16 h-16 object-cover rounded-full border border-gray-300"
               />
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {data?.user?.username}
+                  {userData.username || data?.user?.username}
                 </h3>
                 <p className="text-sm text-gray-500 mt-1">online</p>
               </div>
             </div>
 
-            <div className="flex-1 min-h-[calc(95vh-200px)] max-h-[calc(95vh-200px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
+            <div className="flex-1 min-h-[calc(94vh-200px)] max-h-[calc(95vh-200px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
               {chatMessages?.messages?.length > 0 ? (
                 chatMessages?.messages?.map((msg, index) => (
                   <React.Fragment key={index}>
-                    <div className="flex items-start gap-1 justify-start mb-4">
-                      <img
-                        src={data?.user?.userImg || "/default-user.png"}
-                        alt="User"
-                        className="w-8 h-8 rounded-full border self-end border-gray-300"
-                      />
-                      <div className="flex flex-col w-full max-w-[240px] px-4 py-2 border border-gray-400 bg-gray-300 rounded-r rounded-t-xl">
+                    <div
+                      className={`flex items-start gap-1 justify-${
+                        msg.sender === companyId ? "end" : "start"
+                      } mb-4`}
+                    >
+                      {msg.sender !== companyId && (
+                        <img
+                          src={data?.user?.userImg || userData.userImg}
+                          alt="User"
+                          className="w-8 h-8 rounded-full border self-end border-gray-300"
+                        />
+                      )}
+                      <div
+                        className={`flex flex-col w-full max-w-[240px] px-4 py-2 border ${
+                          msg.sender === companyId
+                            ? "company-bg border-gray-400 rounded-l-xl rounded-t-xl"
+                            : "user-bg border-gray-400 rounded-r-xl rounded-t-xl"
+                        }`}
+                      >
                         <div className="flex items-center justify-between">
-                          <span className="text-sm uppercase font-bai-bold text-gray-900 ">
-                            {data?.user?.username}
+                          <span
+                            className={`text-sm uppercase font-bai-bold text-black`}
+                          >
+                            {msg.sender === companyId
+                              ? data?.company?.companyName ||
+                                companyData.companyName
+                              : data?.user?.username || userData.username}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -131,6 +174,13 @@ const BookedCustomerChat = ({
                           }).format(new Date(msg.timestamp))}
                         </span>
                       </div>
+                      {msg.sender === companyId && (
+                        <img
+                          src={data?.company?.companyImg || companyData.logo}
+                          alt="Company"
+                          className="w-8 h-8 rounded-full border self-end border-gray-300"
+                        />
+                      )}
                     </div>
                     <div ref={endOfMessagesRef} />
                   </React.Fragment>

@@ -9,4 +9,5 @@ export interface IBookingRepository {
     getSingle(orderId:string): Promise<bookingModel>;
     getUsersOrder(userId:string): Promise<bookingModel[]>;
     updateBookingStatus(orderId:string,status:string): Promise<void>;
+    getMontlyRevenue(companyId:string): Promise<bookingModel[]>;
 }

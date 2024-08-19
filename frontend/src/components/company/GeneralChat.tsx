@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CompanyChat from "./GeneralChatBox";
 import { useGetCompanyChatQuery } from "../../store/slices/chatApiSlice";
 import Loader from "../common/Loader";
+import { useChatSocket } from "../../service/socketService";
 
 const GeneralChat = ({
   selectedUser,
@@ -9,9 +10,26 @@ const GeneralChat = ({
   companyData,
   setSelectedUser,
 }: any) => {
-  const { data: users, isLoading } = useGetCompanyChatQuery(id, {
+  const { data: users, isLoading, refetch } = useGetCompanyChatQuery(id, {
     refetchOnMountOrArgChange: true,
   });
+
+  const chatSocket = useChatSocket(id);
+
+  useEffect(() => {
+    if (chatSocket) {
+      chatSocket.on("user_to_company", () => {
+        refetch()
+      });
+
+      return () => {
+        chatSocket.off("user_to_company");
+      };
+    }
+  }, [chatSocket]);
+
+  console.log(users,'sd');
+  
   return (
     <div className="pt-5 mx-auto">
       {selectedUser ? (
@@ -44,14 +62,14 @@ const GeneralChat = ({
                     >
                       <div className="flex-shrink-0 mr-4">
                         <img
-                          src={user?.user.userImg}
+                          src={user?.user.userImg || selectedUser?.profileImg}
                           alt={`${user?.user.userImg} logo`}
                           className="w-14 h-14 object-cover rounded-full"
                         />
                       </div>
                       <div className="flex-grow">
                         <h3 className="text-lg font-medium text-gray-900">
-                          {user?.user.username}
+                          {user?.user.username || selectedUser?.username}
                         </h3>
                       </div>
                     </li>

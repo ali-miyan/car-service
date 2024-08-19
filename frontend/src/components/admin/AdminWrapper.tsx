@@ -1,15 +1,21 @@
-import { ReactNode,useCallback,useState } from 'react';
-import { FaLongArrowAltLeft } from 'react-icons/fa';
-import { MdBook, MdConstruction, MdDashboard, MdLogout, MdSupervisedUserCircle } from 'react-icons/md';
-import { Link, useNavigate } from 'react-router-dom';
-import { adminImg } from '../../constants/imageUrl';
-import DeleteConfirmationModal from '../common/ConfirmationModal';
+import { ReactNode, useCallback, useState } from "react";
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import {
+  MdBook,
+  MdConstruction,
+  MdDashboard,
+  MdLogout,
+  MdSupervisedUserCircle,
+} from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import { adminImg } from "../../constants/imageUrl";
+import DeleteConfirmationModal from "../common/ConfirmationModal";
 
-const Sidebar = ({children}:{children:ReactNode}) => {
+const Sidebar = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(true);
   const isActive = (path: string) => location.pathname === path;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = useCallback(() => {
     document.cookie =
@@ -18,88 +24,106 @@ const Sidebar = ({children}:{children:ReactNode}) => {
   }, [navigate]);
 
   return (
-    <>
-    <div  className="flex font-bai-medium uppercase">
+    <div className="flex h-screen font-bai-regular uppercase bg-gray-100">
       <div
         className={`${
-          open ? 'w-72' : 'w-20'
-        } bg-gray-100 border-r-8 h-screen p-5 pt-8 relative duration-300`}
+          open ? "w-72" : "w-20"
+        } bg-gray-100 border-r-8 p-5 pt-8 relative duration-300 flex-shrink-0`}
       >
         <FaLongArrowAltLeft
           className={`absolute cursor-pointer text-1xl bg-white -right-3 top-9 w-7 h-5 border-2 border-dark-purple rounded-full ${
-            !open && 'rotate-180'
+            !open && "rotate-180"
           }`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
           <img
             src={adminImg}
-            className={`cursor-pointer rounded-full w-10 duration-500 text-black text-3xl ${open && 'rotate-[360deg]'}`}
+            className={`cursor-pointer rounded-full w-10 duration-500 text-black text-3xl ${
+              open && "rotate-[360deg]"
+            }`}
           />
           <h1
-            className={`text-vlack origin-left font-medium text-xl duration-200 ${
-              !open && 'scale-0'
+            className={`text-black origin-left font-medium text-xl duration-200 ${
+              !open && "scale-0"
             }`}
           >
             ADMIN
           </h1>
         </div>
         <ul className="pt-7">
-        <Link to={'/admin/home'}>
-          <li
-          
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100 text-black
-            ${isActive('/admin/home') ? 'bg-red-100' : ''} text-sm items-center gap-x-4 mt-4 `}
-          >
-            <MdDashboard className='text-2xl' />
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>Dashboard</span>
-          </li>
+          <Link to={"/admin/home"}>
+            <li
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100 text-black
+              ${
+                isActive("/admin/home") ? "bg-red-100" : ""
+              } text-sm items-center gap-x-4 mt-4`}
+            >
+              <MdDashboard className="text-2xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Dashboard
+              </span>
+            </li>
           </Link>
-          <Link to={'/admin/users'}>
-          <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
-            ${isActive('/admin/users') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
-          >
-            <MdSupervisedUserCircle className='text-2xl' />
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>Users</span>
-          </li>
-            </Link>
-            <Link to={'/admin/services'}>
-          <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
-             ${isActive('/admin/services') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
-          >
-            <MdConstruction className='text-2xl' />
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>Services</span>
-          </li>
+          <Link to={"/admin/users"}>
+            <li
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+              ${
+                isActive("/admin/users") ? "bg-red-100" : ""
+              } text-black text-sm items-center gap-x-4 mt-4`}
+            >
+              <MdSupervisedUserCircle className="text-2xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Users
+              </span>
+            </li>
           </Link>
-          <Link to={'/admin/notification'}>
-          <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
-               ${isActive('/admin/notification') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
-          >
-            <MdBook className='text-2xl' />
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>notification</span>
-          </li>
+          <Link to={"/admin/services"}>
+            <li
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+               ${
+                 isActive("/admin/services") ? "bg-red-100" : ""
+               } text-black text-sm items-center gap-x-4 mt-4`}
+            >
+              <MdConstruction className="text-2xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Services
+              </span>
+            </li>
           </Link>
-          <DeleteConfirmationModal 
-          body='are sure you want to logout'
-          onConfirm={handleLogout}
+          <Link to={"/admin/notification"}>
+            <li
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+               ${
+                 isActive("/admin/notification") ? "bg-red-100" : ""
+               } text-black text-sm items-center gap-x-4 mt-4`}
+            >
+              <MdBook className="text-2xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Notification
+              </span>
+            </li>
+          </Link>
+          <DeleteConfirmationModal
+            body="Are you sure you want to logout?"
+            onConfirm={handleLogout}
           >
-          <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
-               ${isActive('/admin/logout') ? 'bg-red-100' : ''} text-black text-sm items-center gap-x-4 mt-4`}
-          >
-            <MdLogout className='text-2xl' />
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>Log-out</span>
-          </li>
+            <li
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-red-100
+               ${
+                 isActive("/admin/logout") ? "bg-red-100" : ""
+               } text-black text-sm items-center gap-x-4 mt-4`}
+            >
+              <MdLogout className="text-2xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Log-out
+              </span>
+            </li>
           </DeleteConfirmationModal>
         </ul>
       </div>
-      {children}
+      <div className="flex-1 overflow-auto">{children}</div>
     </div>
-    
-    </>
   );
 };
 

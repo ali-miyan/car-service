@@ -12,17 +12,7 @@ export default withMT({
         "bai-extra-light": ["bai extra light"],
         "bai-semi-bold": ["bai semi bold"],
         "bai-bold": ["bai bold"],
-      },
-      animation: {
-        "pulse-fast": "pulse-fast 1s infinite",
-      },
-      keyframes: {
-        "pulse-fast": {
-          "0%": { backgroundColor: "#b0bec5" }, // Lighter gray-blue
-          "50%": { backgroundColor: "#78909c" }, // Darker gray-blue
-          "100%": { backgroundColor: "#b0bec5" }, // Lighter gray-blue
-        },
-      },
+      }
     },
   },
   plugins: [],

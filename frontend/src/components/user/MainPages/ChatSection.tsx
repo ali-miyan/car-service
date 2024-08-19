@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { BsSendFill } from "react-icons/bs";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useGetChatQuery } from "../../../store/slices/chatApiSlice";
@@ -42,6 +42,29 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
   }, [chatMessages]);
 
   const chatSocket = useChatSocket(selectedCompany);
+
+  useEffect(() => {
+    if (chatSocket) {
+      chatSocket.on("company_to_user", (messageData: any) => {
+        setChatMessages((prevState) => ({
+          ...prevState,
+          messages: [
+            ...prevState.messages,
+            {
+              sender: messageData.companyId,
+              content: messageData.content,
+              timestamp: messageData.timestamp,
+              type: "text",
+            },
+          ],
+        }));
+      });
+
+      return () => {
+        chatSocket.off("company_to_user");
+      };
+    }
+  }, [chatSocket]);
 
   const handleSendMessage = () => {
     if (selectedCompany && newMessage.trim()) {
@@ -103,34 +126,66 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
             {chatMessages?.messages.length > 0 ? (
               <>
                 {chatMessages?.messages?.map((msg, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-1 justify-end mb-4"
-                  >
-                    <div className="flex flex-col w-full max-w-[240px] px-4 py-2 border border-gray-400 bg-gray-100 rounded-l-xl rounded-tr-xl">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm uppercase font-bai-bold text-gray-900">
-                          {chatMessages.user.username}
+                  <React.Fragment key={index}>
+                    <div
+                      className={`flex items-start gap-1 justify-${
+                        msg.sender === chatMessages.company.companyId ||
+                        msg.sender === selectedCompany._id
+                          ? "start"
+                          : "end"
+                      } mb-4`}
+                    >
+                      {(msg.sender == chatMessages.company?.companyId ||
+                        msg.sender === selectedCompany._id) && (
+                        <img
+                          src={
+                            chatMessages?.company?.companyImg ||
+                            selectedCompany.logo
+                          }
+                          alt="User"
+                          className="w-8 h-8 rounded-full border self-end border-gray-300"
+                        />
+                      )}
+                      <div
+                        className={`flex flex-col w-full max-w-[240px] px-4 py-2 border ${
+                          msg.sender !== chatMessages.company.companyId ||
+                          msg.sender !== selectedCompany._id
+                            ? "company-bg border-gray-400 rounded-l-xl rounded-t-xl"
+                            : "user-bg border-gray-400 rounded-r-xl rounded-t-xl"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span
+                            className={`text-sm uppercase font-bai-bold text-black`}
+                          >
+                            {msg.sender === chatMessages.company.companyId ||
+                            msg.sender === selectedCompany._id
+                              ? chatMessages?.company?.companyName ||
+                                selectedCompany.companyName
+                              : chatMessages?.user?.username || posts?.username}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
+                            {msg.content}
+                          </p>
+                        </div>
+                        <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0 self-end">
+                          {new Intl.DateTimeFormat("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }).format(new Date(msg.timestamp))}
                         </span>
                       </div>
-                      <div className="flex justify-between">
-                        <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
-                          {msg.content}
-                        </p>
-                      </div>
-                      <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0 self-end">
-                        {new Intl.DateTimeFormat("en-US", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }).format(new Date(msg.timestamp))}
-                      </span>
+                      {msg.sender === chatMessages.user.userId && (
+                        <img
+                          src={chatMessages.user.userImg || posts?.profileImg}
+                          alt="Company"
+                          className="w-8 h-8 rounded-full border self-end border-gray-300"
+                        />
+                      )}
                     </div>
-                    <img
-                      src={chatMessages.user.userImg || "/default-user.png"}
-                      alt="User"
-                      className="w-8 h-8 rounded-full  self-end border border-gray-300"
-                    />
-                  </div>
+                  </React.Fragment>
                 ))}
                 <div ref={endOfMessagesRef} />
               </>

@@ -22,6 +22,9 @@ export const orderApiSlice = createApi({
     getLiveLocation: builder.query({
       query: (id:string) => `/get-live-location/${id}`,
     }),
+    getMonthlyRevenue: builder.query({
+      query: (id:string) => `/get-monthly-revenue/${id}`,
+    }),
     makeOrder: builder.mutation({
       query: (formData) => ({
         url: `/booking`,
@@ -61,5 +64,6 @@ export const {
   useUpdateStatusMutation,
   useGetUsersOrderQuery,
   useUpdateDriverLocationMutation,
-  useGetLiveLocationQuery
+  useGetLiveLocationQuery,
+  useGetMonthlyRevenueQuery
 } = orderApiSlice;

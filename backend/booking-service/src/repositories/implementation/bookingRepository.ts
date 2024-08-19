@@ -1,6 +1,6 @@
 import { Booking } from "../../entities";
 import { IBookingRepository } from "../interfaces";
-import { bookingModel } from "../../infrastructure/db";
+import { bookingModel, sequelize } from "../../infrastructure/db";
 import { BookingStatus } from "../../schemas/Enums";
 
 export class BookingRepository implements IBookingRepository {
@@ -91,5 +91,32 @@ export class BookingRepository implements IBookingRepository {
       throw new Error("Error in db: " + error);
     }
   }
-
+  async getMontlyRevenue(companyId: string): Promise<bookingModel[]> {
+    try {
+      return await bookingModel.findAll({
+        attributes: [
+          [
+            sequelize.fn("date_trunc", "month", sequelize.col("createdAt")),
+            "month",
+          ],
+          [sequelize.fn("sum", sequelize.col("totalPrice")), "totalRevenue"],
+        ],
+        where: {
+          companyId,
+        },
+        group: [
+          sequelize.fn("date_trunc", "month", sequelize.col("createdAt")),
+        ],
+        order: [
+          [
+            sequelize.fn("date_trunc", "month", sequelize.col("createdAt")),
+            "ASC",
+          ],
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
 }

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authMiddleware } from "tune-up-library";
 import Stripe from "stripe";
 import { BookingController } from "../../adapters/bookingController";
-import { BookingUseCase, GetBookingUseCase, GetLiveLocationUseCase, GetSingleBookingUseCase, GetUsersBookingUseCase, UpdateDriverLocationUseCase, UpdateStatusUseCase } from "../../usecases";
+import { BookingUseCase, GetBookingUseCase, GetLiveLocationUseCase, GetMonthlyRevenueUseCase, GetSingleBookingUseCase, GetUsersBookingUseCase, UpdateDriverLocationUseCase, UpdateStatusUseCase } from "../../usecases";
 import { BookingRepository, RedisOtpRepository, UserRepository } from "../../repositories";
 import { StripeService } from "../services";
 import { UpdateBookingStatusUseCase } from "../../usecases/updateBookingUseCase";
@@ -19,9 +19,10 @@ const getBookingUseCase = new GetBookingUseCase(bookingRepository)
 const getSingleBookingUseCase = new GetSingleBookingUseCase(bookingRepository,userRepository)
 const getLiveLocationUseCase = new GetLiveLocationUseCase(redisRepository)
 const getUsersBookingUseCase = new GetUsersBookingUseCase(bookingRepository)
+const getMonthlyRevenueUseCase = new GetMonthlyRevenueUseCase(bookingRepository)
 const rabbitMQService = new RabbitMQService()
 const bookingUseCase = new BookingUseCase(bookingRepository,stripeService,rabbitMQService)
-const bookingController = new BookingController(bookingUseCase,updateBookingStatusUseCase,getBookingUseCase,getSingleBookingUseCase,updateStatusUseCase,getUsersBookingUseCase,updateDriverLocationUseCase,getLiveLocationUseCase)
+const bookingController = new BookingController(bookingUseCase,updateBookingStatusUseCase,getBookingUseCase,getSingleBookingUseCase,updateStatusUseCase,getUsersBookingUseCase,updateDriverLocationUseCase,getLiveLocationUseCase,getMonthlyRevenueUseCase)
 
 const router = Router();
 
@@ -49,4 +50,9 @@ router.post("/update-driver-location",authMiddleware(['company']), (req, res, ne
 router.get("/get-live-location/:id",authMiddleware(['user']), (req, res, next) =>
   bookingController.getLiveLocation(req,res,next)
 );
+router.get("/get-monthly-revenue/:id",authMiddleware(['company']), (req, res, next) =>
+  bookingController.getMonthlyRevenue(req,res,next)
+);
+
+
 export default router;

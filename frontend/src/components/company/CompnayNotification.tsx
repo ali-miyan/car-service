@@ -4,6 +4,7 @@ import { TbMessageDots } from "react-icons/tb";
 import "../../styles/SideBarNotification.css";
 import GeneralChat from "./GeneralChat";
 import BookerCustomerChat from "./BookedCustomerChat";
+import "../../styles/Animation.css";
 
 const CompanyNotificationModal = ({ id, companyData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +59,10 @@ const CompanyNotificationModal = ({ id, companyData }) => {
                   ? "border-red-900 text-red-900"
                   : "border-transparent  text-gray-600"
               } w-full transition-colors duration-300`}
-              onClick={() => setActiveSection("general messages")}
+              onClick={() => {
+                setActiveSection("general messages");
+                setSelectedUser(null);
+              }}
             >
               general messages
             </button>
@@ -68,22 +72,28 @@ const CompanyNotificationModal = ({ id, companyData }) => {
                   ? "border-red-900 text-red-900"
                   : "border-transparent  text-gray-600"
               } w-full transition-colors duration-300`}
-              onClick={() => setActiveSection("booked customers")}
+              onClick={() => {
+                setActiveSection("booked customers");
+                setSelectedUser(null);
+              }}
             >
               booked customers
             </button>
           </div>
           {activeSection === "booked customers" && isOpen ? (
-            <BookerCustomerChat id={id} companyData={companyData} selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+            <BookerCustomerChat
+              id={id}
+              companyData={companyData}
+              selectedUser={selectedUser}
+              setSelectedUser={setSelectedUser}
+            />
           ) : activeSection === "general messages" && isOpen ? (
-            <div className="pt-5 mx-auto">
               <GeneralChat
                 selectedUser={selectedUser}
                 id={id}
                 companyData={companyData}
                 setSelectedUser={setSelectedUser}
               />
-            </div>
           ) : (
             <div>loading</div>
           )}

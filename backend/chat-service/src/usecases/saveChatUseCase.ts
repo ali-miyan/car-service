@@ -19,25 +19,27 @@ export class SaveChatUseCase {
 
       if (chatId) {
         chat = await this.chatRepository.getOneChat(chatId);
+        console.log(chat,null);
+        
         if (!chat) {
-          throw new NotFoundError("Chat not found");
-        }
+          throw new BadRequestError('no chat found')
+        } else {
+          if (!chat.company.companyImg || !chat.company.companyName) {
+            chat.company = {
+              companyId: senderId,
+              companyImg: senderImg,
+              companyName: senderName,
+            };
+          }
 
-        if (!chat.company.companyImg || !chat.company.companyName) {
-          chat.company = {
-            companyId: senderId,
-            companyImg: senderImg,
-            companyName: senderName,
-          };
+          chat.messages.push({
+            sender: senderId,
+            content,
+            timestamp: new Date(timestamp),
+            type: "text",
+          });
+          await this.chatRepository.update(chat);
         }
-
-        chat.messages.push({
-          sender: senderId,
-          content,
-          timestamp: new Date(timestamp),
-          type: "text",
-        });
-        await this.chatRepository.update(chat);
       } else {
         const existingChat = await this.chatRepository.findByUserAndCompany(
           senderId,

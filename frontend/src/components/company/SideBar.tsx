@@ -170,7 +170,10 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
             ))}
           </ul>
         </div>
+        <div className="flex-1 overflow-auto">
+
         {children}
+        </div>
       </div>
     </>
   );

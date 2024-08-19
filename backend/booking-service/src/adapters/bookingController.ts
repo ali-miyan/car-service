@@ -3,6 +3,7 @@ import {
   BookingUseCase,
   GetBookingUseCase,
   GetLiveLocationUseCase,
+  GetMonthlyRevenueUseCase,
   GetSingleBookingUseCase,
   UpdateDriverLocationUseCase,
   UpdateStatusUseCase,
@@ -19,7 +20,8 @@ export class BookingController {
     private updateStatusUseCase: UpdateStatusUseCase,
     private getUsersBookingUseCase: GetUsersBookingUseCase,
     private updateDriverLocationUseCase: UpdateDriverLocationUseCase,
-    private getLiveLocationUseCase: GetLiveLocationUseCase
+    private getLiveLocationUseCase: GetLiveLocationUseCase,
+    private getMonthlyRevenueUseCase:GetMonthlyRevenueUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -159,6 +161,19 @@ export class BookingController {
     const { id } = req.params;
     try {
       const data  = await this.getLiveLocationUseCase.execute(id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getMonthlyRevenue(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+    try {
+      const data  = await this.getMonthlyRevenueUseCase.execute(id);
       res.status(200).json(data);
     } catch (error) {
       next(error);
