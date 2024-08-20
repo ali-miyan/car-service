@@ -32,7 +32,6 @@ export class CarRepository implements ICarRepository {
   async deleteById(id: string): Promise<void> {
     try {
       const checl = await carModel.deleteOne({ _id: id });
-      console.log(checl, "check");
     } catch (error) {
       throw new Error("error in db");
     }
@@ -77,7 +76,6 @@ export class CarRepository implements ICarRepository {
           select: "_id username email phone profileImg",
         });
 
-        console.log(userDetails);
         
 
       return userDetails;

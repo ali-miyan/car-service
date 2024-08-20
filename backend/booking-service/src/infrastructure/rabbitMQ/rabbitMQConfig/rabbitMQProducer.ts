@@ -27,7 +27,6 @@ export class RabbitMQService {
         rabbitMQConfig.queueName1,
         Buffer.from(carId)
       );
-      console.log(`Order message sent:`, carId);
     } catch (error) {
       console.error("Failed to send message:", error);
     }

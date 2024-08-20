@@ -24,11 +24,11 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
   }, [navigate]);
 
   return (
-    <div className="flex h-screen font-bai-regular uppercase bg-gray-100">
+    <div className="flex font-bai-regular uppercase bg-white">
       <div
         className={`${
           open ? "w-72" : "w-20"
-        } bg-gray-100 border-r-8 p-5 pt-8 relative duration-300 flex-shrink-0`}
+        } bg-gray-200 p-5 pt-8 relative duration-300 flex-shrink-0`}
       >
         <FaLongArrowAltLeft
           className={`absolute cursor-pointer text-1xl bg-white -right-3 top-9 w-7 h-5 border-2 border-dark-purple rounded-full ${
@@ -59,8 +59,8 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                 isActive("/admin/home") ? "bg-red-100" : ""
               } text-sm items-center gap-x-4 mt-4`}
             >
-              <MdDashboard className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
+              <MdDashboard className="text-3xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200 font-bai-bold`}>
                 Dashboard
               </span>
             </li>
@@ -72,8 +72,8 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                 isActive("/admin/users") ? "bg-red-100" : ""
               } text-black text-sm items-center gap-x-4 mt-4`}
             >
-              <MdSupervisedUserCircle className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
+              <MdSupervisedUserCircle className="text-3xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200 font-bai-bold`}>
                 Users
               </span>
             </li>
@@ -85,8 +85,8 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                  isActive("/admin/services") ? "bg-red-100" : ""
                } text-black text-sm items-center gap-x-4 mt-4`}
             >
-              <MdConstruction className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
+              <MdConstruction className="text-3xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200 font-bai-bold`}>
                 Services
               </span>
             </li>
@@ -98,9 +98,9 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                  isActive("/admin/notification") ? "bg-red-100" : ""
                } text-black text-sm items-center gap-x-4 mt-4`}
             >
-              <MdBook className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Notification
+              <MdBook className="text-3xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200 font-bai-bold`}>
+                COMPANIES
               </span>
             </li>
           </Link>
@@ -114,15 +114,15 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                  isActive("/admin/logout") ? "bg-red-100" : ""
                } text-black text-sm items-center gap-x-4 mt-4`}
             >
-              <MdLogout className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
+              <MdLogout className="text-3xl" />
+              <span className={`${!open && "hidden"} origin-left duration-200 font-bai-bold`}>
                 Log-out
               </span>
             </li>
           </DeleteConfirmationModal>
         </ul>
       </div>
-      <div className="flex-1 overflow-auto">{children}</div>
+      <div className="flex-1 overflow-auto bg-white">{children}</div>
     </div>
   );
 };

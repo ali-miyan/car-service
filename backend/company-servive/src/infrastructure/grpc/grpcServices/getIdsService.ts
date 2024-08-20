@@ -17,7 +17,6 @@ const bookingProto = grpc.loadPackageDefinition(packageDefinition).idservice;
 
 const getCompanyIds = async (call: any, callback: any) => {
   const { companyId } = call.request;
-  console.log("get id from here", companyId);
 
   try {
     const ids = await serviceRepository.getGeneralServiceIdsByCompanyId(

@@ -141,7 +141,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                       <span
                         className={`${
                           !open && "hidden"
-                        } origin-left duration-200`}
+                        } origin-left duration-200 font-bai-bold`}
                       >
                         {link.label}
                       </span>
@@ -157,7 +157,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                     <span
                       className={`${
                         !open && "hidden"
-                      } origin-left duration-200`}
+                      } origin-left duration-200 font-bai-bold`}
                     >
                       {link.label}
                       {link.badge && (

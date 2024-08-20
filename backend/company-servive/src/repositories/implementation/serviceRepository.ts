@@ -33,6 +33,14 @@ export class ServiceRepository implements IServiceRepository {
       throw new Error("error in db");
     }
   }
+  async getTotalServices(): Promise<number> {
+    try {
+      return await serviceModal.countDocuments({})
+    } catch (error) {
+      console.log(error);
+      throw new Error("error in db");
+    }
+  }
   async getPackageDetails(
     serviceId: string,
     packageName: "basic" | "standard" | "premium"

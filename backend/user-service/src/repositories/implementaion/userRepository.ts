@@ -41,10 +41,7 @@ export class UserRepository implements IUserRepository {
     phone: null | number
   ): Promise<void> {
     try {
-      await userModel.updateOne(
-        { _id: id },
-        { $set: { username, phone } }
-      );
+      await userModel.updateOne({ _id: id }, { $set: { username, phone } });
     } catch (error) {
       throw new Error("error in db");
     }
@@ -80,9 +77,11 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async getUserDetails(id: string): Promise<{ username: string; email: string; phone: number | null } | null> {
+  async getUserDetails(
+    id: string
+  ): Promise<{ username: string; email: string; phone: number | null } | null> {
     try {
-      const user = await userModel.findById(id).select("username email phone");      
+      const user = await userModel.findById(id).select("username email phone");
       if (!user) return null;
       return {
         username: user.username,
@@ -93,7 +92,52 @@ export class UserRepository implements IUserRepository {
       throw new BadRequestError("error in db");
     }
   }
+  async getAllUsersCount(): Promise<number> {
+    try {
+      return await userModel.countDocuments({});
+    } catch (error) {
+      throw new BadRequestError("error in db");
+    }
+  }
+  async getMonthlyUsers(): Promise<{ month: string; count: number }[]> {
+    try {
+      const result = await userModel
+        .aggregate([
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              year: { $year: "$createdAt" },
+            },
+          },
+          {
+            $group: {
+              _id: { month: "$month", year: "$year" },
+              count: { $sum: 1 },
+            },
+          },
+          {
+            $sort: { "_id.year": 1, "_id.month": 1 },
+          },
+          {
+            $project: {
+              _id: 0,
+              month: "$_id.month",
+              year: "$_id.year",
+              count: 1,
+            },
+          },
+        ])
+        .exec();
 
+      return result.map((item) => ({
+        month: `${item.year}-${item.month.toString().padStart(2, "0")}`,
+        count: item.count,
+      }));
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestError("error in db");
+    }
+  }
 
   async save(user: User): Promise<User> {
     try {

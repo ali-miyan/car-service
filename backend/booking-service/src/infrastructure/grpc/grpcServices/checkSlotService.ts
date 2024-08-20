@@ -27,7 +27,6 @@ export const checkSlotAvailability = (
       if (error) {
         return reject(error);
       }
-      console.log(response, "responsce from  grpc");
       resolve(response);
     });
   });

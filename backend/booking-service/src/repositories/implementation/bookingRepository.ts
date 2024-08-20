@@ -119,4 +119,62 @@ export class BookingRepository implements IBookingRepository {
       throw new Error("Error in db: " + error);
     }
   }
+  async getTotalRevenue(companyId: string): Promise<number> {
+    try {
+      const result = await bookingModel.findOne({
+        attributes: [
+          [sequelize.fn("sum", sequelize.col("totalPrice")), "totalRevenue"],
+        ],
+        where: {
+          companyId,
+        },
+      });
+
+      const totalRevenue = result?.get("totalRevenue") as number;
+      return totalRevenue || 0;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+
+  async getBookingCount(companyId: string): Promise<number> {
+    try {
+      const count = await bookingModel.count({
+        where: {
+          companyId,
+        },
+      });
+
+      return count;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+
+  async getMostBookedServicePlace(companyId: string): Promise<any> {
+    try {
+      const result = await bookingModel.findAll({
+        attributes: [
+          "servicePlace",
+          [
+            sequelize.fn("count", sequelize.col("servicePlace")),
+            "bookingCount",
+          ],
+        ],
+        where: {
+          companyId,
+        },
+        group: ["servicePlace"],
+        order: [[sequelize.fn("count", sequelize.col("servicePlace")), "DESC"]],
+        limit: 1,
+      });
+
+      return result[0] || null;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
 }

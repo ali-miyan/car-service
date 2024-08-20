@@ -94,25 +94,42 @@ const ServiceTable = () => {
     <>
       <div
         style={{ height: "100%" }}
-        className="container font-bai-regular lowercase mx-auto p-4"
+        className="container lowercase font-bai-regular bg-gray-50 mx-auto p-4"
       >
-        <div className="overflow-x-auto ">
-          <table className="min-w-full ">
-            <thead className="bg-gray-100">
+        <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
+          SERVICE details
+        </p>
+        <div className="overflow-x-auto min-h-screen">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 border border-gray-300">
               <tr>
-                <th className="py-2 px-4 border-b">NO.</th>
-                <th className="py-2 px-4 border-b">IMAGE</th>
-                <th className="py-2 px-4 border-b">SERVICE TYPE</th>
-                <th className="py-2 px-4 border-b">DESCRIPTION</th>
-                <th className="py-2 px-4 border-b">NO OF PACKAGES</th>
-                <th className="py-2 px-4 border-b">STATUS</th>
-                <th className="py-2 px-4 border-b">ACTION</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NO.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  IMAGE
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  SERVICE TYPE
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  DESCRIPTION
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NO OF PACKAGES
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  STATUS
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ACTION
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="border border-black">
               {isLoading ? (
-                <tr>
-                  <td colSpan={7} className="py-6">
+                <tr className="">
+                  <td colSpan={7} className="px-6 py-4 whitespace-nowrap">
                     <div className="animate-pulse">
                       <div className="h-8 bg-gray-200 rounded"></div>
                     </div>
@@ -120,24 +137,24 @@ const ServiceTable = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="bg-white " key={post._id}>
-                    <td className=" border-b text-center">
+                  <tr className="bg-white border-gray-300 border" key={post._id}>
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>
-                    <td className="py-6  px-4 border-b justify-center flex">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <img
                         src={post.logoUrl}
                         className="w-20 h-16 object-cover"
                         alt="loading..."
                       />
                     </td>
-                    <td className=" border-b text-center">
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       {post.serviceName}
                     </td>
-                    <td className=" w-1/6 border-b text-center">
+                    <td className=" w-1/6 px-6 py-4 whitespace-nowrap">
                       {truncateDescription(post.description, 6)}
                     </td>
-                    <td className=" border-b text-center">
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       <Tooltip
                         content={post.subServices
                           ?.map(
@@ -152,7 +169,7 @@ const ServiceTable = () => {
                         </span>
                       </Tooltip>
                     </td>
-                    <td className=" border-b text-center">
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-block px-2 pt-2 pb-1 rounded ${
                           !toggleStates[post._id]
@@ -177,7 +194,7 @@ const ServiceTable = () => {
                         </label>
                       </span>
                     </td>
-                    <td className=" border-b text-center">
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       <DeleteConfirmationModal
                         body="Are you sure you want to delete this item?"
                         onConfirm={() => handleDelete(post._id)}

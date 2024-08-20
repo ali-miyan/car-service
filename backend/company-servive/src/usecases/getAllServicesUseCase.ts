@@ -42,7 +42,6 @@ export class GetAllServicesUseCase {
       }
     }
 
-    console.log(services.length,'lengtj');
     
 
 

@@ -15,7 +15,6 @@ export class RatingController {
   ): Promise<void> {
     const { id } = req.params;
 
-    console.log(id, "ididid");
 
     if (!id) {
       throw new BadRequestError("id not found");

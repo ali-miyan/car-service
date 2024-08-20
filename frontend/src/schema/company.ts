@@ -1,4 +1,4 @@
-import { AddressData } from './address';
+import { AddressData } from "./address";
 
 export interface Post {
   _id: string;
@@ -18,3 +18,18 @@ export interface Post {
   isBlocked: boolean;
   isApproved: "pending" | "accepted" | "declined";
 }
+
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

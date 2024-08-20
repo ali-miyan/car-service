@@ -34,7 +34,6 @@ export class ServiceRepository implements IServiceRepository {
       const service = await serviceModel.findByIdAndUpdate(id, data, {
         new: true,
       });
-      console.log(service);
     } catch (error) {
       throw new Error("error in db");
     }

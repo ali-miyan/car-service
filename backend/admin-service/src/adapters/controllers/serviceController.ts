@@ -21,7 +21,6 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     const { serviceName, description, services } = req.body;
-    console.log((req as any).user);
     const { originalname, buffer, mimetype } = (req as any).file;
 
     try {
@@ -63,7 +62,6 @@ export class ServiceController {
   ): Promise<void> {
     const { id } = req.params;
 
-    console.log(req.params, "dsdsd");
 
     if (!id) {
       throw new BadRequestError("id not found");
@@ -83,7 +81,6 @@ export class ServiceController {
   ): Promise<void> {
     const { id } = req.params;
     const status = req.body;
-    console.log(req.params, "dsdsd", req.body);
 
     if (!id) {
       throw new BadRequestError("id not found");

@@ -5,7 +5,8 @@ import {
   LoginUseCase,
   UpdateStatusUseCase,
   GetByIdUseCase,
-  GetApprovedCompanyUseCase
+  GetApprovedCompanyUseCase,
+  GetDashboardUseCase,
 } from "../../usecases";
 import { BadRequestError } from "tune-up-library";
 
@@ -16,11 +17,11 @@ export class CompanyController {
     private getApproval: GetApprovalUseCase,
     private getcompany: GetByIdUseCase,
     private updateStatus: UpdateStatusUseCase,
-    private getApprovedCompany:GetApprovedCompanyUseCase
+    private getApprovedCompany: GetApprovedCompanyUseCase,
+    private getDashboardUseCase: GetDashboardUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log(req.body);
     const {
       ownerName,
       companyName,
@@ -36,8 +37,6 @@ export class CompanyController {
     } = req.body;
 
     const { files } = req as any;
-
-    console.log(req.body, files);
 
     try {
       const response = await this.registerCompanyUseCase.execute(
@@ -84,9 +83,6 @@ export class CompanyController {
         });
       }
 
-      console.log(response);
-      
-
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -112,10 +108,7 @@ export class CompanyController {
   ): Promise<void> {
     try {
       const id = req.params.id as string;
-      console.log((req as any).user);
-      
-      console.log('query id',id);
-      
+
       const response = await this.getcompany.execute(id);
 
       res.status(201).json(response);
@@ -129,7 +122,6 @@ export class CompanyController {
     next: NextFunction
   ): Promise<void> {
     try {
-      
       const response = await this.getApprovedCompany.execute();
 
       res.status(201).json(response);
@@ -158,5 +150,16 @@ export class CompanyController {
       next(error);
     }
   }
-
+  async getDashboard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const response = await this.getDashboardUseCase.execute();
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

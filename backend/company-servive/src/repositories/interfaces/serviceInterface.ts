@@ -8,5 +8,6 @@ export interface IServiceRepository {
   getAll(companyId:string): Promise<IService[] | null>;
   getSingle(_id:string): Promise<IService | null>;
   getEveryService(): Promise<IService[] | null>;
+  getTotalServices(): Promise<number>;
   save(comapny: Service): Promise<void>;
 }

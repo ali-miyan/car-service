@@ -12,7 +12,6 @@ export class GetServiceUseCase {
     if (companyId) {
       const result = await getCompanyIds(companyId as string);
       ids = result?.ids ?? null;
-      console.log(ids);
     }
 
     const data = await this.serviceRepository.getAll(ids);

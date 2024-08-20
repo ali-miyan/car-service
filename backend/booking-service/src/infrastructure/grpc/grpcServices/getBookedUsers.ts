@@ -16,7 +16,6 @@ const usersProto = grpc.loadPackageDefinition(packageDefinition).users;
 
 const getUsersFromBooking = async (call: any, callback: any) => {
   const { companyId } = call.request;
-  console.log("reached request here", companyId);
 
   try {
     const users = await userRepository.getAllBookedUsers(companyId)

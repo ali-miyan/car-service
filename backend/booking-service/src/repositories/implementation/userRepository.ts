@@ -1,6 +1,6 @@
 import { User } from "../../entities";
 import { IUserInterface } from "../interfaces";
-import { userModel, bookingModel, sequelize } from "../../infrastructure/db";
+import { userModel, sequelize } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
 import { QueryTypes } from "sequelize";
 
@@ -47,6 +47,27 @@ export class UserRepository implements IUserInterface {
         replacements: { companyId },
         type: QueryTypes.SELECT,
       });
+    } catch (error) {
+      console.error("Error retrieving  bookings for company:", error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+  async getBookedUserDetails(companyId: string): Promise<any> {
+    try {
+      console.log(companyId, "companyI99d");
+
+      const query = `
+      SELECT "users".*, "bookings".*
+      FROM "users"
+      INNER JOIN "bookings" ON "users"."userId"->>'_id' = "bookings"."userId"
+      WHERE "bookings"."companyId" = :companyId
+    `;
+
+      return await sequelize.query(query, {
+        replacements: { companyId },
+        type: QueryTypes.SELECT,
+      });
+      
     } catch (error) {
       console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authMiddleware } from "tune-up-library";
 import Stripe from "stripe";
 import { BookingController } from "../../adapters/bookingController";
-import { BookingUseCase, GetBookingUseCase, GetLiveLocationUseCase, GetMonthlyRevenueUseCase, GetSingleBookingUseCase, GetUsersBookingUseCase, UpdateDriverLocationUseCase, UpdateStatusUseCase } from "../../usecases";
+import { BookingUseCase, GetBookingUseCase, GetLiveLocationUseCase, GetDashboardUseCase, GetSingleBookingUseCase, GetUsersBookingUseCase, UpdateDriverLocationUseCase, UpdateStatusUseCase } from "../../usecases";
 import { BookingRepository, RedisOtpRepository, UserRepository } from "../../repositories";
 import { StripeService } from "../services";
 import { UpdateBookingStatusUseCase } from "../../usecases/updateBookingUseCase";
@@ -19,7 +19,7 @@ const getBookingUseCase = new GetBookingUseCase(bookingRepository)
 const getSingleBookingUseCase = new GetSingleBookingUseCase(bookingRepository,userRepository)
 const getLiveLocationUseCase = new GetLiveLocationUseCase(redisRepository)
 const getUsersBookingUseCase = new GetUsersBookingUseCase(bookingRepository)
-const getMonthlyRevenueUseCase = new GetMonthlyRevenueUseCase(bookingRepository)
+const getMonthlyRevenueUseCase = new GetDashboardUseCase(bookingRepository,userRepository)
 const rabbitMQService = new RabbitMQService()
 const bookingUseCase = new BookingUseCase(bookingRepository,stripeService,rabbitMQService)
 const bookingController = new BookingController(bookingUseCase,updateBookingStatusUseCase,getBookingUseCase,getSingleBookingUseCase,updateStatusUseCase,getUsersBookingUseCase,updateDriverLocationUseCase,getLiveLocationUseCase,getMonthlyRevenueUseCase)

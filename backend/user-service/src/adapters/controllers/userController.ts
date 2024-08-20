@@ -14,6 +14,7 @@ import {
   EditUSerUseCase,
   UpadtePasswordUseCase,
   AddRatingUseCase,
+  GetAllUsersUseCase,
 } from "../../usecases/index";
 import { BadRequestError } from "tune-up-library";
 
@@ -32,11 +33,11 @@ export class UserController {
     private userImageUseCase: UserImageUseCase,
     private editUSerUseCase: EditUSerUseCase,
     private upadtePasswordUseCase: UpadtePasswordUseCase,
-    private addRatingUseCase: AddRatingUseCase
+    private addRatingUseCase: AddRatingUseCase,
+    private getAllUsersUseCase:GetAllUsersUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log(req.body);
     const { username, email, password } = req.body;
     try {
       const user = await this.signupUseCase.execute(username, email, password);
@@ -51,7 +52,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body);
     const { email } = req.body;
     try {
       res.status(200).json({ success: true });
@@ -66,7 +66,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body);
     const { otp, email } = req.body;
     try {
       const response = await this.verifyOtpUseCase.execute(otp, email);
@@ -86,7 +85,6 @@ export class UserController {
     }
   }
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log(req.body);
     const { email, password } = req.body;
     try {
       const response = await this.loginUseCase.execute(email, password);
@@ -110,7 +108,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body, "sqsq");
     const { email } = req.body;
     try {
       const response = await this.requestPassword.execute(email);
@@ -125,7 +122,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body, "sqsq");
     const { password, token } = req.body;
     try {
       const response = await this.resetPasswordRepository.execute(
@@ -143,7 +139,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body, "accessed");
     const { access_token, token_type } = req.body;
     try {
       const response = await this.googleUseCase.execute(
@@ -184,7 +179,6 @@ export class UserController {
   ): Promise<void> {
     try {
       const { id } = req.params;
-      console.log(id);
 
       const response = await this.getUserByIdUseCase.execute(id as string);
 
@@ -200,7 +194,6 @@ export class UserController {
   ): Promise<void> {
     const { id } = req.params;
     const status = req.body;
-    console.log(req.params, "dsdsd", status);
 
     if (!id) {
       throw new BadRequestError("id or status not found");
@@ -218,7 +211,6 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.file, "dsdsd", req.body);
 
     const { id } = req.body;
     const file = req.file;
@@ -283,6 +275,18 @@ export class UserController {
     const { user } = (req as any).user;
     try {
       const response = await this.addRatingUseCase.execute(rating as number, reviewText as string,user as string,serviceId as string);
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getDashboard(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const response = await this.getAllUsersUseCase.execute();
       res.status(201).json(response);
     } catch (error) {
       next(error);

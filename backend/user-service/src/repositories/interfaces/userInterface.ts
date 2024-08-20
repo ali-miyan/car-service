@@ -10,5 +10,7 @@ export interface IUserRepository {
   updateImage(id: string, profileImg: string): Promise<void>;
   updateCredentials(id: string, username: string, phone: null | number): Promise<void>;
   updatePassword(email: string, newPassword: string): Promise<boolean>;
+  getAllUsersCount(): Promise<number>;
+  getMonthlyUsers(): Promise<{ month: string; count: number }[]>;
   save(user: User): Promise<User>;
 }

@@ -3,7 +3,7 @@ import {
   BookingUseCase,
   GetBookingUseCase,
   GetLiveLocationUseCase,
-  GetMonthlyRevenueUseCase,
+  GetDashboardUseCase,
   GetSingleBookingUseCase,
   UpdateDriverLocationUseCase,
   UpdateStatusUseCase,
@@ -21,11 +21,10 @@ export class BookingController {
     private getUsersBookingUseCase: GetUsersBookingUseCase,
     private updateDriverLocationUseCase: UpdateDriverLocationUseCase,
     private getLiveLocationUseCase: GetLiveLocationUseCase,
-    private getMonthlyRevenueUseCase:GetMonthlyRevenueUseCase
+    private getMonthlyRevenueUseCase: GetDashboardUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log(req.body);
     const {
       userId,
       serviceId,
@@ -39,9 +38,7 @@ export class BookingController {
       carId,
       generalServiceId,
     } = req.body;
-
-    console.log(req.body, "reqboddy");
-
+    
     try {
       const response = await this.bookingRepository.execute(
         userId,
@@ -83,7 +80,6 @@ export class BookingController {
     next: NextFunction
   ): Promise<void> {
     const { orderId, status } = req.body;
-    console.log(req.body, "reqbody");
 
     try {
       await this.updateStatusUseCase.execute(orderId, status);
@@ -140,7 +136,6 @@ export class BookingController {
     next: NextFunction
   ): Promise<void> {
     const { orderId, latitude, longitude } = req.body;
-    console.log(req.body, "reqqestr body");
 
     try {
       await this.updateDriverLocationUseCase.execute(
@@ -160,7 +155,7 @@ export class BookingController {
   ): Promise<void> {
     const { id } = req.params;
     try {
-      const data  = await this.getLiveLocationUseCase.execute(id);
+      const data = await this.getLiveLocationUseCase.execute(id);
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -173,7 +168,7 @@ export class BookingController {
   ): Promise<void> {
     const { id } = req.params;
     try {
-      const data  = await this.getMonthlyRevenueUseCase.execute(id);
+      const data = await this.getMonthlyRevenueUseCase.execute(id);
       res.status(200).json(data);
     } catch (error) {
       next(error);

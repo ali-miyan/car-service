@@ -1,13 +1,13 @@
-import nodemailer from 'nodemailer';
-import { generateOtp, generateToken } from '../../utils';
-require('dotenv').config();
+import nodemailer from "nodemailer";
+import { generateOtp, generateToken } from "../../utils";
+require("dotenv").config();
 
 export class OtpService {
   private transporter: nodemailer.Transporter;
 
-  constructor() { 
+  constructor() {
     this.transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -22,7 +22,11 @@ export class OtpService {
     return generateToken();
   }
 
-  async sendMail(email: string, subject: string, message: string): Promise<void> {
+  async sendMail(
+    email: string,
+    subject: string,
+    message: string
+  ): Promise<void> {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,

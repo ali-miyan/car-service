@@ -59,24 +59,39 @@ const UsersDetails = () => {
     <>
       <div
         style={{ height: "100%" }}
-        className="container lowercase font-bai-regular mx-auto p-4"
+        className="container lowercase font-bai-regular bg-gray-50 mx-auto p-4"
       >
+        <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
+          USER details
+        </p>
         <div className="overflow-x-auto min-h-screen">
-          <table className="min-w-full table-auto ">
-            <thead className="bg-gray-200 ">
-              <tr className="pb-5">
-                <th className="py-2 text-black px-4 border-b">NO.</th>
-                <th className="py-2 text-black px-4 border-b">PROFILE</th>
-                <th className="py-2 text-black px-4 border-b">NAME</th>
-                <th className="py-2 text-black px-4 border-b">EMAIL</th>
-                <th className="py-2 text-black px-4 border-b">PHONE</th>
-                <th className="py-2 text-black px-4 border-b">Actions</th>
+          <table className="min-w-full divide-y divide-gray-200 ">
+            <thead className="bg-gray-50 border border-gray-300">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NO.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  PROFILE
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NAME
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  EMAIL
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  PHONE
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="border border-black">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="py-6">
+                  <td colSpan={7} className="px-6 py-4 whitespace-nowrap">
                     <div className="animate-pulse">
                       <div className="h-8 bg-gray-200 rounded"></div>
                     </div>
@@ -84,11 +99,11 @@ const UsersDetails = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="bg-white" key={post._id}>
-                    <td className=" border-b text-red-900 text-center">
-                    {(currentPage - 1) * itemsPerPage + index + 1}.
+                  <tr className="bg-white border-gray-300 border" key={post._id}>
+                    <td className=" px-6 py-4 whitespace-nowrap">
+                      {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>
-                    <td className="p-1 py-2 border-b justify-center flex">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {post.profileImg ? (
                         <img
                           src={post.profileImg}
@@ -102,22 +117,22 @@ const UsersDetails = () => {
                       )}
                     </td>
 
-                    <td className="p-1 border-b text-center">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {post.username}
                     </td>
-                    <td className="p-1 w-1/6 border-b text-center">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {post.email}
                     </td>
                     <td
                       className={
                         post.phone
-                          ? "p-1 w-1/6 border-b text-center"
-                          : "p-1 w-1/6 border-b text-center text-red-900"
+                          ? "px-6 py-4 whitespace-nowrap"
+                          : "px-6 py-4 whitespace-nowrap"
                       }
                     >
                       {post.phone ? post.phone : "not added"}
                     </td>
-                    <td className="p-1 border-b text-center">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-block px-2 pt-2 pb-1 rounded ${
                           !toggleStates[post._id]

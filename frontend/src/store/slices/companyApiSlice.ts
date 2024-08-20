@@ -18,11 +18,13 @@ export const companyApiSlice = createApi({
       query: (id: string) => `/get-services/${id}`,
       keepUnusedDataFor: 300,
     }),
+    getDashboard: builder.query({
+      query: () => `/get-dashboard`,
+      keepUnusedDataFor: 300,
+    }),
     getEveryServices: builder.query({
       query: () => {
-        const { sort, search, price, company, service } =
-          getQueryParams();
-
+        const { sort, search, price, company, service } = getQueryParams();
         const queryParams = [];
 
         if (sort) queryParams.push(`sort=${encodeURIComponent(sort)}`);
@@ -122,5 +124,6 @@ export const {
   useGetApprovedCompanyQuery,
   useGetSinglServicesQuery,
   useGetRatingsQuery,
-  useUpdateRatingMutation
+  useUpdateRatingMutation,
+  useGetDashboardQuery
 } = companyApiSlice;

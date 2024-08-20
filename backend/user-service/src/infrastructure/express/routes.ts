@@ -19,6 +19,7 @@ import {
   AddCarUseCase,
   GetOneCarUseCase,
   AddRatingUseCase,
+  GetAllUsersUseCase,
 } from "../../usecases";
 import { RedisOtpRepository, UserRepository } from "../../repositories";
 import { OtpService, S3Service } from "../../infrastructure/services";
@@ -38,6 +39,7 @@ const editUSerUseCase = new EditUSerUseCase(userRepository);
 const userUploadUseCase = new UserImageUseCase(userRepository, s3Service);
 const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
 const googleRepositry = new GoogleUseCase(userRepository);
+const getAllUsersUseCase = new GetAllUsersUseCase(userRepository);
 const verifyOtpUseCase = new VerifyOtpUseCase(redisRepository, userRepository);
 const getUsersUseCase = new GetUsersUseCase(userRepository);
 const updateStatusUseCase = new UpdateStatusUseCase(userRepository);
@@ -83,7 +85,8 @@ const userController = new UserController(
   userUploadUseCase,
   editUSerUseCase,
   upadtePasswordUseCase,
-  addRatingUseCase
+  addRatingUseCase,
+  getAllUsersUseCase
 );
 
 const router = Router();
@@ -109,6 +112,9 @@ router.patch("/change-password", (req, res, next) =>
 );
 router.get("/get-users", authMiddleware(["admin"]), (req, res, next) =>
   userController.getUser(req, res, next)
+);
+router.get("/get-dashboard", authMiddleware(["admin"]), (req, res, next) =>
+  userController.getDashboard(req, res, next)
 );
 router.get("/get-user/:id", authMiddleware(["user"]), (req, res, next) =>
   userController.getUserById(req, res, next)

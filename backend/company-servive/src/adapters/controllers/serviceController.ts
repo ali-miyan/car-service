@@ -24,7 +24,6 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body);
     const {
       _id,
       generalServiceId,
@@ -40,7 +39,6 @@ export class ServiceController {
 
     const { files } = req as any;
 
-    console.log("files and body", req.body);
 
     try {
       const response = this.addServiceUseCase.execute(
@@ -69,7 +67,6 @@ export class ServiceController {
   ): Promise<void> {
     const { id } = req.params;
     const status = req.body;
-    console.log(req.params, "dsdsd", req.body);
 
     if (!id) {
       throw new BadRequestError("id not found");
@@ -90,7 +87,6 @@ export class ServiceController {
   ): Promise<void> {
     try {
       const { id } = req.params;
-      console.log("paraamss", id);
 
       const service = await this.getServiceUseCase.execute(id);
       res.status(201).json(service);

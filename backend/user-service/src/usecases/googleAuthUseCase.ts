@@ -14,7 +14,6 @@ export class GoogleUseCase {
       access_token,
       token_type
     );
-    console.log(name, email);
 
     let user:any = await this.googleRepositry.findByEmail(email);
 

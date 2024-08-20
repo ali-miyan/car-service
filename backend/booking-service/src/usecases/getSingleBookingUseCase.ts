@@ -17,7 +17,6 @@ export class GetSingleBookingUseCase {
       data.typeOfPackage
     );
 
-    console.log(userDetails,'userdetailsss');
     
 
     if (!data) {

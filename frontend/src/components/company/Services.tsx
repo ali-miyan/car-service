@@ -109,24 +109,24 @@ const ServiceList = () => {
     <>
       <div
         style={{ height: "100%", width: "100%" }}
-        className="container lowercase font-bai-regular mx-auto p-9"
+        className="container lowercase  font-bai-regular mx-auto p-9"
       >
-        <div className="overflow-x-auto rounded">
-          <table className="min-w-full">
-            <thead className="bg-gray-300">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="py-2 px-4 border-b">NO.</th>
-                <th className="py-2 px-4 border-b">work photos</th>
-                <th className="py-2 px-4 border-b">service place</th>
-                <th className="py-2 px-4 border-b">working hours</th>
-                <th className="py-2 px-4 border-b">packages</th>
-                <th className="py-2 px-4 border-b">status</th>
-                <th className="py-2 px-4 border-b">actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO.</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">work photos</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">service place</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">working hours</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">packages</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
-                <tr>
+                <tr className="px-6 py-4 whitespace-nowrap">
                   <td colSpan={7} className="py-6">
                     <div className="animate-pulse">
                       <div className="h-8 bg-gray-200 rounded"></div>
@@ -135,7 +135,7 @@ const ServiceList = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="bg-white" key={post._id}>
+                  <tr className="px-6 py-4 whitespace-nowrap" className="bg-white" key={post._id}>
                     <td className=" border-b text-center">
                       {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>
@@ -217,7 +217,7 @@ const ServiceList = () => {
                   </tr>
                 ))
               ) : (
-                <tr>
+                <tr className="px-6 py-4 whitespace-nowrap">
                   <td colSpan={7} className="py-4 text-center">
                     <p>No services available.</p>
                   </td>

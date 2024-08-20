@@ -5,7 +5,6 @@ export class AdminController {
   constructor(private registerCompany: RegisterUseCase) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log(req.body);
     const {
       email,
       password,

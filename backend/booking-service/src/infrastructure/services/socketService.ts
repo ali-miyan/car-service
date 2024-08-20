@@ -14,7 +14,6 @@ function setupSocketServer(server: HttpServer): Server {
         console.log("User connected ", socket.id);
 
         socket.on("send_message", (data: any) => {
-            console.log("Message Received ", data);
             io.emit("receive_message", data);
         });
     });

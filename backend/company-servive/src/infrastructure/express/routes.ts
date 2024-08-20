@@ -19,6 +19,7 @@ import {
   GetApprovedCompanyUseCase,
   GetRatingsUseCase,
   UpdateRatingUseCase,
+  GetDashboardUseCase,
 } from "../../usecases";
 import {
   CompanyRepository,
@@ -44,6 +45,7 @@ const getSignleServicesUseCase = new GetSignleServicesUseCase(
 const serviceStatusUseCase = new ServiceStatusUseCase(serviceRepository);
 const loginupUseCase = new LoginUseCase(companyRepository);
 const getApprovalUseCase = new GetApprovalUseCase(companyRepository);
+const getDashboardUseCase = new GetDashboardUseCase(companyRepository,serviceRepository);
 const getByIdUseCase = new GetByIdUseCase(companyRepository);
 const getApprovedCompany = new GetApprovedCompanyUseCase(companyRepository);
 const addServiceUseCase = new AddServiceUseCase(s3Service, serviceRepository);
@@ -57,7 +59,8 @@ const companyController = new CompanyController(
   getApprovalUseCase,
   getByIdUseCase,
   updateStatusUseCase,
-  getApprovedCompany
+  getApprovedCompany,
+  getDashboardUseCase
 );
 const serviceController = new ServiceController(
   addServiceUseCase,
@@ -103,6 +106,9 @@ router.post(
 );
 router.get("/get-services/:id", authMiddleware(["company"]), (req, res, next) =>
   serviceController.getService(req, res, next)
+);
+router.get("/get-dashboard", authMiddleware(["admin"]), (req, res, next) =>
+  companyController.getDashboard(req, res, next)
 );
 router.get("/get-all-services", (req, res, next) =>
   serviceController.getAllServices(req, res, next)

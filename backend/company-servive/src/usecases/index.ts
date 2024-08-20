@@ -13,3 +13,4 @@ export * from './approvedCompanyUseCase';
 export * from './addRatingUseCase';
 export * from './getRatingUseCase';
 export * from './updateRatingUseCase';
+export * from './getDashboardUseCase';

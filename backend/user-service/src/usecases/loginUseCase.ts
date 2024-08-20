@@ -12,7 +12,6 @@ export class LoginUseCase {
 
     const user = await this.loginRepository.findByEmail(email);
 
-    console.log(user);
 
     if (!user) {
       throw new BadRequestError("User not found");
@@ -36,7 +35,6 @@ export class LoginUseCase {
       role: "user",
     });
 
-    console.log(token, "token");
 
     return { success: true, token, refreshToken };
   }

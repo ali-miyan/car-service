@@ -34,8 +34,6 @@ export class ChatRepository implements IChatRepository {
         "user.userId": userId,
         "company.companyId": companyId,
       }).exec();
-      console.log(chat, "chaat");
-
       if (!chat) return null;
       return chat.toObject() as Chat;
     } catch (error) {
