@@ -7,21 +7,25 @@ import {
   GetSingleBookingUseCase,
   UpdateDriverLocationUseCase,
   UpdateStatusUseCase,
+  CancelBookingUseCase,
+  HandleStripeUseCase,
+  RefundUseCase,
 } from "../usecases";
-import { UpdateBookingStatusUseCase } from "../usecases/updateBookingUseCase";
 import { GetUsersBookingUseCase } from "../usecases/getUsersBookingUseCase";
 
 export class BookingController {
   constructor(
     private bookingRepository: BookingUseCase,
-    private updateBookingRepository: UpdateBookingStatusUseCase,
     private getBookingUseCase: GetBookingUseCase,
     private getSingleBookingUseCase: GetSingleBookingUseCase,
     private updateStatusUseCase: UpdateStatusUseCase,
     private getUsersBookingUseCase: GetUsersBookingUseCase,
     private updateDriverLocationUseCase: UpdateDriverLocationUseCase,
     private getLiveLocationUseCase: GetLiveLocationUseCase,
-    private getMonthlyRevenueUseCase: GetDashboardUseCase
+    private getDashboardUseCase: GetDashboardUseCase,
+    private cancelBookingUseCase: CancelBookingUseCase,
+    private handleStripeUseCase: HandleStripeUseCase,
+    private refundUseCase:RefundUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -38,7 +42,7 @@ export class BookingController {
       carId,
       generalServiceId,
     } = req.body;
-    
+
     try {
       const response = await this.bookingRepository.execute(
         userId,
@@ -55,21 +59,6 @@ export class BookingController {
       );
 
       res.status(201).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async updateBooking(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    const { id } = req.body;
-
-    try {
-      await this.updateBookingRepository.execute(id);
-      res.status(200).json({ success: true });
     } catch (error) {
       next(error);
     }
@@ -130,6 +119,20 @@ export class BookingController {
       next(error);
     }
   }
+  async refundToUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { userId, orderId, refundAmount } = req.body;
+
+    try {
+      const data = await this.refundUseCase.execute(userId,orderId,refundAmount);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
   async updateDriversLocation(
     req: Request,
     res: Response,
@@ -168,7 +171,33 @@ export class BookingController {
   ): Promise<void> {
     const { id } = req.params;
     try {
-      const data = await this.getMonthlyRevenueUseCase.execute(id);
+      const data = await this.getDashboardUseCase.execute(id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async handleStripe(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const stripeEvents = req.body;
+    try {
+      const data = await this.handleStripeUseCase.execute(stripeEvents);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async cancelBooking(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const { orderId, reason } = req.body;
+    try {
+      const data = await this.cancelBookingUseCase.execute(orderId, reason);
       res.status(200).json(data);
     } catch (error) {
       next(error);

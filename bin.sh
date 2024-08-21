@@ -21,9 +21,9 @@ npm start &
 cd ../..
 
 echo "Starting booking service..."
-cd backend/booking-service
-npm start &
-cd ../..
+# cd backend/booking-service
+# npm start &
+# cd ../..
 
 echo "Starting chat service..."
 cd backend/chat-service

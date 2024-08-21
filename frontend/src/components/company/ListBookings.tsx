@@ -35,24 +35,41 @@ const ListBooking = () => {
     <>
       <div
         style={{ height: "100%", width: "100%" }}
-        className="container lowercase font-bai-regular mx-auto p-9"
+        className="container lowercase bg-gray-200 font-bai-regular mx-auto p-9"
       >
-        <div className="overflow-x-auto rounded ">
-          <table className="min-w-full">
-            <thead className="bg-gray-300">
+        <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
+          BOOKINGS
+        </p>
+        <div className="overflow-x-auto ">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="py-2 px-4 border-b">NO.</th>
-                <th className="py-2 px-4 border-b">order id</th>
-                <th className="py-2 px-4 border-b">scheduled at</th>
-                <th className="py-2 px-4 border-b">service place</th>
-                <th className="py-2 px-4 border-b">payment</th>
-                <th className="py-2 px-4 border-b">status</th>
-                <th className="py-2 px-4 border-b">view</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NO.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  order id
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  scheduled at
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  service place
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  payment
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  view
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
-                <tr>
+                <tr className="px-6 py-4 whitespace-nowrap">
                   <td colSpan={7} className="py-6">
                     <div className="animate-pulse space-y-2">
                       <div className="h-10 bg-gray-300 rounded w-full"></div>
@@ -64,26 +81,31 @@ const ListBooking = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="bg-white" key={post.id}>
-                    <td className=" border-b text-center">
+                  <tr
+                    className="bg-white px-6 py-4 whitespace-nowrap"
+                    key={post.id}
+                  >
+                    <td className=" px-6 py-4 whitespace-nowrap">
                       {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>
                     <td className="p-6 border-b justify-center flex">
                       #{post.id.substring(0, 6)}
                     </td>
 
-                    <td className="p-7 border-b text-center">{post.date}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{post.date}</td>
 
-                    <td className="p-7 w-1/6 border-b text-center">
+                    <td className="px-6 py-4 whitespace-nowrap ">
                       {post.servicePlace}
                     </td>
-                    <td className="p-7 text-center">{post.payment}</td>
-                    <td className="p-7 text-center">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {post.payment}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span className="bg-green-100 p-2 rounded">
                         {post.status}
                       </span>
                     </td>
-                    <td className="p-7 text-center ">
+                    <td className="px-6 py-4 whitespace-nowrap ">
                       <Link to={`/company/order-details/${post.id}`}>
                         <span className="hover:underline">view</span>
                       </Link>

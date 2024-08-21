@@ -151,5 +151,5 @@ export const {
   useGetSelectedCarQuery,
   useMakeOrderMutation,
   useMakeRatingMutation,
-  useGetUserDashboardQuery
+  useGetUserDashboardQuery,
 } = userApiSlice;

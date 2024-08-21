@@ -25,6 +25,7 @@ export interface IBookingData {
   servicePlace: string;
   carId: string;
   totalPrice: number;
+  cancelReason?: string;
 }
 
 export class Booking {
@@ -54,6 +55,7 @@ export class Booking {
   servicePlace: string;
   carId: string;
   totalPrice: number;
+  cancelReason?: string;
 
   constructor({
     id,
@@ -69,6 +71,7 @@ export class Booking {
     servicePlace,
     carId,
     totalPrice,
+    cancelReason,
   }: IBookingData) {
     this.id = id;
     this.userId = userId;
@@ -82,6 +85,7 @@ export class Booking {
     this.typeOfPackage = typeOfPackage;
     this.servicePlace = servicePlace;
     this.carId = carId;
-    this.totalPrice = totalPrice;
+    this.totalPrice = totalPrice; 
+    this.cancelReason = cancelReason; 
   }
 }

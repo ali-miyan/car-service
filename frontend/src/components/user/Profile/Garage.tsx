@@ -44,7 +44,7 @@ const MyBookings = () => {
             <th className="py-2 px-4 text-left">service ID</th>
             <th className="py-2 px-4 text-left">service Place</th>
             <th className="py-2 px-4 text-left">service Date</th>
-            <th className="py-2 px-4 text-left">service Payment</th>
+            <th className="py-2 px-4 text-left">status</th>
             <th className="py-2 px-4 text-left">View</th>
           </tr>
         </thead>
@@ -59,7 +59,7 @@ const MyBookings = () => {
                   <td className="py-2 px-4">#{order?.id.substring(0, 8)}</td>
                   <td className="py-2 px-4">{order?.servicePlace}</td>
                   <td className="py-2 px-4">{order?.date}</td>
-                  <td className="py-2 px-4">{order?.payment}</td>
+                  <td className="py-2 px-4">{order?.status}</td>
                   <td className="py-2 px-4">
                     <button className="text-red-900 hover:underline">
                       <Link to={`/order-details/${order.id}`}>View</Link>

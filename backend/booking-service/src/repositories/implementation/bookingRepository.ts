@@ -23,22 +23,6 @@ export class BookingRepository implements IBookingRepository {
     }
   }
 
-  async updateStatus(id: string): Promise<void> {
-    try {
-      const booking = await bookingModel.findByPk(id);
-
-      if (!booking) {
-        throw new Error("Booking not found");
-      }
-
-      booking.status = "Booking Confirmed";
-      await booking.save();
-    } catch (error) {
-      console.error("Error updating booking status:", error);
-      throw new Error("Error in db: " + error);
-    }
-  }
-
   async updateBookingStatus(
     orderId: string,
     status: BookingStatus
@@ -147,6 +131,25 @@ export class BookingRepository implements IBookingRepository {
       });
 
       return count;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+  async cancelBooking(orderId: string, reason: string): Promise<void> {
+    try {
+      const booking = await bookingModel.findByPk(orderId);
+
+      if (!booking) {
+        throw new Error("Booking not found");
+      }
+
+      await booking.update({
+        status: "Booking Cancelled",
+        cancelReason: reason,
+      });
+
+      console.log(`Booking with ID ${orderId} has been cancelled.`);
     } catch (error) {
       console.error(error);
       throw new Error("Error in db: " + error);

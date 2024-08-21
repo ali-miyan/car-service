@@ -122,5 +122,7 @@ export const statusMessages: { [key: string]: string } = {
   "Car En Route Back": "Your car is on its way back to you.",
   "Car Delivered": "Your car has been delivered back to you.",
   "Booking Completed": "Your booking process is complete. Thank you for choosing us!",
-  "Ready for Pickup": "Your car is ready for pickup."
+  "Ready for Pickup": "Your car is ready for pickup.",
+  "Booking Cancelled": "You have cancelled your booking. If this was a mistake or if you need further assistance, please contact us."
+
 };

@@ -52,10 +52,6 @@ export class BookingUseCase {
       throw new BadRequestError("No slots available for the selected service.");
     }
 
-    let status: "Booking Pending" | "Booking Confirmed" =
-      payment.toLowerCase() === "cash"
-        ? "Booking Confirmed"
-        : "Booking Pending";
     let response: any = { success: true };
 
     const booking = new Booking({
@@ -66,35 +62,29 @@ export class BookingUseCase {
       date,
       payment,
       address,
-      status,
+      status:"Booking Confirmed",
       typeOfPackage,
       servicePlace,
       carId,
       totalPrice,
     });
-
-    const order = await this.bookingRepository.save(booking);
+    
 
     if (payment.toLowerCase() === "online") {
-      try {
-        const sessionId = await this.stripeService.createCheckoutSession(
-          totalPrice,
-          order.id
-        );
-        response = { id: sessionId, orderToken: order.id };
-      } catch (error) {
-        throw new BadRequestError(
-          "Error creating Stripe checkout session: " + error
-        );
-      }
+      const sessionId = await this.stripeService.createCheckoutSession(
+        totalPrice,
+        booking
+      );
+      response = { id: sessionId };
+    } else {
+      const order = await this.bookingRepository.save(booking);
+      io.emit("order_booked", {
+        message: "Order has been booked",
+        order,
+      });
+
+      await this.rabbitMQService.sendMessage(order.carId);
     }
-
-    io.emit("order_booked", {
-      message: "Order has been booked",
-      order,
-    });
-
-    await this.rabbitMQService.sendMessage(order.carId);
 
     return response;
   }

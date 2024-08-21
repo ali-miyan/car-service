@@ -109,9 +109,12 @@ const ServiceList = () => {
     <>
       <div
         style={{ height: "100%", width: "100%" }}
-        className="container lowercase  font-bai-regular mx-auto p-9"
+        className="container lowercase bg-gray-200 font-bai-regular mx-auto p-9"
       >
         <div className="overflow-x-auto">
+        <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
+          SERVICES
+        </p>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -135,7 +138,7 @@ const ServiceList = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="px-6 py-4 whitespace-nowrap" className="bg-white" key={post._id}>
+                  <tr className="px-6 py-4 whitespace-nowrap bg-white" key={post._id}>
                     <td className=" border-b text-center">
                       {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>

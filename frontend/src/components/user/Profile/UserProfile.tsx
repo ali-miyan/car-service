@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { CiCreditCard1 } from "react-icons/ci";
+import { GiMechanicGarage } from "react-icons/gi";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   FiSettings,
@@ -10,7 +13,7 @@ import {
 } from "react-icons/fi";
 import UserCar from "./UserCar";
 import Garage from "./Garage";
-import Address from "./Addresses";
+import Wallet from "./Wallet";
 import ProfileSettings from "./ProfileSettings";
 import {
   useGetUserByIdQuery,
@@ -21,12 +24,13 @@ import { notifyError, notifySuccess } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
 import EditProfileModal from "./EditProfileModal";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
+import { RiMailCheckLine } from "react-icons/ri";
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initialSection = queryParams.get('section') || 'services';
+  const initialSection = queryParams.get("section") || "services";
 
   const [selectedSection, setSelectedSection] = useState(initialSection);
   const [newProfileImg, setNewProfileImg] = useState<string | null>(null);
@@ -35,7 +39,9 @@ const Profile = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
-  const { data: posts, refetch } = useGetUserByIdQuery(getInitialToken("userToken") as string);
+  const { data: posts, refetch } = useGetUserByIdQuery(
+    getInitialToken("userToken") as string
+  );
   const [uploadImage, { isLoading }] = useUploadImageMutation({});
 
   const renderSection = useCallback(() => {
@@ -45,7 +51,7 @@ const Profile = () => {
       case "garage":
         return <Garage />;
       case "address":
-        return <Address />;
+        return <Wallet />;
       case "settings":
         return <ProfileSettings />;
       default:
@@ -53,18 +59,21 @@ const Profile = () => {
     }
   }, [selectedSection]);
 
-  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setShowCancel(true);
-      const selectedFile = event.target.files[0];
-      setFile(selectedFile);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewProfileImg(reader.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  }, []);
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files && event.target.files[0]) {
+        setShowCancel(true);
+        const selectedFile = event.target.files[0];
+        setFile(selectedFile);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setNewProfileImg(reader.result as string);
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    },
+    []
+  );
 
   const handleUpload = useCallback(async () => {
     if (file) {
@@ -166,15 +175,15 @@ const Profile = () => {
             </div>
           )}
         </div>
-        <ul className="flex flex-col gap-3 lowercase font-normal">
+        <ul className="flex flex-col gap-3 uppercase font-bai-bold text-xs">
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
               selectedSection === "car" ? "bg-red-100" : "hover:bg-red-100"
             }`}
             onClick={() => handleSectionChange("car")}
           >
-            <FiPackage size={24} color="#718096" />
-            <span className="font-bai-medium">My Car</span>
+            <GiMechanicGarage size={24} />
+            <span>My Car</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
@@ -182,8 +191,8 @@ const Profile = () => {
             }`}
             onClick={() => handleSectionChange("garage")}
           >
-            <FiTool size={24} color="#718096" />
-            <span className="font-bai-medium">My Bookings</span>
+            <RiMailCheckLine size={24} />
+            <span>My Bookings</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
@@ -191,8 +200,8 @@ const Profile = () => {
             }`}
             onClick={() => handleSectionChange("address")}
           >
-            <FiMapPin size={24} color="#718096" />
-            <span className="font-bai-medium">My Services</span>
+            <CiCreditCard1 size={24} />
+            <span>My Wallet</span>
           </li>
           <li
             className={`flex items-center gap-3 rounded-md p-3 cursor-pointer ${
@@ -200,8 +209,8 @@ const Profile = () => {
             }`}
             onClick={() => handleSectionChange("settings")}
           >
-            <FiSettings size={24} color="#718096" />
-            <span className="font-bai-medium">Profile Settings</span>
+            <FiSettings size={24} />
+            <span>Profile Settings</span>
           </li>
           <DeleteConfirmationModal
             body="Are you sure you want to logout?"
@@ -213,8 +222,8 @@ const Profile = () => {
               }`}
               onClick={() => handleSectionChange("logout")}
             >
-              <FiLogOut size={24} color="#718096" />
-              <span className="font-bai-medium">Log-Out</span>
+              <FiLogOut size={24} />
+              <span>Log-Out</span>
             </li>
           </DeleteConfirmationModal>
         </ul>

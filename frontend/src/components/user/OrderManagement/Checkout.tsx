@@ -24,10 +24,6 @@ const Checkout = () => {
     companyId,
   } = useSelector((state: any) => state.order);
 
-  console.log(carModel);
-
-  console.log(companyId, "ciompnay");
-
   const token = getInitialToken("userToken");
   const navigate = useNavigate();
 
@@ -87,12 +83,11 @@ const Checkout = () => {
           serviceId,
           totalPrice: serviceDetails?.detail?.price + 50,
         }).unwrap();
-        dispatch(resetOrder());
         stripe?.redirectToCheckout({
           sessionId: res.id,
         });
+        dispatch(resetOrder());
 
-        localStorage.setItem("orderToken", res.orderToken);
       } else if (selectedPaymentMethod === "cash") {
         const res = await makeOrder({
           userId: token,
@@ -111,7 +106,7 @@ const Checkout = () => {
 
         if (res.success) {
           dispatch(resetOrder());
-          navigate("/checkout-success/done");
+          navigate("/checkout-success");
         }
 
         console.log(res, "ress");

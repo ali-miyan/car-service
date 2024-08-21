@@ -22,12 +22,14 @@ interface BookingAttributes {
     | "Car Delivered"
     | "Ready for Pickup"
     | "Booking Completed"
-    | "Booking Cancelled"
+    | "Booking Cancelled";
   serviceId: string;
   typeOfPackage: string;
   generalServiceId: string;
   servicePlace: string;
   totalPrice: number;
+  cancelReason?: string;
+  refundStatus?: "pending" | "completed";
 }
 
 interface BookingCreationAttributes extends Optional<BookingAttributes, "id"> {}
@@ -56,12 +58,14 @@ class Booking
     | "Car Delivered"
     | "Ready for Pickup"
     | "Booking Completed"
-    | "Booking Cancelled"
+    | "Booking Cancelled";
   public serviceId!: string;
   public typeOfPackage!: string;
   public generalServiceId!: string;
   public servicePlace!: string;
   public totalPrice!: number;
+  public cancelReason?: string;
+  public refundStatus?: "pending" | "completed";
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -134,6 +138,15 @@ Booking.init(
     totalPrice: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+    },
+    cancelReason: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    refundStatus: {
+      type: DataTypes.ENUM("pending", "completed"),
+      defaultValue: "pending",
+      allowNull: true,
     },
   },
   {

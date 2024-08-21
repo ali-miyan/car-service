@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FaUser, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetSingleOrderQuery } from "../../../store/slices/orderApiSlice";
+import {
+  useCancelBookingMutation,
+  useGetSingleOrderQuery,
+} from "../../../store/slices/orderApiSlice";
 import { statusMessages } from "../../../schema/component";
 import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
 import { useBookingSocket } from "../../../service/socketService";
 import ReviewModal from "./ReviewModal";
+import CancelBookingModal from "./CancelBookingModal";
+import { notifySuccess } from "../../common/Toast";
 
 const OrderDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,7 +20,12 @@ const OrderDetail: React.FC = () => {
     refetch,
   } = useGetSingleOrderQuery(id as string);
 
+  const [cancelBooking] = useCancelBookingMutation();
+
+  console.log(order?.data.status);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const socket = useBookingSocket(id as string);
 
   useEffect(() => {
@@ -52,6 +62,20 @@ const OrderDetail: React.FC = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleCancel = async (reason: string) => {
+    console.log("Canceling booking:", order, "Reason:", reason);
+
+    const res = await cancelBooking({ orderId: order?.data?.id, reason }).unwrap();
+    console.log(res);
+    
+    if(res.success){
+      refetch()
+      notifySuccess('booking cancelled');
+      setShowCancelModal(false);
+    }
+
+  };
   return (
     <>
       <div className="mx-32 mt-20 lowercase">
@@ -85,8 +109,8 @@ const OrderDetail: React.FC = () => {
             </p>
           </div>
           <div className="ml-auto uppercase p-3 text-center border">
-            <span className="text-sm lowercase">
-              <span className="font-bai-bold uppercase">
+            <span className="text-sm lowercase block max-w-96 overflow-hidden break-words">
+              <span className="font-bai-bold uppercase ">
                 Status: {order?.data.status}
               </span>
               <br /> {statusMessages[order?.data.status]}
@@ -117,6 +141,23 @@ const OrderDetail: React.FC = () => {
                 />
               </div>
             ) : null}
+            {order?.data.status === "Booking Pending" ||
+            order?.data.status === "Booking Confirmed" ? (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setShowCancelModal(true)}
+                  className="px-5 py-2 my-4 bg-[#ab0000] text-white transform hover:scale-95 transition duration-100 mx-auto flex"
+                >
+                  cancel your booking
+                </button>
+              </div>
+            ) : null}
+            {showCancelModal && (
+              <CancelBookingModal
+                onCancel={handleCancel}
+                setShowCancelModal={setShowCancelModal}
+              />
+            )}
           </div>
           <p className="mt-2 text-sm text-gray-600"></p>
         </div>

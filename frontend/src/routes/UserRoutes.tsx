@@ -48,7 +48,7 @@ const UserRoutes = () => (
     />
     <Route path="/checkout/:id" element={<Protect element={CheckoutPage} />} />
     <Route
-      path="/checkout-success/:id"
+      path="/checkout-success"
       element={<Protect element={SuccessPage} />}
     />
     <Route

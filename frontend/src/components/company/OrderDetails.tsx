@@ -8,6 +8,7 @@ import {
 } from "../../store/slices/orderApiSlice";
 import { notifySuccess } from "../common/Toast";
 import OrderDetailSkeleton from "../../layouts/skelotons/OrderDetailSkeleton";
+import PaymentModal from "./paymentModal";
 
 const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
   if (!visible) return null;
@@ -56,8 +57,13 @@ const OrderDetail: React.FC = () => {
   const [updateStatus] = useUpdateStatusMutation({});
   const [updateDriverLocation] = useUpdateDriverLocationMutation({});
   const { id } = useParams<{ id: string }>();
-  const { data: order, refetch ,isLoading } = useGetSingleOrderQuery(id as string);
+  const {
+    data: order,
+    refetch,
+    isLoading,
+  } = useGetSingleOrderQuery(id as string);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = useCallback(() => {
@@ -140,46 +146,72 @@ const OrderDetail: React.FC = () => {
             Order ID: {order?.data.id}
           </p>
         </div>
-        <form>
-          <div className="relative flex items-start">
-            <p className="mx-4 uppercase p-3 bg-green-50 border">
-              <span className="text-sm">
-                STATUS: <strong> {order?.data.status}</strong>
-              </span>
-            </p>
-            <div className="relative">
-              <button
-                id="status-button"
-                onClick={toggleDropdown}
-                className="flex-shrink-0 min-w-64 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
-                type="button"
-              >
-                Change Status
-                <svg
-                  aria-hidden="true"
-                  className="w-4 h-7 ml-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+        <div className="relative flex items-start">
+          <p className="mx-4 uppercase p-3 bg-yellow-300 border">
+            <span className="text-sm">
+              STATUS: <strong> {order?.data.status}</strong>
+            </span>
+          </p>
+          <div className="relative">
+            {order?.data.status === "Booking Cancelled" ? (
+              order?.data.payment === "online" &&
+              (order?.data.refundStatus === "completed" ? (
+                <div className="p-3  uppercase border border-black font-bai-medium mx-auto flex">
+                  refund completed
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="p-3 shadow-md shadow-black uppercase bg-[#ab0000] text-white transform hover:scale-95 transition duration-100 mx-auto flex"
+                  >
+                    pay ₹{order?.data?.totalPrice} now
+                  </button>
+                  {isModalOpen && (
+                    <PaymentModal
+                      setIsModalOpen={setIsModalOpen}
+                      refundAmount={order?.data?.totalPrice}
+                      userId={order?.userId?._id}
+                      orderId={order?.data?.id}
+                    />
+                  )}
+                </>
+              ))
+            ) : order?.data.status === "Booking Completed" ? null : (
+              <>
+                <button
+                  id="status-button"
+                  onClick={toggleDropdown}
+                  className="flex-shrink-0 min-w-64 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border"
+                  type="button"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </button>
-              <Dropdown
-                visible={dropdownVisible}
-                onSelect={handleStatusSelect}
-                onClose={() => setDropdownVisible(false)}
-                servicePlace={order?.data.servicePlace}
-              />
-            </div>
+                  Change Status
+                  <svg
+                    aria-hidden="true"
+                    className="w-4 h-7 ml-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+                <Dropdown
+                  visible={dropdownVisible}
+                  onSelect={handleStatusSelect}
+                  onClose={() => setDropdownVisible(false)}
+                  servicePlace={order?.data.servicePlace}
+                />
+              </>
+            )}
           </div>
-        </form>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white border-2 p-8 mb-8">
         <div className="flex flex-col items-center text-center">
