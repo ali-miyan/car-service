@@ -62,13 +62,12 @@ export class BookingUseCase {
       date,
       payment,
       address,
-      status:"Booking Confirmed",
+      status: "Booking Confirmed",
       typeOfPackage,
       servicePlace,
       carId,
       totalPrice,
     });
-    
 
     if (payment.toLowerCase() === "online") {
       const sessionId = await this.stripeService.createCheckoutSession(
@@ -77,6 +76,11 @@ export class BookingUseCase {
       );
       response = { id: sessionId };
     } else {
+
+      if(payment.toLowerCase() === "wallet"){
+        await this.rabbitMQService.sendMessageToUser({userId,amount:totalPrice.toString(),stat:"debit"})
+      }
+
       const order = await this.bookingRepository.save(booking);
       io.emit("order_booked", {
         message: "Order has been booked",

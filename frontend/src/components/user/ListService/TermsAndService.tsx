@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { ModalPopsCustom } from "../../../schema/component";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setServiceId, setServicePlace } from "../../../context/OrderContext";
+import { setServiceId, setServicePlace, setUserId } from "../../../context/OrderContext";
 
 const TermsAndService: React.FC<ModalPopsCustom> = ({
   isOpen,
   onClose,
   data,
   servicePlace,
-  id
+  id,
+  userId
 }) => {
   const [agreed, setAgreed] = useState(false);
 
@@ -26,6 +27,7 @@ const TermsAndService: React.FC<ModalPopsCustom> = ({
     if (agreed) {
       dispatch(setServicePlace(servicePlace))
       dispatch(setServiceId(id))
+      dispatch(setUserId(userId))
       navigate(`/set-spot/${id}`);
     } else {
       alert("You must agree to the terms and conditions before proceeding.");

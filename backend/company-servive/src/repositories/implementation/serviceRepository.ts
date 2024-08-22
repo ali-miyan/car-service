@@ -76,15 +76,39 @@ export class ServiceRepository implements IServiceRepository {
 
   async getEveryService(): Promise<IService[] | null> {
     try {
-      const newService = await serviceModal
-        .find({ isBlocked: false })
-        .populate("companyId");
-      return newService;
+      const services = await serviceModal.aggregate([
+        {
+          $match: { isBlocked: false }
+        },
+        {
+          $lookup: {
+            from: 'ratings',
+            let: { serviceId: { $toString: '$_id' } },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: [{ $toString: '$serviceId' }, '$$serviceId']
+                  }
+                }
+              }
+            ],
+            as: 'ratings'
+          }
+        },
+      ]).exec();
+  
+      const populatedServices = await serviceModal.populate(services, {
+        path: 'companyId',
+      });
+  
+      return populatedServices;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new Error('error in db');
     }
   }
+  
   async getById(id: string): Promise<IService | null> {
     try {
       const newService = await serviceModal.findOne({ _id: id });

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { BookingCalendar } from "./Calender";
+import BookingCalendar from "./Calender";
 import { notifyError } from "../../common/Toast";
 
 const ScheduleOrder = () => {

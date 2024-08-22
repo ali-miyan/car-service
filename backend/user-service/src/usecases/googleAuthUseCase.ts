@@ -24,6 +24,7 @@ export class GoogleUseCase {
         email,
         phone: null,
         password: id,
+        wallet:0
       });
     }
 

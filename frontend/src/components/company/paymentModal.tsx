@@ -1,8 +1,9 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { useRefundToUserMutation } from "../../store/slices/orderApiSlice";
+import LoadingButton from "../common/Loading";
 
 const RefundModal = ({ setIsModalOpen, refundAmount, userId, orderId }:any) => {
-  const [refundToUser] = useRefundToUserMutation({});
+  const [refundToUser,{isLoading}] = useRefundToUserMutation({});
 
   const handleRefund = async () => {
     
@@ -39,17 +40,12 @@ const RefundModal = ({ setIsModalOpen, refundAmount, userId, orderId }:any) => {
 
         <div className="flex justify-center mt-4">
           <button
-            className="px-4 py-2 mr-4 bg-gray-900 text-white hover:bg-gray-800 transition duration-200"
+            className="px-4 py-2 mr-4 bg-gray-900 rounded text-white hover:bg-gray-800 transition duration-200"
             onClick={() => setIsModalOpen(false)}
           >
             Close
           </button>
-          <button
-            className="px-4 py-2 bg-[#ab0000] text-white hover:bg-[#7f0e0e] transition duration-200"
-            onClick={handleRefund}
-          >
-            Confirm Refund
-          </button>
+          <LoadingButton buttonText="Confirm Refund" height="py-2" isLoading={isLoading} width="px-4" onClick={handleRefund} />
         </div>
       </div>
     </div>

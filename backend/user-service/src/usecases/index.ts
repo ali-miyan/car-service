@@ -17,3 +17,4 @@ export * from './changePasswordUseCase';
 export * from './getOneCarUseCase';
 export * from './addRatingUseCase';
 export * from './getAllUsersUseCase';
+export * from './walletUseCase';

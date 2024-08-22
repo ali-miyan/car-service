@@ -1,9 +1,9 @@
-// src/slices/orderSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const orderSlice = createSlice({
   name: "order",
   initialState: {
+    userId: "",
     serviceId: "",
     servicePlace: "",
     companyId:"",
@@ -18,6 +18,9 @@ const orderSlice = createSlice({
   reducers: {
     setServiceId(state, action) {
       state.serviceId = action.payload;
+    },
+    setUserId(state, action) {
+      state.userId = action.payload;
     },
     setCompanyId(state, action) {
       state.companyId = action.payload;
@@ -48,6 +51,7 @@ const orderSlice = createSlice({
     },
     resetOrder() {
       return {
+        userId:"",
         serviceId: "",
         servicePlace: "",
         companyId:"",
@@ -64,6 +68,7 @@ const orderSlice = createSlice({
 });
 
 export const {
+  setUserId,
   setServiceId,
   setServicePlace,
   setCompanyId,

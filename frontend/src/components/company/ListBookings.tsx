@@ -72,10 +72,7 @@ const ListBooking = () => {
                 <tr className="px-6 py-4 whitespace-nowrap">
                   <td colSpan={7} className="py-6">
                     <div className="animate-pulse space-y-2">
-                      <div className="h-10 bg-gray-300 rounded w-full"></div>
-                      <div className="h-10 bg-gray-300 rounded w-full"></div>
-                      <div className="h-10 bg-gray-300 rounded w-full"></div>
-                      <div className="h-10 bg-gray-300 rounded w-full"></div>
+                      <div className="h-10 bg-gray-300 rounded  mx-20"></div>
                     </div>
                   </td>
                 </tr>

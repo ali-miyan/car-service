@@ -32,6 +32,9 @@ const SelectedService = () => {
   const token = getInitialToken("userToken");
   const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
 
+  console.log(posts);
+  
+
   const [updateRating, { isLoading: isRatingLoading }] =
     useUpdateRatingMutation();
 
@@ -53,8 +56,6 @@ const SelectedService = () => {
   }, {});
 
   const userId = getInitialToken("userToken");
-
-  console.log(rating, "ratings");
 
   useEffect(() => {
     if (serviceData && generalServiceId) {
@@ -147,11 +148,11 @@ const SelectedService = () => {
               {generalServiceDetials?.description}
             </p>
 
-            <div className="flex items-center border my-6">
-              <span className="text-xl lg:text-3xl font-bold">
-                <span className="text-base mr-1">Price Range:</span>₹
+            <div className="flex items-center  my-6">
+              <span className="text-xl font-bold">
+                <span className="text-2xl mr-1 font-bai-medium">Price Range:</span>₹
                 {posts?.basicPackage?.detail?.price}
-                <span className="text-base mx-1">to</span>₹
+                <span className="text-xl mx-1">to</span>₹
                 {posts?.premiumPackage?.detail?.price}
               </span>
             </div>
@@ -175,7 +176,7 @@ const SelectedService = () => {
                     {posts?.selectedHours}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
-                    {posts?.servicePlace}
+                    {posts?.servicePlace === "both" ? "service at home and service center" : posts?.servicePlace}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
                     {posts?.servicesPerDay}
@@ -187,7 +188,7 @@ const SelectedService = () => {
             <div className="flex items-center mt-6 space-x-4">
               <button
                 onClick={scrollToRef}
-                className="bg-[#ab0000] text-white px-6 py-2 lg:py-3 font-bold flex items-center justify-center hover:bg-[#7c1f1f]"
+                className="bg-[#ab0000] rounded text-white px-6 py-2 lg:py-3 font-bold flex items-center justify-center hover:bg-[#7c1f1f]"
               >
                 BOOK SERVICE
               </button>
@@ -613,6 +614,7 @@ const SelectedService = () => {
         data={posts && posts.terms}
         servicePlace={posts?.servicePlace}
         id={id}
+        userId={token as string}
       />
     </>
   );

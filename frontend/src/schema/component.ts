@@ -17,6 +17,7 @@ export interface ModalPopsCustom {
   data?:string;
   servicePlace?:string
   id?:string;
+  userId?:string;
 }
 
 export interface MainLayoutProps {

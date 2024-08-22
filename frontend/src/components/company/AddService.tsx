@@ -348,7 +348,6 @@ const AddYourService: React.FC = () => {
                 <option value="" disabled>
                   select a option
                 </option>
-                <option value="mon-sun">Monday to Sunday</option>
                 <option value="mon-sat">Monday to Saturday</option>
                 <option value="24/7">24/7</option>
               </select>

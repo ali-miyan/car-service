@@ -12,6 +12,6 @@ export class GetApprovalUseCase {
     if(!data){
       throw new BadRequestError('cant get approvals')
     }
-    return data;
+    return data.reverse();
   }
 }

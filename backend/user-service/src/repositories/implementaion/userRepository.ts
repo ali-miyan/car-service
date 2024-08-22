@@ -28,6 +28,43 @@ export class UserRepository implements IUserRepository {
       throw new Error("error in db");
     }
   }
+  async addToWallet(
+    userId: string,
+    amount: string,
+    stat: string
+  ): Promise<void> {
+    try {
+      const userDoc = await userModel.findById(userId);
+
+      if (!userDoc) {
+        throw new Error("User not found");
+      }
+
+      let refundAmountNumber = parseFloat(amount);
+
+      if (stat === "debit") {
+        refundAmountNumber = -refundAmountNumber;
+      } else if (stat !== "credit") {
+        throw new Error("Invalid transaction type");
+      }
+
+      userDoc.wallet += refundAmountNumber;
+
+      const transactionType = refundAmountNumber > 0 ? "credit" : "debit";
+
+      userDoc.walletHistory.push({
+        transactionType,
+        amount: Math.abs(refundAmountNumber),
+        date: new Date(),
+      });
+
+      // Save the user document
+      await userDoc.save();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error updating the wallet in the database");
+    }
+  }
   async updateImage(id: string, profileImg: string): Promise<void> {
     try {
       await userModel.findByIdAndUpdate(id, { profileImg }, { new: true });

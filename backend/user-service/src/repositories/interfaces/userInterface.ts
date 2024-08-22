@@ -4,6 +4,7 @@ import { IUserData, } from "../../infrastructure/db";
 export interface IUserRepository {
   getAll(): Promise<IUserData[] | null>;
   getById(id: string): Promise<IUserData | null>;
+  addToWallet(userId: string, amount: string,stat:string): Promise<void>;
   updateStatus(id: string,data:object): Promise<void>;
   findByEmail(email: string): Promise<IUserData | null>;
   findByPhone(phone: number): Promise<boolean | null>;

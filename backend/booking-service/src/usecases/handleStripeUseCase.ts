@@ -25,7 +25,7 @@ export class HandleStripeUseCase {
           );
           order.refundStatus = "completed";
           await order.save();
-          await this.rabbitMQService.sendMessageToUser(isRefund.booking.userId);
+          await this.rabbitMQService.sendMessageToUser({userId:isRefund.booking.userId,amount:isRefund.totalPrice,stat:"credit"});
         } else {
           const order = decompressObject(orderData);
           const booking = new Booking(order);

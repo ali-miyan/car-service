@@ -5,7 +5,7 @@ import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
-import { createConsumerService } from "./infrastructure/rabbitMQ";
+import { createConsumerService, createWalletConsumerService } from "./infrastructure/rabbitMQ";
 import { setupSocketServer } from "./infrastructure/services";
 require("dotenv").config();
 
@@ -32,6 +32,7 @@ const startServer = async () => {
   try {
     await connectDB();
     createConsumerService();
+    createWalletConsumerService();
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-
 const Dashboard = () => {
   const companyId = getInitialToken("companyToken");
   const { data: revenue = [], isLoading } = useGetMonthlyRevenueQuery(
@@ -35,7 +34,7 @@ const Dashboard = () => {
 
   console.log(revenue, "revenereerere");
 
-  const revenueData = months.map((_, i) => {
+  const revenueData = months?.map((_, i) => {
     const item = revenue?.monthlyRevenue?.find(
       ({ month }: { month: string }) => new Date(month).getMonth() === i
     );
@@ -93,7 +92,9 @@ const Dashboard = () => {
             { title: "Total bookings", value: revenue?.bookingCount },
             {
               title: "most prefered service place",
-              value: `At ${revenue?.mostBookedServicePlace?.servicePlace} - ${revenue?.mostBookedServicePlace?.bookingCount}`,
+              value: `At ${
+                revenue?.mostBookedServicePlace?.servicePlace || ""
+              } - ${revenue?.mostBookedServicePlace?.bookingCount || "-"}`,
             },
           ].map(({ title, value }) => (
             <div key={title} className="bg-white p-7 rounded-lg shadow-lg">
@@ -130,37 +131,41 @@ const Dashboard = () => {
                 ))}
               </tr>
             </thead>
+              {revenue && revenue?.getBookedUserDetails?.length > 0? (
             <tbody className="bg-white divide-y divide-gray-200">
-              {revenue?.getBookedUserDetails?.map(
-                ({
-                  id,
-                  createdAt,
-                  servicePlace,
-                  totalPrice,
-                  payment,
-                  address,
-                }: any) => (
-                  <tr key={id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {new Intl.DateTimeFormat("en-US", {
-                        month: "long",
-                        day: "2-digit",
-                      }).format(new Date(createdAt))}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {servicePlace}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      ₹{totalPrice}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">{payment}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {address.city}
-                    </td>
-                  </tr>
-                )
-              )}
+                {revenue?.getBookedUserDetails?.map(
+                  ({
+                    id,
+                    createdAt,
+                    servicePlace,
+                    totalPrice,
+                    payment,
+                    address,
+                  }: any) => (
+                    <tr key={id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {new Intl.DateTimeFormat("en-US", {
+                          month: "long",
+                          day: "2-digit",
+                        }).format(new Date(createdAt))}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {servicePlace}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        ₹{totalPrice}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{payment}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {address.city}
+                      </td>
+                    </tr>
+                  )
+                )}
             </tbody>
+              ) : (
+                <p className="text-xs">no bookings....</p>
+              )}
           </table>
         </div>
       </section>

@@ -10,6 +10,7 @@ import {
   FaPinterest,
   FaYoutube,
   FaUserCircle,
+  FaInstagram,
 } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
@@ -24,14 +25,12 @@ const UserNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMap, setShowMap] = useState<boolean>(false);
 
-  const token = getInitialToken('userToken')
+  const token = getInitialToken("userToken");
 
   const socket = useUserSocket(token);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("socket", socket);
-
     if (socket) {
       socket.on("user_blocked", (message: any) => {
         console.log("Message received: ", message);
@@ -97,39 +96,47 @@ const UserNavbar = () => {
           <ServiceMap />
         </div>
       )}
-      <header className="w-full bg-[#ab0000] font-bai-regular text-white">
-        <div className="flex justify-around items-center py-2 px-4 lg:px-8">
-          <div className="flex items-center space-x-2 lg:space-x-4">
-            <a href="#" className="text-xl text-white">
+      <header className="w-full bg-[#ab0000]  font-bai-regular text-white">
+        <div className="flex justify-between items-center py-2 px-4 sm:px-20">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <a
+              href="https://www.facebook.com/profile.php?id=61564977654689"
+              className="text-xl text-white"
+            >
               <FaFacebook />
             </a>
-            <a href="#" className="text-xl text-white">
+            <a
+              href="https://x.com/AliMiyan733397"
+              className="text-xl text-white"
+            >
               <FaTwitter />
             </a>
-            <a href="#" className="text-xl text-white">
-              <FaGooglePlusG />
-            </a>
-            <a href="#" className="text-xl text-white">
+            <a
+              href="https://www.linkedin.com/in/ali-miyan-a6b00328b/"
+              className="text-xl text-white"
+            >
               <FaLinkedin />
             </a>
-            <a href="#" className="text-xl text-white">
-              <FaPinterest />
-            </a>
-            <a href="#" className="text-xl text-white">
-              <FaYoutube />
+            <a
+              href="https://www.instagram.com/alimiyn/"
+              className="text-xl text-white"
+            >
+              <FaInstagram />
             </a>
           </div>
-          <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
-            <Link to="/login" className="text-white">
-              Login
-            </Link>
-            <span className="text-white">/</span>
-            <Link to="/register" className="text-white">
-              Register
-            </Link>
+          <div className="hidden md:flex text-sm  items-center space-x-2 md:space-x-4">
+            Call us now : (+84) 4567 421 978
+          </div>
+          <div className="block md:hidden">
+            <button
+              className="text-3xl text-gray-900"
+              onClick={handleMenuToggle}
+            >
+              &#9776;
+            </button>
           </div>
         </div>
-        <div className="flex items-center justify-around p-6 lg:px-8 bg-gray-900">
+        <div className="flex items-center justify-between p-6 sm:px-16 bg-gray-900">
           <div
             onClick={handleMap}
             className="items-center cursor-pointer space-x-4"
@@ -139,11 +146,11 @@ const UserNavbar = () => {
               services near me
             </button>
           </div>
-          <nav className="hidden lg:flex items-center space-x-4">
+          <nav className="hidden md:flex items-center space-x-4">
             <Link
               to="/"
               className={`text-white font-bai-regular px-3 py-2 custom-underline ${
-                currentPath === "/" ? "active" : ""
+                currentPath === "/" || currentPath === "/home" ? "active" : ""
               }`}
             >
               HOME
@@ -191,12 +198,6 @@ const UserNavbar = () => {
               />
             )}
 
-            <button
-              className="text-3xl text-gray-900 lg:hidden"
-              onClick={handleMenuToggle}
-            >
-              &#9776;
-            </button>
             {token && <NotificationModal />}
           </div>
         </div>
@@ -204,36 +205,56 @@ const UserNavbar = () => {
         <div
           className={`${
             isMenuOpen ? "block" : "hidden"
-          } lg:hidden absolute top-16 left-0 w-full bg-white text-center`}
+          } md:hidden absolute top-13 z-100 left-0 w-full bg-white text-center`}
         >
           <Link
             to="/"
-            className="block py-2 hover:bg-[#ab0000]"
+            className="block py-2 border text-black hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             HOME
           </Link>
           <Link
-            to="/company/services"
-            className="block py-2 hover:bg-[#ab0000]"
+            to="/services"
+            className="block py-2 border text-black hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             SERVICES
           </Link>
           <Link
             to="/for-business"
-            className="block py-2 hover:bg-[#ab0000]"
+            className="block py-2 border text-black hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             FOR BUSINESS
           </Link>
           <Link
             to="/about-us"
-            className="block py-2 hover:bg-[#ab0000]"
+            className="block py-2 border text-black hover:bg-[#ab0000]"
             onClick={handleMenuToggle}
           >
             ABOUT US
           </Link>
+          {token && (
+            <Link
+              to={"/profile?section=car"}
+              className="block py-2 border text-black hover:bg-[#ab0000]"
+              onClick={handleMenuToggle}
+            >
+              PROFILE
+            </Link>
+          )}
+          {token && (
+            <button
+              className="block py-2 hover:bg-[#ab0000]"
+              onClick={() => {
+                handleLogOut(token);
+                handleMenuToggle();
+              }}
+            >
+              LOGOUT
+            </button>
+          )}
         </div>
       </header>
 

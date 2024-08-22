@@ -27,13 +27,13 @@ const ServiceList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (location.state) {
+      if (location.state.refetch) {
         refetch();
       }
     };
 
     fetchData();
-  }, [location.state, refetch]);
+  });
   const [deleteServicePost] = useDeleteServicePostMutation();
   const [updateStatus] = useUpdateServiceStatusMutation();
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(

@@ -2,105 +2,62 @@ import { Link } from "react-router-dom";
 
 const ForBusiness = () => {
   return (
-    <div className="bg-gray-100 lowercase font-bai-regular py-8">
-      <div className="container min-h-96 mx-auto relative">
+    <div className="bg-gray-100 lowercase font-bai-regular relative">
+      <div className="relative">
         <img
           src="/public/assets/hero_bg_3_1.png"
           alt="Car"
-          className="absolute -top-8 w-auto h-auto object-cover brightness-50"
+          className="w-full object-cover brightness-50"
         />
-      </div>
-      
-      <div className="text-center mb-52 z-10 relative">
-        <h1 className="text-3xl font-bold font-bai-bold uppercase -z-0 text-white -mt-48 mb-4">
-          Welcome to Car Service for Businesses
-        </h1>
-        <Link to={"/company/login"}>
-          <button className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-10 rounded-full">
-            JOIN
-          </button>
-        </Link>
-      </div>
-
-      <div className="container z-10 relative mx-auto mt-2 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg mx-5 shadow-md p-6 text-center">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">
-            Boost Your Visibility
-          </h2>
-          <p className="text-justify">
-            Join a network of trusted service providers and get your business
-            noticed by thousands of potential customers. Our platform helps you
-            stand out and attract more clients looking for quality car
-            services. Enhanced business profiles with reviews and ratings.
-            Increase your visibility and attract more bookings.
-          </p>
-        </div>
-        <div className="bg-white rounded-lg mx-5 shadow-md p-6 text-center">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">
-            Simplify Management
-          </h2>
-          <p className="text-justify">
-            Our intuitive dashboard makes it easy to manage your services,
-            appointments, and customer interactions. Spend less time on
-            administrative tasks and more time doing what you do best. Real-time
-            scheduling and booking management. Save time and improve efficiency
-            with automated tools.
-          </p>
-        </div>
-        <div className="bg-white rounded-lg shadow-md mx-5 p-6 text-center">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">
-            Grow Your Revenue
-          </h2>
-          <p className="text-justify">
-            Offer a variety of service packages and upsell premium options to
-            your customers. Our platform helps you maximize your revenue
-            potential with flexible pricing and package management. Customizable
-            service packages. Increase your earnings by offering tailored
-            services to meet customer needs.
-          </p>
+        <div className="absolute inset-0 flex items-center justify-center z-50">
+          <div className="text-center">
+            <h1 className="lg:text-3xl font-bold font-bai-bold uppercase text-white">
+              Welcome to Car Service for Businesses
+            </h1>
+            <Link to={"/company/login"}>
+              <button className="bg-[#ab0000] hover:bg-red-900 text-white font-bold py-2 px-10 rounded mt-4">
+                JOIN
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="container z-10 relative mx-auto mt-12 bg-white rounded-lg shadow-md p-6 text-center">
-        <h2 className="text-2xl font-bold text-black mb-4">
-          Empower Your Automotive Service Business
-        </h2>
-        <p className="text-gray-900 mb-6">
-          Join our platform and connect with thousands of car owners looking for
-          reliable, high-quality automotive services. Whether you specialize in
-          periodic maintenance, AC repair, battery replacement, or any other
-          car-related services, our platform provides the tools you need to grow
-          your business.
-        </p>
-      </div>
+      <section className="bg-white ">
+        <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+          <div className="font-light text-gray-500 sm:text-lg">
+            <h2 className="mb-4 text-2xl tracking-tight uppercase font-bai-medium text-gray-900 ">
+              We didn't reinvent the wheel
+            </h2>
+            <p className="mb-4">
+              We are car service experts who combine skill and experience to
+              keep your vehicle in top shape. We offer a blend of innovation and
+              reliability, with the agility of a small team and the capability
+              to handle the scope of any automotive needs you may have.
+            </p>
+            <p>
+              From routine maintenance to complex repairs, our team of dedicated
+              professionals is committed to delivering exceptional service with
+              efficiency and precision. We're small enough to provide
+              personalized attention but large enough to meet all your
+              automotive needs.
+            </p>
+          </div>
 
-      <div className="container mx-auto mt-12 bg-white rounded-lg shadow-md p-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Why Partner With Us?
-        </h2>
-        <ul className="list-disc pl-6 text-justify">
-          <li>
-            Reach more customers: gain visibility to a large and growing customer
-            base actively seeking car services.
-          </li>
-          <li>
-            Manage your services: easily add and manage your services and
-            packages through our intuitive dashboard.
-          </li>
-          <li>
-            Increase your revenue: boost your income by attracting more
-            customers and offering premium services.
-          </li>
-          <li>
-            Real-time scheduling: allow customers to book your services online
-            at their convenience.
-          </li>
-          <li>
-            Customer reviews: build your reputation with genuine customer reviews
-            and ratings.
-          </li>
-        </ul>
-      </div>
+          <div className="grid grid-cols-2 gap-4 mt-8">
+            <img
+              className="w-full rounded-lg"
+              src="/public/assets/erik-mclean-3uHlGFnzPDU-unsplash.jpg"
+              alt="office content 1"
+            />
+            <img
+              className="mt-4 w-full lg:mt-10 rounded-lg"
+              src="/public/assets/markus-spiske-Ct__HLBjgJE-unsplash.jpg"
+              alt="office content 2"
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

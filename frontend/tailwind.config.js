@@ -12,7 +12,10 @@ export default withMT({
         "bai-extra-light": ["bai extra light"],
         "bai-semi-bold": ["bai semi bold"],
         "bai-bold": ["bai bold"],
-      }
+      },
+      zIndex: {
+        '100': '100',
+      },
     },
   },
   plugins: [],

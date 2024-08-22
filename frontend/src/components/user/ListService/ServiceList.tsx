@@ -26,7 +26,7 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
     currentPage * itemsPerPage
   );
 
-  console.log(serviceData, "servocedata");
+  console.log(currentPosts, "servocedata");
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -114,6 +114,7 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
                   image={service.images[0]}
                   serviceData={serviceData}
                   servicePackage={service.basicPackage}
+                  ratings={service.ratings}
                 />
               </div>
             ))

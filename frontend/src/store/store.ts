@@ -40,6 +40,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredPaths:['order.date','payload.0']
       },
     }).concat(
       userApiSlice.middleware,

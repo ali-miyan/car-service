@@ -37,7 +37,7 @@ export class RabbitMQService {
     try {
       this.channel?.sendToQueue(
         rabbitMQConfig.queueName3,
-        Buffer.from(wallet)
+        Buffer.from(JSON.stringify(wallet))
       );
     } catch (error) {
       console.error("Failed to send message:", error);

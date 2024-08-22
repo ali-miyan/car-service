@@ -5,42 +5,28 @@ import "../../../styles/Global.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setDate, setServiceDate } from "../../../context/OrderContext";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
-const today = new Date();
-const thisMonth = today.getMonth();
-const thisYear = today.getFullYear();
+import { getSundaysOfYear } from "../../../helpers/getSundays";
 
-const reserved = [
-  {
-    startDate: new Date(thisYear, thisMonth, 27),
-    endDate: new Date(thisYear, thisMonth, 27),
-  },
-  {
-    startDate: new Date(thisYear, thisMonth, 29),
-    endDate: new Date(thisYear, thisMonth, 29),
-  },
-];
-
-export const BookingCalendar = ({setDateChange}:any) => {
-
+const BookingCalendar = ({ setDateChange }: any) => {
   const { serviceId, date } = useSelector((state: any) => state.order);
+  const { data: dates } = useGetSinglServicesQuery(serviceId as string);
+  const reserved =dates?.selectedHours === "mon-sat"
+  ? getSundaysOfYear()
+  : [];
 
-  console.log(date,'servicedate');
-  
+  console.log(date, "servicedate");
 
-  const {data:dates} = useGetSinglServicesQuery(serviceId as string)
-  console.log(dates);
-  
+  console.log(dates, "da");
 
   const [selectedDates, setSelectedDates] = useState<any>(date || []);
-
   const dispatch = useDispatch();
 
   const handleDateChange = (newDates) => {
-    setDateChange(true)
+    setDateChange(true);
     setSelectedDates(newDates);
     dispatch(setDate(newDates));
     const date = new Date(newDates);
-    const options:any = { year: "numeric", month: "long", day: "numeric" };
+    const options: any = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = date.toLocaleDateString("en-US", options);
     dispatch(setServiceDate(formattedDate));
   };
@@ -55,7 +41,7 @@ export const BookingCalendar = ({setDateChange}:any) => {
           selected={selectedDates}
           reserved={reserved}
           onChange={handleDateChange}
-          className=" text-black rounded-lg  font-bai-regular"
+          className="text-black rounded-lg font-bai-regular"
         />
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
@@ -67,3 +53,5 @@ export const BookingCalendar = ({setDateChange}:any) => {
     </>
   );
 };
+
+export default BookingCalendar;

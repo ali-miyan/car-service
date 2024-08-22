@@ -1,5 +1,11 @@
 import { Schema, model, Document } from "mongoose";
 
+export interface IWalletHistory {
+  transactionType: "credit" | "debit";
+  amount: number;
+  date: Date;
+}
+
 export interface IUserData extends Document {
   username: string;
   email: string;
@@ -7,6 +13,8 @@ export interface IUserData extends Document {
   profileImg: string | null;
   password: string;
   isBlocked: boolean;
+  wallet: number;
+  walletHistory: IWalletHistory[];
 }
 
 const userSchema = new Schema<IUserData>(
@@ -17,6 +25,18 @@ const userSchema = new Schema<IUserData>(
     profileImg: { type: String, default: null },
     password: { type: String, required: true },
     isBlocked: { type: Boolean, default: false },
+    wallet: { type: Number, default: 0 },
+    walletHistory: [
+      {
+        transactionType: {
+          type: String,
+          enum: ["credit", "debit"],
+          required: true,
+        },
+        amount: { type: Number, required: true },
+        date: { type: Date, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

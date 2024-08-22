@@ -17,7 +17,7 @@ export class StripeService {
     let orderData: any;
 
     if (refund) {
-      orderData = JSON.stringify({booking,refund});
+      orderData = JSON.stringify({booking,refund,totalPrice});
     } else {
       orderData = compressObject(booking) || "";
     }

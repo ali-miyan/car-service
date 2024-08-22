@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetSelectedCarQuery } from "../../../store/slices/userApiSlice";
+import { useGetSelectedCarQuery, useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 import { useMakeOrderMutation } from "../../../store/slices/orderApiSlice";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { RegistrationStep } from "../../common/OrderHeader";
@@ -23,10 +23,11 @@ const Checkout = () => {
     generalServiceId,
     companyId,
   } = useSelector((state: any) => state.order);
-
+  
   const token = getInitialToken("userToken");
   const navigate = useNavigate();
 
+  const { data: user } = useGetUserByIdQuery(token as string);
   const { data: car } = useGetSelectedCarQuery(carModel);
   const { data: service } = useGetSinglServicesQuery(serviceId);
   const [makeOrder, { isLoading }] = useMakeOrderMutation();
@@ -88,7 +89,7 @@ const Checkout = () => {
         });
         dispatch(resetOrder());
 
-      } else if (selectedPaymentMethod === "cash") {
+      } else{
         const res = await makeOrder({
           userId: token,
           companyId,
@@ -330,10 +331,10 @@ const Checkout = () => {
               </div>
               <div className="space-y-4 font-bai-regular py-8">
                 <h3 className="font-semibold text-center text-gray-900 uppercase">
-                  Delivery Methods
+                  payment Methods
                 </h3>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
                   <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
                     <div className="flex items-start">
                       <div className="flex h-5 items-center">
@@ -345,7 +346,7 @@ const Checkout = () => {
                           value="cash"
                           checked={selectedPaymentMethod === "cash"}
                           onChange={handlePaymentMethodChange}
-                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 "
                         />
                       </div>
 
@@ -377,7 +378,7 @@ const Checkout = () => {
                           value="online"
                           checked={selectedPaymentMethod === "online"}
                           onChange={handlePaymentMethodChange}
-                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 "
                         />
                       </div>
 
@@ -394,6 +395,34 @@ const Checkout = () => {
                         >
                           Pay securely using your credit or debit card online.
                         </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
+                    <div className="flex items-start">
+                      <div className="flex  h-5 items-center">
+                        <input
+                          id="wallet-payment"
+                          aria-describedby="wallet-payment-text"
+                          type="radio"
+                          name="payment-method"
+                          value="wallet"
+                          disabled={(serviceDetails?.detail?.price) > user?.wallet}
+                          checked={selectedPaymentMethod === "wallet"}
+                          onChange={handlePaymentMethodChange}
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 "
+                        />
+                      </div>
+
+                      <div className="ms-4 text-sm">
+                        <label
+                          htmlFor="wallet-payment"
+                          className="font-medium leading-none text-gray-900"
+                        >
+                          wallet Payment
+                        </label>
+                      <p className="text-xs  text-gray-600 self-end">wallet balance : ₹{user?.wallet}</p>
+                     {(serviceDetails?.detail?.price) > user?.wallet &&  <p className="text-xs text-red-600 self-end">no enough balance</p>}
                       </div>
                     </div>
                   </div>

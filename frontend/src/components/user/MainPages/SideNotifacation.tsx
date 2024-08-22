@@ -8,18 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { getInitialToken } from "../../../helpers/getToken";
 import {
   useBookingSocket,
-  useChatSocket,
 } from "../../../service/socketService";
 import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
-import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 import ChatSection from "./ChatSection";
 
 const NotificationModal = () => {
   const token = getInitialToken("userToken");
   const currentPath = useMemo(() => location.pathname, [location.pathname]);
   const {
+    userId,
     address,
     carModel,
     selectedPackage,
@@ -145,7 +144,7 @@ const NotificationModal = () => {
         className="animate-bounce fixed bottom-7 right-4 w-16 h-16 flex items-center justify-center rounded-full bg-[#ab0000] shadow-lg hover:bg-red-900 focus:outline-none"
       >
         <TbMessageDots className="text-white text-2xl" />
-        {hasNotification && (
+        {hasNotification &&  token === userId && (
           <span className="absolute top-1 right-1 w-4 h-4 bg-blue-300 rounded-full"></span>
         )}
       </button>
@@ -211,7 +210,7 @@ const NotificationModal = () => {
                             {notification.message}
                           </p>
                           <p className="text-xs text-black font-bold lowercase">
-                            Notification received at{" "}
+                            Notification received at
                             {new Date(
                               notification.timestamp
                             ).toLocaleTimeString()}
@@ -304,7 +303,7 @@ const NotificationModal = () => {
               </div>
             )}
 
-            {hasNotification && activeSection === "notifications" && (
+            {hasNotification && activeSection === "notifications" && userId === token && (
               <>
                 <p className="bg-gray-300 border-l-4 border-yellow-600 text-black p-1 mb-2 text-xs lowercase rounded">
                   Order pendings
