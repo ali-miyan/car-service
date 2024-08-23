@@ -109,7 +109,7 @@ const BookedCustomerChat = ({
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="max-w-4xl mx-auto bg-white shadow-md overflow-hidden">
+        <div className="max-w-4xl mx-auto font-bai-regular bg-white shadow-md overflow-hidden">
           <div className="flex flex-col h-full">
             <div className="flex items-center px-4 py-2 bg-white border-b border-gray-200">
               <span className="pr-4" onClick={handleButtonClick}>
@@ -129,7 +129,7 @@ const BookedCustomerChat = ({
               </div>
             </div>
 
-            <div className="flex-1 min-h-[calc(94vh-200px)] max-h-[calc(95vh-200px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
+            <div className="flex-1 min-h-[calc(85vh-200px)] max-h-[calc(95vh-200px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar">
               {chatMessages?.messages?.length > 0 ? (
                 chatMessages?.messages?.map((msg, index) => (
                   <React.Fragment key={index}>

@@ -10,8 +10,7 @@ import {
   ResetPasswordUseCase,
   UpdateStatusUseCase,
   GetUserByIdUseCase,
-  UserImageUseCase,
-  EditUSerUseCase,
+  EditUserUseCase,
   UpadtePasswordUseCase,
   AddRatingUseCase,
   GetAllUsersUseCase,
@@ -30,11 +29,10 @@ export class UserController {
     private getUsersUseCase: GetUsersUseCase,
     private updateStatusUseCase: UpdateStatusUseCase,
     private getUserByIdUseCase: GetUserByIdUseCase,
-    private userImageUseCase: UserImageUseCase,
-    private editUSerUseCase: EditUSerUseCase,
+    private editUSerUseCase: EditUserUseCase,
     private upadtePasswordUseCase: UpadtePasswordUseCase,
     private addRatingUseCase: AddRatingUseCase,
-    private getAllUsersUseCase:GetAllUsersUseCase
+    private getAllUsersUseCase: GetAllUsersUseCase
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -206,46 +204,39 @@ export class UserController {
       next(error);
     }
   }
-  async uploadImage(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
 
-    const { id } = req.body;
-    const file = req.file;
-
-    if (!id || !file) {
-      throw new BadRequestError("ID or file not found");
-    }
-
-    const { originalname, buffer, mimetype } = file;
-
-    try {
-      const response = await this.userImageUseCase.execute(id, {
-        originalname,
-        buffer,
-        mimetype,
-      });
-      res.status(201).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
   async editUser(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     const { id, username, phone } = req.body;
+    const file = req.file;
 
     try {
-      const response = await this.editUSerUseCase.execute(id, username, phone);
+      let originalname, buffer, mimetype;
+
+      if (file) {
+        originalname = file.originalname;
+        buffer = file.buffer;
+        mimetype = file.mimetype;
+      }
+
+      const response = await this.editUSerUseCase.execute(
+        id,
+        username,
+        phone,
+        originalname,
+        buffer,
+        mimetype
+      );
+
       res.status(201).json(response);
     } catch (error) {
       next(error);
     }
   }
+
   async updatePassword(
     req: Request,
     res: Response,
@@ -271,10 +262,15 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { rating, reviewText,serviceId } = req.body;
+    const { rating, reviewText, serviceId } = req.body;
     const { user } = (req as any).user;
     try {
-      const response = await this.addRatingUseCase.execute(rating as number, reviewText as string,user as string,serviceId as string);
+      const response = await this.addRatingUseCase.execute(
+        rating as number,
+        reviewText as string,
+        user as string,
+        serviceId as string
+      );
       res.status(201).json(response);
     } catch (error) {
       next(error);

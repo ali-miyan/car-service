@@ -11,8 +11,7 @@ import {
   ResetPasswordUseCase,
   UpdateStatusUseCase,
   GetUserByIdUseCase,
-  UserImageUseCase,
-  EditUSerUseCase,
+  EditUserUseCase,
   GetCarByIdUseCase,
   DeleteCarUseCase,
   UpadtePasswordUseCase,
@@ -27,16 +26,21 @@ import { authMiddleware } from "tune-up-library";
 import multer from "multer";
 import { CarRepository } from "../../repositories/implementaion/carRepository";
 import { ProducerService } from "../rabbitMQ";
+import { KafkaService } from "../kafka";
 const upload = multer();
 
 const userRepository = new UserRepository();
 const otpRepository = new OtpService();
 const redisRepository = new RedisOtpRepository();
 const s3Service = new S3Service();
+const kafkaService = new KafkaService();
 const loginUseCase = new LoginUseCase(userRepository);
 const upadtePasswordUseCase = new UpadtePasswordUseCase(userRepository);
-const editUSerUseCase = new EditUSerUseCase(userRepository);
-const userUploadUseCase = new UserImageUseCase(userRepository, s3Service);
+const editUSerUseCase = new EditUserUseCase(
+  userRepository,
+  s3Service,
+  kafkaService
+);
 const getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
 const googleRepositry = new GoogleUseCase(userRepository);
 const getAllUsersUseCase = new GetAllUsersUseCase(userRepository);
@@ -58,10 +62,10 @@ const resetPasswordUseCase = new ResetPasswordUseCase(
   userRepository,
   redisRepository
 );
-const rabbitMQService = new ProducerService()
+const rabbitMQService = new ProducerService();
 const carRepository = new CarRepository();
 const addCarUseCase = new AddCarUseCase(carRepository);
-const addRatingUseCase = new AddRatingUseCase(userRepository,rabbitMQService);
+const addRatingUseCase = new AddRatingUseCase(userRepository, rabbitMQService);
 const deleteCarUseCase = new DeleteCarUseCase(carRepository);
 const getCarByIdUseCase = new GetCarByIdUseCase(carRepository);
 const getOneCarUseCase = new GetOneCarUseCase(carRepository);
@@ -82,7 +86,6 @@ const userController = new UserController(
   getUsersUseCase,
   updateStatusUseCase,
   getUserByIdUseCase,
-  userUploadUseCase,
   editUSerUseCase,
   upadtePasswordUseCase,
   addRatingUseCase,
@@ -124,14 +127,12 @@ router.patch(
   authMiddleware(["admin"]),
   (req, res, next) => userController.updateUser(req, res, next)
 );
+
 router.post(
-  "/upload-image",
+  "/edit-user",
   upload.single("image"),
   authMiddleware(["user"]),
-  (req, res, next) => userController.uploadImage(req, res, next)
-);
-router.post("/edit-user", authMiddleware(["user"]), (req, res, next) =>
-  userController.editUser(req, res, next)
+  (req, res, next) => userController.editUser(req, res, next)
 );
 router.post("/add-car", authMiddleware(["user"]), (req, res, next) =>
   carController.addCar(req, res, next)

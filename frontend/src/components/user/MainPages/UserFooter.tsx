@@ -20,7 +20,7 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="bg-red-600 text-white px-4 py-2 mx-3 rounded-full"
+              className="bg-[#ab0000] text-white px-4 py-2 mx-3 rounded-full"
             >
               Subscribe
             </button>
@@ -37,17 +37,17 @@ const Footer = () => {
             you can count on us for reliable and efficient solutions.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-red-600"><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="text-white hover:text-red-600"><i className="fab fa-pinterest-p"></i></a>
-              <a href="#" className="text-white hover:text-red-600"><i className="fab fa-twitter"></i></a>
-              <a href="#" className="text-white hover:text-red-600"><i className="fab fa-linkedin-in"></i></a>
+              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-facebook-f"></i></a>
+              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-pinterest-p"></i></a>
+              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-twitter"></i></a>
+              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-linkedin-in"></i></a>
             </div>
           </div>
 
           <div className="flex flex-col items-center md:items-start">
             <h2 className="text-lg font-semibold text-white mb-4">CONTACT US</h2>
             <p className="mb-4">
-              We're available by phone: <a href="tel:+123-456-789" className="text-red-600">+123-456-789</a>
+              We're available by phone: <a href="tel:+123-456-789" className="text-[#ab0000]">+123-456-789</a>
             </p>
             <p className="mb-4">info@example.com</p>
             <p>Monday till Friday 10 to 6 EST</p>
@@ -56,10 +56,10 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <h2 className="text-lg font-semibold text-white mb-4">CUSTOMER CARE</h2>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-red-600">FAQs</a></li>
-              <li><a href="#" className="hover:text-red-600">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-red-600">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-red-600">Contact Us</a></li>
+              <li><a href="#" className="hover:text-[#ab0000]">FAQs</a></li>
+              <li><a href="#" className="hover:text-[#ab0000]">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-[#ab0000]">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-[#ab0000]">Contact Us</a></li>
             </ul>
           </div>
         </div>

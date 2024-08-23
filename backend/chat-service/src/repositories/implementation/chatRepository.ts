@@ -1,4 +1,4 @@
-import { Chat } from "../../entities";
+import { Chat, IUserDetails } from "../../entities";
 import { IChatRepository } from "../interfaces";
 import { ChatModel, IChat } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
@@ -19,6 +19,29 @@ export class ChatRepository implements IChatRepository {
   async getById(companyId: string): Promise<IChat[] | null> {
     try {
       return await ChatModel.find({ "company.companyId": companyId });
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestError("error in db");
+    }
+  }
+  async editUser(
+    userId: string,
+    username: string,
+    profileImg: string | null
+  ): Promise<void> {
+    try {
+      const update: Partial<IUserDetails> = {};
+
+      if (username !== null) {
+        update.username = username;
+      }
+
+      if (profileImg !== null) {
+        update.userImg = profileImg;
+      }
+
+      await ChatModel.updateOne({ userId }, { $set: update });      
+
     } catch (error) {
       console.log(error);
       throw new BadRequestError("error in db");

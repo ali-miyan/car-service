@@ -27,14 +27,7 @@ function BookerCustomerChat({
             <Loader />
           ) : (
             <>
-              <div className="mb-4">
-                <input
-                  type="text"
-                  placeholder="Search users..."
-                  className="w-full p-2 border text-black border-gray-300 rounded-md shadow-sm"
-                />
-              </div>
-              <ul className="divide-y divide-gray-200 mt-4">
+              <ul className="divide-y font-bai-regular divide-gray-200 mt-4">
                 {users && users?.length > 0 ? (
                   users?.map((user) => (
                     <li

@@ -1,26 +1,52 @@
-version: '3.8'  # Use the latest version of Docker Compose syntax
+# version: '3.8'  # Use the latest version of Docker Compose syntax
 
+# services:
+#   backend:
+#     build:
+#       context: ./backend/user-service  # Specify the path to your backend Dockerfile
+#     ports:
+#       - "3000:3000"  # Expose port 8000 on the host and container
+#     networks:
+#       - my-network  # Attach the backend service to the custom network
+
+#   frontend:
+#     build:
+#       context: ./frontend  # Specify the path to your frontend Dockerfile
+#     ports:
+#       - "8080:8080"  # Expose port 3000 on the host and container
+#     depends_on:
+#       - backend  # Ensure backend service starts before frontend
+#     networks:
+#       - my-network  # Attach the frontend service to the custom network
+  
+# networks:
+#   my-network:
+#     driver: bridge
+
+---
+
+version: '3.8'
 services:
-  backend:
-    build:
-      context: ./backend/user-service  # Specify the path to your backend Dockerfile
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "3000:3000"  # Expose port 8000 on the host and container
-    networks:
-      - my-network  # Attach the backend service to the custom network
+      - "2181:2181"
 
-  frontend:
-    build:
-      context: ./frontend  # Specify the path to your frontend Dockerfile
-    ports:
-      - "8080:8080"  # Expose port 3000 on the host and container
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
     depends_on:
-      - backend  # Ensure backend service starts before frontend
-    networks:
-      - my-network  # Attach the frontend service to the custom network
-  
-  
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
-networks:
-  my-network:
-    driver: bridge

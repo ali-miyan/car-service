@@ -215,8 +215,8 @@ const OrderDetail: React.FC = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white border-2 p-8 mb-8">
         <div className="flex flex-col items-center text-center">
-          <div className="bg-red-50 p-4 rounded-full mb-4">
-            <FaUser className="text-red-900 text-3xl" />
+          <div className=" rounded-full mb-4">
+            <img src={order?.userId.profileImg} alt="" className="rounded-full w-20" />
           </div>
           <div>
             <h2 className="font-semibold text-lg mb-2">Customer</h2>

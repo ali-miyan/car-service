@@ -9,6 +9,7 @@ import setupSocketServer from "./infrastructure/services/socketService";
 import { createConsumerService } from "./infrastructure/rabbitMQ/rabbitMQServices";
 import { startUsersGrpcServer } from "./infrastructure/grpc/grpcServices";
 import Booking from "./infrastructure/db/models/bookingModel";
+import { createKafkaConsumer, KafkaService } from "./infrastructure/kafka";
 
 const PORT = 3003;
 
@@ -33,9 +34,10 @@ const io = setupSocketServer(server);
 
 const startServer = async () => {
   try {
+    await connectDB();
+    await (createKafkaConsumer()).startConsuming();
     startUsersGrpcServer()
     createConsumerService();
-    await connectDB();
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

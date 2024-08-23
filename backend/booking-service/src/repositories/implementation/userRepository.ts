@@ -2,13 +2,46 @@ import { User } from "../../entities";
 import { IUserInterface } from "../interfaces";
 import { userModel, sequelize } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
-import { QueryTypes } from "sequelize";
+import { literal, QueryTypes } from "sequelize";
 
 export class UserRepository implements IUserInterface {
   async save(user: User): Promise<userModel> {
     try {
       const newBooking = await userModel.create(user);
       return newBooking;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error in db: " + error);
+    }
+  }
+  async editUser(
+    userId: string,
+    username: string,
+    phone: string | null,
+    profileImg: string | null
+  ): Promise<void> {
+    try {
+      let updateQuery = `UPDATE users SET "userId" =`;
+
+      let jsonbUpdate = `"userId"`;
+
+      if (username !== null) {
+        jsonbUpdate = `jsonb_set(${jsonbUpdate}, '{username}', '"${username}"', true)`;
+      }
+
+      if (phone !== null) {
+        jsonbUpdate = `jsonb_set(${jsonbUpdate}, '{phone}', '"${phone}"', true)`;
+      }
+
+      if (profileImg !== null) {
+        jsonbUpdate = `jsonb_set(${jsonbUpdate}, '{profileImg}', '"${profileImg}"', true)`;
+      }
+
+      updateQuery += `${jsonbUpdate} WHERE "userId"->>'_id' = '${userId}'`;
+
+      console.log(updateQuery, "final query");
+
+      await sequelize.query(updateQuery);
     } catch (error) {
       console.log(error);
       throw new Error("Error in db: " + error);
@@ -67,7 +100,6 @@ export class UserRepository implements IUserInterface {
         replacements: { companyId },
         type: QueryTypes.SELECT,
       });
-      
     } catch (error) {
       console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);

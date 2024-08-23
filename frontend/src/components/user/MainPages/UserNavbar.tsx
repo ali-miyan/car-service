@@ -97,7 +97,7 @@ const UserNavbar = () => {
         </div>
       )}
       <header className="w-full bg-[#ab0000]  font-bai-regular text-white">
-        <div className="flex justify-between items-center py-2 px-4 sm:px-20">
+        <div className="flex justify-between items-center py-2 px-4 mx-10 lg:mx-40">
           <div className="flex items-center space-x-2 md:space-x-4">
             <a
               href="https://www.facebook.com/profile.php?id=61564977654689"

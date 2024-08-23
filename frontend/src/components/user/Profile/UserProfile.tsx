@@ -1,27 +1,17 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { CiCreditCard1 } from "react-icons/ci";
 import { GiMechanicGarage } from "react-icons/gi";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  FiSettings,
-  FiLogOut,
-  FiPackage,
-  FiMapPin,
-  FiTool,
-  FiEdit2,
-} from "react-icons/fi";
+import { FiSettings, FiLogOut, FiEdit2 } from "react-icons/fi";
 import UserCar from "./UserCar";
 import Garage from "./Garage";
 import Wallet from "./Wallet";
 import ProfileSettings from "./ProfileSettings";
 import {
   useGetUserByIdQuery,
-  useUploadImageMutation,
 } from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
-import { notifyError, notifySuccess } from "../../common/Toast";
-import { errMessage } from "../../../constants/errorMessage";
 import EditProfileModal from "./EditProfileModal";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
 import { RiMailCheckLine } from "react-icons/ri";
@@ -34,15 +24,11 @@ const Profile = () => {
 
   const [selectedSection, setSelectedSection] = useState(initialSection);
   const [newProfileImg, setNewProfileImg] = useState<string | null>(null);
-  const [showCancel, setShowCancel] = useState<boolean>(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const { data: posts, refetch } = useGetUserByIdQuery(
     getInitialToken("userToken") as string
   );
-  const [uploadImage, { isLoading }] = useUploadImageMutation({});
 
   const renderSection = useCallback(() => {
     switch (selectedSection) {
@@ -59,52 +45,6 @@ const Profile = () => {
     }
   }, [selectedSection]);
 
-  const handleFileChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (event.target.files && event.target.files[0]) {
-        setShowCancel(true);
-        const selectedFile = event.target.files[0];
-        setFile(selectedFile);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setNewProfileImg(reader.result as string);
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    },
-    []
-  );
-
-  const handleUpload = useCallback(async () => {
-    if (file) {
-      const form = new FormData();
-      form.append("id", getInitialToken("userToken") as string);
-      form.append("image", file);
-
-      try {
-        const response = await uploadImage(form).unwrap();
-        if (response.success) {
-          notifySuccess("Image uploaded");
-          setShowCancel(false);
-        }
-        setFile(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-      } catch (error) {
-        console.error("Failed to upload image", error);
-        notifyError(errMessage);
-      }
-    }
-  }, [file, uploadImage]);
-
-  const handleCancel = useCallback(() => {
-    setNewProfileImg(null);
-    setFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  }, []);
 
   const handleLogout = useCallback(() => {
     document.cookie =
@@ -125,8 +65,7 @@ const Profile = () => {
     <div className="flex flex-col font-bai-regular lowercase md:flex-row gap-8 my-8 md:my-32 w-full px-4 md:px-10">
       <div className="w-full md:w-3/12 lg:w-2/12 bg-gray-100 p-6 rounded-lg">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden cursor-pointer">
-            <label htmlFor="profile-image-input" className="cursor-pointer">
+          <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden ">
               <img
                 src={
                   newProfileImg ||
@@ -136,15 +75,6 @@ const Profile = () => {
                 alt="Profile"
                 className="object-cover w-full h-full"
               />
-            </label>
-            <input
-              id="profile-image-input"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              className="hidden"
-            />
           </div>
           <div className="flex items-center text-xs gap-2 mt-2">
             <p className="text-gray-700">{posts?.username}</p>
@@ -158,22 +88,6 @@ const Profile = () => {
             </p>
           </div>
           <FiEdit2 className="cursor-pointer" onClick={handleEditClick} />
-          {showCancel && (
-            <div className="flex gap-2 mt-2">
-              <button
-                className="px-2 py-1 text-sm bg-gray-800 text-white rounded"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-2 py-1 text-sm bg-red-900 text-white rounded"
-                onClick={handleUpload}
-              >
-                OK
-              </button>
-            </div>
-          )}
         </div>
         <ul className="flex flex-col gap-3 uppercase font-bai-bold text-xs">
           <li
@@ -234,7 +148,13 @@ const Profile = () => {
           onClose={() => setIsEditModalOpen(false)}
           currentUsername={posts?.username}
           currentPhone={posts?.phone}
+          currentImage={
+            newProfileImg ||
+            posts?.profileImg ||
+            "https://via.placeholder.com/150"
+          }
           refetch={refetch}
+          setNewProfileImg={setNewProfileImg}
         />
       )}
     </div>

@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function SampleNextArrow(props) {
+export function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
@@ -33,7 +33,7 @@ function SampleNextArrow(props) {
   );
 }
 
-function SamplePrevArrow(props) {
+export function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
@@ -62,6 +62,8 @@ function SamplePrevArrow(props) {
 
 const ServiceHeader = () => {
   const { data: services } = useGetServiceQuery(undefined);
+
+  
 
   const navigate = useNavigate()
 

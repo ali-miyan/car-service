@@ -1,17 +1,54 @@
+import { Link } from "react-router-dom";
+import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
+import Features from "./Features";
+import VehicleService from "./Slider";
 
 const HomePage = () => {
+  const { data: services } = useGetServiceQuery(undefined);
+
+  console.log(services, "dse");
+
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex flex-col font-bai-regular items-center justify-center min-h-screen">
       <div className="w-full">
         <img
-          src="../../../public/assets/item-1.jpg" 
+          src="../../../public/assets/item-1.jpg"
           alt="Banner"
-          className="w-full h-full mt-16 object-cover"
+          className="w-full  object-cover mt-16"
         />
       </div>
-      <div className="p-4 mt-16 bg-white  max-w-md mx-auto shadow-lg rounded-lg">
-        <h1 className="text-4xl font-bold text-center">Welcome to Our Website</h1>
-        <p className="text-center mt-4">This is a simple homepage with a responsive banner image.</p>
+
+      <VehicleService />
+      <Features />
+
+      <div className="p-4 w-10/12">
+        <div className="mx-auto px-4 py-8 max-w-7xl">
+          <h2 className="text-xl border-b-2 pb-4 uppercase font-bai-bold text-center mb-8">
+            SERVICES WE PROVIDE
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {services &&
+              services.map((service, index) => (
+                <Link key={index} to={`/services?service=${service._id}`}>
+                <div
+                  key={index}
+                  className="group mx-2 bg-white py-5 rounded-lg shadow-lg hover:shadow-xl cursor-pointer  transition-all hover:rounded-3xl duration-300  flex flex-col items-center"
+                >
+                  <div className="flex justify-center mb-4">
+                    <img
+                      src={service.logoUrl}
+                      alt={service.serviceName}
+                      className="h-24 object-cover rounded-md transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                    />
+                  </div>
+                  <h3 className="text-xs uppercase font-bai-bold text-center text-gray-800">
+                    {service.serviceName}
+                  </h3>
+                </div>
+                </Link>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );

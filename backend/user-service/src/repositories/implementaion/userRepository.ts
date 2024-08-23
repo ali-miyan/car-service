@@ -58,31 +58,38 @@ export class UserRepository implements IUserRepository {
         date: new Date(),
       });
 
-      // Save the user document
       await userDoc.save();
     } catch (error) {
       console.log(error);
       throw new Error("Error updating the wallet in the database");
     }
   }
-  async updateImage(id: string, profileImg: string): Promise<void> {
-    try {
-      await userModel.findByIdAndUpdate(id, { profileImg }, { new: true });
-    } catch (error) {
-      throw new Error("error in db");
-    }
-  }
   async updateCredentials(
     id: string,
     username: string,
-    phone: null | number
+    phone: null | number,
+    profileImg: string | null
   ): Promise<void> {
     try {
-      await userModel.updateOne({ _id: id }, { $set: { username, phone } });
+      const updateData: {
+        username: string;
+        phone: null | number;
+        profileImg?: string;
+      } = {
+        username,
+        phone,
+      };
+
+      if (profileImg !== null) {
+        updateData['profileImg'] = profileImg;
+      }
+
+      await userModel.updateOne({ _id: id }, { $set: updateData });
     } catch (error) {
       throw new Error("error in db");
     }
   }
+
   async findByEmail(email: string): Promise<IUserData | null> {
     try {
       const user = await userModel.findOne({ email });

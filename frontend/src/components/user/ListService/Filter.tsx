@@ -30,11 +30,7 @@ function Filters() {
             } flex items-center p-1 hover:bg-red-50 rounded cursor-pointer mt-3 space-x-2 mb-2`}
             onClick={() => handleNavigate(_id)}
           >
-            <img
-              src={logo}
-              alt={companyName}
-              className="w-12 h-12 "
-            />
+            <img src={logo} alt={companyName} className="w-12 h-12" />
             <span className="text-xs uppercase pl-4">{companyName}</span>
           </div>
         );

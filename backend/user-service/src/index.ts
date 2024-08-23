@@ -7,6 +7,7 @@ import cors from "cors";
 import http from "http";
 import { createConsumerService, createWalletConsumerService } from "./infrastructure/rabbitMQ";
 import { setupSocketServer } from "./infrastructure/services";
+import { connectKafkaProducer, disconnectKafkaProducer } from "./infrastructure/kafka";
 require("dotenv").config();
 
 const PORT = 3000;
@@ -33,11 +34,13 @@ const startServer = async () => {
     await connectDB();
     createConsumerService();
     createWalletConsumerService();
+    await connectKafkaProducer() 
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.log(error);
+    await disconnectKafkaProducer() 
     process.exit(1);
   }
 };

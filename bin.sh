@@ -5,10 +5,10 @@ cd frontend
 npm run dev &
 cd ..
 
-echo "Starting user service..."
-cd backend/user-service
-npm start &
-cd ../..
+# echo "Starting user service..."
+# cd backend/user-service
+# npm start &
+# cd ../..
 
 # echo "Starting company service..."
 # cd backend/company-servive

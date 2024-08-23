@@ -8,8 +8,7 @@ export interface IUserRepository {
   updateStatus(id: string,data:object): Promise<void>;
   findByEmail(email: string): Promise<IUserData | null>;
   findByPhone(phone: number): Promise<boolean | null>;
-  updateImage(id: string, profileImg: string): Promise<void>;
-  updateCredentials(id: string, username: string, phone: null | number): Promise<void>;
+  updateCredentials(id: string, username: string, phone: null | number ,profileImg: string | null): Promise<void>;
   updatePassword(email: string, newPassword: string): Promise<boolean>;
   getAllUsersCount(): Promise<number>;
   getMonthlyUsers(): Promise<{ month: string; count: number }[]>;

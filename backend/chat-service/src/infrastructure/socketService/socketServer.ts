@@ -3,6 +3,7 @@ import { SaveChatUseCase, SaveBookedUsersChatUseCase } from "../../usecases";
 import { ChatRepository } from "../../repositories";
 import { connectDB } from "../db";
 import { ChatServer } from "./chatServer";
+import { createKafkaConsumer } from "../kafka";
 
 export const setupServer = async (app: any, port: number) => {
   const server = require("http").createServer(app);
@@ -14,6 +15,9 @@ export const setupServer = async (app: any, port: number) => {
       credentials: true,
     },
   });
+
+  await (createKafkaConsumer()).startConsuming();
+  
 
   const chatRepository = new ChatRepository();
   const saveChatUseCase = new SaveChatUseCase(chatRepository);
