@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { getInitialToken } from "../../../helpers/getToken";
 import {
   useBookingSocket,
+  useChatSocket,
 } from "../../../service/socketService";
 import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
@@ -38,6 +39,9 @@ const NotificationModal = () => {
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
+  const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: any[] }>(
+    {}
+  );
 
   const { data } = useGetApprovedCompanyQuery({});
 
@@ -49,6 +53,10 @@ const NotificationModal = () => {
     const stored = localStorage.getItem("orderUpdateNotifications");
     if (stored) {
       setNotifications(JSON.parse(stored));
+    }
+    const storedMessages = localStorage.getItem("unreadMessages");
+    if (storedMessages) {
+      setUnreadMessages(JSON.parse(storedMessages));
     }
   }, []);
 
@@ -85,7 +93,7 @@ const NotificationModal = () => {
         bookingSocket.off("chat_message");
       }
     };
-  }, [bookingSocket, notifications, selectedCompany]);
+  }, [bookingSocket, notifications]);
 
   useEffect(() => {
     const isPending =
@@ -130,6 +138,46 @@ const NotificationModal = () => {
     document.body.style.overflowY = "auto";
   }
 
+  const chatSocket = useChatSocket(token);
+
+  useEffect(() => {
+    if (chatSocket) {
+      chatSocket.on("company_to_user", (messageData: any) => {
+        const { companyId, content } = messageData;
+        setHasNotification(true);
+        setUnreadMessages((prevUnreadMessages) => {
+          const updatedUnreadMessages = {
+            ...prevUnreadMessages,
+            [companyId]: [
+              ...(prevUnreadMessages[companyId] || []),
+              content,
+            ],
+          };
+          localStorage.setItem(
+            "unreadMessages",
+            JSON.stringify(updatedUnreadMessages)
+          );
+          return updatedUnreadMessages;
+        });
+      });
+
+      return () => {
+        chatSocket.off("company_to_user");
+      };
+    }
+  }, [chatSocket]);
+
+  const getLastMessage = (companyId: string) => {
+    const messages = unreadMessages[companyId];
+    return messages && messages.length > 0
+      ? messages[messages.length - 1]
+      : null;
+  };
+
+  const getUnreadCount = (companyId: string) => {
+    return unreadMessages[companyId]?.length || 0;
+  };
+
   return (
     <div className="relative z-50">
       {token && (
@@ -144,7 +192,7 @@ const NotificationModal = () => {
         className="animate-bounce fixed bottom-7 right-4 w-16 h-16 flex items-center justify-center rounded-full bg-[#ab0000] shadow-lg hover:bg-red-900 focus:outline-none"
       >
         <TbMessageDots className="text-white text-2xl" />
-        {hasNotification &&  token === userId && (
+        {hasNotification && token === userId && (
           <span className="absolute top-1 right-1 w-4 h-4 bg-blue-300 rounded-full"></span>
         )}
       </button>
@@ -251,7 +299,7 @@ const NotificationModal = () => {
             )}
 
             {activeSection === "chat" && (
-              <div>
+              <div className="">
                 {selectedCompany ? (
                   <ChatSection
                     selectedCompany={selectedCompany}
@@ -259,21 +307,23 @@ const NotificationModal = () => {
                     token={token}
                   />
                 ) : (
-                  <div className="max-w-4xl mx-auto">
-                    <div className="mb-4">
-                      <input
-                        type="text"
-                        placeholder="Search companies..."
-                        className="w-full p-2 border text-black border-gray-300 rounded-md shadow-sm"
-                      />
-                    </div>
-                    <ul className="divide-y divide-gray-200 mt-4">
+                  <div className="max-w-4xl mx-auto ">
+                    <ul className="divide-y  divide-gray-200">
                       {data && data.length > 0 ? (
                         data.map((company) => (
                           <li
                             key={company._id}
-                            className="flex items-center p-4 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out"
-                            onClick={() => setSelectedCompany(company)}
+                            className="flex items-center  p-4 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out"
+                            onClick={() => {
+                              setSelectedCompany(company);
+                              const updatedUnreadMessages = { ...unreadMessages };
+                              delete updatedUnreadMessages[company._id];
+                              setUnreadMessages(updatedUnreadMessages);
+                              localStorage.setItem(
+                                "unreadMessages",
+                                JSON.stringify(updatedUnreadMessages)
+                              );
+                            }}
                           >
                             <div className="flex-shrink-0 mr-4">
                               <img
@@ -282,14 +332,21 @@ const NotificationModal = () => {
                                 className="w-14 h-14 object-cover rounded-full"
                               />
                             </div>
+                            
                             <div className="flex-grow">
                               <h3 className="text-lg font-medium text-gray-900">
                                 {company.companyName}
                               </h3>
                               <p className="text-sm text-gray-500 mt-1">
-                                Since {company.year}
+                                {getLastMessage(company._id) ||
+                                  `Since ${company.year}`}
                               </p>
                             </div>
+                            {getUnreadCount(company._id) > 0 && (
+                                <span className="text-xs bg-red-900 text-white rounded-full px-2 py-1">
+                                  {getUnreadCount(company._id)} unread
+                                </span>
+                              )}
                           </li>
                         ))
                       ) : (
@@ -303,42 +360,44 @@ const NotificationModal = () => {
               </div>
             )}
 
-            {hasNotification && activeSection === "notifications" && userId === token && (
-              <>
-                <p className="bg-gray-300 border-l-4 border-yellow-600 text-black p-1 mb-2 text-xs lowercase rounded">
-                  Order pendings
-                </p>
-                <div className="p-3 bg-yellow-100 rounded flex items-center justify-between">
-                  <div className="flex items-center">
-                    <FaSpinner className="w-8 h-8 text-yellow-600 animate-spin" />
-                    <div className="pl-3">
-                      <p className="text-sm text-yellow-800">
-                        Your order is pending. Please complete your order.
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Pending action required
-                      </p>
+            {hasNotification &&
+              activeSection === "notifications" &&
+              userId === token && (
+                <>
+                  <p className="bg-gray-300 border-l-4 border-yellow-600 text-black p-1 mb-2 text-xs lowercase rounded">
+                    Order pendings
+                  </p>
+                  <div className="p-3 bg-yellow-100 rounded flex items-center justify-between">
+                    <div className="flex items-center">
+                      <FaSpinner className="w-8 h-8 text-yellow-600 animate-spin" />
+                      <div className="pl-3">
+                        <p className="text-sm text-yellow-800">
+                          Your order is pending. Please complete your order.
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Pending action required
+                        </p>
+                      </div>
                     </div>
+                    <button
+                      className="px-2 text-xs py-2 lowercase bg-yellow-700 text-white"
+                      onClick={() => {
+                        navigate(`/checkout/${serviceId}`);
+                      }}
+                    >
+                      Proceed
+                    </button>
+                    <button
+                      className="ml-2 px-2 py-2 lowercase bg-red-900 text-white"
+                      onClick={() => {
+                        dispatch(resetOrder());
+                      }}
+                    >
+                      <IoMdClose />
+                    </button>
                   </div>
-                  <button
-                    className="px-2 text-xs py-2 lowercase bg-yellow-700 text-white"
-                    onClick={() => {
-                      navigate(`/checkout/${serviceId}`);
-                    }}
-                  >
-                    Proceed
-                  </button>
-                  <button
-                    className="ml-2 px-2 py-2 lowercase bg-red-900 text-white"
-                    onClick={() => {
-                      dispatch(resetOrder());
-                    }}
-                  >
-                    <IoMdClose />
-                  </button>
-                </div>
-              </>
-            )}
+                </>
+              )}
           </div>
         </div>
       </div>

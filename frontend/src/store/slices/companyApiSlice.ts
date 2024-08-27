@@ -24,7 +24,7 @@ export const companyApiSlice = createApi({
     }),
     getEveryServices: builder.query({
       query: () => {
-        const { sort, search, price, company, service } = getQueryParams();
+        const { sort, search, price, company, service,page } = getQueryParams();
         const queryParams = [];
 
         if (sort) queryParams.push(`sort=${encodeURIComponent(sort)}`);
@@ -32,6 +32,7 @@ export const companyApiSlice = createApi({
         if (price) queryParams.push(`price=${encodeURIComponent(price)}`);
         if (company) queryParams.push(`company=${encodeURIComponent(company)}`);
         if (service) queryParams.push(`service=${encodeURIComponent(service)}`);
+        if (page) queryParams.push(`page=${encodeURIComponent(page)}`);
 
         const queryString =
           queryParams.length > 0 ? `?${queryParams.join("&")}` : "";

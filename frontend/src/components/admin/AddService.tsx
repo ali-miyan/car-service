@@ -134,42 +134,42 @@ const AddYourService: React.FC = () => {
   };
 
   return (
-    <div style={{ height: "100%" }} className="px-4 sm:px-9 min-h-screen sm:w-10/12 pt-14">
-      <div className="font-bai-regular text-sm lowercase ">
-        <h2 className="font-bai-bold uppercase text-center mb-5">ADD GENERAL SERVICE</h2>
-        <div className="text-start w-full flex flex-col sm:flex-row">
-          <div className="w-full sm:w-6/12">
-            <div className="form-group mb-4">
-              <label>Service Name</label>
+    <div className="flex justify-center items-center min-h-screen px-4 sm:px-9 pt-14">
+      <div className="font-bai-regular text-sm lowercase w-full max-w-3xl">
+        <h2 className="font-bai-bold uppercase text-center mb-8 text-xl">ADD GENERAL SERVICE</h2>
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="w-full">
+            <div className="form-group mb-6">
+              <label className="block mb-2">Service Name</label>
               <input
                 onChange={handleInputChange}
                 value={formData.serviceName}
                 type="text"
-                className="h-12 w-full font-bai-regular"
+                className="h-12 w-full font-bai-regular border border-gray-300 rounded px-4"
                 placeholder="Type here"
                 name="serviceName"
               />
               {errors.serviceName && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.serviceName}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.serviceName}</p>
               )}
             </div>
-            <div className="form-group mb-4">
-              <label>Description</label>
+            <div className="form-group mb-6">
+              <label className="block mb-2">Description</label>
               <input
                 type="text"
                 onChange={handleInputChange}
                 value={formData.description}
                 name="description"
-                className="h-12 w-full font-bai-regular"
+                className="h-12 w-full font-bai-regular border border-gray-300 rounded px-4"
                 placeholder="Type here"
               />
               {errors.description && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.description}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.description}</p>
               )}
             </div>
           </div>
-          <div className="w-full sm:w-6/12 sm:pl-5 mt-4 sm:mt-0">
-            <div className="form-group h-36 logo-upload mt-7 relative">
+          <div className="w-full sm:mt-8">
+            <div className="form-group h-36 logo-upload relative">
               <input
                 type="file"
                 name="logo"
@@ -183,39 +183,41 @@ const AddYourService: React.FC = () => {
                   className="w-24 h-24 object-cover m-2"
                 />
               ) : (
-                <span>ADD YOUR COMPANY LOGO</span>
+                <div className="border border-gray-300 rounded flex items-center justify-center h-full">
+                  <span>ADD YOUR COMPANY LOGO</span>
+                </div>
               )}
               {errors.logo && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.logo}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.logo}</p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="form-group mt-5">
-          <h3 className="font-bai-bold mb-2">Sub-Services</h3>
-          <div className="mt-3 border border-gray-300 p-3">
-            <div className="flex items-center mb-3">
+        <div className="form-group mt-8">
+          <h3 className="font-bai-bold mb-4">Sub-Services</h3>
+          <div className="border border-gray-300 rounded p-4">
+            <div className="flex items-center mb-4">
               <input
                 type="text"
                 value={subServiceInput}
                 onChange={handleSubServiceInputChange}
-                className="h-8 flex-grow px-3 font-bai-regular"
+                className="h-10 flex-grow px-3 font-bai-regular border border-gray-300 rounded"
                 placeholder="Enter sub-service"
               />
               <button
                 onClick={handleAddSubService}
-                className="bg-black text-white px-2 py-2 rounded-lg ml-2"
+                className="bg-black text-white px-4 py-2 rounded-lg ml-2"
               >
                 Add
               </button>
             </div>
             {errors.subServices && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs">{errors.subServices}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs mb-2">{errors.subServices}</p>
             )}
             {formData.subServices.map((subService, index) => (
-              <div key={index} className="mb-2">
-                {index + 1} . {subService}
+              <div key={index} className="mb-2 text-gray-700">
+                {index + 1}. {subService}
               </div>
             ))}
           </div>
@@ -223,7 +225,7 @@ const AddYourService: React.FC = () => {
         {errors.global && (
           <p className="text-red-500 text-center mt-5 font-bai-regular lowercase text-xs">{errors.global}</p>
         )}
-        <div className="text-center mt-5 flex justify-center space-x-3">
+        <div className="text-center mt-8 flex justify-center space-x-4">
           <Link to={"/admin/services"}>
             <button className="bg-black h-10 px-4 text-white rounded">Back</button>
           </Link>
@@ -231,7 +233,7 @@ const AddYourService: React.FC = () => {
             buttonText="Submit"
             isLoading={isLoading}
             onClick={handleSubmit}
-            width="w-full sm:w-2/12"
+            width="w-full sm:w-40"
             height="h-10"
           />
         </div>

@@ -18,12 +18,15 @@ import SuccessPage from "../pages/userPages/SuccessPage";
 import FailurePage from "../pages/userPages/FailurePage";
 import OrderDetails from "../pages/userPages/OrderDetails";
 import LiveTrackPage from "../pages/userPages/LiveTrackPage";
+import AboutUs from "../pages/userPages/AboutUsPage";
+import NotFound from "../components/common/404";
 
 const UserRoutes = () => (
   <Routes>
     <Route path="/" element={<Verify element={Home} />} />
     <Route path="/home" element={<Protect element={Home} />} />
     <Route path="/services" element={<Services />} />
+    <Route path="/about-us" element={<AboutUs />} />
     <Route path="/profile" element={<Protect element={Profile} />} />
     <Route path="/for-business" element={<ForBusiness />} />
     <Route
@@ -63,6 +66,7 @@ const UserRoutes = () => (
       path="/live-track/:id"
       element={<Protect element={LiveTrackPage} />}
     />
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 

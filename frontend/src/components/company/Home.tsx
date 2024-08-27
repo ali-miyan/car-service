@@ -157,7 +157,7 @@ const Dashboard = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">{payment}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {address.city}
+                        {address.city || "not provided"}
                       </td>
                     </tr>
                   )

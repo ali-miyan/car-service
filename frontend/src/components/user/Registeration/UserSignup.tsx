@@ -13,23 +13,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface SignupFormProps {
   onOtpRequest: () => void;
-  getEmail: (email: string) => void;
+  getEmail: (email: any) => void;
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const [registerPost, { isLoading }] = useRegisterPostMutation();
-
-  const [isPasswordVisible, setPasswordVisibility] = useState(false);
-  const [isConfirmPasswordVisible, setConfirmPasswordVisibility] =
-    useState(false);
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisibility((prevState) => !prevState);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisibility((prevState) => !prevState);
-  };
 
   const [formData, setFormData] = useState({
     username: "",
@@ -78,7 +66,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    getEmail(formData.email);
+    getEmail(formData);
 
     const newErrors = {
       username: validateInput("username", formData.username),
@@ -98,7 +86,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
 
     if (!hasError && !isEmpty) {
       try {
-        const res = await registerPost(formData).unwrap();
+        const res = await registerPost({ email: formData.email }).unwrap();
         console.log(res);
 
         if (res.success) {
@@ -183,7 +171,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
             Password
           </label>
           <input
-            type={isPasswordVisible ? "text" : "password"}
+            type={"password"}
             placeholder="password"
             name="password"
             value={formData.password}
@@ -193,12 +181,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
             } rounded focus:outline-none`}
           />
         </div>
-        <span
-          className="absolute inset-y-0 left-44  bottom-12 pr-3 flex items-center cursor-pointer"
-          onClick={togglePasswordVisibility}
-        >
-          {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-        </span>
+
         {errors.password && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">
             {errors.password}
@@ -211,7 +194,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
             Password
           </label>
           <input
-            type={isConfirmPasswordVisible ? "text" : "password"}
+            type={"password"}
             placeholder="confirm"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -220,12 +203,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
               errorFields.confirmPassword ? "border-red-500" : "border-gray-500"
             } rounded focus:outline-none`}
           />
-          <span
-            className="absolute inset-y-0 right-9  bottom-12 pr-3 flex items-center cursor-pointer"
-            onClick={toggleConfirmPasswordVisibility}
-          >
-            {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-          </span>
         </div>
         {errors.confirmPassword && (
           <p className="text-red-500 font-bai-regular lowercase text-xs">

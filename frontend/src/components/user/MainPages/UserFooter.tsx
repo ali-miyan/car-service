@@ -19,7 +19,6 @@ const Footer = () => {
               className="w-full md:w-auto p-2 text-center rounded-full lowercase text-gray-700"
             />
             <button
-              type="submit"
               className="bg-[#ab0000] text-white px-4 py-2 mx-3 rounded-full"
             >
               Subscribe
@@ -37,10 +36,10 @@ const Footer = () => {
             you can count on us for reliable and efficient solutions.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-pinterest-p"></i></a>
-              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-twitter"></i></a>
-              <a href="#" className="text-white hover:text-[#ab0000]"><i className="fab fa-linkedin-in"></i></a>
+              <a className="text-white hover:text-[#ab0000]"><i className="fab fa-facebook-f"></i></a>
+              <a className="text-white hover:text-[#ab0000]"><i className="fab fa-pinterest-p"></i></a>
+              <a className="text-white hover:text-[#ab0000]"><i className="fab fa-twitter"></i></a>
+              <a className="text-white hover:text-[#ab0000]"><i className="fab fa-linkedin-in"></i></a>
             </div>
           </div>
 
@@ -56,17 +55,17 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <h2 className="text-lg font-semibold text-white mb-4">CUSTOMER CARE</h2>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-[#ab0000]">FAQs</a></li>
-              <li><a href="#" className="hover:text-[#ab0000]">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-[#ab0000]">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-[#ab0000]">Contact Us</a></li>
+              <li><a className="hover:text-[#ab0000]">FAQs</a></li>
+              <li><a className="hover:text-[#ab0000]">Terms of Service</a></li>
+              <li><a className="hover:text-[#ab0000]">Privacy Policy</a></li>
+              <li><a className="hover:text-[#ab0000]">Contact Us</a></li>
             </ul>
           </div>
         </div>
 
       </footer> 
-        <div className="bg-gray-100   p-5 text-center font-bai-light lowercase text-black ">
-          <p >COPYRIGHT © 2023 CARSERVICE. ALL RIGHTS RESERVED.</p>
+        <div className="bg-gray-100   p-3 text-center font-bai-light lowercase text-black ">
+          <p >COPYRIGHT © 2023 TUNE-UP. ALL RIGHTS RESERVED.</p>
         </div>
     </div>
   );

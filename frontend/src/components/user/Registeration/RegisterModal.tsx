@@ -19,13 +19,13 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   const [allowClose, setAllowClose] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
   const [otp, setOtp] = useState("");
-  const [email, setEmail] = useState("");
+  const [formData, setFromData] = useState<any>();
   const [otpError, setOtpError] = useState("");
 
   const navigate = useNavigate();
 
-  const getEmail = (email: string) => {
-    setEmail(email);
+  const getEmail = (formData:any) => {
+    setFromData(formData);
   };
 
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
@@ -38,7 +38,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   const handleSubmitOtp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await verifyOtp({ otp, email }).unwrap();
+      const res = await verifyOtp({ otp, email:formData.email, username:formData.username,password:formData.password }).unwrap();
       if (res.success) {
         notifySuccess("registered successfully");
         console.log(res);
@@ -114,7 +114,7 @@ const BasicModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
               isLoading={isLoading}
               onOtpChange={handleOtpChange}
               onSubmit={handleSubmitOtp}
-              email ={email}
+              email ={formData.email}
             />
           </>
         )}

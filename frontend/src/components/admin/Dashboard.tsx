@@ -15,6 +15,7 @@ import { useGetDashboardQuery } from "../../store/slices/companyApiSlice";
 import { months } from "../../schema/company";
 import { useGetUserDashboardQuery } from "../../store/slices/userApiSlice";
 import { FaBuilding, FaCog, FaUser } from "react-icons/fa";
+import Loader from "../common/Loader";
 
 ChartJS.register(
   CategoryScale,
@@ -27,8 +28,12 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-  const { data: dashboard } = useGetDashboardQuery({});
-  const { data: users } = useGetUserDashboardQuery({});
+  const { data: dashboard ,isLoading } = useGetDashboardQuery({});
+  const { data: users , isLoading:userLoad } = useGetUserDashboardQuery({});
+
+  if(isLoading || userLoad){
+    <Loader />
+  }
 
   console.log(dashboard, users, "alll");
 

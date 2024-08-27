@@ -76,7 +76,7 @@ const VehicleService = () => {
 
   return (
     <div className="px-4  max-w-full lg:px-8 font-bai-regular py-16 text-center">
-      <div className="text-sm text-gray-500 mb-2">------ Vehicles</div>
+      <div className="text-sm text-gray-500 mb-2">------ Companies</div>
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
         Get More <span className="text-red-900">Mileage</span> Out Of Your
         Vehicle

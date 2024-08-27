@@ -110,13 +110,16 @@ const ServiceHeader = () => {
     ],
   };
 
+  
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialSection = queryParams.get("service");
+ 
 
   const handleNavigate = (id: string) => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set('service', id);
+    currentParams.set("page", "1");
     const newUrl = `/services?${currentParams.toString()}`;
     navigate(newUrl);
   };

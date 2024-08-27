@@ -8,9 +8,7 @@ import UserCar from "./UserCar";
 import Garage from "./Garage";
 import Wallet from "./Wallet";
 import ProfileSettings from "./ProfileSettings";
-import {
-  useGetUserByIdQuery,
-} from "../../../store/slices/userApiSlice";
+import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
 import EditProfileModal from "./EditProfileModal";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
@@ -45,7 +43,6 @@ const Profile = () => {
     }
   }, [selectedSection]);
 
-
   const handleLogout = useCallback(() => {
     document.cookie =
       "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -66,15 +63,15 @@ const Profile = () => {
       <div className="w-full md:w-3/12 lg:w-2/12 bg-gray-100 p-6 rounded-lg">
         <div className="flex flex-col items-center mb-8">
           <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden ">
-              <img
-                src={
-                  newProfileImg ||
-                  posts?.profileImg ||
-                  "https://via.placeholder.com/150"
-                }
-                alt="Profile"
-                className="object-cover w-full h-full"
-              />
+            <img
+              src={
+                newProfileImg ||
+                posts?.profileImg ||
+                "https://via.placeholder.com/150"
+              }
+              alt="Profile"
+              className="object-cover w-full h-full"
+            />
           </div>
           <div className="flex items-center text-xs gap-2 mt-2">
             <p className="text-gray-700">{posts?.username}</p>

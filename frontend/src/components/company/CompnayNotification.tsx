@@ -9,10 +9,6 @@ import "../../styles/Animation.css";
 const CompanyNotificationModal = ({ id, companyData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [activeSection, setActiveSection] = useState<
-    "booked customers" | "general messages"
-  >("general messages");
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -52,51 +48,24 @@ const CompanyNotificationModal = ({ id, companyData }) => {
               <FaTimes className="w-4 h-4 text-black" />
             </button>
           </div>
-          <div className="flex items-center my-4 justify-between">
-            <button
+          <div className="flex items-center text-center mt-4 justify-between">
+            <div
               className={`px-4 font-bai-regular lowercase py-2 border-b-2 ${
-                activeSection === "general messages"
-                  ? "border-red-900 text-red-900"
-                  : "border-transparent  text-gray-600"
+                "border-red-900 text-red-900"
               } w-full transition-colors duration-300`}
               onClick={() => {
-                setActiveSection("general messages");
                 setSelectedUser(null);
               }}
             >
-              general messages
-            </button>
-            <button
-              className={`px-4 font-bai-regular lowercase py-2 border-b-2 ${
-                activeSection === "booked customers"
-                  ? "border-red-900 text-red-900"
-                  : "border-transparent  text-gray-600"
-              } w-full transition-colors duration-300`}
-              onClick={() => {
-                setActiveSection("booked customers");
-                setSelectedUser(null);
-              }}
-            >
-              booked customers
-            </button>
+               customer messages
+            </div>
           </div>
-          {activeSection === "booked customers" && isOpen ? (
-            <BookerCustomerChat
-              id={id}
-              companyData={companyData}
-              selectedUser={selectedUser}
-              setSelectedUser={setSelectedUser}
-            />
-          ) : activeSection === "general messages" && isOpen ? (
               <GeneralChat
                 selectedUser={selectedUser}
                 id={id}
                 companyData={companyData}
                 setSelectedUser={setSelectedUser}
               />
-          ) : (
-            <div>loading</div>
-          )}
         </div>
       </div>
     </div>

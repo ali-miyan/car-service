@@ -12,9 +12,6 @@ const UserProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
 
   const token = getInitialToken("userToken");
-
-  console.log(token, "tokkeeen");
-
   useEffect(() => {
     if (!token) {
       navigate("/");

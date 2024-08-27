@@ -82,8 +82,6 @@ const OrderDetail: React.FC = () => {
           async (position) => {
             const { latitude, longitude } = position.coords;
 
-            console.log("changeongcahngeincangen");
-
             try {
               await updateDriverLocation({
                 orderId: order.data.id,
@@ -124,7 +122,7 @@ const OrderDetail: React.FC = () => {
       if (res.success) {
         console.log(res);
         notifySuccess("successfully updated");
-        await refetch();
+        refetch();
       }
     } catch (error) {
       console.log(error);

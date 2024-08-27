@@ -6,14 +6,12 @@ import Filters from "./Filter";
 import Loader from "../../common/Loader";
 import { IoIosSearch } from "react-icons/io";
 import Pagination from "../../common/Pagination";
+import ServerSidePagination from "../../common/serverSidePagination";
 
 const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentParams = new URLSearchParams(location.search);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
 
   const {
     data: servicesData,
@@ -21,14 +19,11 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
     refetch,
   } = useGetEveryServicesQuery({});
 
-  const currentPosts = servicesData?.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  console.log(servicesData,'servuvedata');
+  
 
-  console.log(currentPosts, "servocedata");
 
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>(currentParams.get("search") || "");
 
   useEffect(() => {
     refetch();
@@ -50,11 +45,18 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const sortValue = event.target.value;
     currentParams.set("sort", sortValue);
+    currentParams.set("page", "1");
     navigate(`/services?${currentParams.toString()}`);
   };
 
   const handleSearchClick = () => {
     currentParams.set("search", searchValue);
+    currentParams.set("page", "1");
+    navigate(`/services?${currentParams.toString()}`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    currentParams.set("page", newPage.toString());
     navigate(`/services?${currentParams.toString()}`);
   };
 
@@ -97,8 +99,8 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {currentPosts && currentPosts.length > 0 ? (
-            currentPosts.map((service: any) => (
+          {servicesData && servicesData?.services?.length > 0 ? (
+            servicesData?.services?.map((service: any) => (
               <div
                 key={service._id}
                 onClick={() =>
@@ -119,15 +121,17 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
               </div>
             ))
           ) : (
-            <p className="text-end my-10">No service available</p>
+            <p className="text-end my-10 ">No service available</p>
           )}
         </div>
-        <Pagination
-          totalItems={servicesData?.length || 0}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          onPageChange={(page) => setCurrentPage(page)}
+        <div className="flex justify-center mt-10 ">
+
+        <ServerSidePagination
+          currentPage={parseInt(currentParams.get("page") || "1", 6)}
+          totalPages={servicesData.totalPages}
+          onPageChange={handlePageChange}
         />
+        </ div>
       </div>
     </>
   );

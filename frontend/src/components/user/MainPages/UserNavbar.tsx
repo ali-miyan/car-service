@@ -2,16 +2,9 @@ import "../../../styles/NavbarStyle.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import BasicModal from "../Registeration/RegisterModal";
-import {
-  FaFacebook,
-  FaTwitter,
-  FaGooglePlusG,
-  FaLinkedin,
-  FaPinterest,
-  FaYoutube,
-  FaUserCircle,
-  FaInstagram,
-} from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { LuUserCircle } from "react-icons/lu";
+
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
@@ -19,6 +12,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import { useUserSocket } from "../../../service/socketService";
 import NotificationModal from "./SideNotifacation";
 import { ReactNotifications } from "react-notifications-component";
+import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 
 const UserNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +21,9 @@ const UserNavbar = () => {
 
   const token = getInitialToken("userToken");
 
-  const socket = useUserSocket(token);
+  const { data: posts, refetch } = useGetUserByIdQuery(token as string);
+
+  const socket = useUserSocket(token as string);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -159,7 +155,10 @@ const UserNavbar = () => {
             <Link
               to="/services"
               className={`text-white font-bai-regular px-3 py-2 custom-underline ${
-                currentPath === "/services" ? "active" : ""
+                currentPath === "/services" ||
+                currentPath.match(/^\/selected-service\/[a-f0-9]{24}$/)
+                  ? "active"
+                  : ""
               }`}
             >
               SERVICES
@@ -186,16 +185,35 @@ const UserNavbar = () => {
 
           <div className="flex items-center text-white space-x-4">
             {token ? (
-              <Link to={"/profile?section=car"}>
-                <div className="flex justify-start">
-                  <FaUserCircle className="w-8 h-8 cursor-pointer" />
+              <Link
+                to={"/profile?section=car"}
+                className="flex items-center space-x-2 text-xs"
+              >
+                <LuUserCircle className="text-gray-200" size={40} />
+                <div>
+                  <span>welcome</span>
+                  <br />
+                  <span className="text-gray-400 uppercase ">
+                    {posts?.username}
+                  </span>
                 </div>
               </Link>
             ) : (
-              <FaUserCircle
-                className="w-8 h-8 cursor-pointer"
-                onClick={handleModalOpen}
-              />
+              <>
+                <div
+                  className="flex items-center space-x-2 text-xs cursor-pointer"
+                  onClick={handleModalOpen}
+                >
+                  <LuUserCircle className="w-8 h-8 cursor-pointer" />
+                  <div>
+                    <span>welcome</span>
+                    <br />
+                    <span className="text-gray-400 lowercase ">
+                      signup/login
+                    </span>
+                  </div>
+                </div>
+              </>
             )}
 
             {token && <NotificationModal />}
