@@ -22,15 +22,23 @@ export class ChatServer {
       console.log("New client connected:", socket.id);
 
       socket.on("user_message_sent", async (messageData: any) => {
-        const { userId, username, userImg, companyId, content, timestamp } = messageData;
-        console.log(messageData,'user to company recieved');
-        
+        const {
+          userId,
+          username,
+          userImg,
+          companyId,
+          content,
+          timestamp,
+          type,
+        } = messageData;
+
         this.io.emit("user_to_company", {
           userId,
           username,
           userImg,
           content,
           timestamp,
+          type,
         });
         await this.saveChatUseCase.execute(
           userId,
@@ -38,9 +46,11 @@ export class ChatServer {
           userImg,
           companyId,
           content,
-          timestamp
+          timestamp,
+          type
         );
       });
+
       socket.on("company_message_sent", async (messageData: any) => {
         const {
           chatId,
@@ -50,14 +60,18 @@ export class ChatServer {
           userId,
           content,
           timestamp,
+          type,
         } = messageData;
+
         this.io.emit("company_to_user", {
           companyId,
           companyName,
           companyImg,
           content,
           timestamp,
+          type,
         });
+        
         if (chatId) {
           await this.saveChatUseCase.execute(
             companyId,
@@ -66,6 +80,7 @@ export class ChatServer {
             userId,
             content,
             timestamp,
+            type,
             chatId
           );
         } else {

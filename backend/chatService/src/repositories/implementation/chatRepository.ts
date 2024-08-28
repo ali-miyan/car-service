@@ -1,9 +1,10 @@
-import { Chat, IUserDetails } from "../../entities";
+import { Chat } from "../../entities";
 import { IChatRepository } from "../interfaces";
 import { ChatModel, IChat } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
 
 export class ChatRepository implements IChatRepository {
+  
   async getOneChat(chatId: string): Promise<Chat | null> {
     try {
       const chat = await ChatModel.findOne({ _id: chatId });
@@ -12,18 +13,18 @@ export class ChatRepository implements IChatRepository {
       }
       return chat.toObject();
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getById(companyId: string): Promise<IChat[] | null> {
     try {
       return await ChatModel.find({ "company.companyId": companyId });
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async editUser(
     userId: any,
     username: string,
@@ -32,15 +33,16 @@ export class ChatRepository implements IChatRepository {
     try {
       const update: Partial<any> = {};
 
-      if (username !== null) update['user.username'] = username;
-      if (profileImg !== null) update['user.userImg'] = profileImg;
-      
-      const res = await ChatModel.updateMany({ 'user.userId':userId }, { $set: update });      
-      console.log('updated hex  x re also',res,update);
-      
+      if (username !== null) update["user.username"] = username;
+      if (profileImg !== null) update["user.userImg"] = profileImg;
+
+      const res = await ChatModel.updateMany(
+        { "user.userId": userId },
+        { $set: update }
+      );
+      console.log("updated hex  x re also", res, update);
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -56,8 +58,7 @@ export class ChatRepository implements IChatRepository {
       if (!chat) return null;
       return chat.toObject() as Chat;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -66,7 +67,7 @@ export class ChatRepository implements IChatRepository {
       await ChatModel.findByIdAndUpdate(chat._id, chat);
     } catch (error) {
       console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -75,8 +76,7 @@ export class ChatRepository implements IChatRepository {
       const newChat = new ChatModel(chat);
       await newChat.save();
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

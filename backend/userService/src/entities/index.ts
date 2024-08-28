@@ -1,2 +1,2 @@
-export * from './userEntity';
-export * from './carEntity';
+export * from "./userEntity";
+export * from "./carEntity";

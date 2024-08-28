@@ -4,18 +4,20 @@ import { userModel, IUserData } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
 
 export class UserRepository implements IUserRepository {
+
   async getAll(): Promise<IUserData[] | null> {
     try {
       return await userModel.find();
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getById(id: string): Promise<IUserData | null> {
     try {
       return await userModel.findOne({ _id: id });
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -25,9 +27,10 @@ export class UserRepository implements IUserRepository {
         new: true,
       });
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async addToWallet(
     userId: string,
     amount: string,
@@ -60,10 +63,10 @@ export class UserRepository implements IUserRepository {
 
       await userDoc.save();
     } catch (error) {
-      console.log(error);
-      throw new Error("Error updating the wallet in the database");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async updateCredentials(
     id: string,
     username: string,
@@ -81,12 +84,12 @@ export class UserRepository implements IUserRepository {
       };
 
       if (profileImg !== null) {
-        updateData['profileImg'] = profileImg;
+        updateData["profileImg"] = profileImg;
       }
 
       await userModel.updateOne({ _id: id }, { $set: updateData });
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -96,16 +99,17 @@ export class UserRepository implements IUserRepository {
       if (!user) return null;
       return user;
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async findByPhone(phone: number): Promise<boolean | null> {
     try {
       const user = await userModel.findOne({ phone });
       if (!user) return null;
       return true;
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -117,7 +121,7 @@ export class UserRepository implements IUserRepository {
       await user.save();
       return true;
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -133,16 +137,18 @@ export class UserRepository implements IUserRepository {
         phone: user.phone,
       };
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getAllUsersCount(): Promise<number> {
     try {
       return await userModel.countDocuments({});
     } catch (error) {
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getMonthlyUsers(): Promise<{ month: string; count: number }[]> {
     try {
       const result = await userModel
@@ -178,8 +184,7 @@ export class UserRepository implements IUserRepository {
         count: item.count,
       }));
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -189,9 +194,8 @@ export class UserRepository implements IUserRepository {
       await newUser.save();
       return newUser;
     } catch (error) {
-      console.log(error);
-
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+  
 }

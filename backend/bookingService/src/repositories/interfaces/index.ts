@@ -1,3 +1,3 @@
-export * from './redisInterface'
-export * from './bookingInterface'
-export * from './userInterface'
+export * from "./redisInterface";
+export * from "./bookingInterface";
+export * from "./userInterface";

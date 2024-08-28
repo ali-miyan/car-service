@@ -13,8 +13,8 @@ export class RatingController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { id } = req.params;
 
+    const { id } = req.params;
 
     if (!id) {
       throw new BadRequestError("id not found");
@@ -27,22 +27,25 @@ export class RatingController {
       next(error);
     }
   }
+
   async updateRating(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const { stat, userId, _id } = req.body;
 
-    if (!stat || !userId || !_id) {
-      throw new BadRequestError("invalid input");
-    }
-
     try {
-      const response = await this.updateRatingUseCase.execute(_id,stat,userId);
+      const response = await this.updateRatingUseCase.execute(
+        _id,
+        stat,
+        userId
+      );
       res.status(201).json(response);
     } catch (error) {
       next(error);
     }
   }
+  
 }

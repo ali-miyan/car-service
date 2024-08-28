@@ -4,12 +4,7 @@ import { connectDB } from "./infrastructure/db/mongoConfig";
 import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import {
-  startSlotGrpcServer,
-  startServiceGrpcServer,
-  startCompanyIdsGrpcServer,
-} from "./infrastructure/grpc/grpcServices";
-import { createConsumerService } from "./infrastructure/rabbitMQ/rabbitMQServices";
+import { initializeGrpcServices } from "./infrastructure";
 
 const PORT = 3001;
 
@@ -30,13 +25,10 @@ app.use(errorHandler);
 
 const startServer = async () => {
   await connectDB();
+  initializeGrpcServices();
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`company server is running on port ${PORT}`);
   });
-  startCompanyIdsGrpcServer();
-  startSlotGrpcServer();
-  startServiceGrpcServer();
-  createConsumerService();
 };
 
 startServer();

@@ -1,6 +1,7 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from "../rabbitMQConfig";
 import { WalletUseCase } from "../../../usecases";
+import { BadRequestError } from "tune-up-library";
 
 export class WalletConsumerService {
   private channel!: Channel;
@@ -22,17 +23,13 @@ export class WalletConsumerService {
     this.channel.consume(rabbitMQConfig.queueName4, async (message) => {
       if (message) {
         try {
-          console.log(
-            message.content.toString(),
-            "this is consumed from booking wallet"
-          );
           const userDetails = message.content.toString();
           this.channel.ack(message);
 
           await this.walletUseCase.execute(JSON.parse(userDetails));
         } catch (error) {
-          console.log(error);
           this.channel.nack(message, false, true);
+          throw new BadRequestError("error in rabbitMq" + error);
         }
       }
     });

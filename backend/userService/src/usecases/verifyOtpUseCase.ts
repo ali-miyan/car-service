@@ -9,12 +9,15 @@ export class VerifyOtpUseCase {
     private userRepository: IUserRepository
   ) {}
 
-  async execute(otp: string, email: string,username:string,password:string): Promise<any> {
+  async execute(
+    otp: string,
+    email: string,
+    username: string,
+    password: string
+  ): Promise<any> {
     if (!otp) {
       throw new BadRequestError("Invalid input");
     }
-
-    
 
     const userOtp = await this.verifyOtpRepository.get(email);
 
@@ -33,19 +36,18 @@ export class VerifyOtpUseCase {
       wallet: 0,
     });
 
-    const userData = await this.userRepository.save(user)
-
+    const userData = await this.userRepository.save(user);
 
     const token = TokenService.generateToken({
-      user: (userData._id as string),
-      role: 'user',
+      user: userData._id as string,
+      role: "user",
     });
 
     const refreshToken = TokenService.generateRefreshToken({
-      user:(userData._id as string),
-      role:'user'
+      user: userData._id as string,
+      role: "user",
     });
 
     return { success: true, token, refreshToken };
-  } 
+  }
 }

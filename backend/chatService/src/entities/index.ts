@@ -1,1 +1,1 @@
-export * from './chatEntity'
+export * from "./chatEntity";

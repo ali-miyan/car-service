@@ -5,24 +5,18 @@ export class AdminController {
   constructor(private registerCompany: RegisterUseCase) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const {
-      email,
-      password,
-    } = req.body;
+    
+    const { email, password } = req.body;
 
     try {
-      const response = await this.registerCompany.execute(
-        email,
-        password,
-      );
+      const response = await this.registerCompany.execute(email, password);
 
-
-      if(response.success){
-        res.cookie('adminToken', response.token, {
-          maxAge:60 * 60 * 1000, 
+      if (response.success) {
+        res.cookie("adminToken", response.token, {
+          maxAge: 60 * 60 * 1000,
         });
-        res.cookie('adminRefreshToken', response.refreshToken, {
-          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        res.cookie("adminRefreshToken", response.refreshToken, {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         });
       }
 

@@ -16,17 +16,28 @@ export class ServiceUseCase {
     buffer: Buffer,
     mimetype: string
   ): Promise<any> {
-
-    if(!serviceName || !description || !services ){
-        throw new BadRequestError("invalid input");
+    
+    if (!serviceName || !description || !services) {
+      throw new BadRequestError("invalid input");
     }
 
-    const logoUrl = await this.s3ServiceRepository.uploadFile("tune-up",originalname,buffer,mimetype);
+    const logoUrl = await this.s3ServiceRepository.uploadFile(
+      "tune-up",
+      originalname,
+      buffer,
+      mimetype
+    );
 
     const subServicesObjects = services.map((name: string) => ({ name }));
-    
-    await this.serviceRepository.save({serviceName,description,logoUrl,subServices:subServicesObjects})
-    
+
+    await this.serviceRepository.save({
+      serviceName,
+      description,
+      logoUrl,
+      subServices: subServicesObjects,
+    });
+
     return { success: true };
+
   }
 }

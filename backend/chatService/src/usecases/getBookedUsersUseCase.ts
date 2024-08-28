@@ -1,9 +1,8 @@
 import { BadRequestError, NotFoundError } from "tune-up-library";
-import { IChatRepository } from "../repositories";
 import { getUsersFromBooking } from "../infrastructure/grpc/grpcServices";
 
 export class GetBookedUsersUseCase {
-  constructor(private chatRepository: IChatRepository) {}
+  constructor() {}
 
   async execute(companyId: string): Promise<any> {
     try {
@@ -12,11 +11,9 @@ export class GetBookedUsersUseCase {
       }
       const { users } = await getUsersFromBooking(companyId);
 
-
       return users;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

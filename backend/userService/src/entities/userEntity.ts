@@ -1,21 +1,21 @@
 export interface IUserData {
-  _id?:any;
+  _id?: any;
   username: string;
   email: string;
   phone: number | null;
   password: string;
-  wallet:number
+  wallet: number;
 }
 
-export class  User {
-  _id?:any;
+export class User {
+  _id?: any;
   username: string;
   email: string;
   phone: number | null;
   password: string;
-  wallet:number;
+  wallet: number;
 
-  constructor({_id, username, email, phone, password,wallet }: IUserData) {
+  constructor({ _id, username, email, phone, password, wallet }: IUserData) {
     this._id = _id;
     this.username = username;
     this.email = email;

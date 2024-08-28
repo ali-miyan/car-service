@@ -1,1 +1,1 @@
-export * from './rabbitMQConfig'
+export * from "./rabbitMQConfig";

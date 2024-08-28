@@ -1,2 +1,2 @@
-export * from '../../infrastructure/services/validateRepository';
-export * from './serviceRepository';
+export * from "../../infrastructure/services/validateRepository";
+export * from "./serviceRepository";

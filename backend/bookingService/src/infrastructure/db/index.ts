@@ -1,2 +1,2 @@
-export * from './postgreConfig'
-export * from './models'
+export * from "./postgreConfig";
+export * from "./models";

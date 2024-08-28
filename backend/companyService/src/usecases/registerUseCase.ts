@@ -22,14 +22,14 @@ export class RegisterUseCase {
     licenseExpiry: string,
     password: string,
     files: any,
-    description:string,
+    description: string,
     address: string
   ): Promise<any> {
     if (isLicenseExpired(licenseExpiry)) {
       throw new BadRequestError("Your License has expired, please renew");
     }
 
-    const [logo,licenseImgFile, approvedImgFile] = files;
+    const [logo, licenseImgFile, approvedImgFile] = files;
 
     const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
       "tune-up",
@@ -46,7 +46,7 @@ export class RegisterUseCase {
       }
     );
 
-    const hashedPassword = await hashPassword(password)
+    const hashedPassword = await hashPassword(password);
 
     const company = new Company({
       ownerName,
@@ -56,14 +56,14 @@ export class RegisterUseCase {
       contact2,
       year,
       email,
-      password:hashedPassword,
+      password: hashedPassword,
       licenseExpiry,
       licenseImg: uploadedFiles["licenseImg"],
       approvedImg: uploadedFiles["approvedImg"],
       licenseNumber,
       description,
       address: JSON.parse(address),
-      isApproved:'pending'
+      isApproved: "pending",
     });
 
     const token = TokenService.generateToken({

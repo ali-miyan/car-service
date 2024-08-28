@@ -1,3 +1,3 @@
-export * from './checkSlotService'
-export * from './getServiceDetails'
-export * from './getBookedUsers'
+export * from "./checkSlotService";
+export * from "./getServiceDetails";
+export * from "./getBookedUsers";

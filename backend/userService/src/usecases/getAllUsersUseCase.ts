@@ -1,4 +1,3 @@
-import { BadRequestError } from "tune-up-library";
 import { IUserRepository } from "../repositories";
 
 export class GetAllUsersUseCase {

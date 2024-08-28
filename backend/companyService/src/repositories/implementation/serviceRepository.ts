@@ -1,8 +1,10 @@
 import { Service } from "../../entities";
 import { IServiceRepository } from "../interfaces";
 import { IService, serviceModal } from "../../infrastructure/db";
+import { BadRequestError } from "tune-up-library";
 
 export class ServiceRepository implements IServiceRepository {
+
   async find(email: string): Promise<IService | null> {
     try {
       const newService = await serviceModal.findOne({ email: email });
@@ -10,18 +12,20 @@ export class ServiceRepository implements IServiceRepository {
       return newService;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getAll(companyId: string): Promise<IService[] | null> {
     try {
       const newService = await serviceModal.find({ companyId });
       return newService;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getSingle(_id: string): Promise<IService | null> {
     try {
       const newService = await serviceModal
@@ -30,17 +34,19 @@ export class ServiceRepository implements IServiceRepository {
       return newService;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getTotalServices(): Promise<number> {
     try {
-      return await serviceModal.countDocuments({})
+      return await serviceModal.countDocuments({});
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getPackageDetails(
     serviceId: string,
     packageName: "basic" | "standard" | "premium"
@@ -50,7 +56,8 @@ export class ServiceRepository implements IServiceRepository {
         .findOne({ _id: serviceId })
         .populate({
           path: "companyId",
-          select: "companyName logo address.latitude address.longitude contact1 contact2",
+          select:
+            "companyName logo address.latitude address.longitude contact1 contact2",
         });
       if (!service) {
         throw new Error("service is null");
@@ -76,46 +83,48 @@ export class ServiceRepository implements IServiceRepository {
 
   async getEveryService(): Promise<IService[] | null> {
     try {
-      const services = await serviceModal.aggregate([
-        {
-          $match: { isBlocked: false }
-        },
-        {
-          $lookup: {
-            from: 'ratings',
-            let: { serviceId: { $toString: '$_id' } },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $eq: [{ $toString: '$serviceId' }, '$$serviceId']
-                  }
-                }
-              }
-            ],
-            as: 'ratings'
-          }
-        },
-      ]).exec();
-  
+      const services = await serviceModal
+        .aggregate([
+          {
+            $match: { isBlocked: false },
+          },
+          {
+            $lookup: {
+              from: "ratings",
+              let: { serviceId: { $toString: "$_id" } },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: [{ $toString: "$serviceId" }, "$$serviceId"],
+                    },
+                  },
+                },
+              ],
+              as: "ratings",
+            },
+          },
+        ])
+        .exec();
+
       const populatedServices = await serviceModal.populate(services, {
-        path: 'companyId',
+        path: "companyId",
       });
-  
+
       return populatedServices;
     } catch (error) {
       console.log(error);
-      throw new Error('error in db');
+      throw new BadRequestError("error in db" + error);
     }
   }
-  
+
   async getById(id: string): Promise<IService | null> {
     try {
       const newService = await serviceModal.findOne({ _id: id });
       return newService;
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -156,7 +165,7 @@ export class ServiceRepository implements IServiceRepository {
       const user = await serviceModal.deleteOne({ _id: id });
       return user;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -167,9 +176,10 @@ export class ServiceRepository implements IServiceRepository {
       });
     } catch (error) {
       console.log(error);
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async save(service: Service): Promise<void> {
     try {
       const { _id, ...serviceData } = service;
@@ -183,8 +193,8 @@ export class ServiceRepository implements IServiceRepository {
 
       await newService.save();
     } catch (error) {
-      console.error("Error saving service:", error);
-      throw new Error("Error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
 }

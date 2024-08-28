@@ -1,1 +1,1 @@
-export * from './grpcServices'
+export * from "./grpcServices";

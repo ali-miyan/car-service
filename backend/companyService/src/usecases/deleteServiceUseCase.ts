@@ -13,6 +13,6 @@ export class DeleteServiceUseCase {
 
     await this.serviceRepository.deleteOne(serviceId);
 
-    return {success:true}
+    return { success: true };
   }
 }

@@ -1,3 +1,3 @@
-export * from './companyEntity';
-export * from './serviceEntity';
-export * from './ratingEntity';
+export * from "./companyEntity";
+export * from "./serviceEntity";
+export * from "./ratingEntity";

@@ -4,7 +4,6 @@ import {
   GetServiceUseCase,
   ServiceUseCase,
 } from "../../usecases";
-import { BadRequestError } from "tune-up-library";
 import { UpdateServiceUseCase } from "../../usecases";
 
 export class ServiceController {
@@ -20,6 +19,7 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const { serviceName, description, services } = req.body;
     const { originalname, buffer, mimetype } = (req as any).file;
 
@@ -34,6 +34,7 @@ export class ServiceController {
       );
 
       res.status(201).json(company);
+
     } catch (error) {
       next(error);
     }
@@ -44,6 +45,7 @@ export class ServiceController {
     next: NextFunction
   ): Promise<void> {
     try {
+
       const { companyId } = req.query;
 
       const company = await this.getServiceRepository.execute(
@@ -51,6 +53,7 @@ export class ServiceController {
       );
 
       res.status(201).json(company);
+
     } catch (error) {
       next(error);
     }
@@ -60,16 +63,13 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const { id } = req.params;
-
-
-    if (!id) {
-      throw new BadRequestError("id not found");
-    }
 
     try {
       const response = await this.deleteServiceRepository.execute(id);
       res.status(201).json(response);
+
     } catch (error) {
       next(error);
     }
@@ -79,12 +79,9 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const { id } = req.params;
     const status = req.body;
-
-    if (!id) {
-      throw new BadRequestError("id not found");
-    }
 
     try {
       const response = await this.updateStatusRepository.execute(id, status);

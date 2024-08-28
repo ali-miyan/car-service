@@ -1,10 +1,11 @@
+import { BadRequestError } from "tune-up-library";
 import { kafkaProducer } from ".";
 
 export class KafkaService {
   async sendMessage(topic: string, message: object): Promise<void> {
     try {
-        console.log('message sent to topic -- ' + topic);
-        
+      console.log("message sent to topic -- " + topic);
+
       await kafkaProducer.send({
         topic,
         messages: [
@@ -14,8 +15,7 @@ export class KafkaService {
         ],
       });
     } catch (error) {
-      console.error("Failed to send Kafka message", error);
-      throw new Error("Failed to send Kafka message");
+      throw new BadRequestError("error in kafka" + error);
     }
   }
 }

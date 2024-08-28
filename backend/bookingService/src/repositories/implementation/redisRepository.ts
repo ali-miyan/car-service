@@ -24,8 +24,7 @@ export class RedisOtpRepository implements IRedisRepository {
     try {
       await this.client.set(key, value, "EX", ttlSeconds);
     } catch (error) {
-      console.log(error);
-      throw new Error("error in db");
+      throw new Error("error in db" + error);
     }
   }
 
@@ -33,8 +32,7 @@ export class RedisOtpRepository implements IRedisRepository {
     try {
       return await this.client.get(key);
     } catch (error) {
-      console.log(error);
-      throw new Error("error in db");
+      throw new Error("error in db" + error);
     }
   }
 
@@ -42,7 +40,7 @@ export class RedisOtpRepository implements IRedisRepository {
     try {
       await this.client.del(key);
     } catch (error) {
-      throw new Error("error in db");
+      throw new Error("error in db" + error);
     }
   }
 }

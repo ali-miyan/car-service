@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import { IRedisRepository } from "../interfaces";
 import Redis, { Redis as RedisClient } from "ioredis";
 
@@ -20,15 +21,11 @@ export class RedisOtpRepository implements IRedisRepository {
     });
   }
 
-  async store(
-    email: string,
-    otp: string,
-    ttlSeconds: number
-  ): Promise<void> {
+  async store(email: string, otp: string, ttlSeconds: number): Promise<void> {
     try {
       await this.client.set(email, otp, "EX", ttlSeconds);
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -36,7 +33,7 @@ export class RedisOtpRepository implements IRedisRepository {
     try {
       return await this.client.get(email);
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -44,7 +41,7 @@ export class RedisOtpRepository implements IRedisRepository {
     try {
       await this.client.del(email);
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

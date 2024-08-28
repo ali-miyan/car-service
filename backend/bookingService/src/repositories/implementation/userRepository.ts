@@ -2,18 +2,19 @@ import { User } from "../../entities";
 import { IUserInterface } from "../interfaces";
 import { userModel, sequelize } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
-import { literal, QueryTypes } from "sequelize";
+import { QueryTypes } from "sequelize";
 
 export class UserRepository implements IUserInterface {
+
   async save(user: User): Promise<userModel> {
     try {
       const newBooking = await userModel.create(user);
       return newBooking;
     } catch (error) {
-      console.log(error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async editUser(
     userId: string,
     username: string,
@@ -43,10 +44,10 @@ export class UserRepository implements IUserInterface {
 
       await sequelize.query(updateQuery);
     } catch (error) {
-      console.log(error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async findOne(carId: string): Promise<any> {
     try {
       const user = await userModel.findOne({
@@ -57,7 +58,6 @@ export class UserRepository implements IUserInterface {
       }
       return user.get({ plain: true });
     } catch (error) {
-      console.log(error);
       throw new Error("Error in db: " + error);
     }
   }
@@ -81,10 +81,10 @@ export class UserRepository implements IUserInterface {
         type: QueryTypes.SELECT,
       });
     } catch (error) {
-      console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async getBookedUserDetails(companyId: string): Promise<any> {
     try {
       console.log(companyId, "companyI99d");
@@ -101,8 +101,8 @@ export class UserRepository implements IUserInterface {
         type: QueryTypes.SELECT,
       });
     } catch (error) {
-      console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);
     }
   }
+  
 }

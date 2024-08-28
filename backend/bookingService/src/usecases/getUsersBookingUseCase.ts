@@ -12,5 +12,6 @@ export class GetUsersBookingUseCase {
       throw new BadRequestError("cant get bookings");
     }
     return data;
+    
   }
 }

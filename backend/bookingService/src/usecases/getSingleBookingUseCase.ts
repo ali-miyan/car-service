@@ -9,6 +9,7 @@ export class GetSingleBookingUseCase {
   ) {}
 
   async execute(orderId: string): Promise<any> {
+
     const data = await this.bookingRepository.getSingle(orderId);
 
     const userDetails = await this.userRepository.findOne(data.carId);
@@ -17,11 +18,11 @@ export class GetSingleBookingUseCase {
       data.typeOfPackage
     );
 
-    
-
     if (!data) {
       throw new BadRequestError("cant get bookings");
     }
+    
     return { data, ...userDetails, ...standardPackage };
+
   }
 }

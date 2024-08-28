@@ -1,2 +1,2 @@
-export * from './kafkaConfig'
-export * from './kafkaProducer'
+export * from "./kafkaConfig";
+export * from "./kafkaProducer";

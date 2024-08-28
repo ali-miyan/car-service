@@ -18,7 +18,7 @@ export interface IService extends Document {
   companyId: mongoose.Types.ObjectId;
   selectedHours: string;
   servicePlace: string;
-  servicesPerDay:string;
+  servicesPerDay: string;
   terms: string;
   images: string[];
   basicPackage: SubService;

@@ -12,7 +12,6 @@ export class LoginUseCase {
 
     const user = await this.loginRepository.findByEmail(email);
 
-
     if (!user) {
       throw new BadRequestError("User not found");
     }
@@ -27,14 +26,13 @@ export class LoginUseCase {
     }
 
     const token = TokenService.generateToken({
-      user: (user._id as string),
+      user: user._id as string,
       role: "user",
     });
     const refreshToken = TokenService.generateRefreshToken({
-      user: (user._id as string),
+      user: user._id as string,
       role: "user",
     });
-
 
     return { success: true, token, refreshToken };
   }

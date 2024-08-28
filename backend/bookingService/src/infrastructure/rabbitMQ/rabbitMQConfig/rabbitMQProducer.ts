@@ -1,5 +1,6 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from ".";
+import { BadRequestError } from "tune-up-library";
 
 export class RabbitMQService {
   private channel?: Channel;
@@ -17,22 +18,19 @@ export class RabbitMQService {
       await this.channel.assertQueue(rabbitMQConfig.queueName1);
       await this.channel.assertQueue(rabbitMQConfig.queueName3);
     } catch (error) {
-      console.error("Failed to initialize ProducerService:", error);
+      throw new BadRequestError("Failed to initialize ProducerService" + error);
     }
   }
 
   public async sendMessage(carId: string) {
     await this.initializationPromise;
     try {
-      this.channel?.sendToQueue(
-        rabbitMQConfig.queueName1,
-        Buffer.from(carId)
-      );
+      this.channel?.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(carId));
     } catch (error) {
-      console.error("Failed to send message:", error);
+      throw new BadRequestError("Failed to send message" + error);
     }
   }
-  public async sendMessageToUser(wallet:any) {
+  public async sendMessageToUser(wallet: any) {
     await this.initializationPromise;
     try {
       this.channel?.sendToQueue(
@@ -40,7 +38,7 @@ export class RabbitMQService {
         Buffer.from(JSON.stringify(wallet))
       );
     } catch (error) {
-      console.error("Failed to send message:", error);
+      throw new BadRequestError("Failed to send message" + error);
     }
   }
 }

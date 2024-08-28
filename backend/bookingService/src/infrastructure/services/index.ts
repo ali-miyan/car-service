@@ -1,2 +1,2 @@
-export * from './stripeService'
-export * from '../grpc/grpcServices/checkSlotService'
+export * from "./stripeService";
+export * from "../grpc/grpcServices/checkSlotService";

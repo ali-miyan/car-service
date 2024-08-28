@@ -4,16 +4,15 @@ import { ServiceRepository } from "../repositories";
 export class ServiceStatusUseCase {
   constructor(private serviceRepository: ServiceRepository) {}
 
-  async execute(id: string,data:object): Promise<any> {
-
+  async execute(id: string, data: object): Promise<any> {
     const service = await this.serviceRepository.getById(id);
 
     if (!service) {
       throw new BadRequestError(`Service with ID ${id} not found.`);
     }
 
-    await this.serviceRepository.updateStatus(id,data);
+    await this.serviceRepository.updateStatus(id, data);
 
-    return {success:true}
+    return { success: true };
   }
 }

@@ -1,2 +1,2 @@
-export * from './mongoConfig'
-export * from './models'
+export * from "./mongoConfig";
+export * from "./models";

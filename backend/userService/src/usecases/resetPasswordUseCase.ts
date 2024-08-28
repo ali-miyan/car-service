@@ -1,6 +1,6 @@
 import { BadRequestError } from "tune-up-library";
 import { IUserRepository, IRedisRepository } from "../repositories";
-import { hashPassword } from '../utils';
+import { hashPassword } from "../utils";
 
 export class ResetPasswordUseCase {
   constructor(
@@ -25,6 +25,6 @@ export class ResetPasswordUseCase {
 
     await this.redisRepository.delete(token);
 
-    return {success:true}
+    return { success: true };
   }
 }

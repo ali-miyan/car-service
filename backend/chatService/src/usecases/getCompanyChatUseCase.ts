@@ -11,12 +11,10 @@ export class GetCompanyChatUseCase {
       }
 
       const chat: any = await this.chatRepository.getById(companyId);
-      // const { users }: any = await getUsersFromBooking(companyId);
 
       return chat.length > 0 ? chat : null;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

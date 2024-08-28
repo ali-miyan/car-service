@@ -1,7 +1,6 @@
 import { BadRequestError } from "tune-up-library";
 import { IBookingRepository } from "../repositories";
 import { Booking } from "../entities";
-import { v4 as uuidv4 } from "uuid";
 import {
   checkSlotAvailability,
   StripeService,
@@ -76,9 +75,12 @@ export class BookingUseCase {
       );
       response = { id: sessionId };
     } else {
-
-      if(payment.toLowerCase() === "wallet"){
-        await this.rabbitMQService.sendMessageToUser({userId,amount:totalPrice.toString(),stat:"debit"})
+      if (payment.toLowerCase() === "wallet") {
+        await this.rabbitMQService.sendMessageToUser({
+          userId,
+          amount: totalPrice.toString(),
+          stat: "debit",
+        });
       }
 
       const order = await this.bookingRepository.save(booking);
@@ -91,5 +93,6 @@ export class BookingUseCase {
     }
 
     return response;
+    
   }
 }

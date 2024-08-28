@@ -12,11 +12,8 @@ export class GetAllServicesUseCase {
     page: number = 1,
     pageSize: number = 6
   ): Promise<any> {
-
-    console.log(search,sort,page,pageSize);
-    
-    
     let services = await this.serviceRepository.getEveryService();
+
     if (!services) {
       throw new BadRequestError("Unable to fetch services");
     }
@@ -41,9 +38,13 @@ export class GetAllServicesUseCase {
 
     if (sort) {
       if (sort === "low-to-high") {
-        services.sort((a, b) => a.basicPackage.detail.price - b.basicPackage.detail.price);
+        services.sort(
+          (a, b) => a.basicPackage.detail.price - b.basicPackage.detail.price
+        );
       } else if (sort === "high-to-low") {
-        services.sort((a, b) => b.basicPackage.detail.price - a.basicPackage.detail.price );
+        services.sort(
+          (a, b) => b.basicPackage.detail.price - a.basicPackage.detail.price
+        );
       }
     }
 
@@ -54,11 +55,8 @@ export class GetAllServicesUseCase {
       page * pageSize
     );
 
-    
-
-
     return {
-      services:paginatedServices,
+      services: paginatedServices,
       totalPages,
       currentPage: page,
       pageSize,

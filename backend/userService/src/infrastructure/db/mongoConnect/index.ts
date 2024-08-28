@@ -1,1 +1,1 @@
-export * from './mongoConnect'
+export * from "./mongoConnect";

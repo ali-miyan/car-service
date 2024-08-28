@@ -1,13 +1,13 @@
 import { BadRequestError, TokenService } from "tune-up-library";
-import { OtpService} from "../infrastructure/services";
+import { OtpService } from "../infrastructure/services";
 import { IRedisRepository, IUserRepository } from "../repositories/interfaces";
-require('dotenv').config()
+require("dotenv").config();
 
 export class RequestPasswordUseCase {
   constructor(
     private userRepository: IUserRepository,
     private redisRepository: IRedisRepository,
-    private otpRepository: OtpService,
+    private otpRepository: OtpService
   ) {}
 
   async execute(email: string): Promise<{}> {
@@ -21,17 +21,19 @@ export class RequestPasswordUseCase {
     }
 
     const token = TokenService.generateToken({
-        user:email,
-        role:'resetpassword'
-    })
+      user: email,
+      role: "resetpassword",
+    });
 
-
-    await this.redisRepository.store(token,email, 3600); 
+    await this.redisRepository.store(token, email, 3600);
 
     const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
-    await this.otpRepository.sendMail(email, "Password Reset", `Reset your password using this link: ${resetLink}`);
+    await this.otpRepository.sendMail(
+      email,
+      "Password Reset",
+      `Reset your password using this link: ${resetLink}`
+    );
 
-    return {success:true}
-
+    return { success: true };
   }
 }

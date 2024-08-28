@@ -1,2 +1,2 @@
-export * from './bcrypt';
-export * from './generateOtp';
+export * from "./bcrypt";
+export * from "./generateOtp";

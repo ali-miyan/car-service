@@ -1,5 +1,6 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from ".";
+import { BadRequestError } from "tune-up-library";
 
 export class ProducerService {
   private channel!: Channel;
@@ -23,17 +24,15 @@ export class ProducerService {
   public async sendMessage(message: string) {
     try {
       this.channel.sendToQueue(rabbitMQConfig.queueName2, Buffer.from(message));
-      console.log(`User message sent: ${message}`);
     } catch (error) {
-      console.log(error, "error while sending");
+      throw new BadRequestError("error in rabbitMq" + error);
     }
   }
   public async sendRating(message: string) {
     try {
       this.channel.sendToQueue(rabbitMQConfig.queueName3, Buffer.from(message));
-      console.log(`User rating sent: ${message}`);
     } catch (error) {
-      console.log(error, "error while sending");
+      throw new BadRequestError("error in rabbitMq" + error);
     }
   }
 }

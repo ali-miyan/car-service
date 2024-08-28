@@ -11,7 +11,7 @@ export class UpdateStatusUseCase {
     if (data.isBlocked) {
       io.emit("user_blocked", {
         message: "user has been blocked",
-        userId : id
+        userId: id,
       });
     }
 

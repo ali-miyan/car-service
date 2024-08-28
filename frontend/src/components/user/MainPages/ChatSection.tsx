@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from "react";
-import { BsSendFill } from "react-icons/bs";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useGetChatQuery } from "../../../store/slices/chatApiSlice";
 import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
@@ -9,7 +8,11 @@ import Loader from "../../common/Loader";
 import { profileImg } from "../../../constants/imageUrl";
 
 const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
-  const { data: chat, isLoading } = useGetChatQuery(
+  const {
+    data: chat,
+    isLoading,
+    refetch,
+  } = useGetChatQuery(
     { userId: token, companyId: selectedCompany?._id },
     {
       refetchOnMountOrArgChange: true,
@@ -29,8 +32,37 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
     messages: [],
   });
   const [newMessage, setNewMessage] = useState("");
-
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setChatMessages((prevState) => ({
+        ...prevState,
+        messages: [
+          ...prevState.messages,
+          {
+            sender: token,
+            content: file,
+            timestamp: new Date(),
+            type: "file",
+          },
+        ],
+      }));
+
+      const messageData = {
+        userId: token,
+        username: posts?.username,
+        userImg: posts?.profileImg,
+        companyId: selectedCompany._id,
+        content: file,
+        timestamp: Date.now(),
+        type: "file",
+      };
+
+      chatSocket?.emit("user_message_sent", messageData);
+    }
+  };
 
   useEffect(() => {
     if (chat) {
@@ -42,29 +74,36 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
     if (chatContainerRef.current) {
       const lastMessage = chatContainerRef.current.lastElementChild;
       if (lastMessage) {
-        lastMessage.scrollIntoView({ behavior: 'smooth' });
+        lastMessage.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [chatMessages]);
-  
 
   const chatSocket = useChatSocket(selectedCompany);
 
   useEffect(() => {
     if (chatSocket) {
-      chatSocket.on("company_to_user", (messageData: any) => {
-        setChatMessages((prevState) => ({
-          ...prevState,
-          messages: [
-            ...prevState.messages,
-            {
-              sender: messageData.companyId,
-              content: messageData.content,
-              timestamp: messageData.timestamp,
-              type: "text",
-            },
-          ],
-        }));
+      chatSocket.on("company_to_user", async(messageData: any) => {
+        console.log(messageData.content, "typeheerere");
+
+        if (messageData.type === "file") {
+          setTimeout(() => {
+            refetch();
+          }, 2000);
+        } else {
+          setChatMessages((prevState: IChatData) => ({
+            ...prevState,
+            messages: [
+              ...prevState.messages,
+              {
+                sender: messageData.companyId,
+                content: messageData.content,
+                timestamp: messageData.timestamp,
+                type: messageData.type,
+              },
+            ],
+          }));
+        }
       });
 
       return () => {
@@ -84,6 +123,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
         companyId: selectedCompany._id,
         content: newMessage,
         timestamp: Date.now(),
+        type: "text",
       };
 
       const newMessageObject: any = {
@@ -131,12 +171,12 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
         ) : (
           <div
             ref={chatContainerRef}
-            className="flex-1 min-h-[calc(95vh-150px)] max-h-[calc(80vh-100px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar"
+            className="flex-1 min-h-[calc(85vh-150px)] max-h-[calc(80vh-100px)] p-4 border-t border-gray-200 overflow-y-auto no-scrollbar"
           >
             {chatMessages?.messages.length > 0 ? (
               <>
                 {chatMessages?.messages?.map((msg, index) => (
-                  <React.Fragment key={index} >
+                  <React.Fragment key={index}>
                     <div
                       className={`flex items-start gap-1 justify-${
                         msg.sender === chatMessages.company.companyId ||
@@ -176,10 +216,23 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
-                            {msg.content}
-                          </p>
+                          {msg.type === "text" ? (
+                            <p className="text-sm w-full font-normal pt-1 text-gray-900 break-words overflow-hidden">
+                              {msg.content}
+                            </p>
+                          ) : msg.type === "file" ? (
+                            <img
+                              src={
+                                msg.content instanceof File
+                                  ? URL.createObjectURL(msg.content)
+                                  : msg.content
+                              }
+                              alt="Uploaded Image"
+                              className="w-full h-auto pt-1 object-cover rounded-lg shadow-md"
+                            />
+                          ) : null}
                         </div>
+
                         <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0 self-end">
                           {new Intl.DateTimeFormat("en-US", {
                             hour: "2-digit",
@@ -189,7 +242,11 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
                       </div>
                       {msg.sender === chatMessages.user.userId && (
                         <img
-                          src={chatMessages.user.userImg || posts?.profileImg || profileImg}
+                          src={
+                            chatMessages.user.userImg ||
+                            posts?.profileImg ||
+                            profileImg
+                          }
                           alt="Company"
                           className="w-8 h-8 rounded-full border self-end border-gray-300"
                         />
@@ -231,6 +288,13 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
             />
           </div>
           <div className="flex items-center gap-2">
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
             <svg
               className="cursor-pointer"
               xmlns="http://www.w3.org/2000/svg"
@@ -238,6 +302,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
               height="22"
               viewBox="0 0 22 22"
               fill="none"
+              onClick={() => document.getElementById("imageInput")?.click()}
             >
               <g id="Attach 01">
                 <g id="Vector">

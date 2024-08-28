@@ -20,7 +20,7 @@ export interface IBookingData {
     | "Car Delivered"
     | "Ready for Pickup"
     | "Booking Completed"
-    | "Booking Cancelled"
+    | "Booking Cancelled";
   typeOfPackage: string;
   servicePlace: string;
   carId: string;
@@ -50,7 +50,7 @@ export class Booking {
     | "Car Delivered"
     | "Ready for Pickup"
     | "Booking Completed"
-    | "Booking Cancelled"
+    | "Booking Cancelled";
   typeOfPackage: string;
   servicePlace: string;
   carId: string;
@@ -85,7 +85,7 @@ export class Booking {
     this.typeOfPackage = typeOfPackage;
     this.servicePlace = servicePlace;
     this.carId = carId;
-    this.totalPrice = totalPrice; 
-    this.cancelReason = cancelReason; 
+    this.totalPrice = totalPrice;
+    this.cancelReason = cancelReason;
   }
 }

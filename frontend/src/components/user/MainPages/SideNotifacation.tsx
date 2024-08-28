@@ -14,6 +14,7 @@ import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
 import ChatSection from "./ChatSection";
+import React from "react";
 
 const NotificationModal = () => {
   const token = getInitialToken("userToken");
@@ -54,7 +55,7 @@ const NotificationModal = () => {
     if (stored) {
       setNotifications(JSON.parse(stored));
     }
-    const storedMessages = localStorage.getItem("unreadMessages");
+    const storedMessages = localStorage.getItem("unreadMessages") || "";
     if (storedMessages) {
       setUnreadMessages(JSON.parse(storedMessages));
     }
@@ -167,16 +168,14 @@ const NotificationModal = () => {
     }
   }, [chatSocket]);
 
-  const getLastMessage = (companyId: string) => {
-    const messages = unreadMessages[companyId];
-    return messages && messages.length > 0
-      ? messages[messages.length - 1]
-      : null;
-  };
 
+  
   const getUnreadCount = (companyId: string) => {
-    return unreadMessages[companyId]?.length || 0;
+    const messages = unreadMessages[companyId];
+    return Array.isArray(messages) ? messages.length : 0;
   };
+  
+  
 
   return (
     <div className="relative z-50">
@@ -338,8 +337,7 @@ const NotificationModal = () => {
                                 {company.companyName}
                               </h3>
                               <p className="text-sm text-gray-500 mt-1">
-                                {getLastMessage(company._id) ||
-                                  `Since ${company.year}`}
+                                  {`Since ${company.year}`}
                               </p>
                             </div>
                             {getUnreadCount(company._id) > 0 && (

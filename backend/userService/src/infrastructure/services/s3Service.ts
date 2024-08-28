@@ -1,4 +1,5 @@
 import AWS from "aws-sdk";
+import { BadRequestError } from "tune-up-library";
 require("dotenv").config();
 
 export class S3Service {
@@ -31,10 +32,7 @@ export class S3Service {
       const data = await this.s3.upload(params).promise();
       return data.Location;
     } catch (error) {
-      console.error("Error uploading file to S3:", error);
-      throw error;
+      throw new BadRequestError("error in s3" + error);
     }
   }
-
-
 }

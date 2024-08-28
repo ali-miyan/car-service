@@ -18,6 +18,7 @@ export class EditUserUseCase {
     buffer?: Buffer,
     mimetype?: string
   ): Promise<any> {
+
     const user = await this.userRepository.getById(id);
 
     if (!user) {
@@ -55,5 +56,6 @@ export class EditUserUseCase {
     });
 
     return { success: true };
+    
   }
 }

@@ -27,7 +27,6 @@ export const getUsersFromBooking = (
       if (error) {
         return reject(error);
       }
-      console.log(response, "responsce from  grpc in chat service");
       resolve(response);
     });
   });

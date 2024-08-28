@@ -5,6 +5,7 @@ export class WalletUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute(wallet: any): Promise<any> {
+    
     if (!wallet.userId || !wallet.amount || !wallet.stat) {
       throw new BadRequestError("cant find user");
     }

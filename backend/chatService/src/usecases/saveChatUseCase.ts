@@ -1,28 +1,47 @@
 import { BadRequestError, NotFoundError } from "tune-up-library";
 import { IChatRepository } from "../repositories";
 import { Chat } from "../entities";
+import { S3Service } from "../infrastructure/services";
+import { randomUUID } from "crypto";
 
 export class SaveChatUseCase {
-  constructor(private chatRepository: IChatRepository) {}
+  constructor(
+    private chatRepository: IChatRepository,
+    private s3Service: S3Service
+  ) {}
 
   async execute(
     senderId: string,
     senderName: string,
     senderImg: string,
     recieverId: string,
-    content: string,
+    content: string | Buffer,
     timestamp: number,
+    type: "text" | "file",
     chatId?: string
   ): Promise<void> {
     try {
       let chat: Chat | null = null;
+      let contentType: string;
+
+      if (type === "file") {
+        contentType = await this.s3Service.uploadFile(
+          "tune-up",
+          randomUUID(),
+          content as Buffer,
+          "image/png"
+        );
+        console.log(contentType, "got from aws");
+      } else {
+        contentType = content as string;
+      }
 
       if (chatId) {
         chat = await this.chatRepository.getOneChat(chatId);
-        console.log(chat,null);
-        
+        console.log(chat, null);
+
         if (!chat) {
-          throw new BadRequestError('no chat found')
+          throw new BadRequestError("no chat found");
         } else {
           if (!chat.company.companyImg || !chat.company.companyName) {
             chat.company = {
@@ -34,9 +53,9 @@ export class SaveChatUseCase {
 
           chat.messages.push({
             sender: senderId,
-            content,
+            content: contentType,
             timestamp: new Date(timestamp),
-            type: "text",
+            type,
           });
           await this.chatRepository.update(chat);
         }
@@ -49,9 +68,9 @@ export class SaveChatUseCase {
         if (existingChat) {
           existingChat.messages.push({
             sender: senderId,
-            content,
+            content: contentType,
             timestamp: new Date(timestamp),
-            type: "text",
+            type,
           });
           await this.chatRepository.update(existingChat);
         } else {
@@ -65,20 +84,17 @@ export class SaveChatUseCase {
             messages: [
               {
                 sender: senderId,
-                content,
+                content: contentType,
                 timestamp: new Date(timestamp),
-                type: "text",
+                type,
               },
             ],
           });
           await this.chatRepository.save(newChat);
         }
       }
-
-      console.log("final chat", chat);
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("Error in database operation");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

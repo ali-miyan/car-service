@@ -19,14 +19,20 @@ const client = new (servicesProto as any).StandardService(
   grpc.credentials.createInsecure()
 );
 
-export const getServiceDetails = (serviceId: string, typeOfPackage:string): Promise<any> => {
+export const getServiceDetails = (
+  serviceId: string,
+  typeOfPackage: string
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    client.GetPackage({ serviceId,typeOfPackage }, (error: any, response: any) => {
-      if (error) {
-        return reject(error);
-      }
+    client.GetPackage(
+      { serviceId, typeOfPackage },
+      (error: any, response: any) => {
+        if (error) {
+          return reject(error);
+        }
 
-      resolve(response);
-    });
+        resolve(response);
+      }
+    );
   });
 };

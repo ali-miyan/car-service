@@ -6,7 +6,7 @@ export class GetServiceUseCase {
   constructor(private serviceRepository: ServiceRepository) {}
 
   async execute(companyId: string | undefined): Promise<any> {
-    
+
     let ids: string[] | null = null;
 
     if (companyId) {
@@ -19,6 +19,8 @@ export class GetServiceUseCase {
     if (!data) {
       throw new BadRequestError("Can't get services");
     }
+
     return data;
+    
   }
 }

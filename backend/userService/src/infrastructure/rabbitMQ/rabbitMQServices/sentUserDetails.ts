@@ -1,6 +1,7 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { ProducerService, rabbitMQConfig } from "../rabbitMQConfig";
 import { ICarRepository } from "../../../repositories";
+import { BadRequestError } from "tune-up-library";
 
 export class ConsumerService {
   private channel!: Channel;
@@ -24,17 +25,14 @@ export class ConsumerService {
     this.channel.consume(rabbitMQConfig.queueName1, async (message) => {
       if (message) {
         try {
-          console.log(`Order message received: ${message.content.toString()}`);
           const carId = message.content.toString();
-
-          console.log(typeof carId);
 
           const userDetails = await this.carRepository.getUsersDetails(carId);
           await this.producerService.sendMessage(JSON.stringify(userDetails));
           this.channel.ack(message);
         } catch (error) {
-          console.log(error);
           this.channel.nack(message, false, true);
+          throw new BadRequestError("error in rabbitMq" + error);
         }
       }
     });

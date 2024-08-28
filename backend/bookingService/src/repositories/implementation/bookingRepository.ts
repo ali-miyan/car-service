@@ -9,16 +9,15 @@ export class BookingRepository implements IBookingRepository {
       const newBooking = await bookingModel.create(booking);
       return newBooking;
     } catch (error) {
-      console.log(error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async findById(id: string): Promise<bookingModel> {
     try {
       const booking = await bookingModel.findByPk(id);
       return booking as bookingModel;
     } catch (error) {
-      console.log(error);
       throw new Error("Error in db: " + error);
     }
   }
@@ -37,7 +36,6 @@ export class BookingRepository implements IBookingRepository {
       booking.status = status;
       await booking.save();
     } catch (error) {
-      console.error("Error updating booking status:", error);
       throw new Error("Error in db: " + error);
     }
   }
@@ -49,10 +47,10 @@ export class BookingRepository implements IBookingRepository {
       });
       return bookings as bookingModel[];
     } catch (error) {
-      console.error("Error retrieving all bookings for company:", error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async getSingle(id: string): Promise<bookingModel> {
     try {
       const bookings = await bookingModel.findOne({
@@ -60,10 +58,10 @@ export class BookingRepository implements IBookingRepository {
       });
       return bookings as bookingModel;
     } catch (error) {
-      console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async getUsersOrder(userId: string): Promise<bookingModel[]> {
     try {
       const bookings = await bookingModel.findAll({
@@ -71,10 +69,10 @@ export class BookingRepository implements IBookingRepository {
       });
       return bookings as bookingModel[];
     } catch (error) {
-      console.error("Error retrieving  bookings for company:", error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async getMontlyRevenue(companyId: string): Promise<bookingModel[]> {
     try {
       return await bookingModel.findAll({
@@ -99,10 +97,10 @@ export class BookingRepository implements IBookingRepository {
         ],
       });
     } catch (error) {
-      console.error(error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async getTotalRevenue(companyId: string): Promise<number> {
     try {
       const result = await bookingModel.findOne({
@@ -117,7 +115,6 @@ export class BookingRepository implements IBookingRepository {
       const totalRevenue = result?.get("totalRevenue") as number;
       return totalRevenue || 0;
     } catch (error) {
-      console.error(error);
       throw new Error("Error in db: " + error);
     }
   }
@@ -132,10 +129,10 @@ export class BookingRepository implements IBookingRepository {
 
       return count;
     } catch (error) {
-      console.error(error);
       throw new Error("Error in db: " + error);
     }
   }
+
   async cancelBooking(orderId: string, reason: string): Promise<void> {
     try {
       const booking = await bookingModel.findByPk(orderId);
@@ -151,7 +148,6 @@ export class BookingRepository implements IBookingRepository {
 
       console.log(`Booking with ID ${orderId} has been cancelled.`);
     } catch (error) {
-      console.error(error);
       throw new Error("Error in db: " + error);
     }
   }
@@ -176,7 +172,6 @@ export class BookingRepository implements IBookingRepository {
 
       return result[0] || null;
     } catch (error) {
-      console.error(error);
       throw new Error("Error in db: " + error);
     }
   }

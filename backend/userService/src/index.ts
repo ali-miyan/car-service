@@ -5,9 +5,12 @@ import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
-import { createConsumerService, createWalletConsumerService } from "./infrastructure/rabbitMQ";
-import { setupSocketServer } from "./infrastructure/services";
-import { connectKafkaProducer, disconnectKafkaProducer } from "./infrastructure/kafka";
+
+import {
+  initializeServices,
+  setupSocketServer,
+  shutdownServices,
+} from "./infrastructure";
 require("dotenv").config();
 
 const PORT = 3000;
@@ -31,16 +34,14 @@ const io = setupSocketServer(server);
 
 const startServer = async () => {
   try {
+    await initializeServices();
     await connectDB();
-    createConsumerService();
-    createWalletConsumerService();
-    await connectKafkaProducer() 
     server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.log(error);
-    await disconnectKafkaProducer() 
+    await shutdownServices();
     process.exit(1);
   }
 };

@@ -22,6 +22,7 @@ export class CompanyController {
   ) {}
 
   async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
+
     const {
       ownerName,
       companyName,
@@ -68,7 +69,9 @@ export class CompanyController {
       next(error);
     }
   }
+
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+
     const { email, password } = req.body;
 
     try {
@@ -88,12 +91,14 @@ export class CompanyController {
       next(error);
     }
   }
+
   async getApprovels(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+
       const response = await this.getApproval.execute();
 
       res.status(201).json(response);
@@ -101,12 +106,14 @@ export class CompanyController {
       next(error);
     }
   }
+
   async getById(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+
       const id = req.params.id as string;
 
       const response = await this.getcompany.execute(id);
@@ -116,12 +123,14 @@ export class CompanyController {
       next(error);
     }
   }
+
   async getApproved(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+
       const response = await this.getApprovedCompany.execute();
 
       res.status(201).json(response);
@@ -135,9 +144,9 @@ export class CompanyController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    
     const { id } = req.params;
     const status = req.body;
-    console.log(req.params, "dsdsd", req.body);
 
     if (!id || !status) {
       throw new BadRequestError("id not found");
@@ -150,6 +159,7 @@ export class CompanyController {
       next(error);
     }
   }
+
   async getDashboard(
     req: Request,
     res: Response,
@@ -162,4 +172,5 @@ export class CompanyController {
       next(error);
     }
   }
+  
 }

@@ -5,6 +5,7 @@ export class DeleteServiceUseCase {
   constructor(private serviceRepository: ServiceRepository) {}
 
   async execute(serviceId: string): Promise<any> {
+    
     const service = await this.serviceRepository.getById(serviceId);
 
     if (!service) {
@@ -13,6 +14,7 @@ export class DeleteServiceUseCase {
 
     await this.serviceRepository.deleteOne(serviceId);
 
-    return {success:true}
+    return { success: true };
+    
   }
 }

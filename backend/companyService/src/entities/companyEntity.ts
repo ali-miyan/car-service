@@ -12,9 +12,9 @@ export interface ICompanyData {
   password: string;
   licenseImg: string;
   approvedImg: string;
-  description:string;
+  description: string;
   address: object;
-  isApproved: 'pending' | 'accepted' | 'declined';
+  isApproved: "pending" | "accepted" | "declined";
 }
 
 export class Company {
@@ -31,9 +31,9 @@ export class Company {
   password: string;
   licenseImg: string;
   approvedImg: string;
-  description:string;
+  description: string;
   address: object;
-  isApproved: 'pending' | 'accepted' | 'declined';
+  isApproved: "pending" | "accepted" | "declined";
 
   constructor({
     _id,
@@ -51,7 +51,7 @@ export class Company {
     approvedImg,
     description,
     address,
-    isApproved = 'pending'
+    isApproved = "pending",
   }: ICompanyData) {
     this._id = _id;
     this.ownerName = ownerName;

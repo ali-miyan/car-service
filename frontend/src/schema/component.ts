@@ -89,7 +89,7 @@ export interface ICompanyDetails {
 export interface IMessageData {
   _id?:string
   sender: string;
-  content: string;
+  content: any;
   timestamp: Date;
   type: "text" | "image" | "file";
 }

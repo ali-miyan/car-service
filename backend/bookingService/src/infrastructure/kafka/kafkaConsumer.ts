@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import {
   kafkaConsumer,
   connectKafkaConsumer,
@@ -22,7 +23,7 @@ export class KafkaService {
         },
       });
     } catch (error) {
-      console.log(error, "error in kafka");
+      throw new BadRequestError("error in kafka" + error);
     }
   }
 

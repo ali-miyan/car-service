@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequestError } from "tune-up-library";
 import {
   AddServiceUseCase,
   GetServiceUseCase,
@@ -24,6 +23,7 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const {
       _id,
       generalServiceId,
@@ -38,7 +38,6 @@ export class ServiceController {
     } = req.body;
 
     const { files } = req as any;
-
 
     try {
       const response = this.addServiceUseCase.execute(
@@ -60,17 +59,15 @@ export class ServiceController {
       next(error);
     }
   }
+
   async updateStatus(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
+
     const { id } = req.params;
     const status = req.body;
-
-    if (!id) {
-      throw new BadRequestError("id not found");
-    }
 
     try {
       const response = await this.serviceStatusUseCase.execute(id, status);
@@ -94,6 +91,7 @@ export class ServiceController {
       next(error);
     }
   }
+
   async getSingleServices(
     req: Request,
     res: Response,
@@ -107,6 +105,7 @@ export class ServiceController {
       next(error);
     }
   }
+
   async getAllServices(
     req: Request,
     res: Response,
@@ -119,7 +118,7 @@ export class ServiceController {
       const sort = req.query.sort as string | undefined;
       const page = parseInt(req.query.page as string, 6) || 1;
       const pageSize = parseInt(req.query.pageSize as string, 6) || 6;
-  
+
       const response = await this.getEveryServiceUseCase.execute(
         service,
         company,
@@ -139,11 +138,8 @@ export class ServiceController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { id } = req.params;
 
-    if (!id) {
-      throw new BadRequestError("id not found");
-    }
+    const { id } = req.params;
 
     try {
       const response = await this.deleteServiceUseCase.execute(id);
@@ -152,4 +148,5 @@ export class ServiceController {
       next(error);
     }
   }
+
 }

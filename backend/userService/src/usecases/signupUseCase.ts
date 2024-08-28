@@ -11,9 +11,7 @@ export class SignupUseCase {
     private redisRepository: IRedisRepository
   ) {}
 
-  async execute(
-    email: string,
-  ): Promise<any> {
+  async execute(email: string): Promise<any> {
     if (!email) {
       throw new BadRequestError("Invalid input");
     }
@@ -24,7 +22,6 @@ export class SignupUseCase {
       throw new BadRequestError("User Email already registered");
     }
 
-
     const otp = this.otpRepository.generateOtp(4);
 
     const subject = "Your OTP Code";
@@ -32,8 +29,6 @@ export class SignupUseCase {
     await this.otpRepository.sendMail(email, subject, message);
     await this.redisRepository.store(email, otp, 300);
 
-
-    return { success: true }
-
+    return { success: true };
   }
 }

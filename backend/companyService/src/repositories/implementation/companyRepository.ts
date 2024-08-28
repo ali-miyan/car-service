@@ -1,23 +1,26 @@
 import { Company } from "../../entities/companyEntity";
 import { ICompanyRepository } from "../interfaces";
 import { companyModal, CompanyDocument } from "../../infrastructure/db";
+import { BadRequestError } from "tune-up-library";
 
 export class CompanyRepository implements ICompanyRepository {
+
   async find(email: string): Promise<CompanyDocument | null> {
     try {
       const newCompany = await companyModal.findOne({ email: email });
       if (!newCompany) return null;
       return newCompany;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getTotalCompanyCounts(): Promise<number> {
     try {
       const count = await companyModal.countDocuments({});
       return count;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -56,7 +59,7 @@ export class CompanyRepository implements ICompanyRepository {
         count: item.count,
       }));
     } catch (error) {
-      throw new Error("Error retrieving company counts by month");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -65,9 +68,10 @@ export class CompanyRepository implements ICompanyRepository {
       const newCompany = await companyModal.find();
       return newCompany;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async getApproved(): Promise<CompanyDocument[] | null> {
     try {
       const newCompany = await companyModal.find({
@@ -76,7 +80,7 @@ export class CompanyRepository implements ICompanyRepository {
       });
       return newCompany;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
   async getById(id: string): Promise<CompanyDocument | null> {
@@ -84,7 +88,7 @@ export class CompanyRepository implements ICompanyRepository {
       const newCompany = await companyModal.findOne({ _id: id });
       return newCompany;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
 
@@ -94,16 +98,18 @@ export class CompanyRepository implements ICompanyRepository {
         new: true,
       });
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
   async save(company: Company): Promise<Company> {
     try {
       const newCompany = new companyModal(company);
       await newCompany.save();
       return newCompany;
     } catch (error) {
-      throw new Error("error in db");
+      throw new BadRequestError("error in db" + error);
     }
   }
+
 }

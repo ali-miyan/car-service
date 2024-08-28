@@ -35,6 +35,7 @@ const GeneralChat = ({
     if (chatSocket) {
       chatSocket.on("user_to_company", (message) => {
         console.log("user messagedd");
+        refetch();
         setUnreadMessages((prev) => {
           const updatedUnreadMessages = {
             ...prev,
@@ -46,7 +47,6 @@ const GeneralChat = ({
           );
           return updatedUnreadMessages;
         });
-        refetch();
       });
 
       return () => {
@@ -71,8 +71,6 @@ const GeneralChat = ({
       user?.messages[user?.messages.length - 1]?.content || "No messages yet."
     );
   };
-
-  console.log(users, "sd");
 
   return (
     <div className="pt-5 mx-auto">

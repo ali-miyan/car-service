@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 
 export class ConfigService {
   validateCredentials(email: string, password: string): boolean {

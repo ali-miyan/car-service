@@ -53,7 +53,19 @@ const useChatSocket = (selectedCompany: null | string) => {
   useEffect(() => {
     if (selectedCompany) {
       const socketInstance = io(SOCKET_CHAT_URL, {
-        withCredentials: true,
+        withCredentials: true,  
+      });
+
+      socketInstance.on('connect', () => {
+        console.log('Connected to chat server');
+      });
+
+      socketInstance.on('connect_error', (err) => {
+        console.error('Connection error:', err);
+      });
+
+      socketInstance.on('disconnect', () => {
+        console.log('Disconnected from chat server');
       });
 
       setSocket(socketInstance);

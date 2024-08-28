@@ -2,6 +2,7 @@ import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
 import { ServiceRepository } from "../../../repositories/implementation";
+import { BadRequestError } from "tune-up-library";
 const serviceRepository = new ServiceRepository();
 const PROTO_PATH = path.resolve(__dirname, "../protos/companyIds.proto");
 
@@ -24,12 +25,11 @@ const getCompanyIds = async (call: any, callback: any) => {
     );
     callback(null, { ids });
   } catch (error: any) {
-    console.log(error, "error in ggrrppc");
-
     callback({
       code: grpc.status.INTERNAL,
       message: error.message,
     });
+    throw new BadRequestError("error in grpc" + error);
   }
 };
 
@@ -43,8 +43,7 @@ export const startCompanyIdsGrpcServer = () => {
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
       if (error) {
-        console.error(`Error binding server: ${error}`);
-        return;
+        throw new BadRequestError("error in grpc" + error);
       }
       console.log(`gRPC server running at http://127.0.0.1:${port}`);
     }

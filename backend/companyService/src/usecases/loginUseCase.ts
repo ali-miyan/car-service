@@ -7,18 +7,17 @@ export class LoginUseCase {
 
   async execute(email: string, password: string): Promise<any> {
     const company = await this.companyRepository.find(email);
-    
 
     if (!company) {
       throw new BadRequestError("user not found");
     }
 
-    if(company.isBlocked){
+    if (company.isBlocked) {
       throw new BadRequestError("you have been blocked");
     }
-    if(company.isApproved === 'declined'){
+    if (company.isApproved === "declined") {
       throw new BadRequestError("you request has been declined");
-    } else if(company.isApproved === "pending"){
+    } else if (company.isApproved === "pending") {
       throw new BadRequestError("please wait for the admins approvel");
     }
 

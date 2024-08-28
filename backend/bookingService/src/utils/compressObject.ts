@@ -24,8 +24,7 @@ export function decompressObject(compressedString: string): any {
 
 export function parseOrderData(orderData: string): any {
   try {
-    
-    return JSON.parse(orderData);;
+    return JSON.parse(orderData);
   } catch (error) {
     return false;
   }

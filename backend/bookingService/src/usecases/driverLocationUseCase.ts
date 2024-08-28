@@ -10,13 +10,14 @@ export class UpdateDriverLocationUseCase {
     latitude: number,
     longitude: number
   ): Promise<void> {
+    
     if (!orderId || !latitude || !longitude) {
       throw new BadRequestError("Invalid input");
     }
 
     io.emit("location_updated", {
       latitude,
-      longitude
+      longitude,
     });
 
     const key = `order:${orderId}`;
@@ -26,5 +27,6 @@ export class UpdateDriverLocationUseCase {
     });
 
     await this.redisRepository.store(key, value, 86400);
+
   }
 }

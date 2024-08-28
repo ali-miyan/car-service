@@ -16,8 +16,8 @@ export interface IService {
   generalServiceId: string;
   companyId: string;
   selectedHours: string;
-  servicePlace:string;
-  servicesPerDay:string;
+  servicePlace: string;
+  servicesPerDay: string;
   terms: string;
   images: string[];
   basicPackage: SubService;
@@ -31,8 +31,8 @@ export class Service {
   generalServiceId: string;
   companyId: string;
   selectedHours: string;
-  servicePlace:string;
-  servicesPerDay:string;
+  servicePlace: string;
+  servicesPerDay: string;
   terms: string;
   images: string[];
   basicPackage: SubService;
@@ -59,7 +59,7 @@ export class Service {
     this.companyId = companyId;
     this.selectedHours = selectedHours;
     this.servicePlace = servicePlace;
-    this.servicesPerDay = servicesPerDay
+    this.servicesPerDay = servicesPerDay;
     this.terms = terms;
     this.images = images;
     this.basicPackage = basicPackage;

@@ -1,4 +1,5 @@
 import AWS from "aws-sdk";
+import { BadRequestError } from "tune-up-library";
 require("dotenv").config();
 
 export class S3Service {
@@ -31,8 +32,7 @@ export class S3Service {
       const data = await this.s3.upload(params).promise();
       return data.Location;
     } catch (error) {
-      console.error("Error uploading file to S3:", error);
-      throw error;
+      throw new BadRequestError("error in s3" + error);
     }
   }
 
@@ -51,8 +51,7 @@ export class S3Service {
         );
         return { key, location };
       } catch (error) {
-        console.error(`Error uploading file ${key} to S3:`, error);
-        throw new Error((error as string))
+        throw new BadRequestError("error in s3" + error);
       }
     });
 
@@ -66,8 +65,7 @@ export class S3Service {
         {}
       );
     } catch (error) {
-      console.error("Error uploading files to S3:", error);
-      throw error;
+      throw new BadRequestError("error in s3" + error);
     }
   }
 
@@ -86,11 +84,15 @@ export class S3Service {
       const { originalname, buffer, mimetype } = file;
       const key = `${Date.now()}-${originalname}`;
       try {
-        const location = await this.uploadFile(bucketName, key, buffer, mimetype);
+        const location = await this.uploadFile(
+          bucketName,
+          key,
+          buffer,
+          mimetype
+        );
         return location;
       } catch (error) {
-        console.error(`Error uploading image ${originalname} to S3:`, error);
-        throw error;
+        throw new BadRequestError("error in s3" + error);
       }
     });
 
@@ -98,8 +100,7 @@ export class S3Service {
       const urls = await Promise.all(uploadPromises);
       return urls;
     } catch (error) {
-      console.error("Error uploading image array to S3:", error);
-      throw error;
+      throw new BadRequestError("error in s3" + error);
     }
   }
 }

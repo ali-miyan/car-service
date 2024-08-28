@@ -1,3 +1,3 @@
-export * from './companyRepository';
-export * from './serviceRepository';
-export * from './ratingRepository';
+export * from "./companyRepository";
+export * from "./serviceRepository";
+export * from "./ratingRepository";

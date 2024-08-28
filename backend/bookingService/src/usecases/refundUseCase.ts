@@ -9,7 +9,6 @@ export class RefundUseCase {
     orderId: string,
     refundAmount: number
   ): Promise<any> {
-    console.log(orderId, refundAmount, userId, "usecase");
 
     if (!orderId || !refundAmount || !userId) {
       throw new BadRequestError("invalid input");
@@ -22,5 +21,6 @@ export class RefundUseCase {
     );
 
     return sessionId;
+    
   }
 }

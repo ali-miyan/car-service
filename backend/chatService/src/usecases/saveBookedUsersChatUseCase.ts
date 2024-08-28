@@ -49,8 +49,7 @@ export class SaveBookedUsersChatUseCase {
         await this.chatRepository.save(newChat);
       }
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("Error in database operation");
+      throw new BadRequestError("error in db" + error);
     }
   }
 }

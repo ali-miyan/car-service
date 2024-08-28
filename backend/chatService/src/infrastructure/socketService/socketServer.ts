@@ -4,6 +4,8 @@ import { ChatRepository } from "../../repositories";
 import { connectDB } from "../db";
 import { ChatServer } from "./chatServer";
 import { createKafkaConsumer } from "../kafka";
+import { S3Service } from "../services";
+const s3Service = new S3Service();
 
 export const setupServer = async (app: any, port: number) => {
   const server = require("http").createServer(app);
@@ -16,14 +18,13 @@ export const setupServer = async (app: any, port: number) => {
     },
   });
 
-  await (createKafkaConsumer()).startConsuming();
   
-
   const chatRepository = new ChatRepository();
-  const saveChatUseCase = new SaveChatUseCase(chatRepository);
+  const saveChatUseCase = new SaveChatUseCase(chatRepository, s3Service);
   const saveBookedUsersChatUseCase = new SaveBookedUsersChatUseCase(
     chatRepository
   );
+  await createKafkaConsumer().startConsuming();
 
   new ChatServer(io, saveChatUseCase, saveBookedUsersChatUseCase);
 
