@@ -4,7 +4,7 @@ import { RegisterUseCase } from "../../usecases/adminUseCase";
 export class AdminController {
   constructor(private registerCompany: RegisterUseCase) {}
 
-  async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     
     const { email, password } = req.body;
 

@@ -1,7 +1,12 @@
 import React, { createContext, useState, ReactNode, useContext } from "react";
 
 interface LocationContextProps {
-  search: string | string[][] | Record<string, string> | URLSearchParams | undefined;
+  search:
+    | string
+    | string[][]
+    | Record<string, string>
+    | URLSearchParams
+    | undefined;
   latitude: number;
   longitude: number;
   address: string;
@@ -10,7 +15,9 @@ interface LocationContextProps {
   setAddress: (address: string) => void;
 }
 
-const LocationContext = createContext<LocationContextProps | undefined>(undefined);
+const LocationContext = createContext<LocationContextProps | undefined>(
+  undefined
+);
 
 export const LocationProvider = ({ children }: { children: ReactNode }) => {
   const [latitude, setLatitude] = useState(11.1722607144428);
@@ -18,7 +25,16 @@ export const LocationProvider = ({ children }: { children: ReactNode }) => {
   const [address, setAddress] = useState("");
 
   return (
-    <LocationContext.Provider value={{ latitude, longitude, address, setLatitude, setLongitude, setAddress }}>
+    <LocationContext.Provider
+      value={{
+        latitude,
+        longitude,
+        address,
+        setLatitude,
+        setLongitude,
+        setAddress,
+      }}
+    >
       {children}
     </LocationContext.Provider>
   );

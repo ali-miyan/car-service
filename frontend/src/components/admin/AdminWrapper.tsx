@@ -8,11 +8,12 @@ import {
   MdSupervisedUserCircle,
 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { adminImg } from "../../constants/imageUrl";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(true);
+
+  const [open, setOpen] = useState<boolean>(true);
+
   const isActive = (path: string) => location.pathname === path;
 
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
               !open && "scale-0"
             }`}
           >
-            TUNE-UP ADMIN
+            TUNE-UP
           </h1>
         </div>
         <ul className="pt-7">

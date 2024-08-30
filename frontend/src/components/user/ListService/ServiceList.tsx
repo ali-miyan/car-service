@@ -4,8 +4,7 @@ import ServiceCard from "./ServiceCard";
 import { useNavigate, useLocation } from "react-router-dom";
 import Filters from "./Filter";
 import Loader from "../../common/Loader";
-import { IoIosSearch } from "react-icons/io";
-import Pagination from "../../common/Pagination";
+import { IoIosSearch, IoMdClose } from "react-icons/io";
 import ServerSidePagination from "../../common/serverSidePagination";
 
 const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
@@ -13,20 +12,20 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   const location = useLocation();
   const currentParams = new URLSearchParams(location.search);
 
-  const {
-    data: servicesData,
-    isLoading,
-    refetch,
-  } = useGetEveryServicesQuery({});
+  const { data: servicesData, isLoading, refetch } = useGetEveryServicesQuery({});
 
-  console.log(servicesData,'servuvedata');
-  
-
-
-  const [searchValue, setSearchValue] = useState<string>(currentParams.get("search") || "");
+  const [searchValue, setSearchValue] = useState<string>(
+    currentParams.get("search") || ""
+  );
+  const [sortValue, setSortValue] = useState<string>(currentParams.get("sort") || "");
 
   useEffect(() => {
     refetch();
+  }, [location.search]);
+
+  useEffect(() => {
+    setSearchValue(currentParams.get("search") || "");
+    setSortValue(currentParams.get("sort") || "");
   }, [location.search]);
 
   if (isLoading) {
@@ -43,14 +42,22 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
   };
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const sortValue = event.target.value;
-    currentParams.set("sort", sortValue);
+    const newSortValue = event.target.value;
+    currentParams.set("sort", newSortValue);
     currentParams.set("page", "1");
     navigate(`/services?${currentParams.toString()}`);
+    setSortValue(newSortValue); // Update local sort value
   };
 
   const handleSearchClick = () => {
     currentParams.set("search", searchValue);
+    currentParams.set("page", "1");
+    navigate(`/services?${currentParams.toString()}`);
+  };
+
+  const handleSearchClear = () => {
+    setSearchValue("");
+    currentParams.delete("search");
     currentParams.set("page", "1");
     navigate(`/services?${currentParams.toString()}`);
   };
@@ -75,6 +82,7 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
             <select
               id="sort"
               className="border border-gray-300 p-1.5 focus:outline-none"
+              value={sortValue} // Set dropdown value to match URL parameter
               onChange={handleSortChange}
             >
               <option value="">sort</option>
@@ -88,6 +96,7 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
               type="text"
               placeholder="Search..."
               className="border border-gray-300 p-2 focus:outline-none"
+              value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
             />
             <button
@@ -96,9 +105,17 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
             >
               <IoIosSearch className="text-2xl" />
             </button>
+            {searchValue && (
+              <button
+                className="bg-gray-200 p-2 ml-2 rounded-full"
+                onClick={handleSearchClear}
+              >
+                <IoMdClose className="text-xl text-gray-600" />
+              </button>
+            )}
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 p-5 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {servicesData && servicesData?.services?.length > 0 ? (
             servicesData?.services?.map((service: any) => (
               <div
@@ -125,13 +142,12 @@ const ServiceList = ({ serviceData }: { serviceData: object[] }) => {
           )}
         </div>
         <div className="flex justify-center mt-10 ">
-
-        <ServerSidePagination
-          currentPage={parseInt(currentParams.get("page") || "1", 6)}
-          totalPages={servicesData.totalPages}
-          onPageChange={handlePageChange}
-        />
-        </ div>
+          <ServerSidePagination
+            currentPage={parseInt(currentParams.get("page") || "1", 10)}
+            totalPages={servicesData?.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </>
   );

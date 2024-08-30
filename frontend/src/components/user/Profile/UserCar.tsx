@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import CarBrandsModal from "./CarBrandsModal";
-import { useDeleteCarMutation, useGetCarByIdQuery } from "../../../store/slices/userApiSlice";
+import {
+  useDeleteCarMutation,
+  useGetCarByIdQuery,
+} from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
 import DeleteConfirmationModal from "../../common/ConfirmationModal";
 import { AiFillDelete } from "react-icons/ai";
@@ -8,14 +11,12 @@ import { notifyError, notifySuccess } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
 
 const UserCar = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const token = getInitialToken("userToken");
-  const [deleteCar] = useDeleteCarMutation()
-
   const { data: posts, refetch } = useGetCarByIdQuery(token as string);
-
-  console.log(posts);
+  const [deleteCar] = useDeleteCarMutation();
 
   const handleAddCarClick = () => {
     setIsModalOpen(true);
@@ -25,10 +26,10 @@ const UserCar = () => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = async(id:string) => {
-    try { 
+  const handleDelete = async (id: string) => {
+    try {
       const res = await deleteCar(id).unwrap();
-      
+
       if (res.success) {
         notifySuccess("Deleted successfully");
         await refetch();
@@ -39,7 +40,7 @@ const UserCar = () => {
       notifyError(errMessage);
       console.error("Failed to delete the service:", error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center bg-gray-100 p-6 md:p-12">

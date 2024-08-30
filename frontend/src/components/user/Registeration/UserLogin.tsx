@@ -16,8 +16,9 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
-  const [loginUser, { isLoading }] = useLoginUserMutation();
 
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  
   const navigate = useNavigate();
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 

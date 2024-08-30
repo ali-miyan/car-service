@@ -9,13 +9,6 @@ const PORT = 3002;
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:8080",
-    credentials: true,
-  })
-);
-
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/admin", compnayRoute);

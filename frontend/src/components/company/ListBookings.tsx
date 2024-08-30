@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 import Pagination from "../common/Pagination";
 
 const ListBooking = () => {
+
   const companyId = getInitialToken("companyToken");
-  const {
-    data: posts,
-    isLoading,
-    refetch,
-  } = useGetOrdersQuery(companyId as string);
   const location = useLocation();
+
+  const {data: posts, isLoading, refetch} = useGetOrdersQuery(companyId as string);
+  
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,13 +24,12 @@ const ListBooking = () => {
     fetchData();
   }, [location.state, refetch]);
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
   const currentPosts = posts?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  
   return (
     <>
       <div

@@ -24,7 +24,8 @@ export const companyApiSlice = createApi({
     }),
     getEveryServices: builder.query({
       query: () => {
-        const { sort, search, price, company, service,page } = getQueryParams();
+        const { sort, search, price, company, service, page } =
+          getQueryParams();
         const queryParams = [];
 
         if (sort) queryParams.push(`sort=${encodeURIComponent(sort)}`);
@@ -105,7 +106,7 @@ export const companyApiSlice = createApi({
       query: (data) => ({
         url: `/update-rating`,
         method: HttpMethod.POST,
-        body:data,
+        body: data,
       }),
     }),
   }),
@@ -126,5 +127,5 @@ export const {
   useGetSinglServicesQuery,
   useGetRatingsQuery,
   useUpdateRatingMutation,
-  useGetDashboardQuery
+  useGetDashboardQuery,
 } = companyApiSlice;

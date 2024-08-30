@@ -7,5 +7,5 @@ export interface IChatRepository {
   save(chat: Chat): Promise<void>;
   update(chat: Chat): Promise<void>;
   editUser(userId: string, username: string, profileImg: string | null): Promise<void>;
-  findByUserAndCompany(userId: string, companyId: string): Promise<Chat | null>;
+  findByUserAndCompany(userId: string, companyId: string): Promise<IChat | null>;
 }

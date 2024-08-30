@@ -7,7 +7,7 @@ export class ServiceRepository implements IServiceRepository {
 
   async find(email: string): Promise<IService | null> {
     try {
-      const newService = await serviceModal.findOne({ email: email });
+      const newService = await serviceModal.findOne({ email: email } as any);
       if (!newService) return null;
       return newService;
     } catch (error) {

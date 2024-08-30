@@ -12,4 +12,4 @@ message CheckSlotRequest {
 
 message CheckSlotResponse {
   bool available = 1;
-} 
+}

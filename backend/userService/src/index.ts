@@ -3,9 +3,7 @@ import userRoute from "./infrastructure/express/routes";
 import { connectDB } from "./infrastructure/db";
 import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import http from "http";
-
 import {
   initializeServices,
   setupSocketServer,
@@ -16,13 +14,6 @@ require("dotenv").config();
 const PORT = 3000;
 
 const app = express();
-
-app.use(
-  cors({
-    origin: "http://localhost:8080",
-    credentials: true,
-  })
-);
 
 app.use(express.json());
 app.use(cookieParser());

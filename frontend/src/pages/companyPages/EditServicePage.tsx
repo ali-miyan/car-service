@@ -1,5 +1,5 @@
-import Sidebar from '../../components/company/SideBar'
-import EditService from '../../components/company/EditService'
+import Sidebar from "../../components/company/SideBar";
+import EditService from "../../components/company/EditService";
 
 const AddServicesPage = () => {
   return (
@@ -8,7 +8,7 @@ const AddServicesPage = () => {
         <EditService />
       </Sidebar>
     </>
-  )
-}
+  );
+};
 
-export default AddServicesPage
+export default AddServicesPage;

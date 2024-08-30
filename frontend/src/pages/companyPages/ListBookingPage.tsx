@@ -5,9 +5,7 @@ const RegisterPage3 = () => {
   return (
     <>
       <Sidebar>
-
-
-          <ListBookings />
+        <ListBookings />
       </Sidebar>
     </>
   );

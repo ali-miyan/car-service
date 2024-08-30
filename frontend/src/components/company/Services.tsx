@@ -15,15 +15,23 @@ import { Link } from "react-router-dom";
 import { getInitialToken } from "../../helpers/getToken";
 import { useLocation } from "react-router-dom";
 import Pagination from "../common/Pagination";
+import { useBookingSocket } from "../../service/socketService";
 
 const ServiceList = () => {
   const companyId = getInitialToken("companyToken");
-  const {
-    data: posts,
-    isLoading,
-    refetch,
-  } = useGetServicesQuery(companyId as string);
+
+  const {data: posts,isLoading,refetch,} = useGetServicesQuery(companyId as string);
+  const [deleteServicePost] = useDeleteServicePostMutation();
+  const [updateStatus] = useUpdateServiceStatusMutation();
+
   const location = useLocation();
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [basic, setBasic] = useState([]);
+  const [standard, setStandard] = useState([]);
+  const [premium, setPremium] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,15 +42,25 @@ const ServiceList = () => {
 
     fetchData();
   });
-  const [deleteServicePost] = useDeleteServicePostMutation();
-  const [updateStatus] = useUpdateServiceStatusMutation();
-  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-  const [showModal, setShowModal] = useState(false);
-  const [basic, setBasic] = useState([]);
-  const [standard, setStandard] = useState([]);
-  const [premium, setPremium] = useState([]);
+
+  const socket = useBookingSocket(companyId as string);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("order_booked", (message: any) => {
+        if (companyId === message.order.companyId) {
+          refetch()
+        }
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("order_booked");
+      }
+    };
+  }, [socket, posts]);
+
 
   const handleModal = (basic, standard, premium) => {
     setShowModal(true);
@@ -51,9 +69,7 @@ const ServiceList = () => {
     setPremium(premium);
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
   const currentPosts = posts?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -112,19 +128,33 @@ const ServiceList = () => {
         className="container lowercase bg-gray-200 font-bai-regular mx-auto p-9"
       >
         <div className="overflow-x-auto">
-        <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
-          SERVICES
-        </p>
+          <p className="text-center text-2xl font-bai-bold underline underline-offset-8 mb-3 pb-4 uppercase">
+            SERVICES
+          </p>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO.</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">work photos</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">service place</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">working hours</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">packages</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NO.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  work photos
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  service place
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  working hours
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  packages
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -138,7 +168,10 @@ const ServiceList = () => {
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
                 currentPosts.map((post: any, index: number) => (
-                  <tr className="px-6 py-4 whitespace-nowrap bg-white" key={post._id}>
+                  <tr
+                    className="px-6 py-4 whitespace-nowrap bg-white"
+                    key={post._id}
+                  >
                     <td className=" border-b text-center">
                       {(currentPage - 1) * itemsPerPage + index + 1}.
                     </td>

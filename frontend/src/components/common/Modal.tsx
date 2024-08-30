@@ -24,6 +24,7 @@ const CustomModal: React.FC<ModalProps> = ({
   children,
   onClose,
 }) => {
+  
   const handleClose = () => {
     if (onClose) {
       onClose();

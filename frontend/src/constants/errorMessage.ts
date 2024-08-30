@@ -1,1 +1,1 @@
-export const errMessage = 'oops..! somethig went wrong'
+export const errMessage = "oops..! somethig went wrong";

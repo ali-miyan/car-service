@@ -1,6 +1,7 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
+import { BadRequestError } from "tune-up-library";
 
 const PROTO_PATH = path.resolve(__dirname, "../protos/service.proto");
 
@@ -15,7 +16,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const servicesProto = grpc.loadPackageDefinition(packageDefinition).services;
 
 const client = new (servicesProto as any).StandardService(
-  "localhost:6001",
+  "company:6001",
   grpc.credentials.createInsecure()
 );
 
@@ -28,7 +29,7 @@ export const getServiceDetails = (
       { serviceId, typeOfPackage },
       (error: any, response: any) => {
         if (error) {
-          return reject(error);
+          throw new BadRequestError("error in grpc" + error);
         }
 
         resolve(response);

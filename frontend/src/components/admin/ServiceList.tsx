@@ -11,16 +11,18 @@ import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
 import { useState, useEffect } from "react";
 import Pagination from "../common/Pagination";
+import { truncateDescription } from "../../helpers/trancuate";
 
 const ServiceTable = () => {
-  const { data: posts, isLoading, refetch } = useGetServiceQuery(undefined);
+  
   const location = useLocation();
-
+  
+  const { data: posts, isLoading, refetch } = useGetServiceQuery(undefined);
   const [deleteServicePost] = useDeleteServicePostMutation();
   const [updateServiceStatus] = useUpdateServiceStatusMutation();
-  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  
+  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     if (location.state?.refetch) {
@@ -40,6 +42,7 @@ const ServiceTable = () => {
 
   const handleDelete = async (id: string) => {
     try {
+
       const res = await deleteServicePost(id).unwrap();
 
       if (res.success) {
@@ -50,16 +53,7 @@ const ServiceTable = () => {
       }
     } catch (error) {
       notifyError(errMessage);
-      console.error("Failed to delete the service:", error);
     }
-  };
-
-  const truncateDescription = (description: string, wordLimit: number) => {
-    const words = description.split(" ");
-    if (words.length > wordLimit) {
-      return words.slice(0, wordLimit).join(" ") + "...";
-    }
-    return description;
   };
 
   const handleToggle = async (id: string, currentStatus: boolean) => {
@@ -78,11 +72,9 @@ const ServiceTable = () => {
       }
     } catch (error) {
       notifyError(errMessage);
-      console.error("Failed to update the service status:", error);
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
   const currentPosts = posts?.slice(

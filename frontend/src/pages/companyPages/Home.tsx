@@ -1,4 +1,3 @@
-import React from "react";
 import CompanyHome from "../../components/company/Home";
 import Sidebar from "../../components/company/SideBar";
 

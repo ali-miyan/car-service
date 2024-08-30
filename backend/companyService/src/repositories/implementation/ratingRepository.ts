@@ -29,7 +29,7 @@ export class RatingRepository implements IRatingRepository {
       const rating = await ratingModal.find({
         isApproved: "accepted",
         isBlocked: false,
-      });
+      } as any);
       return rating;
     } catch (error) {
       throw new BadRequestError("error in db" + error);

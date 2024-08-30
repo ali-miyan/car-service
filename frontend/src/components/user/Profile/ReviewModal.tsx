@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { notifyError, notifySuccess } from "../../common/Toast";
 import { useMakeRatingMutation } from "../../../store/slices/userApiSlice";
-import { getInitialToken } from "../../../helpers/getToken";
 import { errMessage } from "../../../constants/errorMessage";
+import LoadingButton from "../../common/Loading";
 
 const StarRating = ({ rating, onRate }) => {
   return (
@@ -28,7 +28,7 @@ const StarRating = ({ rating, onRate }) => {
 const ReviewModal = ({ isOpen, onClose, datas }) => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
-  const [rateService] = useMakeRatingMutation();
+  const [rateService, { isLoading }] = useMakeRatingMutation();
 
   if (!isOpen) return null;
 
@@ -77,17 +77,18 @@ const ReviewModal = ({ isOpen, onClose, datas }) => {
         ></textarea>
         <div className="flex justify-between">
           <button
-            className="px-4 py-2 bg-[#ab0000] text-white  hover:bg-[#7f0e0e] transition duration-200"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-          <button
             className="px-4 py-2 bg-gray-900 text-white  hover:bg-gray-800 transition duration-200"
             onClick={onClose}
           >
             Close
           </button>
+          <LoadingButton
+            buttonText="Submit"
+            height="py-2"
+            isLoading={isLoading}
+            width="px-4"
+            onClick={handleSubmit}
+          />
         </div>
       </div>
     </div>

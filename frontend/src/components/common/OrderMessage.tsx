@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Store } from "react-notifications-component";
 import { MdNotifications } from "react-icons/md";
 import { Link } from "react-router-dom";
-import "../../styles/SideBarNotification.css"
+import "../../styles/SideBarNotification.css";
 
 const showNotification = (
   message: string,

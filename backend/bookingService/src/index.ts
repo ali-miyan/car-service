@@ -2,7 +2,6 @@ import express from "express";
 import bookingRoute from "./infrastructure/express/routes";
 import { errorHandler } from "tune-up-library";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import http from "http";
 import setupSocketServer from "./infrastructure/services/socketService";
 import { initializeServices } from "./infrastructure";
@@ -10,13 +9,6 @@ import { initializeServices } from "./infrastructure";
 const PORT = 3003;
 
 const app = express();
-
-app.use(
-  cors({
-    origin: "http://localhost:8080",
-    credentials: true,
-  })
-);
 
 app.use(cookieParser());
 app.use(express.json());

@@ -4,10 +4,9 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { Link } from "react-router-dom";
 
 const MyBookings = () => {
+
   const token = getInitialToken("userToken");
   const { data: orders, isLoading } = useGetUsersOrderQuery(token as string);
-
-  console.log(orders);
 
   if (isLoading) {
     return (

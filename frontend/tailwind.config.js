@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
 import withMT from "@material-tailwind/react/utils/withMT";
 
 export default withMT({
@@ -15,6 +14,9 @@ export default withMT({
       },
       zIndex: {
         '100': '100',
+      },
+      scale: {
+        '99': '0.99',
       },
     },
   },

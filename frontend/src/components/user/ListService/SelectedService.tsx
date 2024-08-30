@@ -18,31 +18,27 @@ import {
   setPackage,
 } from "../../../context/OrderContext";
 import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
-import {
-  BiLike,
-  BiLikeFill,
-  BiDislike,
-  BiDislikeFill,
-  BiSolidLike,
-  BiSolidDislike,
-} from "react-icons/bi";
+import { BiLike, BiDislike, BiSolidLike, BiSolidDislike } from "react-icons/bi";
 
 const SelectedService = () => {
-  const { id } = useParams<{ id: string }>();
   const token = getInitialToken("userToken");
-  const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
 
-  console.log(posts);
-  
-
-  const [updateRating, { isLoading: isRatingLoading }] =
-    useUpdateRatingMutation();
-
-  const { data: rating, refetch } = useGetRatingsQuery(id as string);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
+  const { id } = useParams<{ id: string }>();
   const location = useLocation();
+
+  const { data: posts, isLoading } = useGetSinglServicesQuery(id as string);
+  const { data: rating, refetch } = useGetRatingsQuery(id as string);
+  const [updateRating] = useUpdateRatingMutation();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [mainImage, setMainImage] = useState(posts?.images[0] || "");
+  const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
   const { generalServiceId, serviceData } = location.state || {};
+
+  const scrollRef = useRef(null);
 
   const totalRatings = rating?.length;
   const averageRating = totalRatings
@@ -55,17 +51,12 @@ const SelectedService = () => {
     return acc;
   }, {});
 
-  const userId = getInitialToken("userToken");
-
   useEffect(() => {
     if (serviceData && generalServiceId) {
       const details = serviceData.find((val) => val.id === generalServiceId);
       setGeneralServiceDetails(details);
     }
   }, [serviceData, generalServiceId]);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleClick = (name?: string) => {
     if (token) {
@@ -78,8 +69,6 @@ const SelectedService = () => {
       navigate("/", { state: { openModal: true } });
     }
   };
-
-  const scrollRef = useRef(null);
 
   if (isLoading || !posts) return <OrderDetailSkeleton />;
 
@@ -94,14 +83,14 @@ const SelectedService = () => {
   };
 
   const handleLike = async (stat: string, _id: string) => {
-    if (!userId) {
+    if (!token) {
       notifyError("You need to log in to continue");
       navigate("/", { state: { openModal: true } });
       return;
     }
 
     try {
-      const res = await updateRating({ stat, _id, userId }).unwrap();
+      const res = await updateRating({ stat, _id, token }).unwrap();
       console.log(res);
       refetch();
     } catch (error) {
@@ -115,9 +104,9 @@ const SelectedService = () => {
         <div className="mx-4 lg:mx-20 p-4 flex flex-col lg:flex-row items-center lg:items-start justify-evenly">
           <div className="w-full lg:w-5/12 flex flex-col items-center">
             <img
-              src={posts?.images?.[0]}
+              src={mainImage || posts?.images[0]}
               alt="Main Product"
-              className="lg:w-full h-auto object-cover mb-4"
+              className="lg:w-full h-auto object-cover mb-4 border-2 border-gray-400"
             />
 
             <div className="flex lg:hidden space-x-2 py-4">
@@ -126,7 +115,12 @@ const SelectedService = () => {
                   key={index}
                   src={image}
                   alt={`Product Thumbnail ${index + 1}`}
-                  className="w-16 h-16 object-cover"
+                  className={`w-16 h-16 object-cover border-2 rounded cursor-pointer transition-all duration-300 ${
+                    image === mainImage
+                      ? "border-red-800 shadow-lg"
+                      : "border-gray-400 hover:border-red-400"
+                  }`}
+                  onClick={() => setMainImage(image)}
                 />
               ))}
             </div>
@@ -150,8 +144,10 @@ const SelectedService = () => {
 
             <div className="flex items-center  my-6">
               <span className="text-xl font-bold">
-                <span className="text-2xl mr-1 font-bai-medium">Price Range:</span>₹
-                {posts?.basicPackage?.detail?.price}
+                <span className="text-2xl mr-1 font-bai-medium">
+                  Price Range:
+                </span>
+                ₹{posts?.basicPackage?.detail?.price}
                 <span className="text-xl mx-1">to</span>₹
                 {posts?.premiumPackage?.detail?.price}
               </span>
@@ -176,7 +172,9 @@ const SelectedService = () => {
                     {posts?.selectedHours}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
-                    {posts?.servicePlace === "both" ? "service at home and service center" : posts?.servicePlace}
+                    {posts?.servicePlace === "both"
+                      ? "service at home and service center"
+                      : posts?.servicePlace}
                   </td>
                   <td className="border border-red-900 text-sm text-center py-1 px-4">
                     {posts?.servicesPerDay}
@@ -200,7 +198,12 @@ const SelectedService = () => {
                   key={index}
                   src={image}
                   alt={`Product Thumbnail ${index + 1}`}
-                  className="w-16 h-16 lg:w-20 lg:h-20 object-cover"
+                  className={`w-20 h-20 object-cover border-2 rounded cursor-pointer transition-all duration-300 ${
+                    image === mainImage
+                      ? "border-red-700 shadow-lg"
+                      : "border-gray-400 hover:border-red-300"
+                  }`}
+                  onClick={() => setMainImage(image)}
                 />
               ))}
             </div>

@@ -6,20 +6,42 @@ export class RabbitMQService {
   private channel?: Channel;
   private connection?: Connection;
   private initializationPromise: Promise<void>;
+  private maxRetries: number = 5;
+  private retryDelay: number = 5000;
 
   constructor() {
-    this.initializationPromise = this.init();
+    this.initializationPromise = this.initWithRetry();
   }
 
-  private async init() {
+  private async initWithRetry(attempt: number = 1): Promise<void> {
     try {
       this.connection = await amqplib.connect(rabbitMQConfig.uri);
       this.channel = await this.connection.createChannel();
       await this.channel.assertQueue(rabbitMQConfig.queueName1);
       await this.channel.assertQueue(rabbitMQConfig.queueName3);
+      console.log("RabbitMQ connection established successfully");
     } catch (error) {
-      throw new BadRequestError("Failed to initialize ProducerService" + error);
+      console.error(
+        `RabbitMQ connection failed on attempt ${attempt}. Error: ${error}`
+      );
+      if (attempt <= this.maxRetries) {
+        console.log(
+          `Retrying to connect to RabbitMQ in ${
+            this.retryDelay / 1000
+          } seconds...`
+        );
+        await this.delay(this.retryDelay);
+        return this.initWithRetry(attempt + 1);
+      } else {
+        throw new BadRequestError(
+          `Failed to initialize ProducerService after ${this.maxRetries} attempts: ${error}`
+        );
+      }
     }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   public async sendMessage(carId: string) {

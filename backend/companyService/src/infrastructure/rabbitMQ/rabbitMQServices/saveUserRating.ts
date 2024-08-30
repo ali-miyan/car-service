@@ -5,6 +5,7 @@ import { BadRequestError } from "tune-up-library";
 
 export class ConsumerService {
   private channel!: Channel;
+  private connection?: Connection;
   private addRatingUseCase: AddRatingUseCase;
 
   constructor(addRatingUseCase: AddRatingUseCase) {

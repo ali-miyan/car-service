@@ -13,13 +13,13 @@ export const userApiSlice = createApi({
       query: () => "/get-users",
     }),
     getUserById: builder.query({
-      query: (id:string) => `/get-user/${id}`,
+      query: (id: string) => `/get-user/${id}`,
     }),
     getCarById: builder.query({
-      query: (id:string) => `/get-car/${id}`,
+      query: (id: string) => `/get-car/${id}`,
     }),
     getSelectedCar: builder.query({
-      query: (id:string) => `/get-one-car/${id}`,
+      query: (id: string) => `/get-one-car/${id}`,
     }),
     getUserDashboard: builder.query({
       query: () => `/get-dashboard`,
@@ -98,7 +98,7 @@ export const userApiSlice = createApi({
       query: (formData) => ({
         url: `/add-car`,
         method: HttpMethod.POST,
-        body:formData
+        body: formData,
       }),
     }),
     deleteCar: builder.mutation({
@@ -111,23 +111,23 @@ export const userApiSlice = createApi({
       query: (formData) => ({
         url: `/update-password`,
         method: HttpMethod.PATCH,
-        body:formData,
+        body: formData,
       }),
     }),
     makeOrder: builder.mutation({
       query: (formData) => ({
         url: `/order`,
         method: HttpMethod.POST,
-        body:formData,
+        body: formData,
       }),
     }),
-     makeRating: builder.mutation({
+    makeRating: builder.mutation({
       query: (formData) => ({
         url: `/add-rating`,
         method: HttpMethod.POST,
-        body:formData,
+        body: formData,
       }),
-    })
+    }),
   }),
 });
 

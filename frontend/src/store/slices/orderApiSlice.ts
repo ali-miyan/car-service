@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseOrderUrl } from "../../constants/api";
 import { HttpMethod } from "../../schema/httpMethods";
-import { get } from "http";
 
 export const orderApiSlice = createApi({
   reducerPath: "orderApi",

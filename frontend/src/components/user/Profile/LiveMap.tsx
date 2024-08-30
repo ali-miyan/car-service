@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from "axios";
 import polyline from "polyline";
-import {useBookingSocket} from "../../../service/socketService";
+import { useBookingSocket } from "../../../service/socketService";
 import { getInitialToken } from "../../../helpers/getToken";
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
+mapboxgl.accessToken = import.meta.env.VITE_REACT_APP_MAPBOX_TOKEN
 
 const MapboxMap = ({
   liveLongitude,
@@ -14,16 +13,13 @@ const MapboxMap = ({
   userDetails,
   companyDetails,
 }: any) => {
-  const token = getInitialToken('userToken')
+  const token = getInitialToken("userToken");
+
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const [liveMarker, setLiveMarker] = useState<mapboxgl.Marker | null>(null);
-  const [companyToLiveRouteSource, setCompanyToLiveRouteSource] =
-    useState<mapboxgl.GeoJSONSource | null>(null);
+  const [companyToLiveRouteSource, setCompanyToLiveRouteSource] = useState<mapboxgl.GeoJSONSource | null>(null);
   const socket = useBookingSocket(token as string);
-
-  console.log(companyDetails,'detail');
-  
 
   useEffect(() => {
     if (socket) {
@@ -103,21 +99,20 @@ const MapboxMap = ({
       companyIcon.style.backgroundRepeat = "no-repeat";
       companyIcon.style.width = "90px";
       companyIcon.style.height = "90px";
-      companyIcon.title = companyDetails.name; 
+      companyIcon.title = companyDetails.name;
 
       new mapboxgl.Marker(companyIcon)
         .setLngLat([companyDetails.longitude, companyDetails.latitude])
         .setPopup(new mapboxgl.Popup().setText(companyDetails.name))
         .addTo(mapInstance);
 
-        const homeIcon = document.createElement("div");
-        homeIcon.style.backgroundImage = `url('../../../../public/assets/pointer-with-icon-car-free-vector-removebg-preview.png')`; // URL of the home icon
-        homeIcon.style.backgroundSize = "contain";
-        homeIcon.style.backgroundRepeat = "no-repeat";
-        homeIcon.style.width = "70px";
-        homeIcon.style.height = "70px"; 
-        homeIcon.title = "Car Location"; 
-  
+      const homeIcon = document.createElement("div");
+      homeIcon.style.backgroundImage = `url('../../../../public/assets/pointer-with-icon-car-free-vector-removebg-preview.png')`; // URL of the home icon
+      homeIcon.style.backgroundSize = "contain";
+      homeIcon.style.backgroundRepeat = "no-repeat";
+      homeIcon.style.width = "70px";
+      homeIcon.style.height = "70px";
+      homeIcon.title = "Car Location";
 
       const initialLiveMarker = new mapboxgl.Marker(homeIcon)
         .setLngLat([liveLongitude, liveLatittude])

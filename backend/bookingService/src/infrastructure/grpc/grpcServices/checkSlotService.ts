@@ -1,6 +1,7 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
+import { BadRequestError } from "tune-up-library";
 
 const PROTO_PATH = path.resolve(__dirname, "../protos/booking.proto");
 
@@ -15,17 +16,17 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const bookingProto = grpc.loadPackageDefinition(packageDefinition).booking;
 
 const client = new (bookingProto as any).BookingService(
-  "localhost:6002",
+  "company:6002",
   grpc.credentials.createInsecure()
 );
 
 export const checkSlotAvailability = (
   serviceId: string
-): Promise<{ available: boolean }> => {
+): Promise<any> => {
   return new Promise((resolve, reject) => {
     client.CheckSlotAvailability({ serviceId }, (error: any, response: any) => {
       if (error) {
-        return reject(error);
+        throw new BadRequestError('error in grpc' + error)
       }
       resolve(response);
     });

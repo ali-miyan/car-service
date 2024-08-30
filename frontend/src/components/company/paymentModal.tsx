@@ -2,26 +2,23 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useRefundToUserMutation } from "../../store/slices/orderApiSlice";
 import LoadingButton from "../common/Loading";
 
-const RefundModal = ({ setIsModalOpen, refundAmount, userId, orderId }:any) => {
-  const [refundToUser,{isLoading}] = useRefundToUserMutation({});
+const RefundModal = ({
+  setIsModalOpen,
+  refundAmount,
+  userId,
+  orderId,
+}: any) => {
+  
+  const [refundToUser, { isLoading }] = useRefundToUserMutation({});
 
   const handleRefund = async () => {
-    
-    const stripe = await loadStripe(
-      "pk_test_51Piw5m09257pZrXUfjcIjUSkygdRNTNDHFqlBmMhALAMzXeZIhrA9dUspnnBGWaIFg9rOsSuYVHcFMAO1qsiRvXu00FVZc6hg5"
-    );
-
+    const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_TOKEN);
     const res = await refundToUser({ userId, orderId, refundAmount }).unwrap();
-
-    console.log(res,'resss');
-    
 
     stripe?.redirectToCheckout({
       sessionId: res,
     });
 
-
-    console.log(res);
     if (res.success) {
       setIsModalOpen(false);
     }
@@ -45,7 +42,13 @@ const RefundModal = ({ setIsModalOpen, refundAmount, userId, orderId }:any) => {
           >
             Close
           </button>
-          <LoadingButton buttonText="Confirm Refund" height="py-2" isLoading={isLoading} width="px-4" onClick={handleRefund} />
+          <LoadingButton
+            buttonText="Confirm Refund"
+            height="py-2"
+            isLoading={isLoading}
+            width="px-4"
+            onClick={handleRefund}
+          />
         </div>
       </div>
     </div>

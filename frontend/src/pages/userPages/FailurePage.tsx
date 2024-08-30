@@ -1,10 +1,12 @@
-import React from 'react'
-import Failure from '../../components/user/OrderManagement/Failure'
+import React from "react";
+import Failure from "../../components/user/OrderManagement/Failure";
 
 const FailurePage = () => {
   return (
-    <div><Failure /></div>
-  )
-}
+    <div>
+      <Failure />
+    </div>
+  );
+};
 
-export default FailurePage
+export default FailurePage;

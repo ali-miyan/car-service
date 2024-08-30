@@ -8,19 +8,12 @@ import Loader from "../../common/Loader";
 import { profileImg } from "../../../constants/imageUrl";
 
 const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
-  const {
-    data: chat,
-    isLoading,
-    refetch,
-  } = useGetChatQuery(
-    { userId: token, companyId: selectedCompany?._id },
-    {
-      refetchOnMountOrArgChange: true,
-    }
-  );
 
+  const {data: chat ,isLoading ,refetch,} = useGetChatQuery({ userId: token, companyId: selectedCompany?._id },{refetchOnMountOrArgChange: true,});
   const { data: posts } = useGetUserByIdQuery(token as string);
-
+  
+  
+  const [newMessage, setNewMessage] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<IChatData>({
     _id: "",
     user: {
@@ -31,7 +24,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
     company: { companyId: "", companyName: "", companyImg: "" },
     messages: [],
   });
-  const [newMessage, setNewMessage] = useState("");
+
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +76,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
 
   useEffect(() => {
     if (chatSocket) {
-      chatSocket.on("company_to_user", async(messageData: any) => {
+      chatSocket.on("company_to_user", async (messageData: any) => {
         console.log(messageData.content, "typeheerere");
 
         if (messageData.type === "file") {
@@ -113,6 +106,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
   }, [chatSocket]);
 
   const handleSendMessage = () => {
+
     if (selectedCompany && newMessage.trim()) {
       setNewMessage("");
 
@@ -139,6 +133,7 @@ const ChatSection = ({ selectedCompany, setSelectedCompany, token }: any) => {
       }));
 
       chatSocket?.emit("user_message_sent", messageData);
+      
     }
   };
 

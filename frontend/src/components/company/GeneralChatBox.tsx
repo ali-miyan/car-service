@@ -3,7 +3,6 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { IChatData } from "../../schema/component";
 import { useGetChatQuery } from "../../store/slices/chatApiSlice";
 import { useChatSocket } from "../../service/socketService";
-import { BsSendFill } from "react-icons/bs";
 import Loader from "../common/Loader";
 import { profileImg } from "../../constants/imageUrl";
 
@@ -13,20 +12,35 @@ const CompanyChat = ({
   companyData,
   handleButtonClick,
 }: any) => {
-  console.log(userData, companyData, companyId, "companuyudd");
 
   const { data, isLoading, refetch } = useGetChatQuery({
     userId: userData.userId,
     companyId,
   });
 
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+
+  const [newMessage, setNewMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState<IChatData>({
+    _id: "",
+    user: {
+      userId: "",
+      username: "",
+      userImg: "",
+    },
+    company: {
+      companyId: companyId as string,
+      companyName: companyData?.companyName,
+      companyImg: companyData?.logo,
+    },
+    messages: [],
+  });
+
   const chatSocket = useChatSocket(companyId);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImageFile(file);
-
       setChatMessages((prevState) => ({
         ...prevState,
         messages: [
@@ -55,22 +69,6 @@ const CompanyChat = ({
     }
   };
 
-  console.log(data, "company chaaat");
-  const [newMessage, setNewMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState<IChatData>({
-    _id: "",
-    user: {
-      userId: "",
-      username: "",
-      userImg: "",
-    },
-    company: {
-      companyId: companyId as string,
-      companyName: companyData?.companyName,
-      companyImg: companyData?.logo,
-    },
-    messages: [],
-  });
 
   useEffect(() => {
     if (data) {
@@ -99,7 +97,6 @@ const CompanyChat = ({
             ],
           }));
         }
-
       });
 
       return () => {
@@ -136,8 +133,6 @@ const CompanyChat = ({
 
     chatSocket?.emit("company_message_sent", messageData);
   };
-
-  const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });

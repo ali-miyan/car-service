@@ -45,7 +45,7 @@ export class BookingRepository implements IBookingRepository {
       const bookings = await bookingModel.findAll({
         where: { companyId },
       });
-      return bookings as bookingModel[];
+      return bookings;
     } catch (error) {
       throw new Error("Error in db: " + error);
     }

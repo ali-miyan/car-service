@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useState } from "react";
 import { RegistrationStep } from "../../common/OrderHeader";
 import { getInitialToken } from "../../../helpers/getToken";
 import { useGetCarByIdQuery } from "../../../store/slices/userApiSlice";
@@ -9,21 +9,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { notifyError } from "../../common/Toast";
 
 const AtServiceCenter = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
-
-  console.log(selectedCarId, "selectedcarid");
-
-  const { serviceId } = useSelector((state: any) => state.order);
 
   const token = getInitialToken("userToken");
   const { data: posts, refetch } = useGetCarByIdQuery(token as string);
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+  const { serviceId } = useSelector((state: any) => state.order);
+
+
   const handleAddCarClick = () => {
     setIsModalOpen(true);
   };
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleNext = () => {

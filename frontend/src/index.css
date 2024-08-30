@@ -9,19 +9,17 @@
 }
 
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .scrollable-content {
-    overflow: auto; /* Allows scrolling */
-    height: 100vh; /* Adjust based on your layout */
+    overflow: auto;
+    height: 100vh;
   }
 }
 
@@ -40,7 +38,6 @@ html {
   }
 }
 
-/* font-setup */
 
 @font-face {
   font-family: "bai regular";

@@ -1,7 +1,7 @@
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51Piw5m09257pZrXUfjcIjUSkygdRNTNDHFqlBmMhALAMzXeZIhrA9dUspnnBGWaIFg9rOsSuYVHcFMAO1qsiRvXu00FVZc6hg5');
+const stripePromise = loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_TOKEN);
 
 export default function App() {
   const options = {

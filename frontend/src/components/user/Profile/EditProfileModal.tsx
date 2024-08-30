@@ -23,16 +23,16 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   currentImage,
   setNewProfileImg,
 }) => {
-  const [editUser] = useEditUserMutation({});
-
   const token = getInitialToken("userToken");
 
-  const [username, setUsername] = useState(currentUsername || "");
-  const [phone, setPhone] = useState(currentPhone || "");
+  const [editUser] = useEditUserMutation({});
+  
+  const [username, setUsername] = useState<string>(currentUsername || "");
+  const [phone, setPhone] = useState<string>(currentPhone || "");
   const [image, setImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState(currentImage || "");
-  const [usernameError, setUsernameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
+  const [usernameError, setUsernameError] = useState<string>("");
+  const [phoneError, setPhoneError] = useState<string>("");
 
   useEffect(() => {
     setUsername(currentUsername || "");
@@ -49,6 +49,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   };
 
   const handleUpdate = async () => {
+    
     const phoneError = phone ? validateInput("phone", phone) : "";
     const nameError = validateInput("username", username);
 

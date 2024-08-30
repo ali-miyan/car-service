@@ -3,9 +3,9 @@ import Dashboard from "../../components/admin/Dashboard";
 
 const RegisterPage2 = () => {
   return (
-        <Wrapper>
-          <Dashboard />
-        </Wrapper>
+    <Wrapper>
+      <Dashboard />
+    </Wrapper>
   );
 };
 

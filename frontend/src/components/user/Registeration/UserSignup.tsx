@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Input from "../../common/Input";
 import {
   hasFormErrors,
   isFormEmpty,
@@ -9,7 +8,6 @@ import { useRegisterPostMutation } from "../../../store/slices/userApiSlice";
 import { CustomError } from "../../../schema/error";
 import { notifyError } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface SignupFormProps {
   onOtpRequest: () => void;
@@ -92,7 +90,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         if (res.success) {
           onOtpRequest();
         }
-        console.log(res, "ssssssssssssss");
       } catch (err) {
         const error = err as CustomError;
         console.log("Error occurred:", error);
@@ -106,7 +103,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onOtpRequest, getEmail }) => {
         }
       }
     } else {
-      console.log("Form contains errors or is incomplete");
       setErrorFields({
         username: newErrors.username !== "",
         email: newErrors.email !== "",

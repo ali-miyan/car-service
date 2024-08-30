@@ -8,10 +8,11 @@ const LocationModal: React.FC<{
   setIsAddressFilled?: () => void;
   handleAddress?: (prop: object) => void;
 }> = ({ setIsAddressFilled, onClose, handleAddress }) => {
-  const { formData, setFormData } = useForm();
-  const [message, setMessage] = useState<string | null>(null);
-  const { address, latitude, longitude } = useLocation();
 
+  const { address, latitude, longitude } = useLocation();
+  const { formData, setFormData } = useForm();
+
+  const [message, setMessage] = useState<string | null>(null);
   const [locationData, setLocationData] = useState<any>({
     address: "",
     city: "",

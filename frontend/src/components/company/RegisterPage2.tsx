@@ -13,8 +13,8 @@ const Page2: React.FC = () => {
   const navigate = useNavigate();
 
 
-  const [openModal, setOpenModal] = useState(false);
-  const [isAddressFilled, setIsAddressFilled] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isAddressFilled, setIsAddressFilled] = useState<boolean>(false);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

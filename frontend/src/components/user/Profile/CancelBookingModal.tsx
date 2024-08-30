@@ -1,18 +1,39 @@
 import { useState } from "react";
+import { useCancelBookingMutation } from "../../../store/slices/orderApiSlice";
+import { notifySuccess } from "../../common/Toast";
+import LoadingButton from "../../common/Loading";
 
-const CancelBookingModal = ({ onCancel, setShowCancelModal }) => {
-  const [cancelReason, setCancelReason] = useState("");
-  const [error, setError] = useState("");
+const CancelBookingModal = ({ orderId, refetch, setShowCancelModal }) => {
+  const [cancelBooking, { isLoading }] = useCancelBookingMutation();
 
-  const handleCancel = () => {
+  
+  
+  const [cancelReason, setCancelReason] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  
+  const handleCancel = async () => {
     if (!cancelReason.trim()) {
       setError("Please provide a reason for cancellation.");
       return;
     }
+    console.log(orderId,'sd',cancelReason);
+    try {
+      const res = await cancelBooking({
+        orderId,
+        reason:cancelReason,
+      }).unwrap();
+      console.log(res);
 
-    onCancel(cancelReason);
-    setCancelReason("");
-    setError("");
+      if (res.success) {
+        refetch();
+        notifySuccess("booking cancelled");
+        setCancelReason("");
+        setError("");
+        setShowCancelModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -40,12 +61,13 @@ const CancelBookingModal = ({ onCancel, setShowCancelModal }) => {
           >
             Close
           </button>
-          <button
-            className="px-4 py-2 bg-[#ab0000] text-white  hover:bg-[#7f0e0e] transition duration-200"
+          <LoadingButton
+            buttonText="Submit"
+            height="py-2"
+            isLoading={isLoading}
+            width="px-4"
             onClick={handleCancel}
-          >
-            Submit
-          </button>
+          />
         </div>
       </div>
     </div>

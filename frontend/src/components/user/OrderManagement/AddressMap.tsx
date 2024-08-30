@@ -1,18 +1,20 @@
-import ReactMapGL, { GeolocateControl, Marker, NavigationControl } from "react-map-gl";
+import ReactMapGL, {
+  GeolocateControl,
+  Marker,
+  NavigationControl,
+} from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Geocoder from "../../company/Geocoder";
-
-const MAPBOX_TOKEN = "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
+const MAPBOX_TOKEN = import.meta.env.VITE_REACT_APP_MAPBOX_TOKEN;
 
 const AddressMap: React.FC = () => {
 
-  const handleDragEnd = async(event: { lngLat: any }) => {
+  const handleDragEnd = async (event: { lngLat: any }) => {
     const { lngLat } = event;
-    console.log(lngLat);
-
-
     try {
-      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat['lng']},${lngLat['lat']}.json?access_token=${MAPBOX_TOKEN}`);
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat["lng"]},${lngLat["lat"]}.json?access_token=${MAPBOX_TOKEN}`
+      );
       if (!response.ok) {
         throw new Error("Reverse geocoding request failed.");
       }
@@ -20,21 +22,19 @@ const AddressMap: React.FC = () => {
       console.log("Reverse geocoding result:", data);
 
       const formattedAddress = data.features[0].place_name;
-      console.log("Formatted Address:", formattedAddress.split(','));
-
+      console.log("Formatted Address:", formattedAddress.split(","));
     } catch (error) {
       console.error("Error fetching reverse geocoding data:", error);
     }
   };
 
   const onLocate = async (event: any) => {
-    console.log(event, "brooooese");
-
     const { coords } = event;
-    console.log("User located at:", coords.latitude, coords.longitude);
 
     try {
-      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${MAPBOX_TOKEN}`);
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${MAPBOX_TOKEN}`
+      );
       if (!response.ok) {
         throw new Error("Reverse geocoding request failed.");
       }
@@ -42,11 +42,10 @@ const AddressMap: React.FC = () => {
       console.log("Reverse geocoding result:", data);
 
       const formattedAddress = data.features[0].place_name;
-      console.log("Formatted Address:", formattedAddress.split(','));
+      console.log("Formatted Address:", formattedAddress.split(","));
     } catch (error) {
       console.error("Error fetching reverse geocoding data:", error);
     }
-
   };
 
   return (
@@ -58,7 +57,7 @@ const AddressMap: React.FC = () => {
         zoom: 8,
       }}
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
-      style={{ width: '360px', height: '360px', margin: '0 auto', }}
+      style={{ width: "360px", height: "360px", margin: "0 auto" }}
     >
       <Marker
         latitude={75.9643}
@@ -73,11 +72,20 @@ const AddressMap: React.FC = () => {
         onGeolocate={onLocate}
       />
       <Geocoder />
-      <div style={{ position: 'absolute', bottom: 1, left: 10, backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 1,
+          left: 10,
+          backgroundColor: "white",
+          padding: "5px",
+          borderRadius: "5px",
+        }}
+      >
         <p>Address:</p>
       </div>
     </ReactMapGL>
   );
-}
+};
 
 export default AddressMap;

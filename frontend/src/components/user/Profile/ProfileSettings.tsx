@@ -7,13 +7,13 @@ import { getInitialToken } from "../../../helpers/getToken";
 import { CustomError } from "../../../schema/error";
 
 const ProfileSettings: React.FC = () => {
-  const userId = getInitialToken("userToken");
 
+  const userId = getInitialToken("userToken");
   const [changePassword] = useChangePasswordMutation();
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
   const [errors, setErrors] = useState({
     currentPassword: "",
     newPassword: "",
@@ -49,14 +49,12 @@ const ProfileSettings: React.FC = () => {
       !confirmNewPasswordError
     ) {
       try {
-        console.log("Password changed successfully");
         const res = await changePassword({
           userId,
           currentPassword,
           newPassword,
           confirmNewPassword,
         }).unwrap();
-        console.log(res, "resres");
         notifySuccess("password changed");
         setConfirmNewPassword("");
         setCurrentPassword("");

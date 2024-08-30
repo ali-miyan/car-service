@@ -1,4 +1,4 @@
 export const rabbitMQConfig = {
-  uri: "amqp://localhost",
+  uri: "amqp://rabbitmq",
   queueName: "save_user_rating",
 };

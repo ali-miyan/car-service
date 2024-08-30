@@ -8,6 +8,9 @@ export class GetBookingUseCase {
 
     const data = await this.bookingRepository.getAll(companyId);
 
+    console.log(data,'all bookings of ', companyId);
+    
+
     if (!data) {
       throw new BadRequestError("cant get bookings");
     }

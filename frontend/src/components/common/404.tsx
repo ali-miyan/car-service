@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
@@ -7,8 +6,7 @@ const NotFound = () => {
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
-          backgroundImage:
-            "url('/public/assets/pexels-joshuaklr-790176.jpg')",
+          backgroundImage: "url('/public/assets/pexels-joshuaklr-790176.jpg')",
         }}
       ></div>
       <div className="relative z-10 flex flex-col items-center pt-32 text-center px-4 min-h-screen">

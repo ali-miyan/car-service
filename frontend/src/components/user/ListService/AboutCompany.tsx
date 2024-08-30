@@ -1,21 +1,12 @@
-import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetCompanyByIdQuery } from "../../../store/slices/companyApiSlice";
-import { useGetServiceQuery } from "../../../store/slices/adminApiSlice";
-import {
-  FaHistory,
-  FaUsers,
-  FaHandHoldingHeart,
-  FaBuilding,
-  FaStar,
-  FaEnvelope,
-} from "react-icons/fa"; // Import more icons
+import { FaEnvelope } from "react-icons/fa";
 
 const AboutCompany = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data: company } = useGetCompanyByIdQuery(id as string);
 
-  console.log(company, "compny");
+  const { id } = useParams<{ id: string }>();
+
+  const { data: company } = useGetCompanyByIdQuery(id as string);
 
   return (
     <>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaUser, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
+import { FaTruck, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useCancelBookingMutation,
   useGetSingleOrderQuery,
 } from "../../../store/slices/orderApiSlice";
 import { statusMessages } from "../../../schema/component";
@@ -10,22 +9,16 @@ import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton"
 import { useBookingSocket } from "../../../service/socketService";
 import ReviewModal from "./ReviewModal";
 import CancelBookingModal from "./CancelBookingModal";
-import { notifySuccess } from "../../common/Toast";
 
 const OrderDetail: React.FC = () => {
+
   const { id } = useParams<{ id: string }>();
-  const {
-    data: order,
-    isLoading,
-    refetch,
-  } = useGetSingleOrderQuery(id as string);
 
-  const [cancelBooking] = useCancelBookingMutation();
+  const {data: order,isLoading,refetch,} = useGetSingleOrderQuery(id as string);
 
-  console.log(order?.data.status);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
   const socket = useBookingSocket(id as string);
 
   useEffect(() => {
@@ -42,8 +35,6 @@ const OrderDetail: React.FC = () => {
       }
     };
   }, [socket]);
-
-  console.log(order, "ordere");
 
   const navigate = useNavigate();
 
@@ -63,19 +54,7 @@ const OrderDetail: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleCancel = async (reason: string) => {
-    console.log("Canceling booking:", order, "Reason:", reason);
 
-    const res = await cancelBooking({ orderId: order?.data?.id, reason }).unwrap();
-    console.log(res);
-    
-    if(res.success){
-      refetch()
-      notifySuccess('booking cancelled');
-      setShowCancelModal(false);
-    }
-
-  };
   return (
     <>
       <div className="mx-32 mt-20 lowercase">
@@ -154,8 +133,10 @@ const OrderDetail: React.FC = () => {
             ) : null}
             {showCancelModal && (
               <CancelBookingModal
-                onCancel={handleCancel}
+                orderId = {order?.data?.id}
+                refetch={refetch}
                 setShowCancelModal={setShowCancelModal}
+
               />
             )}
           </div>

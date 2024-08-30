@@ -15,6 +15,7 @@ import NotFound from "../components/common/404";
 
 const CompanyRoutes = () => (
   <Routes>
+    
     <Route
       path="register-1"
       element={<CompanyVerifyRoute element={Register1} />}
@@ -27,8 +28,12 @@ const CompanyRoutes = () => (
       path="register-3"
       element={<CompanyVerifyRoute element={Register3} />}
     />
-    <Route path="login" element={<CompanyVerifyRoute element={Login} />} />
-    <Route path="home" element={<CompanyProtectedRoute element={Home} />} />
+    <Route
+      path="login" 
+      element={<CompanyVerifyRoute element={Login} />} />
+    <Route
+      path="home" 
+      element={<CompanyProtectedRoute element={Home} />} />
     <Route
       path="services"
       element={<CompanyProtectedRoute element={Services} />}
@@ -49,7 +54,11 @@ const CompanyRoutes = () => (
       path="order-details/:id"
       element={<CompanyProtectedRoute element={orderDetailsPage} />}
     />
-    <Route path="*" element={<NotFound />} />
+    <Route 
+      path="*" 
+      element={<NotFound />} 
+    />
+    
   </Routes>
 );
 

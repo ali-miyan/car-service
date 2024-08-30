@@ -22,7 +22,7 @@ import { notifyError, notifySuccess } from "../../common/Toast";
 import { errMessage } from "../../../constants/errorMessage";
 import { useAddCarMutation } from "../../../store/slices/userApiSlice";
 import { getInitialToken } from "../../../helpers/getToken";
-import {  ModalPopsCustom } from "../../../schema/component";
+import { ModalPopsCustom } from "../../../schema/component";
 
 const brandToCarsMap: any = {
   Audi,
@@ -49,8 +49,14 @@ interface Car {
   imgAlt: string;
 }
 
+const CarBrandsModal: React.FC<ModalPopsCustom> = ({
+  isOpen,
+  onClose,
+  refetch,
+}) => {
+  const userId = getInitialToken("userToken");
+  const [addCar] = useAddCarMutation({});
 
-const CarBrandsModal: React.FC<ModalPopsCustom> = ({ isOpen, onClose ,refetch }) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedCars, setSelectedCars] = useState<Car[]>([]);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -58,9 +64,6 @@ const CarBrandsModal: React.FC<ModalPopsCustom> = ({ isOpen, onClose ,refetch })
   const [color, setColor] = useState<string>("");
   const [vinError, setVinError] = useState<string>("");
   const [colorError, setColorError] = useState<string>("");
-
-  const [addCar] = useAddCarMutation({});
-  const userId = getInitialToken("userToken");
 
   if (!isOpen) return null;
 
@@ -106,7 +109,7 @@ const CarBrandsModal: React.FC<ModalPopsCustom> = ({ isOpen, onClose ,refetch })
         if (res.success) {
           notifySuccess("Car added");
           onClose();
-          if(refetch){
+          if (refetch) {
             await refetch();
           }
         }

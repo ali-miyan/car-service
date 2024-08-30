@@ -14,7 +14,7 @@ import "tailwindcss/tailwind.css";
 import { getInitialToken } from "../../helpers/getToken";
 import { useGetMonthlyRevenueQuery } from "../../store/slices/orderApiSlice";
 import { FaSpinner } from "react-icons/fa";
-import { months } from "../../schema/company";
+import { months } from "../../schema/component";
 
 ChartJS.register(
   CategoryScale,
@@ -28,11 +28,10 @@ ChartJS.register(
 
 const Dashboard = () => {
   const companyId = getInitialToken("companyToken");
+
   const { data: revenue = [], isLoading } = useGetMonthlyRevenueQuery(
     companyId as string
   );
-
-  console.log(revenue, "revenereerere");
 
   const revenueData = months?.map((_, i) => {
     const item = revenue?.monthlyRevenue?.find(

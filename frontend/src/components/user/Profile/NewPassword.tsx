@@ -7,10 +7,11 @@ import { errMessage } from "../../../constants/errorMessage";
 import { useResetPasswordMutation} from "../../../store/slices/userApiSlice";
 
 const ChangePassword: React.FC = () => {
+
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
 
-  const [ resetPassword, {isLoading}] = useResetPasswordMutation();
+  const [ resetPassword] = useResetPasswordMutation();
 
 
   const [password, setPassword] = useState<string>("");
@@ -63,7 +64,7 @@ const ChangePassword: React.FC = () => {
       const res = await resetPassword({password,token}).unwrap();
       if (res.success) {
         notifySuccess("Your password has been reset successfully");
-        navigate("/login");
+        navigate("/");
       }
     } catch (err) {
       const error = err as CustomError;

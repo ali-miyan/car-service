@@ -6,14 +6,14 @@ const orderSlice = createSlice({
     userId: "",
     serviceId: "",
     servicePlace: "",
-    companyId:"",
-    selectedPlace:"",
+    companyId: "",
+    selectedPlace: "",
     serviceDate: "",
     date: "",
     address: {},
     carModel: "",
     selectedPackage: "",
-    generalServiceId:"",
+    generalServiceId: "",
   },
   reducers: {
     setServiceId(state, action) {
@@ -51,17 +51,17 @@ const orderSlice = createSlice({
     },
     resetOrder() {
       return {
-        userId:"",
+        userId: "",
         serviceId: "",
         servicePlace: "",
-        companyId:"",
-        selectedPlace:"",
+        companyId: "",
+        selectedPlace: "",
         serviceDate: "",
-        date:"",
+        date: "",
         address: {},
         carModel: "",
         selectedPackage: "",
-        generalServiceId:""
+        generalServiceId: "",
       };
     },
   },
@@ -79,7 +79,7 @@ export const {
   setCarModel,
   setPackage,
   resetOrder,
-  setGeneralService
+  setGeneralService,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

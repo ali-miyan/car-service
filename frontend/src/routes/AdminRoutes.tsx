@@ -13,7 +13,11 @@ import NotFound from "../components/common/404";
 const AdminRoutes = () => (
   <>
     <Routes>
-      <Route path="login" element={<AdminVerifyRoute element={Login} />} />
+
+      <Route 
+      path="login"
+      element={<AdminVerifyRoute element={Login} />} 
+      />
       <Route
         path="home"
         element={<AdminProtectedRoute element={Dashboard} />}
@@ -38,7 +42,11 @@ const AdminRoutes = () => (
         path="users"
         element={<AdminProtectedRoute element={UsersDetails} />}
       />
-      <Route path="*" element={<NotFound />} />
+      <Route
+      path="*"
+      element={<NotFound />} 
+      />
+      
     </Routes>
   </>
 );

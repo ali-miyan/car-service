@@ -127,3 +127,54 @@ export const statusMessages: { [key: string]: string } = {
   "Booking Cancelled": "You have cancelled your booking. If this was a mistake or if you need further assistance, please contact us."
 
 };
+
+
+export interface DeleteConfirmationModalProps {
+  body: string;
+  onConfirm: () => void;
+  children: ReactNode;
+}
+
+export interface AddressData {
+  address: string;
+  city: string;
+  streetRegion: string;
+  postcode: string;
+  country: string;
+  latitude: string | number;
+  longitude: string | number;
+}
+
+export interface Post {
+  _id: string;
+  ownerName: string;
+  companyName: string;
+  year: number;
+  logo: string;
+  contact1: number;
+  contact2: number;
+  email: string;
+  licenseNumber: string;
+  licenseExpiry: string;
+  address: AddressData;
+  password: string;
+  licenseImg: string;
+  approvedImg: string;
+  isBlocked: boolean;
+  isApproved: "pending" | "accepted" | "declined";
+}
+
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Calendar } from "@demark-pro/react-booking-calendar";
 import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 import "../../../styles/Global.css";
@@ -8,15 +8,10 @@ import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice"
 import { getSundaysOfYear } from "../../../helpers/getSundays";
 
 const BookingCalendar = ({ setDateChange }: any) => {
+  
   const { serviceId, date } = useSelector((state: any) => state.order);
   const { data: dates } = useGetSinglServicesQuery(serviceId as string);
-  const reserved =dates?.selectedHours === "mon-sat"
-  ? getSundaysOfYear()
-  : [];
-
-  console.log(date, "servicedate");
-
-  console.log(dates, "da");
+  const reserved = dates?.selectedHours === "mon-sat" ? getSundaysOfYear() : [];
 
   const [selectedDates, setSelectedDates] = useState<any>(date || []);
   const dispatch = useDispatch();

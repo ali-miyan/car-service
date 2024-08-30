@@ -17,8 +17,8 @@ export class KafkaService {
         fromBeginning: true,
       });
       await kafkaConsumer.run({
-        eachMessage: async ({ topic, partition, message }) => {
-          const value = message.value ? message.value.toString() : "";
+        eachMessage: async ({ topic, partition, message }:any) => {
+          const value = message?.value ? message.value.toString() : "";
           this.editUserUseCase.execute(JSON.parse(value));
         },
       });

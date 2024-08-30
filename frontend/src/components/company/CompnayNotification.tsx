@@ -3,12 +3,13 @@ import { FaTimes } from "react-icons/fa";
 import { TbMessageDots } from "react-icons/tb";
 import "../../styles/SideBarNotification.css";
 import GeneralChat from "./GeneralChat";
-import BookerCustomerChat from "./BookedCustomerChat";
 import "../../styles/Animation.css";
 
 const CompanyNotificationModal = ({ id, companyData }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -50,22 +51,20 @@ const CompanyNotificationModal = ({ id, companyData }) => {
           </div>
           <div className="flex items-center text-center mt-4 justify-between">
             <div
-              className={`px-4 font-bai-regular lowercase py-2 border-b-2 ${
-                "border-red-900 text-red-900"
-              } w-full transition-colors duration-300`}
+              className={`px-4 font-bai-regular lowercase py-2 border-b-2 ${"border-red-900 text-red-900"} w-full transition-colors duration-300`}
               onClick={() => {
                 setSelectedUser(null);
               }}
             >
-               customer messages
+              customer messages
             </div>
           </div>
-              <GeneralChat
-                selectedUser={selectedUser}
-                id={id}
-                companyData={companyData}
-                setSelectedUser={setSelectedUser}
-              />
+          <GeneralChat
+            selectedUser={selectedUser}
+            id={id}
+            companyData={companyData}
+            setSelectedUser={setSelectedUser}
+          />
         </div>
       </div>
     </div>

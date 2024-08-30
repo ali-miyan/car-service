@@ -1,5 +1,5 @@
-import React from 'react';
-import { LoadingButtonProps } from '../../schema/component';
+import React from "react";
+import { LoadingButtonProps } from "../../schema/component";
 
 const LoadingButton: React.FC<LoadingButtonProps> = ({
   isLoading,
@@ -11,7 +11,9 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${color ? color : "bg-black"} text-white font-bai-regular lowercase rounded ${width} ${height}`}
+      className={`${
+        color ? color : "bg-black"
+      } text-white font-bai-regular lowercase rounded ${width} ${height}`}
       disabled={isLoading}
       onClick={!isLoading ? onClick : undefined}
     >

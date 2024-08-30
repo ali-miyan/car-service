@@ -5,7 +5,7 @@ export interface FormData {
   companyName?: string;
   year?: string;
   description?: string;
-  logoImg?: any ;
+  logoImg?: any;
   contact1?: number | string;
   contact2?: number | string;
   email?: string;
@@ -58,9 +58,9 @@ const defaultFormData: FormData = {
   licenseImg: undefined,
   approvedImg: undefined,
   location: "",
-  password:"",
-  confirmPassword:"",
-  address:{}
+  password: "",
+  confirmPassword: "",
+  address: {},
 };
 
 const defaultFormErrors: FormErrors = {
@@ -76,8 +76,8 @@ const defaultFormErrors: FormErrors = {
   licenseExpiry: "",
   licenseImg: "",
   approvedImg: "",
-  confirmPassword:"",
-  password:"",
+  confirmPassword: "",
+  password: "",
   location: "",
 };
 

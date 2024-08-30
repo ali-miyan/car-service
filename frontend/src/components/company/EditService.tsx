@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { validateInput } from "../../helpers/userValidation";
 import { serviceForm } from "../../schema/component";
@@ -18,13 +17,65 @@ import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 
 const AddYourService: React.FC = () => {
+  const token = getInitialToken("companyToken");
+
   const { id } = useParams<{ id: string }>();
 
-  const { data: posts } = useGetServiceQuery(undefined,{});
+  const { data: posts } = useGetServiceQuery(undefined, {});
   const { data: curretService } = useGetSinglServicesQuery(id as string);
+
+  const [addService, { isLoading }] = useAddServiceMutation();
+  const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [selectedSubServicesOnLoad, setSelectedSubServicesOnLoad] =
+    useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [selectedHours, setSelectedHours] = useState<string>("");
+  const [servicePlace, setServicePlace] = useState<string>("");
+  const [basicSubService, setBasicSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
+  const [standardSubService, setStandardSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
+  const [premiumSubService, setPremiumSubService] = useState<
+    { _id: string; name: string }[]
+  >([]);
+
+  const [basicData, setBasicData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
+  const [standardData, setStandardData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
+  const [premiumData, setPremiumData] = useState<{
+    price?: string;
+    workingHours?: string;
+  }>({});
+  const [formData, setFormData] = useState<serviceForm>({
+    terms: "",
+    workImages: [],
+    subServices: [],
+    servicesPerDay: "",
+  });
+
+  const [errors, setErrors] = useState({
+    selecetedHours: "",
+    selectedService: "",
+    terms: "",
+    workImages: "",
+    packageError: "",
+    servicePlaceError: "",
+    global: "",
+    servicesPerDay: "",
+  });
+
   useEffect(() => {
     if (curretService && posts) {
-
       const sub = posts?.find(
         (val) => val._id === curretService.generalServiceId
       );
@@ -55,39 +106,6 @@ const AddYourService: React.FC = () => {
     }
   }, [curretService]);
 
-  const [addService, { isLoading }] = useAddServiceMutation();
-  const navigate = useNavigate();
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [selectedSubServicesOnLoad, setSelectedSubServicesOnLoad] =
-    useState("");
-  const [selectedService, setSelectedService] = useState("");
-  const [selectedHours, setSelectedHours] = useState("");
-  const [servicePlace, setServicePlace] = useState("");
-  const [basicSubService, setBasicSubService] = useState<
-    { _id: string; name: string }[]
-  >([]);
-  const [standardSubService, setStandardSubService] = useState<
-    { _id: string; name: string }[]
-  >([]);
-  const [premiumSubService, setPremiumSubService] = useState<
-    { _id: string; name: string }[]
-  >([]);
-
-  const [basicData, setBasicData] = useState<{
-    price?: string;
-    workingHours?: string;
-  }>({});
-  const [standardData, setStandardData] = useState<{
-    price?: string;
-    workingHours?: string;
-  }>({});
-  const [premiumData, setPremiumData] = useState<{
-    price?: string;
-    workingHours?: string;
-  }>({});
-
   const handleSubServicesSubmit = (
     selectedSubServices: { _id: string; name: string }[],
     workingData: { price: string; workingHours: string }
@@ -103,24 +121,6 @@ const AddYourService: React.FC = () => {
       setPremiumData(workingData);
     }
   };
-
-  const [formData, setFormData] = useState<serviceForm>({
-    terms: "",
-    workImages: [],
-    subServices: [],
-    servicesPerDay:'',
-  });
-
-  const [errors, setErrors] = useState({
-    selecetedHours: "",
-    selectedService: "",
-    terms: "",
-    workImages: "",
-    packageError: "",
-    servicePlaceError: "",
-    global: "",
-    servicesPerDay:""
-  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -140,9 +140,7 @@ const AddYourService: React.FC = () => {
     if (files.length > 0) {
       setFormData((prevData: any) => ({
         ...prevData,
-        workImages: prevData.workImages
-          ? [...files]
-          : files,
+        workImages: prevData.workImages ? [...files] : files,
       }));
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -164,7 +162,10 @@ const AddYourService: React.FC = () => {
     const selecetedHoursError = validateInput("selecetedHours", selectedHours);
     const servicePlaceError = validateInput("servicePlace", servicePlace);
     const termsError = validateInput("terms", formData.terms);
-    const servicesPerDayError = validateInput("servicesPerDay", formData.servicesPerDay);
+    const servicesPerDayError = validateInput(
+      "servicesPerDay",
+      formData.servicesPerDay
+    );
     const logoError =
       (formData.workImages as []).length > 0
         ? ""
@@ -183,15 +184,19 @@ const AddYourService: React.FC = () => {
       selecetedHours: selecetedHoursError,
       selectedService: selectedServiceError,
       servicePlaceError: servicePlaceError,
-      servicesPerDay:servicesPerDayError,
+      servicesPerDay: servicesPerDayError,
       global: "",
     });
 
-    if (termsError || logoError || packageError || servicePlaceError || servicesPerDayError) {
+    if (
+      termsError ||
+      logoError ||
+      packageError ||
+      servicePlaceError ||
+      servicesPerDayError
+    ) {
       return;
     }
-
-    const token = getInitialToken("companyToken");
 
     const data = new FormData();
     data.append("_id", id as string);
@@ -211,17 +216,13 @@ const AddYourService: React.FC = () => {
     data.append("premiumSubService", JSON.stringify(premiumSubService));
     data.append("premiumSubService", JSON.stringify(premiumData));
 
-    console.log([...data.entries()]);
-
     try {
       const res = await addService(data).unwrap();
       if (res.success) {
         notifySuccess("Successfully added");
         navigate("/company/services", { state: { refetch: true } });
-      } 
-      console.log(res, "response");
+      }
     } catch (err) {
-      console.log(err);
       const error = err as CustomError;
       if (error.status === 400 || error.status === 401) {
         setErrors((prev) => ({
@@ -363,7 +364,6 @@ const AddYourService: React.FC = () => {
                 </p>
               )}
             </div>
-            
           </div>
           <div className="w-full sm:w-8/12 sm:pl-5 mt-4 sm:mt-0">
             <div className="h-36 border-4 mt-7 relative">
@@ -380,7 +380,11 @@ const AddYourService: React.FC = () => {
                     (image: any, index: number) => (
                       <img
                         key={index}
-                        src={typeof image === 'string' ? image : URL.createObjectURL(image)} 
+                        src={
+                          typeof image === "string"
+                            ? image
+                            : URL.createObjectURL(image)
+                        }
                         alt={`Work Image ${index + 1}`}
                         className="w-16 h-16 mt-8 object-cover m-2 rounded"
                       />
@@ -402,21 +406,21 @@ const AddYourService: React.FC = () => {
         </div>
 
         <div className="form-group">
-              <label htmlFor="terms">Terms</label>
-              <input
-                onChange={handleInputChange}
-                value={formData.terms}
-                type="text"
-                className="border p-2 rounded w-full"
-                placeholder="Type here"
-                name="terms"
-              />
-              {errors.terms && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.terms}
-                </p>
-              )}
-            </div>
+          <label htmlFor="terms">Terms</label>
+          <input
+            onChange={handleInputChange}
+            value={formData.terms}
+            type="text"
+            className="border p-2 rounded w-full"
+            placeholder="Type here"
+            name="terms"
+          />
+          {errors.terms && (
+            <p className="text-red-500 font-bai-regular lowercase text-xs">
+              {errors.terms}
+            </p>
+          )}
+        </div>
 
         <div className="form-group mt-5">
           <h3 className="font-bai-bold uppercase text-center mb-2">

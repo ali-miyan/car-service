@@ -4,14 +4,13 @@ import { ChatModel, IChat } from "../../infrastructure/db";
 import { BadRequestError } from "tune-up-library";
 
 export class ChatRepository implements IChatRepository {
-  
-  async getOneChat(chatId: string): Promise<Chat | null> {
+  async getOneChat(chatId: string): Promise<any> {
     try {
-      const chat = await ChatModel.findOne({ _id: chatId });
+      const chat = await ChatModel.findOne({ _id: chatId }).exec();
       if (!chat) {
         return null;
       }
-      return chat.toObject();
+      return chat.toObject() as IChat;
     } catch (error) {
       throw new BadRequestError("error in db" + error);
     }
@@ -49,14 +48,14 @@ export class ChatRepository implements IChatRepository {
   async findByUserAndCompany(
     userId: string,
     companyId: string
-  ): Promise<Chat | null> {
+  ): Promise<IChat | null> {
     try {
       const chat = await ChatModel.findOne({
         "user.userId": userId,
         "company.companyId": companyId,
       }).exec();
       if (!chat) return null;
-      return chat.toObject() as Chat;
+      return chat.toObject() as IChat;
     } catch (error) {
       throw new BadRequestError("error in db" + error);
     }
@@ -64,7 +63,8 @@ export class ChatRepository implements IChatRepository {
 
   async update(chat: Chat): Promise<void> {
     try {
-      await ChatModel.findByIdAndUpdate(chat._id, chat);
+      const { _id, ...updateData } = chat;
+      await ChatModel.findByIdAndUpdate(_id, updateData);
     } catch (error) {
       console.log(error);
       throw new BadRequestError("error in db" + error);

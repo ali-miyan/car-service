@@ -12,8 +12,6 @@ const AdminVerifyRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
   const token = getInitialToken("adminToken");
 
-  console.log(token, "admintokesan");
-
   useEffect(() => {
     if (token) {
       navigate("/admin/home");

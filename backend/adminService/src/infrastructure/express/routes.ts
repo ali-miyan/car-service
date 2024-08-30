@@ -9,7 +9,7 @@ const { adminController, serviceController } = setupDependencies();
 
 router.post("/login",
   (req, res, next) =>
-  adminController.signup(req, res, next)
+  adminController.login(req, res, next)
 );
 
 router.post(

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const PackageContent = ({
   subservices,
@@ -14,12 +13,11 @@ const PackageContent = ({
   alreadyChecked: any;
   setData: any;
 }) => {
+
   const [checkedItems, setCheckedItems] = useState<{ _id: string; name: string }[]>([]);
   const [price, setPrice] = useState<string>(setData.price || "");
   const [workingHours, setWorkingHours] = useState<string>(setData.workingHours || "");
   const [errors, setErrors] = useState<{ price?: string; workingHours?: string }>({});
-
-  console.log(subservices,'inside modaaal');
   
 
   useEffect(() => {

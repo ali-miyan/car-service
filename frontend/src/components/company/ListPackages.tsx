@@ -1,4 +1,3 @@
-import React from "react";
 import { FaDotCircle } from "react-icons/fa";
 
 const ListPackages = ({
@@ -10,7 +9,6 @@ const ListPackages = ({
   standard: any;
   premium: any;
 }) => {
-  console.log(basic, premium, standard);
 
   return (
     <div>

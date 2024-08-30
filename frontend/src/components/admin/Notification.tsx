@@ -4,7 +4,7 @@ import {
   useUpdateCompanyMutation,
 } from "../../store/slices/companyApiSlice";
 import { Link, useLocation } from "react-router-dom";
-import { Post } from "../../schema/company";
+import { Post } from "../../schema/component";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
 import Pagination from "../common/Pagination";
@@ -13,9 +13,10 @@ const Notification = () => {
   const location = useLocation();
   const { data: posts, isLoading, refetch } = useGetCompaniesQuery({});
   const [updateCompany] = useUpdateCompanyMutation({});
-  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );  
+
+  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   useEffect(() => {
     if (posts) {
       const initialToggleStates = posts.reduce((acc: any, post: any) => {
@@ -31,10 +32,9 @@ const Notification = () => {
       refetch();
     }
   }, [location.state, refetch]);
-
-  const [currentPage, setCurrentPage] = useState(1);
+  
+  
   const itemsPerPage = 5;
-
   const currentPosts = posts?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -54,7 +54,6 @@ const Notification = () => {
       }
     } catch (error) {
       notifyError(errMessage);
-      console.error("Failed to update the service status:", error);
     }
   };
 

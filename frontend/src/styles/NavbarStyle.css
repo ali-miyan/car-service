@@ -1,7 +1,7 @@
 .navbar {
   background-color: rgba(197, 197, 197, 0.652);
-  margin: 1.25rem 7rem; /* mx-28 mt-5 */
-  padding: 1rem; /* p-4 */
+  margin: 1.25rem 7rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@
 .navbar-links {
   display: flex;
   justify-content: center;
-  gap: 4rem; /* space-x-16 */
+  gap: 4rem; 
   font-weight: bold;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .navbar-link:hover {
-  color: gray; /* hover:text-gray-700 */
+  color: gray;
 }
 
 .navbar-toggle {
@@ -32,7 +32,7 @@
 @media (max-width: 800px) {
   .navbar {
     margin: 0;
-    padding: 1rem; /* p-4 */
+    padding: 1rem;
     justify-content: start;
   }
 
@@ -40,13 +40,13 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 1rem; /* space-y-4 */
+    gap: 1rem;
     position: absolute;
     top: 3.5rem;
     left: 0;
     right: 0;
     background-color: white;
-    padding: 1rem; /* p-4 */
+    padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
@@ -59,21 +59,19 @@
   }
 }
 
-/* Overlay style to cover the entire screen */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  z-index: 999; /* Ensure it is on top */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Style for the close button */
 .close-btn {
   position: absolute;
   top: 20px;
@@ -100,13 +98,13 @@
 }
 
 .custom-underline::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: #b91c1c; /* red-900 */
+  background-color: #b91c1c;
   transition: width 0.3s ease-in-out;
 }
 

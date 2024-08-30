@@ -5,6 +5,7 @@ import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
 
 const Page1: React.FC = () => {
+
   const { formData, setFormData, errors, setErrors } = useForm();
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const Page1: React.FC = () => {
     if (valid) {
         navigate("/company/register-2");
     }
+    
   };
 
   return (

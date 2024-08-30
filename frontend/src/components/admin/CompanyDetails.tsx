@@ -1,30 +1,25 @@
-import React, { useState } from "react";
-import {
-  useGetCompanyByIdQuery,
-  useUpdateCompanyMutation,
-} from "../../store/slices/companyApiSlice";
+import { useState } from "react";
+import {useGetCompanyByIdQuery,useUpdateCompanyMutation,} from "../../store/slices/companyApiSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { Post } from "../../schema/company";
+import { Post } from "../../schema/component";
 import LoadingButton from "../common/Loading";
 import { notifyError } from "../common/Toast";
 import { errMessage } from "../../constants/errorMessage";
+import Loader from "../common/Loader";
 
 const ServiceInfo = () => {
+
   const { id } = useParams<{ id: string }>();
-  const {
-    data: posts,
-    isLoading,
-    refetch,
-    error,
-  } = useGetCompanyByIdQuery(id as string);
+  const {data: posts,isLoading,} = useGetCompanyByIdQuery(id as string);
   const [updateCompany] = useUpdateCompanyMutation();
+  
   const navigate = useNavigate();
-
+  
   const companyDetails: Post = posts;
-
+  
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isAcceptLoading, setIsAcceptLoading] = useState(false);
-  const [isRejectLoading, setIsRejectLoading] = useState(false);
+  const [isAcceptLoading, setIsAcceptLoading] = useState<boolean>(false);
+  const [isRejectLoading, setIsRejectLoading] = useState<boolean>(false);
 
   const openModal = (image: string) => {
     setSelectedImage(image);
@@ -36,6 +31,7 @@ const ServiceInfo = () => {
 
   const handleApproval = async (id: string, status: string) => {
     try {
+
       if (status === "accepted") {
         setIsAcceptLoading(true);
       } else if (status === "declined") {
@@ -47,6 +43,7 @@ const ServiceInfo = () => {
       if (res.success) {
         navigate("/admin/notification", { state: { refetch: true } });
       }
+
     } catch (error) {
       console.error("Failed to update company status:", error);
       notifyError(errMessage);
@@ -56,8 +53,13 @@ const ServiceInfo = () => {
     }
   };
 
+  if (isLoading) return <Loader />;
+
   return (
-    <div style={{ height: "100%" }} className="container lowercase mx-auto p-4 min-h-screen">
+    <div
+      style={{ height: "100%" }}
+      className="container lowercase mx-auto p-4 min-h-screen"
+    >
       <h1 className="text-center p-3 border-b-4 mx-auto max-w-xs uppercase mb-6">
         Service Info
       </h1>

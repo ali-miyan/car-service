@@ -21,12 +21,12 @@ export class SaveBookedUsersChatUseCase {
 
       if (existingChat) {
         existingChat.messages.push({
-          sender: senderId,
+          sender: senderId as any,
           content,
           timestamp: new Date(timestamp),
           type: "text",
         });
-        await this.chatRepository.update(existingChat);
+        await this.chatRepository.update(existingChat as unknown as Chat);
       } else {
         const newChat = new Chat({
           user: {

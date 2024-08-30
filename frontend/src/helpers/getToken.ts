@@ -1,9 +1,9 @@
-import Cookies from 'js-cookie';
-import extractToken from './extractToken';
+import Cookies from "js-cookie";
+import extractToken from "./extractToken";
 
-export const getInitialToken = (name:string) => {
-    const token = Cookies.get(name);
+export const getInitialToken = (name: string) => {
+  const token = Cookies.get(name);
 
-    const userDetails = extractToken(token as string)    
-    return userDetails || null;
+  const userDetails = extractToken(token as string);
+  return userDetails || null;
 };

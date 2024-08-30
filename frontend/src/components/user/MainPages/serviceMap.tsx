@@ -11,8 +11,7 @@ import { useGetCompaniesQuery } from "../../../store/slices/companyApiSlice";
 import { Link } from "react-router-dom";
 import { calculateDistance } from "../../../helpers/getDistance";
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA";
+const MAPBOX_TOKEN = import.meta.env.VITE_REACT_APP_MAPBOX_TOKEN;
 
 const ServiceMap: React.FC = () => {
   const {
@@ -22,13 +21,16 @@ const ServiceMap: React.FC = () => {
     setLatitude,
     setLongitude,
   } = useLocation();
+
   const { data: posts } = useGetCompaniesQuery({});
 
   const geolocateControlRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
   const routeRef = useRef<any>(null);
 
+  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [sortedPosts, setSortedPosts] = useState<any[]>([]);
+  const [selectedCenter, setSelectedCenter] = useState<any | null>(null);
 
   const onLocate = async (event: any) => {
     const { coords } = event;
@@ -72,9 +74,9 @@ const ServiceMap: React.FC = () => {
   }, [geolocateControlRef]);
 
   const setPath = (center: any) => {
+    setSelectedCenter(center); // Set the selected center
     const map = mapRef.current.getMap();
 
-    // Remove existing route layer if any
     if (routeRef.current) {
       map.removeLayer("route");
       map.removeSource("route");
@@ -114,6 +116,28 @@ const ServiceMap: React.FC = () => {
         routeRef.current = "route";
       })
       .catch((error) => console.error("Error fetching route:", error));
+
+    // Re-sort the companies with the selected one at the top
+    if (sortedPosts) {
+      const newSortedPosts = sortedPosts.slice().sort((a: any, b: any) => {
+        if (a._id === center._id) return -1; // Bring clicked company to the top
+        if (b._id === center._id) return 1;
+        const distanceA = calculateDistance(
+          userLatitude,
+          userLongitude,
+          a.address.latitude,
+          a.address.longitude
+        );
+        const distanceB = calculateDistance(
+          userLatitude,
+          userLongitude,
+          b.address.latitude,
+          b.address.longitude
+        );
+        return distanceA - distanceB;
+      });
+      setSortedPosts(newSortedPosts);
+    }
   };
 
   return (
@@ -151,27 +175,14 @@ const ServiceMap: React.FC = () => {
               anchor="bottom"
             >
               <div
-                className="flex flex-col items-center font-bai-regular bg-white cursor-pointer"
+                className="flex flex-col items-center font-bai-regular cursor-pointer"
                 onClick={() => setPath(center)}
               >
                 <img
                   src={center.logo}
                   alt="Car Service Center"
-                  className="w-8 h-8"
+                  className="w-20 h-20 border border-gray-500"
                 />
-                <div className="text-black uppercase text-xs font-bold text-center">
-                  {center.companyName}
-                </div>
-                <div className="text-gray-600 lowercase p-2 text-xs">
-                  Distance:{" "}
-                  {calculateDistance(
-                    userLatitude,
-                    userLongitude,
-                    center.address.latitude,
-                    center.address.longitude
-                  ).toFixed(2)}{" "}
-                  km
-                </div>
               </div>
             </Marker>
           ))}
@@ -201,7 +212,9 @@ const ServiceMap: React.FC = () => {
           sortedPosts.map((center: any) => (
             <div
               key={center._id}
-              className="mb-2 p-2 cursor-pointer border hover:bg-red-50"
+              className={`mb-2 p-2 cursor-pointer border hover:bg-red-50 ${
+                selectedCenter?._id === center._id ? "bg-red-50" : ""
+              }`}
               onClick={() => setPath(center)}
             >
               <Link to={`/about-company/${center._id}`}>

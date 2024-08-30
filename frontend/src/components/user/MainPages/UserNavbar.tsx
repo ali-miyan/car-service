@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import BasicModal from "../Registeration/RegisterModal";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { LuUserCircle } from "react-icons/lu";
-
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ServiceMap from "./serviceMap";
 import { getInitialToken } from "../../../helpers/getToken";
@@ -15,13 +14,14 @@ import { ReactNotifications } from "react-notifications-component";
 import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 
 const UserNavbar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showMap, setShowMap] = useState<boolean>(false);
 
   const token = getInitialToken("userToken");
 
-  const { data: posts, refetch } = useGetUserByIdQuery(token as string);
+  const { data: posts } = useGetUserByIdQuery(token as string);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showMap, setShowMap] = useState<boolean>(false);
 
   const socket = useUserSocket(token as string);
   const navigate = useNavigate();

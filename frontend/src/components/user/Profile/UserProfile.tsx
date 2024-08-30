@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { CiCreditCard1 } from "react-icons/ci";
 import { GiMechanicGarage } from "react-icons/gi";
 

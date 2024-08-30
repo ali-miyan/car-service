@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { validateInput } from "../../helpers/userValidation";
 import { serviceForm } from "../../schema/component";
@@ -11,24 +10,24 @@ import { errMessage } from "../../constants/errorMessage";
 import { useGetServiceQuery } from "../../store/slices/adminApiSlice";
 import { FaDotCircle, FaPlus } from "react-icons/fa";
 import CustomModal from "../common/Modal";
-import { Post } from "../../schema/company";
+import { Post } from "../../schema/component";
 import PackageContent from "./PackageContent";
 import { getInitialToken } from "../../helpers/getToken";
 
 const AddYourService: React.FC = () => {
 
-  const companyId = getInitialToken('companyToken')
+  const companyId = getInitialToken("companyToken");
 
   const { data: posts } = useGetServiceQuery(companyId as string);
-
   const [addService, { isLoading }] = useAddServiceMutation();
+
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [selectedService, setSelectedService] = useState("");
-  const [selectedHours, setSelectedHours] = useState("");
-  const [servicePlace, setServicePlace] = useState("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [selectedHours, setSelectedHours] = useState<string>("");
+  const [servicePlace, setServicePlace] = useState<string>("");
   const [basicSubService, setBasicSubService] = useState<
     { _id: string; name: string }[]
   >([]);
@@ -41,7 +40,6 @@ const AddYourService: React.FC = () => {
   const [subservices, setSubservices] = useState(
     posts && posts.lengsetStandardSubServiceth > 0 ? posts[0]?.subServices : []
   );
-
   const [basicData, setBasicData] = useState<{
     price?: string;
     workingHours?: string;
@@ -54,6 +52,24 @@ const AddYourService: React.FC = () => {
     price?: string;
     workingHours?: string;
   }>({});
+
+  const [formData, setFormData] = useState<serviceForm>({
+    terms: "",
+    workImages: [],
+    subServices: [],
+    servicesPerDay: "",
+  });
+
+  const [errors, setErrors] = useState({
+    selecetedHours: "",
+    selectedService: "",
+    terms: "",
+    workImages: "",
+    packageError: "",
+    servicePlaceError: "",
+    global: "",
+    servicesPerDay: "",
+  });
 
   const handleSubServicesSubmit = (
     selectedSubServices: { _id: string; name: string }[],
@@ -76,24 +92,6 @@ const AddYourService: React.FC = () => {
       setSubservices(posts[0]?.subServices);
     }
   }, [posts]);
-
-  const [formData, setFormData] = useState<serviceForm>({
-    terms: "",
-    workImages: [],
-    subServices: [],
-    servicesPerDay: "",
-  });
-
-  const [errors, setErrors] = useState({
-    selecetedHours: "",
-    selectedService: "",
-    terms: "",
-    workImages: "",
-    packageError: "",
-    servicePlaceError: "",
-    global: "",
-    servicesPerDay:""
-  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -156,7 +154,10 @@ const AddYourService: React.FC = () => {
       selectedService
     );
     const selecetedHoursError = validateInput("selecetedHours", selectedHours);
-    const servicesPerDayError = validateInput("servicesPerDay", formData.servicesPerDay);
+    const servicesPerDayError = validateInput(
+      "servicesPerDay",
+      formData.servicesPerDay
+    );
     const servicePlaceError = validateInput("servicePlace", servicePlace);
     const termsError = validateInput("terms", formData.terms);
     const logoError =
@@ -177,11 +178,17 @@ const AddYourService: React.FC = () => {
       selecetedHours: selecetedHoursError,
       selectedService: selectedServiceError,
       servicePlaceError: servicePlaceError,
-      servicesPerDay:servicesPerDayError,
+      servicesPerDay: servicesPerDayError,
       global: "",
     });
 
-    if (termsError || logoError || packageError || servicePlaceError|| servicesPerDayError) {
+    if (
+      termsError ||
+      logoError ||
+      packageError ||
+      servicePlaceError ||
+      servicesPerDayError
+    ) {
       return;
     }
 
@@ -204,17 +211,13 @@ const AddYourService: React.FC = () => {
     data.append("premiumSubService", JSON.stringify(premiumSubService));
     data.append("premiumSubService", JSON.stringify(premiumData));
 
-    console.log([...data.entries()]);
-
     try {
       const res = await addService(data).unwrap();
       if (res.success) {
         notifySuccess("Successfully added");
         navigate("/company/services", { state: { refetch: true } });
       }
-      console.log(res, "response");
     } catch (err) {
-      console.log(err);
       const error = err as CustomError;
       if (error.status === 400 || error.status === 401) {
         setErrors((prev) => ({
@@ -393,22 +396,22 @@ const AddYourService: React.FC = () => {
             </div>
           </div>
         </div>
-            <div className="form-group">
-              <label htmlFor="terms">Terms</label>
-              <input
-                onChange={handleInputChange}
-                value={formData.terms}
-                type="text"
-                className="border p-2 rounded w-full"
-                placeholder="Type here"
-                name="terms"
-              />
-              {errors.terms && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs">
-                  {errors.terms}
-                </p>
-              )}
-            </div>
+        <div className="form-group">
+          <label htmlFor="terms">Terms</label>
+          <input
+            onChange={handleInputChange}
+            value={formData.terms}
+            type="text"
+            className="border p-2 rounded w-full"
+            placeholder="Type here"
+            name="terms"
+          />
+          {errors.terms && (
+            <p className="text-red-500 font-bai-regular lowercase text-xs">
+              {errors.terms}
+            </p>
+          )}
+        </div>
 
         <div className="form-group mt-5">
           <h3 className="font-bai-bold uppercase text-center mb-2">

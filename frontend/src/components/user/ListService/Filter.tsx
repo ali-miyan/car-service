@@ -2,12 +2,14 @@ import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlic
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Filters() {
+
   const { data: filterData } = useGetApprovedCompanyQuery({});
 
   const location = useLocation();
+  const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const initialSection = queryParams.get("company");
-  const navigate = useNavigate();
 
   const handleNavigate = (id: string) => {
     const currentParams = new URLSearchParams(window.location.search);

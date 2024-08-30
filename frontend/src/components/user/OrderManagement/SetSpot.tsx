@@ -6,16 +6,14 @@ import { RegistrationStep } from "../../common/OrderHeader";
 import { SetSelectedPlace } from "../../../context/OrderContext";
 
 const ServiceOptions = React.memo(() => {
-  const { servicePlace, serviceId,companyId } = useSelector((state: any) => state.order);
-  console.log(servicePlace, "service type", companyId);
+  const { servicePlace, serviceId } = useSelector((state: any) => state.order);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleNext = useCallback(
     (name: string) => {
-      console.log(name,'name');
-      
-      dispatch(SetSelectedPlace(name))
+      dispatch(SetSelectedPlace(name));
       navigate(`/service-schedule/${serviceId}`);
     },
     [navigate, serviceId]

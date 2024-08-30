@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { ModalPopsCustom } from "../../../schema/component";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setServiceId, setServicePlace, setUserId } from "../../../context/OrderContext";
+import {
+  setServiceId,
+  setServicePlace,
+  setUserId,
+} from "../../../context/OrderContext";
 
 const TermsAndService: React.FC<ModalPopsCustom> = ({
   isOpen,
@@ -10,29 +14,29 @@ const TermsAndService: React.FC<ModalPopsCustom> = ({
   data,
   servicePlace,
   id,
-  userId
+  userId,
 }) => {
-  const [agreed, setAgreed] = useState(false);
-
-  const items = data
-    ?.split("--")
-    .map((item) => item.trim())
-    .filter((item) => item);
-
+  const [agreed, setAgreed] = useState<boolean>(false);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
+    const items = data
+      ?.split("--")
+      .map((item) => item.trim())
+      .filter((item) => item);
 
   const handleProceed = () => {
     if (agreed) {
-      dispatch(setServicePlace(servicePlace))
-      dispatch(setServiceId(id))
-      dispatch(setUserId(userId))
+      dispatch(setServicePlace(servicePlace));
+      dispatch(setServiceId(id));
+      dispatch(setUserId(userId));
       navigate(`/set-spot/${id}`);
     } else {
       alert("You must agree to the terms and conditions before proceeding.");
     }
   };
+  
   if (!isOpen) return null;
 
   return (

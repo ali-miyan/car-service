@@ -2,545 +2,507 @@ export const CarBrands = [
   {
     name: "Suzuki",
     link: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9.jpeg",
     imgAlt: "Maruti Suzuki",
   },
   {
     name: "Hyundai",
     link: "https://gomechanic.in/madurai/car-ac-repair/hyundai",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7.jpeg",
     imgAlt: "Hyundai",
   },
   {
     name: "Honda",
     link: "https://gomechanic.in/madurai/car-ac-repair/honda",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6.jpeg",
     imgAlt: "Honda",
   },
   {
     name: "Tata",
     link: "https://gomechanic.in/madurai/car-ac-repair/tata",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14.jpeg",
     imgAlt: "Tata",
   },
   {
     name: "Ford",
     link: "https://gomechanic.in/madurai/car-ac-repair/ford",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-5.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-5.jpeg",
     imgAlt: "Ford",
   },
   {
     name: "Volkswagen",
     link: "https://gomechanic.in/madurai/car-ac-repair/volkswagen",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16.jpeg",
     imgAlt: "Volkswagen",
   },
   {
     name: "Mahindra",
     link: "https://gomechanic.in/madurai/car-ac-repair/mahindra",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-8.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-8.jpeg",
     imgAlt: "Mahindra",
   },
   {
     name: "Chevrolet",
     link: "https://gomechanic.in/madurai/car-ac-repair/chevrolet",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1.jpeg",
     imgAlt: "Chevrolet",
   },
   {
     name: "Toyota",
     link: "https://gomechanic.in/madurai/car-ac-repair/toyota",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15.jpeg",
     imgAlt: "Toyota",
   },
   {
     name: "Skoda",
     link: "https://gomechanic.in/madurai/car-ac-repair/skoda",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-13.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-13.jpeg",
     imgAlt: "Skoda",
   },
   {
     name: "Nissan",
     link: "https://gomechanic.in/madurai/car-ac-repair/nissan",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11.jpeg",
     imgAlt: "Nissan",
   },
   {
     name: "Fiat",
     link: "https://gomechanic.in/madurai/car-ac-repair/fiat",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-4.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-4.jpeg",
     imgAlt: "Fiat",
   },
   {
     name: "BMW",
     link: "https://gomechanic.in/madurai/car-ac-repair/bmw",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-20.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-20.jpeg",
     imgAlt: "BMW",
   },
   {
     name: "Audi",
     link: "https://gomechanic.in/madurai/car-ac-repair/audi",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18.jpeg",
     imgAlt: "Audi",
   },
   {
     name: "Mercedes",
     link: "https://gomechanic.in/madurai/car-ac-repair/mercedes",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-26.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-26.jpeg",
     imgAlt: "Mercedes",
   },
   {
     name: "Jeep",
     link: "https://gomechanic.in/madurai/car-ac-repair/jeep",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-34.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-34.jpeg",
     imgAlt: "Jeep",
   },
   {
     name: "Mitsubishi",
     link: "https://gomechanic.in/madurai/car-ac-repair/mitsubishi",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-10.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-10.jpeg",
     imgAlt: "Mitsubishi",
   },
   {
     name: "MG",
     link: "https://gomechanic.in/madurai/car-ac-repair/mg",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-37.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-37.jpeg",
     imgAlt: "MG",
   },
   {
     name: "Land Rover",
     link: "https://gomechanic.in/madurai/car-ac-repair/land-rover",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-24.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-24.jpeg",
     imgAlt: "Land Rover",
   },
   {
     name: "Volvo",
     link: "https://gomechanic.in/madurai/car-ac-repair/volvo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-30.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-30.jpeg",
     imgAlt: "Volvo",
   },
   {
     name: "Jaguar",
     link: "https://gomechanic.in/madurai/car-ac-repair/jaguar",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-22.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-22.jpeg",
     imgAlt: "Jaguar",
   },
   {
     name: "Ssangyong",
     link: "https://gomechanic.in/madurai/car-ac-repair/ssangyong",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-36.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-36.jpeg",
     imgAlt: "Ssangyong",
   },
   {
     name: "Isuzu",
     link: "https://gomechanic.in/madurai/car-ac-repair/isuzu",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-32.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-32.jpeg",
     imgAlt: "Isuzu",
   },
   {
     name: "Mini",
     link: "https://gomechanic.in/madurai/car-ac-repair/mini",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-27.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-27.jpeg",
     imgAlt: "Mini",
   },
   {
     name: "Force",
     link: "https://gomechanic.in/madurai/car-ac-repair/force",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-31.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-31.jpeg",
     imgAlt: "Force",
   },
   {
     name: "Opel",
     link: "https://gomechanic.in/madurai/car-ac-repair/opel",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-35.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-35.jpeg",
     imgAlt: "Opel",
   },
   {
     name: "Porsche",
     link: "https://gomechanic.in/madurai/car-ac-repair/porsche",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-28.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-28.jpeg",
     imgAlt: "Porsche",
   },
   {
     name: "Daewoo",
     link: "https://gomechanic.in/madurai/car-ac-repair/daewoo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-2.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-2.jpeg",
     imgAlt: "Daewoo",
   },
   {
     name: "Peugeot",
     link: "https://gomechanic.in/madurai/car-ac-repair/peugeot",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-29.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-29.jpeg",
     imgAlt: "Peugeot",
   },
   {
     name: "Lexus",
     link: "https://gomechanic.in/madurai/car-ac-repair/lexus",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-25.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-25.jpeg",
     imgAlt: "Lexus",
   },
   {
     name: "Ambassador",
     link: "https://gomechanic.in/madurai/car-ac-repair/ambassador",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-19.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-19.jpeg",
     imgAlt: "Ambassador",
   },
   {
     name: "Aston Martin",
     link: "https://gomechanic.in/madurai/car-ac-repair/aston-martin",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-21.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-21.jpeg",
     imgAlt: "Aston Martin",
   },
   {
     name: "Ferrari",
     link: "https://gomechanic.in/madurai/car-ac-repair/ferrari",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-23.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-23.jpeg",
     imgAlt: "Ferrari",
   },
   {
     name: "Maserati",
     link: "https://gomechanic.in/madurai/car-ac-repair/maserati",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-33.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-33.jpeg",
     imgAlt: "Maserati",
   },
 ];
 
 export const Suzuki = [
-    {
-      name: "Swift",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-swift",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-240.jpeg",
-    },
-    {
-      name: "WagonR",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-wagonr",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-251.jpeg",
-    },
-    {
-      name: "Swift Dzire",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-swift-dzire",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-243.jpeg",
-    },
-    {
-      name: "Baleno",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-baleno",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-205.jpeg",
-    },
-    {
-      name: "Alto",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-197.jpeg",
-    },
-    {
-      name: "Ritz",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ritz",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-234.jpeg",
-    },
-    {
-      name: "Celerio",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-celerio",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-208.jpeg",
-    },
-    {
-      name: "Ciaz",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ciaz",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-211.jpeg",
-    },
-    {
-      name: "Alto K10",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto-k10",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-201.jpeg",
-    },
-    {
-      name: "Ertiga",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ertiga",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-216.jpeg",
-    },
-    {
-      name: "Alto 800",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto-800",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-199.jpeg",
-    },
-    {
-      name: "Vitara Brezza",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-vitara-brezza",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-481.jpeg",
-    },
-    {
-      name: "Estilo",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-estilo",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-221.jpeg",
-    },
-    {
-      name: "SX4",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-sx4",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-246.jpeg",
-    },
-    {
-      name: "800",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-800",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-195.jpeg",
-    },
-    {
-      name: "Zen",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-zen",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-253.jpeg",
-    },
-    {
-      name: "A-Star",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-a-star",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-203.jpeg",
-    },
-    {
-      name: "Ignis",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ignis",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-482.jpeg",
-    },
-    {
-      name: "S-Cross",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-s-cross",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-237.jpeg",
-    },
-    {
-      name: "Eeco",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-eeco",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-214.jpeg",
-    },
-    {
-      name: "Esteem",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-esteem",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-219.jpeg",
-    },
-    {
-      name: "Omni",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-omni",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-232.jpeg",
-    },
-    {
-      name: "S-Presso",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-s-presso",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-532.jpeg",
-    },
-    {
-      name: "Grand Vitara",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-grand-vitara",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-223.jpeg",
-    },
-    {
-      name: "Gypsy",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-gypsy",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-226.jpeg",
-    },
-    {
-      name: "Kizashi",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-kizashi",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-229.jpeg",
-    },
-    {
-      name: "Versa",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-versa",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-249.jpeg",
-    },
-    {
-      name: "XL6",
-      href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-xl6",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-550.jpeg",
-    },
-  ];
-  
-  export const Hyundai = [
-    {
-      name: "i10",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i10",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-152.jpeg"
-    },
-    {
-      name: "i20",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i20",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-154.jpeg"
-    },
-    {
-      name: "Grand i10",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-grand-i10",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-149.jpeg"
-    },
-    {
-      name: "Santro Xing",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santro-xing",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-162.jpeg"
-    },
-    {
-      name: "Eon",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-eon",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-144.jpeg"
-    },
-    {
-      name: "Xcent",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-xcent",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-183.jpeg"
-    },
-    {
-      name: "Elite i20",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-elite-i20",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-141.jpeg"
-    },
-    {
-      name: "Creta",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-creta",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-135.jpeg"
-    },
-    {
-      name: "Alcazar",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-alcazar",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-578.jpeg"
-    },
-    {
-      name: "Verna Fluidic",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna-fluidic",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-177.jpeg"
-    },
-    {
-      name: "Verna",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-174.jpeg"
-    },
-    {
-      name: "Accent",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-accent",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-129.jpeg"
-    },
-    {
-      name: "Santro",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santro",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-533.jpeg"
-    },
-    {
-      name: "i20 Active",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i20-active",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-157.jpeg"
-    },
-    {
-      name: "Elantra",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-elantra",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-138.jpeg"
-    },
-    {
-      name: "Getz",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-getz",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-146.jpeg"
-    },
-    {
-      name: "Venue",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-venue",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-513.jpeg"
-    },
-    {
-      name: "Grand i10 Nios",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-grand-i10-nios",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-534.jpeg"
-    },
-    {
-      name: "Verna Transform",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna-transform",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-180.jpeg"
-    },
-    {
-      name: "Getz Prime",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-getz-prime",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-148.jpeg"
-    },
-    {
-      name: "Kona",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-kona",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-593.jpeg"
-    },
-    {
-      name: "Accent Viva",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-accent-viva",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-132.jpeg"
-    },
-    {
-      name: "SantaFE",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santafe",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-160.jpeg"
-    },
-    {
-      name: "Tucson",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-tucson",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-173.jpeg"
-    },
-    {
-      name: "Sonata",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-sonata",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-164.jpeg"
-    },
-    {
-      name: "Sonata Embera",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-sonata-embera",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-167.jpeg"
-    },
-    {
-      name: "Aura",
-      link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-aura",
-      src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-535.jpeg"
-    },
-  ];
-  
+  {
+    name: "Swift",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-swift",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-240.jpeg",
+  },
+  {
+    name: "WagonR",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-wagonr",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-251.jpeg",
+  },
+  {
+    name: "Swift Dzire",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-swift-dzire",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-243.jpeg",
+  },
+  {
+    name: "Baleno",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-baleno",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-205.jpeg",
+  },
+  {
+    name: "Alto",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-197.jpeg",
+  },
+  {
+    name: "Ritz",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ritz",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-234.jpeg",
+  },
+  {
+    name: "Celerio",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-celerio",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-208.jpeg",
+  },
+  {
+    name: "Ciaz",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ciaz",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-211.jpeg",
+  },
+  {
+    name: "Alto K10",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto-k10",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-201.jpeg",
+  },
+  {
+    name: "Ertiga",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ertiga",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-216.jpeg",
+  },
+  {
+    name: "Alto 800",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-alto-800",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-199.jpeg",
+  },
+  {
+    name: "Vitara Brezza",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-vitara-brezza",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-481.jpeg",
+  },
+  {
+    name: "Estilo",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-estilo",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-221.jpeg",
+  },
+  {
+    name: "SX4",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-sx4",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-246.jpeg",
+  },
+  {
+    name: "800",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-800",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-195.jpeg",
+  },
+  {
+    name: "Zen",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-zen",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-253.jpeg",
+  },
+  {
+    name: "A-Star",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-a-star",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-203.jpeg",
+  },
+  {
+    name: "Ignis",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-ignis",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-482.jpeg",
+  },
+  {
+    name: "S-Cross",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-s-cross",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-237.jpeg",
+  },
+  {
+    name: "Eeco",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-eeco",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-214.jpeg",
+  },
+  {
+    name: "Esteem",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-esteem",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-219.jpeg",
+  },
+  {
+    name: "Omni",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-omni",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-232.jpeg",
+  },
+  {
+    name: "S-Presso",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-s-presso",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-532.jpeg",
+  },
+  {
+    name: "Grand Vitara",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-grand-vitara",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-223.jpeg",
+  },
+  {
+    name: "Gypsy",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-gypsy",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-226.jpeg",
+  },
+  {
+    name: "Kizashi",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-kizashi",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-229.jpeg",
+  },
+  {
+    name: "Versa",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-versa",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-249.jpeg",
+  },
+  {
+    name: "XL6",
+    href: "https://gomechanic.in/madurai/car-ac-repair/maruti-suzuki-xl6",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-9-model-550.jpeg",
+  },
+];
+
+export const Hyundai = [
+  {
+    name: "i10",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i10",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-152.jpeg",
+  },
+  {
+    name: "i20",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i20",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-154.jpeg",
+  },
+  {
+    name: "Grand i10",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-grand-i10",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-149.jpeg",
+  },
+  {
+    name: "Santro Xing",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santro-xing",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-162.jpeg",
+  },
+  {
+    name: "Eon",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-eon",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-144.jpeg",
+  },
+  {
+    name: "Xcent",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-xcent",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-183.jpeg",
+  },
+  {
+    name: "Elite i20",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-elite-i20",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-141.jpeg",
+  },
+  {
+    name: "Creta",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-creta",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-135.jpeg",
+  },
+  {
+    name: "Alcazar",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-alcazar",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-578.jpeg",
+  },
+  {
+    name: "Verna Fluidic",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna-fluidic",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-177.jpeg",
+  },
+  {
+    name: "Verna",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-174.jpeg",
+  },
+  {
+    name: "Accent",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-accent",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-129.jpeg",
+  },
+  {
+    name: "Santro",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santro",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-533.jpeg",
+  },
+  {
+    name: "i20 Active",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-i20-active",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-157.jpeg",
+  },
+  {
+    name: "Elantra",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-elantra",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-138.jpeg",
+  },
+  {
+    name: "Getz",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-getz",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-146.jpeg",
+  },
+  {
+    name: "Venue",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-venue",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-513.jpeg",
+  },
+  {
+    name: "Grand i10 Nios",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-grand-i10-nios",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-534.jpeg",
+  },
+  {
+    name: "Verna Transform",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-verna-transform",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-180.jpeg",
+  },
+  {
+    name: "Getz Prime",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-getz-prime",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-148.jpeg",
+  },
+  {
+    name: "Kona",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-kona",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-593.jpeg",
+  },
+  {
+    name: "Accent Viva",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-accent-viva",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-132.jpeg",
+  },
+  {
+    name: "SantaFE",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-santafe",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-160.jpeg",
+  },
+  {
+    name: "Tucson",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-tucson",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-173.jpeg",
+  },
+  {
+    name: "Sonata",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-sonata",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-164.jpeg",
+  },
+  {
+    name: "Sonata Embera",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-sonata-embera",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-167.jpeg",
+  },
+  {
+    name: "Aura",
+    link: "https://gomechanic.in/madurai/car-ac-repair/hyundai-aura",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-7-model-535.jpeg",
+  },
+];
 
 export const Honda = [
   {
     name: "City IVTEC",
     link: "https://gomechanic.in/madurai/car-ac-repair/honda-city-ivtec",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-115.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-115.jpeg",
     imgAlt: "City IVTEC",
   },
   {
     name: "Amaze",
     link: "https://gomechanic.in/madurai/car-ac-repair/honda-amaze",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-107.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-107.jpeg",
     imgAlt: "Amaze",
   },
   {
     name: "City",
     link: "https://gomechanic.in/madurai/car-ac-repair/honda-city",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-112.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-6-model-112.jpeg",
     imgAlt: "City",
   },
   {
@@ -620,22 +582,19 @@ export const Honda = [
 export const Tata = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/tata-tiago",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-484.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-484.jpeg",
     alt: "Tiago",
     name: "Tiago",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/tata-tiago-nrg",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-581.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-581.jpeg",
     alt: "Tiago NRG",
     name: "Tiago NRG",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/tata-nano",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-331.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-14-model-331.jpeg",
     alt: "Nano",
     name: "Nano",
   },
@@ -899,43 +858,37 @@ export const Ford = [
 export const Volkswagen = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-polo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-375.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-375.jpeg",
     alt: "Polo",
     name: "Polo",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-vento",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-378.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-378.jpeg",
     alt: "Vento",
     name: "Vento",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-ameo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-490.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-490.jpeg",
     alt: "Ameo",
     name: "Ameo",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-cross-polo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-366.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-366.jpeg",
     alt: "Cross Polo",
     name: "Cross Polo",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-jetta",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-369.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-369.jpeg",
     alt: "Jetta",
     name: "Jetta",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/volkswagen-passat",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-372.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-16-model-372.jpeg",
     alt: "Passat",
     name: "Passat",
   },
@@ -1133,43 +1086,37 @@ export const Mahindra = [
 export const Chevrolet = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-beat",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-4.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-4.jpeg",
     alt: "Beat",
     name: "Beat",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-spark",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-31.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-31.jpeg",
     alt: "Spark",
     name: "Spark",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-cruze",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-8.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-8.jpeg",
     alt: "Cruze",
     name: "Cruze",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-aveo",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-1.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-1.jpeg",
     alt: "Aveo",
     name: "Aveo",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-sail",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-25.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-25.jpeg",
     alt: "Sail",
     name: "Sail",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/chevrolet-enjoy",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-11.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-1-model-11.jpeg",
     alt: "Enjoy",
     name: "Enjoy",
   },
@@ -1232,43 +1179,37 @@ export const Chevrolet = [
 export const Toyota = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-sera",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-564.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-564.jpeg",
     alt: "Sera",
     name: "Sera",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-etios",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-353.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-353.jpeg",
     alt: "Etios",
     name: "Etios",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-innova",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-363.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-363.jpeg",
     alt: "Innova",
     name: "Innova",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-corolla-altis",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-350.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-350.jpeg",
     alt: "Corolla Altis",
     name: "Corolla Altis",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-etios-liva",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-359.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-359.jpeg",
     alt: "Etios Liva",
     name: "Etios Liva",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/toyota-fortuner",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-362.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-15-model-362.jpeg",
     alt: "Fortuner",
     name: "Fortuner",
   },
@@ -1430,43 +1371,37 @@ export const Skoda = [
 export const Nissan = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-micra",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-258.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-258.jpeg",
     alt: "Micra",
     name: "Micra",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-sunny",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-262.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-262.jpeg",
     alt: "Sunny",
     name: "Sunny",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-terrano",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-264.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-264.jpeg",
     alt: "Terrano",
     name: "Terrano",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-micra-active",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-260.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-260.jpeg",
     alt: "Micra Active",
     name: "Micra Active",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-teana",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-263.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-263.jpeg",
     alt: "Teana",
     name: "Teana",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/nissan-kicks",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-552.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-11-model-552.jpeg",
     alt: "Kicks",
     name: "Kicks",
   },
@@ -1703,43 +1638,37 @@ export const Bmw = [
 export const Audi = [
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-a4",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-388.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-388.jpeg",
     alt: "A4",
     name: "A4",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-a6",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-389.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-389.jpeg",
     alt: "A6",
     name: "A6",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-q3",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-393.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-393.jpeg",
     alt: "Q3",
     name: "Q3",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-q2",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-565.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-565.jpeg",
     alt: "Q2",
     name: "Q2",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-q7",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-395.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-395.jpeg",
     alt: "Q7",
     name: "Q7",
   },
   {
     href: "https://gomechanic.in/madurai/car-ac-repair/audi-a3",
-    src:
-      "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-387.jpeg",
+    src: "https://gomechprod.blob.core.windows.net/gm-retail-app/thumbnails/brand-18-model-387.jpeg",
     alt: "A3",
     name: "A3",
   },

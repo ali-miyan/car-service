@@ -1,32 +1,17 @@
-# version: '3.8'  # Use the latest version of Docker Compose syntax
+version: "3.8"
 
-# services:
-#   backend:
-#     build:
-#       context: ./backend/user-service  # Specify the path to your backend Dockerfile
-#     ports:
-#       - "3000:3000"  # Expose port 8000 on the host and container
-#     networks:
-#       - my-network  # Attach the backend service to the custom network
-
-#   frontend:
-#     build:
-#       context: ./frontend  # Specify the path to your frontend Dockerfile
-#     ports:
-#       - "8080:8080"  # Expose port 3000 on the host and container
-#     depends_on:
-#       - backend  # Ensure backend service starts before frontend
-#     networks:
-#       - my-network  # Attach the frontend service to the custom network
-  
-# networks:
-#   my-network:
-#     driver: bridge
-
----
-
-version: '3.8'
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     environment:
@@ -34,19 +19,122 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - my-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 30s
+      retries: 5
+      start_period: 30s
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     ports:
       - "9092:9092"
+    restart: always
     environment:
-      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    networks:
+      - my-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 30s
+      retries: 5
+      start_period: 30s
 
+  user:
+    build:
+      context: ./backend/userService
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+      - kafka
+    networks:
+      - my-network
+
+  company:
+    build:
+      context: ./backend/companyService
+    ports:
+      - "3001:3001"
+      - "6001:6001"
+      - "6002:6002"
+      - "6003:6003"
+    depends_on:
+      - rabbitmq
+      - kafka
+    networks:
+      - my-network
+
+  admin:
+    build:
+      context: ./backend/adminService
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+      - kafka
+    networks:
+      - my-network
+
+  booking:
+    build:
+      context: ./backend/bookingService
+    ports:
+      - "3003:3003"
+    depends_on:
+      - rabbitmq
+      - kafka
+    networks:
+      - my-network
+
+  chat:
+    build:
+      context: ./backend/chatService
+    ports:
+      - "3004:3004"
+    depends_on:
+      - rabbitmq
+      - kafka
+    networks:
+      - my-network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - user
+      - company
+      - admin
+      - booking
+      - chat
+    networks:
+      - my-network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user
+      - company
+      - admin
+      - booking
+      - chat
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

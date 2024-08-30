@@ -10,8 +10,9 @@ import { errMessage } from "../../constants/errorMessage";
 
 const AddYourService: React.FC = () => {
   const [addServicePost, { isLoading }] = useAddServicePostMutation();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
+  
+  const [subServiceInput, setSubServiceInput] = useState<string>("");
   const [formData, setFormData] = useState<FormState>({
     serviceName: "",
     description: "",
@@ -19,7 +20,6 @@ const AddYourService: React.FC = () => {
     subServices: [],
   });
 
-  const [subServiceInput, setSubServiceInput] = useState<string>("");
   const [errors, setErrors] = useState({
     serviceName: "",
     description: "",
@@ -76,14 +76,13 @@ const AddYourService: React.FC = () => {
     }));
   };
 
-  const handleSubServiceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubServiceInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSubServiceInput(e.target.value);
   };
 
   const handleSubmit = async () => {
-    console.log("Form Data:", formData);
-    console.log("Validation Errors:", errors);
-
     const serviceNameError = validateInput("serviceName", formData.serviceName);
     const descriptionError = validateInput("description", formData.description);
     const logoError = formData.logo ? "" : "Please provide a logo";
@@ -113,12 +112,13 @@ const AddYourService: React.FC = () => {
     });
 
     try {
+      
       const res = await addServicePost(data).unwrap();
+
       if (res.success) {
         notifySuccess("Successfully added");
-        navigate('/admin/services', { state: { refetch: true } });
+        navigate("/admin/services", { state: { refetch: true } });
       }
-      console.log(res, "response");
     } catch (err) {
       console.log(err);
       const error = err as CustomError;
@@ -136,7 +136,9 @@ const AddYourService: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen px-4 sm:px-9 pt-14">
       <div className="font-bai-regular text-sm lowercase w-full max-w-3xl">
-        <h2 className="font-bai-bold uppercase text-center mb-8 text-xl">ADD GENERAL SERVICE</h2>
+        <h2 className="font-bai-bold uppercase text-center mb-8 text-xl">
+          ADD GENERAL SERVICE
+        </h2>
         <div className="flex flex-col sm:flex-row gap-6">
           <div className="w-full">
             <div className="form-group mb-6">
@@ -150,7 +152,9 @@ const AddYourService: React.FC = () => {
                 name="serviceName"
               />
               {errors.serviceName && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.serviceName}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">
+                  {errors.serviceName}
+                </p>
               )}
             </div>
             <div className="form-group mb-6">
@@ -164,7 +168,9 @@ const AddYourService: React.FC = () => {
                 placeholder="Type here"
               />
               {errors.description && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.description}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">
+                  {errors.description}
+                </p>
               )}
             </div>
           </div>
@@ -188,7 +194,9 @@ const AddYourService: React.FC = () => {
                 </div>
               )}
               {errors.logo && (
-                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">{errors.logo}</p>
+                <p className="text-red-500 font-bai-regular lowercase text-xs mt-2">
+                  {errors.logo}
+                </p>
               )}
             </div>
           </div>
@@ -213,7 +221,9 @@ const AddYourService: React.FC = () => {
               </button>
             </div>
             {errors.subServices && (
-              <p className="text-red-500 font-bai-regular lowercase text-xs mb-2">{errors.subServices}</p>
+              <p className="text-red-500 font-bai-regular lowercase text-xs mb-2">
+                {errors.subServices}
+              </p>
             )}
             {formData.subServices.map((subService, index) => (
               <div key={index} className="mb-2 text-gray-700">
@@ -223,11 +233,15 @@ const AddYourService: React.FC = () => {
           </div>
         </div>
         {errors.global && (
-          <p className="text-red-500 text-center mt-5 font-bai-regular lowercase text-xs">{errors.global}</p>
+          <p className="text-red-500 text-center mt-5 font-bai-regular lowercase text-xs">
+            {errors.global}
+          </p>
         )}
         <div className="text-center mt-8 flex justify-center space-x-4">
           <Link to={"/admin/services"}>
-            <button className="bg-black h-10 px-4 text-white rounded">Back</button>
+            <button className="bg-black h-10 px-4 text-white rounded">
+              Back
+            </button>
           </Link>
           <LoadingButton
             buttonText="Submit"

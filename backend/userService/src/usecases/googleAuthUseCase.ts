@@ -10,7 +10,7 @@ export class GoogleUseCase {
       throw new BadRequestError("Failed to fetch");
     }
 
-    const { name, email, id } = await getUserFromGoogle(
+    const { name, email, id, picture } = await getUserFromGoogle(
       access_token,
       token_type
     );
@@ -22,6 +22,7 @@ export class GoogleUseCase {
         username: name,
         email,
         phone: null,
+        profileImg:picture,
         password: id,
         wallet: 0,
       });

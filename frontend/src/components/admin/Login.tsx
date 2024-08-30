@@ -1,18 +1,16 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { validateInput } from "../../helpers/userValidation"; // Adjust the import path as necessary
+import { validateInput } from "../../helpers/userValidation";
 import { useRegisterPostMutation } from "../../store/slices/adminApiSlice";
 import { useNavigate } from "react-router-dom";
 import { notifyError, notifySuccess } from "../common/Toast";
 import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
-import { useDispatch } from "react-redux";
 import LoadingButton from "../common/Loading";
 
 const Login: React.FC = () => {
 
   const [registerPost, { isLoading }] = useRegisterPostMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -56,7 +54,6 @@ const Login: React.FC = () => {
         navigate("/admin/home");
       }
 
-      console.log("Form submitted successfully:");
     } catch (err) {
       const error = err as CustomError;
       console.error("Error submitting form:", error);

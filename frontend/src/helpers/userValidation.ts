@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { emailRegex, phoneRegex } from "../constants/regex";
 
 export const validateInput = (name: string, value: any | undefined) => {
   let error = "";
-  console.log(name,value);
-  
   switch (name) {
     case "ownerName":
       if (!value) {
@@ -199,7 +196,6 @@ export const validateInput = (name: string, value: any | undefined) => {
   }
   return error;
 };
-
 
 interface FormErrors {
   username?: string;

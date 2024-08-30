@@ -6,26 +6,25 @@ import BookingCalendar from "./Calender";
 import { notifyError } from "../../common/Toast";
 
 const ScheduleOrder = () => {
-  const { selectedPlace, serviceId, servicePlace } = useSelector((state: any) => state.order);
-  console.log(selectedPlace, "service schedule page", serviceId,servicePlace);
-  const [dateChange,setDateChange] = useState(false)
+  
+  const { date,selectedPlace, serviceId } = useSelector(
+    (state: any) => state.order
+  );
+
+  const [dateChange, setDateChange] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { date } = useSelector((state: any) => state.order);
 
-
-  console.log(dateChange,'dar');
   const handleNext = useCallback(() => {
-    
-    if(!date){
-      notifyError('please select a date');
-      return
+    if (!date) {
+      notifyError("please select a date");
+      return;
     }
     if (selectedPlace === "home") {
       navigate(`/service-at-home/${serviceId}`);
     } else {
       navigate(`/service-at-center/${serviceId}`);
     }
-  }, [navigate, serviceId,dateChange]);
+  }, [navigate, serviceId, dateChange]);
 
   return (
     <>
@@ -50,7 +49,7 @@ const ScheduleOrder = () => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center  bg-gray-100 pb-10">
-        <BookingCalendar setDateChange={setDateChange}/>
+        <BookingCalendar setDateChange={setDateChange} />
         <button
           onClick={handleNext}
           className="bg-black text-white px-5 py-2 mt-4 transition-colors"

@@ -9,13 +9,12 @@ import { FaRegUserCircle } from "react-icons/fa";
 import Pagination from "../common/Pagination";
 
 const UsersDetails = () => {
-  const { data: posts, isLoading, refetch, error } = useGetUsersQuery({});
-  console.log(error, "erererereerrorrr");
 
+  const { data: posts, isLoading, refetch} = useGetUsersQuery({});
   const [updateUserStatus] = useUpdateStatusMutation();
-  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  
+  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     if (posts) {
@@ -44,10 +43,8 @@ const UsersDetails = () => {
       }
     } catch (error) {
       notifyError(errMessage);
-      console.error("Failed to update the service status:", error);
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2;
 
   const currentPosts = posts?.slice(

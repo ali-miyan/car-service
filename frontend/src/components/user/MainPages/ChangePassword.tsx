@@ -8,12 +8,13 @@ import { useResetRequestMutation } from "../../../store/slices/userApiSlice";
 
 const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
-  const [ resetRequest, {isLoading}] = useResetRequestMutation()
+
+  const [resetRequest, { isLoading }] = useResetRequestMutation();
 
   const [email, setEmail] = useState<string>("");
   const [errors, setErrors] = useState({
     email: "",
-    global: ""
+    global: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,23 +37,20 @@ const ChangePassword: React.FC = () => {
     if (passwordError) {
       setErrors({
         email: passwordError,
-        global: ""
+        global: "",
       });
       return;
     }
 
-
     try {
-      const res = await resetRequest({email}).unwrap();
-      console.log(res,'dw');
-      
+      const res = await resetRequest({ email }).unwrap();
       if (res.success) {
         notifySuccess(`an reset link has been sent to ${email} `);
         navigate("/");
       }
     } catch (err) {
-        console.log(err);
-        
+      console.log(err);
+
       const error = err as CustomError;
       if (error.status === 400) {
         setErrors((prevErrors) => ({
@@ -85,15 +83,15 @@ const ChangePassword: React.FC = () => {
             className={`w-full px-3 py-2 border rounded focus:outline-none`}
           />
           {errors.email && (
-              <p className="text-red-800 font-bai-regular lowercase text-xs">
+            <p className="text-red-800 font-bai-regular lowercase text-xs">
               {errors.email}
             </p>
           )}
           {errors.global && (
-          <p className="text-red-500 font-bai-regular text-center lowercase text-sm">
-          {errors.global}
-          </p>
-      )}
+            <p className="text-red-500 font-bai-regular text-center lowercase text-sm">
+              {errors.global}
+            </p>
+          )}
         </div>
         {isLoading ? (
           <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CompanyChat from "./GeneralChatBox";
 import { useGetCompanyChatQuery } from "../../store/slices/chatApiSlice";
 import Loader from "../common/Loader";
@@ -11,18 +11,14 @@ const GeneralChat = ({
   companyData,
   setSelectedUser,
 }: any) => {
-  const {
-    data: users,
-    isLoading,
-    refetch,
-  } = useGetCompanyChatQuery(id, {
-    refetchOnMountOrArgChange: true,
-  });
 
-  const chatSocket = useChatSocket(id);
+  const {data: users,isLoading,refetch,} = useGetCompanyChatQuery(id, {refetchOnMountOrArgChange: true,});
+
   const [unreadMessages, setUnreadMessages] = useState<{
     [key: string]: number;
   }>({});
+  
+  const chatSocket = useChatSocket(id);
 
   useEffect(() => {
     const savedUnreadMessages = JSON.parse(
@@ -34,7 +30,6 @@ const GeneralChat = ({
   useEffect(() => {
     if (chatSocket) {
       chatSocket.on("user_to_company", (message) => {
-        console.log("user messagedd");
         refetch();
         setUnreadMessages((prev) => {
           const updatedUnreadMessages = {

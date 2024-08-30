@@ -1,8 +1,6 @@
 import { BadRequestError } from "tune-up-library";
-import { User } from "../entities/userEntity";
 import { IRedisRepository, IUserRepository } from "../repositories";
 import { OtpService } from "../infrastructure/services";
-import { hashPassword } from "../utils";
 
 export class SignupUseCase {
   constructor(

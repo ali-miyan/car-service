@@ -10,9 +10,8 @@ import { CustomError } from "../../schema/error";
 import LoadingButton from "../common/Loading";
 
 const Page3: React.FC = () => {
-  const { formData, setFormData, errors, setErrors } = useForm();
 
-  console.log(formData, "formdatatata in  333333");
+  const { formData, setFormData, errors, setErrors } = useForm();
 
   const [registerPost, { isLoading }] = useRegisterPostMutation();
 
@@ -84,7 +83,6 @@ const Page3: React.FC = () => {
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-    console.log(newErrors, "errororos");
 
     setErrors(newErrors);
     const valid = Object.values(newErrors).every((error) => !error);
@@ -107,20 +105,15 @@ const Page3: React.FC = () => {
           formDatas.append(key, value);
         }
       });
-      console.log([...formDatas.entries()]);
 
       try {
         const res = await registerPost(formDatas).unwrap();
-        console.log(res);
 
         if (res.success) {
           notifySuccess("registered succesfully");
           navigate('/company/login')
         }
-        console.log("Form submitted successfully:");
       } catch (err) {
-        console.log(err);
-
         const error = err as CustomError;
         if (error.status === 400) {
           notifyError(error.data.error);
@@ -129,7 +122,6 @@ const Page3: React.FC = () => {
         }
       }
     } else {
-      console.log("Form contains validation errors.");
       notifyError("Fill all required fields");
     }
   };

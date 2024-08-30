@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import OrderDetailSkeleton from "../../../layouts/skelotons/OrderDetailSkeleton";
 
 const LiveTrack = () => {
+  
   const { id } = useParams();
   const location = useLocation();
   const company = location.state?.company;
@@ -12,9 +13,7 @@ const LiveTrack = () => {
 
   const navigate = useNavigate();
 
-
   const { data, isLoading } = useGetLiveLocationQuery(id as string);
-
 
   if (!data || isLoading) return <OrderDetailSkeleton />;
 

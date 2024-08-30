@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetSelectedCarQuery, useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
+import {
+  useGetSelectedCarQuery,
+  useGetUserByIdQuery,
+} from "../../../store/slices/userApiSlice";
 import { useMakeOrderMutation } from "../../../store/slices/orderApiSlice";
 import { useGetSinglServicesQuery } from "../../../store/slices/companyApiSlice";
 import { RegistrationStep } from "../../common/OrderHeader";
@@ -13,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { resetOrder } from "../../../context/OrderContext";
 
 const Checkout = () => {
+  
   const {
     address,
     carModel,
@@ -23,15 +27,16 @@ const Checkout = () => {
     generalServiceId,
     companyId,
   } = useSelector((state: any) => state.order);
-  
-  const token = getInitialToken("userToken");
-  const navigate = useNavigate();
 
+  const token = getInitialToken("userToken");
+
+  
   const { data: user } = useGetUserByIdQuery(token as string);
   const { data: car } = useGetSelectedCarQuery(carModel);
   const { data: service } = useGetSinglServicesQuery(serviceId);
   const [makeOrder, { isLoading }] = useMakeOrderMutation();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,15 +67,14 @@ const Checkout = () => {
     standard: "standardPackage",
     premium: "premiumPackage",
   };
+
   const serviceKey = packageMap[selectedPackage];
   const serviceDetails = service ? service[serviceKey] : [];
 
   const handleSubmit = async () => {
     try {
       if (selectedPaymentMethod === "online") {
-        const stripe = await loadStripe(
-          "pk_test_51Piw5m09257pZrXUfjcIjUSkygdRNTNDHFqlBmMhALAMzXeZIhrA9dUspnnBGWaIFg9rOsSuYVHcFMAO1qsiRvXu00FVZc6hg5"
-        );
+        const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_TOKEN);
         const res = await makeOrder({
           userId: token,
           companyId,
@@ -88,8 +92,7 @@ const Checkout = () => {
           sessionId: res.id,
         });
         dispatch(resetOrder());
-
-      } else{
+      } else {
         const res = await makeOrder({
           userId: token,
           companyId,
@@ -103,19 +106,16 @@ const Checkout = () => {
           serviceId,
           totalPrice: serviceDetails?.detail?.price,
         }).unwrap();
-        console.log("Cash payment selected", res);
 
         if (res.success) {
           dispatch(resetOrder());
           navigate("/checkout-success");
         }
 
-        console.log(res, "ress");
       }
     } catch (err) {
       const error = err as CustomError;
       notifyError(error.data.error);
-      console.log(error);
     }
   };
 
@@ -407,7 +407,9 @@ const Checkout = () => {
                           type="radio"
                           name="payment-method"
                           value="wallet"
-                          disabled={(serviceDetails?.detail?.price) > user?.wallet}
+                          disabled={
+                            serviceDetails?.detail?.price > user?.wallet
+                          }
                           checked={selectedPaymentMethod === "wallet"}
                           onChange={handlePaymentMethodChange}
                           className="h-4 w-4 border-gray-300 bg-white text-primary-600 "
@@ -421,8 +423,14 @@ const Checkout = () => {
                         >
                           wallet Payment
                         </label>
-                      <p className="text-xs  text-gray-600 self-end">wallet balance : ₹{user?.wallet}</p>
-                     {(serviceDetails?.detail?.price) > user?.wallet &&  <p className="text-xs text-red-600 self-end">no enough balance</p>}
+                        <p className="text-xs  text-gray-600 self-end">
+                          wallet balance : ₹{user?.wallet}
+                        </p>
+                        {serviceDetails?.detail?.price > user?.wallet && (
+                          <p className="text-xs text-red-600 self-end">
+                            no enough balance
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>

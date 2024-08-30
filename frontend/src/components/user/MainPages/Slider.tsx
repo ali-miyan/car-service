@@ -1,11 +1,10 @@
-import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
-
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Loader from "../../common/Loader";
 
 const CustomNextArrow = ({ onClick }: { onClick?: any }) => (
   <button
@@ -67,7 +66,7 @@ const VehicleService = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div><Loader /></div>;
   }
 
   if (!servicesData || servicesData.length === 0) {

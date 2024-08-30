@@ -5,6 +5,7 @@ import VehicleService from "./Slider";
 import Loader from "../../common/Loader";
 
 const HomePage = () => {
+  
   const { data: services, isLoading } = useGetServiceQuery(undefined);
 
   return (

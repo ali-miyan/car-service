@@ -1,6 +1,6 @@
-import React from 'react'
-import Sidebar from '../../components/company/SideBar'
-import AddService from '../../components/company/AddService'
+import React from "react";
+import Sidebar from "../../components/company/SideBar";
+import AddService from "../../components/company/AddService";
 
 const AddServicesPage = () => {
   return (
@@ -9,7 +9,7 @@ const AddServicesPage = () => {
         <AddService />
       </Sidebar>
     </>
-  )
-}
+  );
+};
 
-export default AddServicesPage
+export default AddServicesPage;

@@ -7,8 +7,10 @@ import { CustomError } from "../../schema/error";
 import { errMessage } from "../../constants/errorMessage";
 
 const Login: React.FC = () => {
-  const [loginPost, { isLoading }] = useLoginPostMutation();
+  
   const navigate = useNavigate();
+  
+  const [loginPost, { isLoading }] = useLoginPostMutation();
 
 
   const [email, setEmail] = useState<string>("");
@@ -56,8 +58,6 @@ const Login: React.FC = () => {
         notifySuccess("you have logged in");
         navigate("/company/home");
       }
-
-      console.log("Form submitted successfully:");
     } catch (err) {
         console.log("Form error:",err);
         const error = err as CustomError;

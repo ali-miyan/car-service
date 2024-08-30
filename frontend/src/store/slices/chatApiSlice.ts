@@ -20,4 +20,8 @@ export const chatApiSlice = createApi({
   }),
 });
 
-export const { useGetChatQuery, useGetCompanyChatQuery,useGetBookedUsersQuery } = chatApiSlice;
+export const {
+  useGetChatQuery,
+  useGetCompanyChatQuery,
+  useGetBookedUsersQuery,
+} = chatApiSlice;

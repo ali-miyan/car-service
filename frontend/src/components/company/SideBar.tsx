@@ -4,7 +4,7 @@ import { MdBook, MdConstruction, MdDashboard, MdLogout } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetCompanyByIdQuery } from "../../store/slices/companyApiSlice";
 import { getInitialToken } from "../../helpers/getToken";
-import { Post } from "../../schema/company";
+import { Post } from "../../schema/component";
 import DeleteConfirmationModal from "../common/ConfirmationModal";
 import { useBookingSocket } from "../../service/socketService";
 import OrderNOtification from "../common/OrderMessage";
@@ -12,23 +12,24 @@ import { ReactNotifications } from "react-notifications-component";
 import CompanyNotificationModal from "./CompnayNotification";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
+
   const id = useMemo(() => getInitialToken("companyToken"), []);
+
+  const location = useLocation();
 
   const { data: posts } = useGetCompanyByIdQuery(id as string);
   const companyData: Post = posts;
-  const [open, setOpen] = useState(true);
-  const location = useLocation();
 
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState("");
-  const [notificationDot, setNotificationDot] = useState(false);
+  const [open, setOpen] = useState<boolean>(true);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [notificationDot, setNotificationDot] = useState<boolean>(false);
 
   const socket = useBookingSocket(id as string);
 
   useEffect(() => {
     if (socket) {
       socket.on("order_booked", (message: any) => {
-        console.log("Message received: ", message);
         if (companyData && companyData._id === message.order.companyId) {
           setMessage(
             `A new order has been booked. 
@@ -170,10 +171,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
             ))}
           </ul>
         </div>
-        <div className="flex-1 overflow-auto bg-gray-200">
-
-        {children}
-        </div>
+        <div className="flex-1 overflow-auto bg-gray-200">{children}</div>
       </div>
     </>
   );

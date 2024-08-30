@@ -1,17 +1,13 @@
-import React, { useState, ReactNode } from 'react';
-
-interface DeleteConfirmationModalProps {
-  body: string;
-  onConfirm: () => void;
-  children: ReactNode;
-}
+import React, { useState } from "react";
+import { DeleteConfirmationModalProps } from "../../schema/component";
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   body,
   onConfirm,
   children,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -19,12 +15,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
 
   return (
     <div>
-      <div onClick={toggleModal}>
-        {children}
-      </div>
+      <div onClick={toggleModal}>{children}</div>
 
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-60 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-60 transition-opacity ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <div className="relative p-4 w-full max-w-md">
           <div className="relative p-4 text-center bg-white rounded-lg shadow transform transition-all">

@@ -12,15 +12,18 @@ import CustomModal from "../../common/Modal";
 import { notifyError } from "../../common/Toast";
 
 const CustomerDetails = () => {
-  const [isCarModalOpen, setCarModalOpen] = useState(false);
-  const [isLocationModalOpen, setLocationModalOpen] = useState(false);
+  const token = getInitialToken("userToken");
+  const { data: posts, refetch } = useGetCarByIdQuery(token as string);
+
+  const [isCarModalOpen, setCarModalOpen] = useState<boolean>(false);
+  const [isLocationModalOpen, setLocationModalOpen] = useState<boolean>(false);
   const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+
   const { serviceId, address } = useSelector((state: any) => state.order);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const token = getInitialToken("userToken");
-  const { data: posts, refetch } = useGetCarByIdQuery(token as string);
 
   const handleNext = useCallback(() => {
     if (Object.keys(address).length === 0) {

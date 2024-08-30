@@ -1,5 +1,5 @@
 import React, { useState, useCallback, memo, useEffect } from "react";
-import { FaUser, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
+import { FaTruck, FaMapMarkerAlt } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import {
   useGetSingleOrderQuery,
@@ -11,6 +11,7 @@ import OrderDetailSkeleton from "../../layouts/skelotons/OrderDetailSkeleton";
 import PaymentModal from "./paymentModal";
 
 const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
+
   if (!visible) return null;
 
   const statuses =
@@ -54,14 +55,16 @@ const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
 });
 
 const OrderDetail: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+
   const [updateStatus] = useUpdateStatusMutation({});
   const [updateDriverLocation] = useUpdateDriverLocationMutation({});
-  const { id } = useParams<{ id: string }>();
   const {
     data: order,
     refetch,
     isLoading,
   } = useGetSingleOrderQuery(id as string);
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -111,8 +114,6 @@ const OrderDetail: React.FC = () => {
     };
   }, [order?.data.status, refetch, updateDriverLocation]);
 
-  console.log(order);
-
   const handleStatusSelect = async (status: string) => {
     try {
       const res = await updateStatus({
@@ -152,7 +153,7 @@ const OrderDetail: React.FC = () => {
           </p>
           <div className="relative">
             {order?.data.status === "Booking Cancelled" ? (
-              order?.data.payment === "online" &&
+              order?.data.payment === "online" || order?.data.payment === "wallet" &&
               (order?.data.refundStatus === "completed" ? (
                 <div className="p-3  uppercase border border-black font-bai-medium mx-auto flex">
                   refund completed

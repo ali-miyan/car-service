@@ -1,14 +1,19 @@
-import React from 'react';
-import { FaCar, FaUsers, FaSprayCan, FaHandSparkles, FaClock, FaCheckCircle } from 'react-icons/fa';
-import { MdConstruction } from 'react-icons/md';
-
+import React from "react";
+import {
+  FaCar,
+  FaUsers,
+  FaHandSparkles,
+  FaClock,
+  FaCheckCircle,
+} from "react-icons/fa";
+import { MdConstruction } from "react-icons/md";
 
 const Features = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">
-      The future of <span className="text-red-900">car service      </span>
-      and maintenance
+        The future of <span className="text-red-900">car service </span>
+        and maintenance
       </h1>
 
       <div className="flex flex-col md:flex-row justify-between items-center">

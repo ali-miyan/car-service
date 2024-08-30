@@ -5,7 +5,7 @@ const RegisterPage3 = () => {
   return (
     <>
       <Sidebar>
-          <Service />
+        <Service />
       </Sidebar>
     </>
   );

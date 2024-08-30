@@ -14,11 +14,15 @@ import OrderNotification from "../../common/OrderMessage";
 import { resetOrder } from "../../../context/OrderContext";
 import { useGetApprovedCompanyQuery } from "../../../store/slices/companyApiSlice";
 import ChatSection from "./ChatSection";
-import React from "react";
 
 const NotificationModal = () => {
+
   const token = getInitialToken("userToken");
+
+  const { data } = useGetApprovedCompanyQuery({});
+
   const currentPath = useMemo(() => location.pathname, [location.pathname]);
+
   const {
     userId,
     address,
@@ -31,20 +35,15 @@ const NotificationModal = () => {
     companyId,
   } = useSelector((state: any) => state.order);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasNotification, setHasNotification] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [hasNotification, setHasNotification] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<any[]>([]);
-  const [activeSection, setActiveSection] = useState<"chat" | "notifications">(
-    "notifications"
-  );
+  const [activeSection, setActiveSection] = useState<"chat" | "notifications">("notifications");
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState("");
-  const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: any[] }>(
-    {}
-  );
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: any[] }>({});
 
-  const { data } = useGetApprovedCompanyQuery({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -167,15 +166,11 @@ const NotificationModal = () => {
       };
     }
   }, [chatSocket]);
-
-
   
   const getUnreadCount = (companyId: string) => {
     const messages = unreadMessages[companyId];
     return Array.isArray(messages) ? messages.length : 0;
   };
-  
-  
 
   return (
     <div className="relative z-50">

@@ -4,9 +4,7 @@ import MainLayout from "../../layouts/MainLayout";
 const AboutComponent = () => {
   return (
     <MainLayout>
-      <div>
-        <AboutUs />
-      </div>
+      <AboutUs />
     </MainLayout>
   );
 };

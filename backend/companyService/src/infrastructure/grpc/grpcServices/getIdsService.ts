@@ -20,6 +20,8 @@ const getCompanyIds = async (call: any, callback: any) => {
   const { companyId } = call.request;
 
   try {
+    console.log('request from admin service reached company service',companyId);
+    
     const ids = await serviceRepository.getGeneralServiceIdsByCompanyId(
       companyId
     );

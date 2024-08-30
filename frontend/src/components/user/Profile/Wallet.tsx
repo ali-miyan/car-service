@@ -1,8 +1,8 @@
-import React from "react";
 import { getInitialToken } from "../../../helpers/getToken";
 import { useGetUserByIdQuery } from "../../../store/slices/userApiSlice";
 
 const Wallet = () => {
+  
   const token = getInitialToken("userToken");
   const { data } = useGetUserByIdQuery(token as string);
 

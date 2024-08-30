@@ -1,4 +1,3 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +11,7 @@ import {
 } from "chart.js";
 import "tailwindcss/tailwind.css";
 import { useGetDashboardQuery } from "../../store/slices/companyApiSlice";
-import { months } from "../../schema/company";
+import { months } from "../../schema/component";
 import { useGetUserDashboardQuery } from "../../store/slices/userApiSlice";
 import { FaBuilding, FaCog, FaUser } from "react-icons/fa";
 import Loader from "../common/Loader";
@@ -28,14 +27,12 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-  const { data: dashboard ,isLoading } = useGetDashboardQuery({});
-  const { data: users , isLoading:userLoad } = useGetUserDashboardQuery({});
+  const { data: dashboard, isLoading } = useGetDashboardQuery({});
+  const { data: users, isLoading: userLoad } = useGetUserDashboardQuery({});
 
-  if(isLoading || userLoad){
-    <Loader />
+  if (isLoading || userLoad) {
+    <Loader />;
   }
-
-  console.log(dashboard, users, "alll");
 
   const countsCompanies = Array(12).fill(0);
   const countsUsers = Array(12).fill(0);
@@ -59,14 +56,14 @@ const Dashboard = () => {
         label: "Companies Joined",
         data: countsCompanies,
         fill: false,
-        borderColor: "#4A90E2",
+        borderColor: "#03fc88",
         tension: 0.1,
       },
       {
         label: "Users Joined",
         data: countsUsers,
         fill: false,
-        borderColor: "#ab0000",
+        borderColor: "#fc03be",
         tension: 0.1,
       },
     ],
@@ -103,21 +100,21 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-6 p-6">
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
+          <div className="p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
             <FaBuilding className="text-4xl text-blue-600" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Total Companies</h3>
               <p className="text-3xl font-extrabold">{dashboard?.totalCount}</p>
             </div>
           </div>
-          <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
+          <div className="p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
             <FaUser className="text-4xl text-green-600" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Total Users</h3>
               <p className="text-3xl font-extrabold">{users?.users}</p>
             </div>
           </div>
-          <div className="bg-gradient-to-r from-red-50 to-red-100 p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
+          <div className="p-6 rounded-lg shadow-xl flex items-center gap-4 transition-transform transform hover:scale-105">
             <FaCog className="text-4xl text-red-600" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Total Services</h3>
