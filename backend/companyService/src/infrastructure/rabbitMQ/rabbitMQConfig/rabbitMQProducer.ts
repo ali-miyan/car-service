@@ -17,9 +17,7 @@ export class RabbitMQService {
     try {
       this.connection = await amqplib.connect(rabbitMQConfig.uri);
       this.channel = await this.connection.createChannel();
-      await this.channel.assertQueue(rabbitMQConfig.queueName1);
-      await this.channel.assertQueue(rabbitMQConfig.queueName3);
-      await this.channel.assertQueue(rabbitMQConfig.queueName4);
+      await this.channel.assertQueue(rabbitMQConfig.queueName2);
       console.log("RabbitMQ connection established successfully");
     } catch (error) {
       console.error(
@@ -45,29 +43,13 @@ export class RabbitMQService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  public async sendMessage(carId: string) {
-    await this.initializationPromise;
-    try {
-      this.channel?.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(carId));
-    } catch (error) {
-      throw new BadRequestError("Failed to send message" + error);
-    }
-  }
   public async sendServiceMessage(serviceInfo: object) {
     await this.initializationPromise;
     try {
       const message = JSON.stringify(serviceInfo);
-      this.channel?.sendToQueue(rabbitMQConfig.queueName4, Buffer.from(message));
-    } catch (error) {
-      throw new BadRequestError("Failed to send message" + error);
-    }
-  }
-  public async sendMessageToUser(wallet: any) {
-    await this.initializationPromise;
-    try {
       this.channel?.sendToQueue(
-        rabbitMQConfig.queueName3,
-        Buffer.from(JSON.stringify(wallet))
+        rabbitMQConfig.queueName2,
+        Buffer.from(message)
       );
     } catch (error) {
       throw new BadRequestError("Failed to send message" + error);

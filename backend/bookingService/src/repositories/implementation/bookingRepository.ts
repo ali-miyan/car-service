@@ -2,6 +2,7 @@ import { Booking } from "../../entities";
 import { IBookingRepository } from "../interfaces";
 import { bookingModel, sequelize } from "../../infrastructure/db";
 import { BookingStatus } from "../../schemas/Enums";
+import { BadRequestError } from "tune-up-library";
 
 export class BookingRepository implements IBookingRepository {
   async save(booking: Booking): Promise<bookingModel> {
@@ -9,7 +10,7 @@ export class BookingRepository implements IBookingRepository {
       const newBooking = await bookingModel.create(booking);
       return newBooking;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -18,7 +19,7 @@ export class BookingRepository implements IBookingRepository {
       const booking = await bookingModel.findByPk(id);
       return booking as bookingModel;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -30,24 +31,28 @@ export class BookingRepository implements IBookingRepository {
       const booking = await bookingModel.findByPk(orderId);
 
       if (!booking) {
-        throw new Error("Booking not found");
+        throw new BadRequestError("Booking not found");
       }
 
       booking.status = status;
       await booking.save();
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
   async getAll(companyId: string): Promise<bookingModel[]> {
     try {
+      console.log(companyId,'id inside');
+      
       const bookings = await bookingModel.findAll({
         where: { companyId },
+        logging: console.log,
       });
+      console.log(bookings,'datya inside');
       return bookings;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -58,7 +63,7 @@ export class BookingRepository implements IBookingRepository {
       });
       return bookings as bookingModel;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -69,7 +74,7 @@ export class BookingRepository implements IBookingRepository {
       });
       return bookings as bookingModel[];
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -97,7 +102,7 @@ export class BookingRepository implements IBookingRepository {
         ],
       });
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -115,7 +120,7 @@ export class BookingRepository implements IBookingRepository {
       const totalRevenue = result?.get("totalRevenue") as number;
       return totalRevenue || 0;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -129,7 +134,7 @@ export class BookingRepository implements IBookingRepository {
 
       return count;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -138,7 +143,7 @@ export class BookingRepository implements IBookingRepository {
       const booking = await bookingModel.findByPk(orderId);
 
       if (!booking) {
-        throw new Error("Booking not found");
+        throw new BadRequestError("Booking not found");
       }
 
       await booking.update({
@@ -148,7 +153,7 @@ export class BookingRepository implements IBookingRepository {
 
       console.log(`Booking with ID ${orderId} has been cancelled.`);
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 
@@ -172,7 +177,7 @@ export class BookingRepository implements IBookingRepository {
 
       return result[0] || null;
     } catch (error) {
-      throw new Error("Error in db: " + error);
+      throw new BadRequestError("Error in db: " + error);
     }
   }
 }

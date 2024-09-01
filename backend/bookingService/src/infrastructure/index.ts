@@ -6,9 +6,9 @@ import { connectDB } from ".";
 const initializeServices = async () => {
   try {
     await connectDB()
-    await createKafkaConsumer().startConsuming();
     startUsersGrpcServer();
     createConsumerService();
+    await createKafkaConsumer().startConsuming();
   } catch (error) {
     console.error("Failed to initialize services:", error);
     process.exit(1);

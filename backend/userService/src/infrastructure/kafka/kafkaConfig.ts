@@ -3,7 +3,7 @@ import { BadRequestError } from "tune-up-library";
 
 const kafka = new Kafka({
   clientId: "user-service",
-  brokers: ["kafka:9092"],
+  brokers: ["kafka-service:9092"],
 });
 
 export const kafkaProducer = kafka.producer();

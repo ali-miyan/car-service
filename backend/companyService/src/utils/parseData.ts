@@ -1,3 +1,6 @@
+
+import zlib from "zlib";
+
 export const parseSubService = (subServiceInfo: [string, string]) => {
   const subServices = JSON.parse(subServiceInfo[0]);
   const detail = JSON.parse(subServiceInfo[1]);
@@ -12,3 +15,17 @@ export const parseSubService = (subServiceInfo: [string, string]) => {
     },
   };
 };
+
+
+export function compressObject(obj: any) {
+  try {
+    const jsonString = JSON.stringify(obj);
+
+    const compressedBuffer = zlib.deflateSync(jsonString);
+
+    const compressedString = compressedBuffer.toString("base64");
+    return compressedString;
+  } catch (error) {
+    console.log(error, "error");
+  }
+}

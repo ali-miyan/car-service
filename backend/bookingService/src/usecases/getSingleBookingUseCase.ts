@@ -13,16 +13,12 @@ export class GetSingleBookingUseCase {
     const data = await this.bookingRepository.getSingle(orderId);
 
     const userDetails = await this.userRepository.findOne(data.carId);
-    const standardPackage = await getServiceDetails(
-      data.serviceId,
-      data.typeOfPackage
-    );
 
     if (!data) {
       throw new BadRequestError("cant get bookings");
     }
     
-    return { data, ...userDetails, ...standardPackage };
+    return { data, ...userDetails, };
 
   }
 }

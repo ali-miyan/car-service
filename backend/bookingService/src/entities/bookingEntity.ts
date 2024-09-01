@@ -23,6 +23,7 @@ export interface IBookingData {
     | "Booking Cancelled";
   typeOfPackage: string;
   servicePlace: string;
+  serviceInfo: object;
   carId: string;
   totalPrice: number;
   cancelReason?: string;
@@ -53,6 +54,7 @@ export class Booking {
     | "Booking Cancelled";
   typeOfPackage: string;
   servicePlace: string;
+  serviceInfo: object;
   carId: string;
   totalPrice: number;
   cancelReason?: string;
@@ -69,6 +71,7 @@ export class Booking {
     status,
     typeOfPackage,
     servicePlace,
+    serviceInfo,
     carId,
     totalPrice,
     cancelReason,
@@ -84,6 +87,7 @@ export class Booking {
     this.status = status;
     this.typeOfPackage = typeOfPackage;
     this.servicePlace = servicePlace;
+    this.serviceInfo = serviceInfo;
     this.carId = carId;
     this.totalPrice = totalPrice;
     this.cancelReason = cancelReason;

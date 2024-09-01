@@ -16,6 +16,9 @@ const OrderDetail: React.FC = () => {
 
   const {data: order,isLoading,refetch,} = useGetSingleOrderQuery(id as string);
 
+  console.log(order,'ordersrer');
+  
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
 
@@ -42,7 +45,7 @@ const OrderDetail: React.FC = () => {
 
   const handleTrackCar = () => {
     navigate(`/live-track/${order.data.id}`, {
-      state: { company: order.company, user: order.data.address },
+      state: { company: order?.data.serviceInfo.company, user: order?.data.address },
     });
   };
 
@@ -145,15 +148,15 @@ const OrderDetail: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white border-2 p-8 mb-8">
           <div className="flex flex-col items-center text-center">
             <div className="p-1">
-              <img src={order?.company.image} className="w-20" alt="logo" />
+              <img src={order?.data?.serviceInfo?.company?.image} className="w-20" alt="logo" />
             </div>
             <div>
               <h2 className="font-semibold font-bai-bold text-lg mb-2">
                 company details
               </h2>
-              <p className="mb-1">Name: {order?.company.name}</p>
-              <p className="mb-1">contact 1: {order?.company.contact1}</p>
-              <p className="mb-1">contact 2: {order?.company.contact2}</p>
+              <p className="mb-1">Name: {order?.data?.serviceInfo.company.name}</p>
+              <p className="mb-1">contact 1: {order?.data?.serviceInfo.company.contact1}</p>
+              <p className="mb-1">contact 2: {order?.data?.serviceInfo.company.contact2}</p>
             </div>
           </div>
           <div className="flex flex-col items-center text-center">
@@ -198,13 +201,13 @@ const OrderDetail: React.FC = () => {
               <div className="flex-1 border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
                 <div className="p-6">
                   <h2 className="text-xl leading-6 font-bai-bold text-slate-900 uppercase">
-                    ₹{order?.package.detail.price}
+                    ₹{order?.data?.serviceInfo.package.detail.price}
                     <span className="text-base font-medium text-slate-500">
                       /service
                     </span>
                   </h2>
                   <p className="mt-4 text-gray-500">
-                    - takes {order?.package.detail.workingHours} hours
+                    - takes {order?.data?.serviceInfo.package.detail.workingHours} hours
                   </p>
                 </div>
                 <div className="pt-6 pb-8 px-6">
@@ -212,7 +215,7 @@ const OrderDetail: React.FC = () => {
                     What's included
                   </h3>
                   <ul role="list" className="mt-4 space-y-3">
-                    {order?.package.subServices.map((val, index) => (
+                    {order?.data?.serviceInfo.package.subServices?.map((val, index) => (
                       <li className="flex items-center space-x-3" key={index}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

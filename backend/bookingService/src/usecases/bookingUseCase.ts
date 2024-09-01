@@ -64,6 +64,7 @@ export class BookingUseCase {
       status: "Booking Confirmed",
       typeOfPackage,
       servicePlace,
+      serviceInfo:{},
       carId,
       totalPrice,
     });
@@ -84,15 +85,23 @@ export class BookingUseCase {
       }
 
       const order = await this.bookingRepository.save(booking);
+
+      console.log(order,'order savvedd');
+      
+      
       io.emit("order_booked", {
         message: "Order has been booked",
         order,
       });
 
       await this.rabbitMQService.sendMessage(order.carId);
+      await this.rabbitMQService.sendServiceMessage({
+        serviceId: order.serviceId,
+        typeOfPackage: order.typeOfPackage,
+        orderId:order.id
+      });
     }
 
     return response;
-    
   }
 }

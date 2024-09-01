@@ -42,6 +42,11 @@ export class HandleStripeUseCase {
           });
 
           await this.rabbitMQService.sendMessage(order.carId);
+          await this.rabbitMQService.sendServiceMessage({
+            serviceId: order.serviceId,
+            typeOfPackage: order.typeOfPackage,
+            orderId: order.id,
+          });
         }
       }
     } catch (error) {

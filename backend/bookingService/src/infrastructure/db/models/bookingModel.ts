@@ -27,6 +27,7 @@ interface BookingAttributes {
   typeOfPackage: string;
   generalServiceId: string;
   servicePlace: string;
+  serviceInfo: object;
   totalPrice: number;
   cancelReason?: string;
   refundStatus?: "pending" | "completed";
@@ -63,6 +64,7 @@ class Booking
   public typeOfPackage!: string;
   public generalServiceId!: string;
   public servicePlace!: string;
+  public serviceInfo!: object;
   public totalPrice!: number;
   public cancelReason?: string;
   public refundStatus?: "pending" | "completed";
@@ -134,6 +136,10 @@ Booking.init(
     servicePlace: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    serviceInfo: {
+      type: DataTypes.JSONB,
+      allowNull: true
     },
     totalPrice: {
       type: DataTypes.DECIMAL(10, 2),

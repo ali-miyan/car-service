@@ -1,9 +1,8 @@
 syntax = "proto3";
-
 package services;
 
 service StandardService {
-  rpc GetPackage(StandardRequest) returns (StandardResponse);
+  rpc GetPackageStream(StandardRequest) returns (stream StandardResponse);
 }
 
 message StandardRequest {
