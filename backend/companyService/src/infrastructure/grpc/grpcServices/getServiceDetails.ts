@@ -62,7 +62,7 @@ export const startServiceGrpcServer = () => {
         console.error("Failed to bind gRPC server:", error);
         throw new BadRequestError("Error in gRPC server binding: " + error);
       }
-      console.log(`gRPC server running at http://127.0.0.1:${port}`);
+      console.log(`gRPC server running at http://0.0.0.0:${port}`);
       server.start();
     }
   );

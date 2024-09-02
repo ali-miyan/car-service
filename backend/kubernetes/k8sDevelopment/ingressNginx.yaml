@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS, DELETE, PUT, PATCH"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    nginx.ingress.kubernetes.io/websocket-services: "frontend-service,user-service,company-service,admin-service,chat-service,booking-service"
 spec:
   rules:
   - http:
@@ -54,3 +55,4 @@ spec:
             name: booking-service
             port: 
               number: 3003
+      

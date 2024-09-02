@@ -11,7 +11,6 @@ import OrderDetailSkeleton from "../../layouts/skelotons/OrderDetailSkeleton";
 import PaymentModal from "./paymentModal";
 
 const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
-
   if (!visible) return null;
 
   const statuses =
@@ -64,7 +63,8 @@ const OrderDetail: React.FC = () => {
     refetch,
     isLoading,
   } = useGetSingleOrderQuery(id as string);
-  
+
+  console.log("the damn order", order);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -153,29 +153,30 @@ const OrderDetail: React.FC = () => {
           </p>
           <div className="relative">
             {order?.data.status === "Booking Cancelled" ? (
-              order?.data.payment === "online" || order?.data.payment === "wallet" &&
-              (order?.data.refundStatus === "completed" ? (
-                <div className="p-3  uppercase border border-black font-bai-medium mx-auto flex">
-                  refund completed
-                </div>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="p-3 shadow-md shadow-black uppercase bg-[#ab0000] text-white transform hover:scale-95 transition duration-100 mx-auto flex"
-                  >
-                    pay ₹{order?.data?.totalPrice} now
-                  </button>
-                  {isModalOpen && (
-                    <PaymentModal
-                      setIsModalOpen={setIsModalOpen}
-                      refundAmount={order?.data?.totalPrice}
-                      userId={order?.userId?._id}
-                      orderId={order?.data?.id}
-                    />
-                  )}
-                </>
-              ))
+              order?.data.payment === "online" ||
+              (order?.data.payment === "wallet" &&
+                (order?.data.refundStatus === "completed" ? (
+                  <div className="p-3  uppercase border border-black font-bai-medium mx-auto flex">
+                    refund completed
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="p-3 shadow-md shadow-black uppercase bg-[#ab0000] text-white transform hover:scale-95 transition duration-100 mx-auto flex"
+                    >
+                      pay ₹{order?.data?.totalPrice} now
+                    </button>
+                    {isModalOpen && (
+                      <PaymentModal
+                        setIsModalOpen={setIsModalOpen}
+                        refundAmount={order?.data?.totalPrice}
+                        userId={order?.userId?._id}
+                        orderId={order?.data?.id}
+                      />
+                    )}
+                  </>
+                )))
             ) : order?.data.status === "Booking Completed" ? null : (
               <>
                 <button
@@ -215,7 +216,11 @@ const OrderDetail: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white border-2 p-8 mb-8">
         <div className="flex flex-col items-center text-center">
           <div className=" rounded-full mb-4">
-            <img src={order?.userId.profileImg} alt="" className="rounded-full w-20" />
+            <img
+              src={order?.userId.profileImg}
+              alt=""
+              className="rounded-full w-20"
+            />
           </div>
           <div>
             <h2 className="font-semibold text-lg mb-2">Customer</h2>
@@ -260,13 +265,13 @@ const OrderDetail: React.FC = () => {
             <div className="flex-1 border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
               <div className="p-6">
                 <h2 className="text-xl leading-6 font-bold text-slate-900 uppercase">
-                  ₹{order?.package.detail.price}
+                  ₹{order?.package?.detail?.price}
                   <span className="text-base font-medium text-slate-500">
                     /service
                   </span>
                 </h2>
                 <p className="mt-4 text-gray-500">
-                  - takes {order?.package.detail.workingHours} hours
+                  - takes {order?.package?.detail?.workingHours} hours
                 </p>
               </div>
               <div className="pt-6 pb-8 px-6">
@@ -274,7 +279,7 @@ const OrderDetail: React.FC = () => {
                   What's included
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
-                  {order?.package.subServices.map((val, index) => (
+                  {order?.package?.subServices.map((val, index) => (
                     <li className="flex items-center space-x-3" key={index}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

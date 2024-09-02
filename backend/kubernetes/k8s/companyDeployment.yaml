@@ -17,6 +17,9 @@ spec:
           image: alimiyn/car-service-company:latest
           ports:
             - containerPort: 3001
+            - containerPort: 6001
+            - containerPort: 6002
+            - containerPort: 6003
 ---
 apiVersion: v1
 kind: Service
@@ -27,5 +30,15 @@ spec:
   selector:
     app: company
   ports:
-    - port: 3001
+    - name: http
+      port: 3001
       targetPort: 3001
+    - name: grpc-6001
+      port: 6001
+      targetPort: 6001
+    - name: grpc-6002
+      port: 6002
+      targetPort: 6002
+    - name: grpc-6003
+      port: 6003
+      targetPort: 6003

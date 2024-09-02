@@ -32,6 +32,9 @@ export class ChatServer {
           type,
         } = messageData;
 
+        console.log(messageData,'got the whole details');
+        
+
         this.io.emit("user_to_company", {
           userId,
           username,

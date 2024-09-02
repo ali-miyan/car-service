@@ -15,7 +15,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const servicesProto = grpc.loadPackageDefinition(packageDefinition).services;
 
 const client = new (servicesProto as any).StandardService(
-  "company:6001",
+  "company-service:6001",
   grpc.credentials.createInsecure()
 );
 

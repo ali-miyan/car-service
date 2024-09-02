@@ -10,13 +10,7 @@ const s3Service = new S3Service();
 export const setupServer = async (app: any, port: number) => {
   const server = require("http").createServer(app);
 
-  const io = new Server(server, {
-    cors: {
-      origin: "http://localhost:8080",
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
-  });
+  const io = new Server(server);
 
   
   const chatRepository = new ChatRepository();

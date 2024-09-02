@@ -16,7 +16,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const bookingProto = grpc.loadPackageDefinition(packageDefinition).booking;
 
 const client = new (bookingProto as any).BookingService(
-  "company:6002",
+  "company-service:6002",
   grpc.credentials.createInsecure()
 );
 
@@ -24,6 +24,8 @@ export const checkSlotAvailability = (
   serviceId: string
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
+    console.log('reached here');
+    
     client.CheckSlotAvailability({ serviceId }, (error: any, response: any) => {
       if (error) {
         throw new BadRequestError('error in grpc' + error)
