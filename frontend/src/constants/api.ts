@@ -1,6 +1,5 @@
-const baseUrl = "http://localhost:30080";
-export const baseOrderUrl = `${baseUrl}/api/order`;
-export const baseUserUrl = `${baseUrl}/api/user`;
-export const baseCompanyUrl = `${baseUrl}/api/company`;
-export const baseAdminUrl = `${baseUrl}/api/admin`;
-export const baseChatUrl = `${baseUrl}/api/chat`;
+export const baseOrderUrl = "http://localhost/api/order";
+export const baseUserUrl = "http://localhost/api/user";
+export const baseCompanyUrl = "http://localhost/api/company";
+export const baseAdminUrl = "http://localhost/api/admin";
+export const baseChatUrl = "http://localhost/api/chat";
