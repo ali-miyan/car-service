@@ -12,7 +12,7 @@ import {
   EditUserUseCase,
   GetCarByIdUseCase,
   DeleteCarUseCase,
-  UpadtePasswordUseCase,
+  UpdatePasswordUseCase,
   AddCarUseCase,
   GetOneCarUseCase,
   AddRatingUseCase,
@@ -36,7 +36,7 @@ const kafkaService = new KafkaService();
 const rabbitMQService = new ProducerService();
 
 const loginUseCase = new LoginUseCase(userRepository);
-const upadtePasswordUseCase = new UpadtePasswordUseCase(userRepository);
+const updatePasswordUseCase = new UpdatePasswordUseCase(userRepository);
 const editUSerUseCase = new EditUserUseCase(
   userRepository,
   s3Service,
@@ -87,7 +87,7 @@ const userController = new UserController(
   updateStatusUseCase,
   getUserByIdUseCase,
   editUSerUseCase,
-  upadtePasswordUseCase,
+  updatePasswordUseCase,
   addRatingUseCase,
   getAllUsersUseCase
 );

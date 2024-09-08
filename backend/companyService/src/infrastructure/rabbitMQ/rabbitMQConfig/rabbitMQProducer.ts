@@ -47,6 +47,8 @@ export class RabbitMQService {
     await this.initializationPromise;
     try {
       const message = JSON.stringify(serviceInfo);
+      console.log(serviceInfo,'message sent throufh queue');
+      
       this.channel?.sendToQueue(
         rabbitMQConfig.queueName2,
         Buffer.from(message)

@@ -25,58 +25,65 @@ export class RegisterUseCase {
     description: string,
     address: string
   ): Promise<any> {
-    if (isLicenseExpired(licenseExpiry)) {
-      throw new BadRequestError("Your License has expired, please renew");
-    }
-
-    const [logo, licenseImgFile, approvedImgFile] = files;
-
-    const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
-      "tune-up",
-      {
-        logo: { buffer: logo.buffer, contentType: logo.mimetype },
-        licenseImg: {
-          buffer: licenseImgFile.buffer,
-          contentType: licenseImgFile.mimetype,
-        },
-        approvedImg: {
-          buffer: approvedImgFile.buffer,
-          contentType: approvedImgFile.mimetype,
-        },
+    try {
+      if (isLicenseExpired(licenseExpiry)) {
+        throw new BadRequestError("Your License has expired, please renew");
       }
-    );
 
-    const hashedPassword = await hashPassword(password);
+      const [logo, licenseImgFile, approvedImgFile] = files;
 
-    const company = new Company({
-      ownerName,
-      companyName,
-      logo: uploadedFiles["logo"],
-      contact1,
-      contact2,
-      year,
-      email,
-      password: hashedPassword,
-      licenseExpiry,
-      licenseImg: uploadedFiles["licenseImg"],
-      approvedImg: uploadedFiles["approvedImg"],
-      licenseNumber,
-      description,
-      address: JSON.parse(address),
-      isApproved: "pending",
-    });
+      const uploadedFiles = await this.s3ServiceRepository.uploadFiles(
+        "tune-up",
+        {
+          logo: { buffer: logo.buffer, contentType: logo.mimetype },
+          licenseImg: {
+            buffer: licenseImgFile.buffer,
+            contentType: licenseImgFile.mimetype,
+          },
+          approvedImg: {
+            buffer: approvedImgFile.buffer,
+            contentType: approvedImgFile.mimetype,
+          },
+        }
+      );
 
-    const token = TokenService.generateToken({
-      user: company._id,
-      role: "company",
-    });
-    const refreshToken = TokenService.generateRefreshToken({
-      user: company._id,
-      role: "company",
-    });
+      const hashedPassword = await hashPassword(password);
 
-    await this.companyRepository.save(company);
+      const company = new Company({
+        ownerName,
+        companyName,
+        logo: uploadedFiles["logo"],
+        contact1,
+        contact2,
+        year,
+        email,
+        password: hashedPassword,
+        licenseExpiry,
+        licenseImg: uploadedFiles["licenseImg"],
+        approvedImg: uploadedFiles["approvedImg"],
+        licenseNumber,
+        description,
+        address: JSON.parse(address),
+        isApproved: "pending",
+      });
 
-    return { success: true, token, refreshToken };
+      const token = TokenService.generateToken({
+        user: company._id,
+        role: "company",
+      });
+      const refreshToken = TokenService.generateRefreshToken({
+        user: company._id,
+        role: "company",
+      });
+
+      await this.companyRepository.save(company);
+
+      return { success: true, token, refreshToken };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

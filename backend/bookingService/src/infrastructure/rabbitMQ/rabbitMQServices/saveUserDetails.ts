@@ -25,6 +25,10 @@ export class ConsumerService {
         try {
 
           const userDetails = message.content.toString();
+
+          console.log('got the user details',userDetails);
+          
+
           this.channel.ack(message);
 
           await this.userRepository.execute(JSON.parse(userDetails));

@@ -1,10 +1,15 @@
 import { createConsumerService, createWalletConsumerService } from "./rabbitMQ";
 import { connectKafkaProducer, disconnectKafkaProducer } from "./kafka";
+import { BadRequestError } from "tune-up-library";
 
 export const initializeServices = async () => {
-  createConsumerService();
-  createWalletConsumerService();
-  await connectKafkaProducer();
+  try {
+    createConsumerService();
+    createWalletConsumerService();
+    await connectKafkaProducer();
+  } catch (error) {
+    throw new BadRequestError("error while starting" + error);
+  }
 };
 
 export const shutdownServices = async () => {

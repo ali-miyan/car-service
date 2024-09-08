@@ -29,7 +29,7 @@ const getCompanyIds = async (call: any, callback: any) => {
   } catch (error: any) {
     callback({
       code: grpc.status.INTERNAL,
-      message: error.message,
+      message: error,
     });
     throw new BadRequestError("error in grpc" + error);
   }

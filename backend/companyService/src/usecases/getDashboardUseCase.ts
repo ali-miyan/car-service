@@ -8,16 +8,24 @@ export class GetDashboardUseCase {
   ) {}
 
   async execute(): Promise<any> {
-    const monthlyCount = await this.companyRepository.getMonthlyCompanyCounts();
-    const totalCount = await this.companyRepository.getTotalCompanyCounts();
-    const totalServices = await this.serviceRepository.getTotalServices();
-    const companies = await this.companyRepository.getAll();
+    try {
+      const monthlyCount =
+        await this.companyRepository.getMonthlyCompanyCounts();
+      const totalCount = await this.companyRepository.getTotalCompanyCounts();
+      const totalServices = await this.serviceRepository.getTotalServices();
+      const companies = await this.companyRepository.getAll();
 
-    return {
-      monthlyCount,
-      totalCount,
-      totalServices,
-      companies,
-    };
+      return {
+        monthlyCount,
+        totalCount,
+        totalServices,
+        companies,
+      };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

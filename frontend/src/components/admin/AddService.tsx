@@ -85,7 +85,7 @@ const AddYourService: React.FC = () => {
   const handleSubmit = async () => {
     const serviceNameError = validateInput("serviceName", formData.serviceName);
     const descriptionError = validateInput("description", formData.description);
-    const logoError = formData.logo ? "" : "Please provide a logo";
+    // const logoError = formData.logo ? "" : "Please provide a logo";
     const subServicesError =
       formData.subServices.length < 2
         ? "Please add at least two sub-service"
@@ -94,12 +94,12 @@ const AddYourService: React.FC = () => {
     setErrors({
       serviceName: serviceNameError,
       description: descriptionError,
-      logo: logoError,
+      logo: "",
       subServices: subServicesError,
       global: "",
     });
 
-    if (serviceNameError || descriptionError || logoError || subServicesError) {
+    if (serviceNameError || descriptionError  || subServicesError) {
       return;
     }
 

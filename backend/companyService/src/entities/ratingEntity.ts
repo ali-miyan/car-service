@@ -4,7 +4,7 @@ export interface IRatingData {
   userId: string;
   username: string;
   email: string;
-  profileImg: string;
+  profileImg: string | null;
   stars: number;
   review: string;
   likes: {
@@ -22,7 +22,7 @@ export class Rating implements IRatingData {
   userId: string;
   username: string;
   email: string;
-  profileImg: string;
+  profileImg: string | null;
   stars: number;
   review: string;
   likes: {

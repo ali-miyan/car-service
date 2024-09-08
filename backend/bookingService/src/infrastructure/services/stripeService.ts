@@ -40,12 +40,12 @@ export class StripeService {
     ];
 
     const successUrl = refund
-      ? `http://localhost:8080/company/order-details/${booking.orderId}`
-      : `http://localhost:8080/checkout-success`;
+      ? `https://furbar.shop/company/order-details/${booking.orderId}`
+      : `https://furbar.shop/checkout-success`;
 
     const cancelUrl = refund
-      ? `http://localhost:8080/checkout-failure`
-      : `http://localhost:8080/company/checkout-failure`;
+      ? `https://furbar.shop/checkout-failure`
+      : `https://furbar.shop/company/checkout-failure`;
 
     try {
       const session = await stripe.checkout.sessions.create({
@@ -59,7 +59,7 @@ export class StripeService {
 
       return session.id;
     } catch (error) {
-      console.error("Error creating Stripe checkout session:", error);
+      console.error("Error in stripe payment:", error);
       throw new BadRequestError(
         "Error creating Stripe checkout session: " + error
       );

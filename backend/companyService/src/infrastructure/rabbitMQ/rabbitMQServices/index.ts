@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import { RatingRepository } from "../../../repositories";
 import { AddRatingUseCase } from "../../../usecases";
 import { RabbitMQService } from "../rabbitMQConfig";
@@ -8,14 +9,18 @@ export function createConsumerService(): {
   saveUserRatingConsumer: ConsumerService;
   newConsumer: ConsumerService2;
 } {
-  const userRepository = new RatingRepository();
-  const saveUserDetailsUseCase = new AddRatingUseCase(userRepository);
-  const saveUserRatingConsumer = new ConsumerService(saveUserDetailsUseCase);
+  try {
+    const userRepository = new RatingRepository();
+    const saveUserDetailsUseCase = new AddRatingUseCase(userRepository);
+    const saveUserRatingConsumer = new ConsumerService(saveUserDetailsUseCase);
 
-  const rabbitMQService = new RabbitMQService();
-  const newConsumer = new ConsumerService2(rabbitMQService);
+    const rabbitMQService = new RabbitMQService();
+    const newConsumer = new ConsumerService2(rabbitMQService);
 
-  return { saveUserRatingConsumer, newConsumer };
+    return { saveUserRatingConsumer, newConsumer };
+  } catch (error) {
+    throw new BadRequestError("error in rabbitmq" + error);
+  }
 }
 
 export * from "./saveUserRating";

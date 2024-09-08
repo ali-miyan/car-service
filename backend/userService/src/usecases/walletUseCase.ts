@@ -5,15 +5,23 @@ export class WalletUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute(wallet: any): Promise<any> {
-    
-    if (!wallet.userId || !wallet.amount || !wallet.stat) {
-      throw new BadRequestError("cant find user");
-    }
+    try {
+      if (!wallet.userId || !wallet.amount || !wallet.stat) {
+        throw new BadRequestError("Missing required fields in wallet data.");
+      }
 
-    await this.userRepository.addToWallet(
-      wallet.userId,
-      wallet.amount,
-      wallet.stat
-    );
+      await this.userRepository.addToWallet(
+        wallet.userId,
+        wallet.amount,
+        wallet.stat
+      );
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

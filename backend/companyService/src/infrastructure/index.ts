@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import {
   startSlotGrpcServer,
   startServiceGrpcServer,
@@ -6,10 +7,14 @@ import {
 import { createConsumerService } from "./rabbitMQ/rabbitMQServices";
 
 const initializeGrpcServices = () => {
-  startCompanyIdsGrpcServer();
-  startSlotGrpcServer();
-  startServiceGrpcServer();
-  createConsumerService();
+  try {
+    startCompanyIdsGrpcServer();
+    startSlotGrpcServer();
+    startServiceGrpcServer();
+    createConsumerService();
+  } catch (error) {
+    throw new BadRequestError("error while starting" + error);
+  }
 };
 
 export { initializeGrpcServices };

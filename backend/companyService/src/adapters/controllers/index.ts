@@ -9,7 +9,7 @@ import {
   GetServiceUseCase,
   DeleteServiceUseCase,
   GetAllServicesUseCase,
-  GetSignleServicesUseCase,
+  GetSingleServicesUseCase,
   GetApprovedCompanyUseCase,
   GetRatingsUseCase,
   UpdateRatingUseCase,
@@ -49,7 +49,7 @@ const serviceStatusUseCase = new ServiceStatusUseCase(serviceRepository);
 const getServiceUseCase = new GetServiceUseCase(serviceRepository);
 const deleteServiceUseCase = new DeleteServiceUseCase(serviceRepository);
 const getAllServicesUseCase = new GetAllServicesUseCase(serviceRepository);
-const getSignleServicesUseCase = new GetSignleServicesUseCase(
+const getSignleServicesUseCase = new GetSingleServicesUseCase(
   serviceRepository
 );
 

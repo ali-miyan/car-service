@@ -1,6 +1,5 @@
 import { BadRequestError } from "tune-up-library";
 import { IBookingRepository, IUserInterface } from "../repositories";
-import { getServiceDetails } from "../infrastructure/grpc/grpcServices/getServiceDetails";
 
 export class GetSingleBookingUseCase {
   constructor(
@@ -9,16 +8,23 @@ export class GetSingleBookingUseCase {
   ) {}
 
   async execute(orderId: string): Promise<any> {
+    try {
+      const data = await this.bookingRepository.getSingle(orderId);
 
-    const data = await this.bookingRepository.getSingle(orderId);
+      if (!data) {
+        throw new BadRequestError(
+          "Cannot get booking with the provided order ID"
+        );
+      }
 
-    const userDetails = await this.userRepository.findOne(data.carId);
+      const userDetails = await this.userRepository.findOne(data.carId);
 
-    if (!data) {
-      throw new BadRequestError("cant get bookings");
+      return { data, ...userDetails };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-    
-    return { data, ...userDetails, };
-
   }
 }

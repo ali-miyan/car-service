@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import {
   CarRepository,
   UserRepository,
@@ -10,17 +11,22 @@ import { WalletConsumerService } from "./saveWalletDetails";
 import { ConsumerService } from "./sentUserDetails";
 
 export function createConsumerService(): ConsumerService {
-  console.log("user consumer is running");
-  const carRepository: ICarRepository = new CarRepository();
-  const producerService = new ProducerService();
-  return new ConsumerService(carRepository, producerService);
+  try {
+    const carRepository: ICarRepository = new CarRepository();
+    const producerService = new ProducerService();
+    return new ConsumerService(carRepository, producerService);
+  } catch (error) {
+    throw new BadRequestError("error in rabbitmq" + error);
+  }
 }
 export function createWalletConsumerService(): WalletConsumerService {
-  console.log("wallet consumer is running");
-
-  const userRepository: IUserRepository = new UserRepository();
-  const walletUseCase = new WalletUseCase(userRepository);
-  return new WalletConsumerService(walletUseCase);
+  try {
+    const userRepository: IUserRepository = new UserRepository();
+    const walletUseCase = new WalletUseCase(userRepository);
+    return new WalletConsumerService(walletUseCase);
+  } catch (error) {
+    throw new BadRequestError("error in rabbitmq" + error);
+  }
 }
 
 export * from "./sentUserDetails";

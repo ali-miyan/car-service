@@ -48,6 +48,7 @@ export class RabbitMQService {
   public async sendMessage(carId: string) {
     await this.initializationPromise;
     try {
+      console.log('message sent to user service',carId);
       this.channel?.sendToQueue(rabbitMQConfig.queueName1, Buffer.from(carId));
     } catch (error) {
       throw new BadRequestError("Failed to send message" + error);
@@ -56,7 +57,10 @@ export class RabbitMQService {
   public async sendServiceMessage(serviceInfo: object) {
     await this.initializationPromise;
     try {
-      const message = JSON.stringify(serviceInfo);
+      const message:any = JSON.stringify(serviceInfo);
+      const { serviceId, typeOfPackage, orderId } = message;
+      console.log(serviceId,typeOfPackage,orderId);
+      
       this.channel?.sendToQueue(rabbitMQConfig.queueName4, Buffer.from(message));
     } catch (error) {
       throw new BadRequestError("Failed to send message" + error);

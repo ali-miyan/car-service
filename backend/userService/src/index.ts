@@ -15,6 +15,8 @@ const PORT = 3000;
 
 const app = express();
 
+app.set("trust proxy", true);
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/user", userRoute);

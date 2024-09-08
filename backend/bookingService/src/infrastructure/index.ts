@@ -1,3 +1,4 @@
+import { BadRequestError } from "tune-up-library";
 import { createKafkaConsumer } from ".";
 import { startUsersGrpcServer } from ".";
 import { createConsumerService } from ".";
@@ -11,7 +12,7 @@ const initializeServices = async () => {
     await createKafkaConsumer().startConsuming();
   } catch (error) {
     console.error("Failed to initialize services:", error);
-    process.exit(1);
+    throw new BadRequestError("error while starting servers" + error)    
   }
 };
 

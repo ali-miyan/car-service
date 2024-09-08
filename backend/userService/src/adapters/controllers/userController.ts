@@ -11,7 +11,7 @@ import {
   UpdateStatusUseCase,
   GetUserByIdUseCase,
   EditUserUseCase,
-  UpadtePasswordUseCase,
+  UpdatePasswordUseCase,
   AddRatingUseCase,
   GetAllUsersUseCase,
 } from "../../usecases/index";
@@ -30,7 +30,7 @@ export class UserController {
     private updateStatusUseCase: UpdateStatusUseCase,
     private getUserByIdUseCase: GetUserByIdUseCase,
     private editUSerUseCase: EditUserUseCase,
-    private upadtePasswordUseCase: UpadtePasswordUseCase,
+    private updatePasswordUseCase: UpdatePasswordUseCase,
     private addRatingUseCase: AddRatingUseCase,
     private getAllUsersUseCase: GetAllUsersUseCase
   ) {}
@@ -257,7 +257,7 @@ export class UserController {
       req.body;
 
     try {
-      const response = await this.upadtePasswordUseCase.execute(
+      const response = await this.updatePasswordUseCase.execute(
         userId,
         currentPassword,
         newPassword,

@@ -5,7 +5,7 @@ import {
   ServiceStatusUseCase,
   DeleteServiceUseCase,
   GetAllServicesUseCase,
-  GetSignleServicesUseCase,
+  GetSingleServicesUseCase,
 } from "../../usecases";
 
 export class ServiceController {
@@ -15,7 +15,7 @@ export class ServiceController {
     private getServiceUseCase: GetServiceUseCase,
     private deleteServiceUseCase: DeleteServiceUseCase,
     private getEveryServiceUseCase: GetAllServicesUseCase,
-    private getSignleServicesUseCase: GetSignleServicesUseCase
+    private getSignleServicesUseCase: GetSingleServicesUseCase
   ) {}
 
   async addService(

@@ -9,16 +9,23 @@ export class ResendOtpUseCase {
   ) {}
 
   async execute(email: string): Promise<void> {
-    if (!email) {
-      throw new BadRequestError("Invalid input");
+    try {
+      if (!email) {
+        throw new BadRequestError("Invalid input");
+      }
+
+      const otp = this.otpRepository.generateOtp(4);
+
+      const subject = "Your OTP Code";
+      const message = "Your OTP code is " + otp;
+      await this.otpRepository.sendMail(email, subject, message);
+
+      await this.redisRepository.store(email, otp, 300);
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    const otp = this.otpRepository.generateOtp(4);
-
-    const subject = "Your OTP Code";
-    const message = `Your OTP code is ${otp}`;
-    await this.otpRepository.sendMail(email, subject, message);
-
-    await this.redisRepository.store(email, otp, 300);
   }
 }

@@ -3,7 +3,6 @@ import compnayRoute from "./infrastructure/express/routes";
 import { connectDB } from "./infrastructure/db";
 import { errorHandler, NotFoundError } from "tune-up-library";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 
 const PORT = 3002;
 

@@ -27,6 +27,9 @@ export class ConsumerService {
         try {
           const carId = message.content.toString();
 
+          console.log('get this from booking service',carId);
+          
+
           const userDetails = await this.carRepository.getUsersDetails(carId);
           await this.producerService.sendMessage(JSON.stringify(userDetails));
           this.channel.ack(message);

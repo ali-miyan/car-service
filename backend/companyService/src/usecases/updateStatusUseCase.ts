@@ -5,14 +5,21 @@ export class UpdateStatusUseCase {
   constructor(private companyRepository: ICompanyRepository) {}
 
   async execute(id: string, data: object): Promise<any> {
-    const service = await this.companyRepository.getById(id);
+    try {
+      const service = await this.companyRepository.getById(id);
 
-    if (!service) {
-      throw new BadRequestError(`Service with ID ${id} not found.`);
+      if (!service) {
+        throw new BadRequestError(`Service with ID ${id} not found.`);
+      }
+
+      await this.companyRepository.updateStatus(id, data);
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    await this.companyRepository.updateStatus(id, data);
-
-    return { success: true };
   }
 }

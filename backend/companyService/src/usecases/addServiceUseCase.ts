@@ -2,6 +2,7 @@ import { S3Service } from "../infrastructure/services";
 import { parseSubService } from "../utils/parseData";
 import { Service } from "../entities";
 import { ServiceRepository } from "../repositories/implementation";
+import { BadRequestError } from "tune-up-library";
 
 export class AddServiceUseCase {
   constructor(
@@ -22,32 +23,39 @@ export class AddServiceUseCase {
     premiumSubService: [string, string],
     files: any
   ): Promise<any> {
-    const basicPackage = parseSubService(basicSubService);
-    const standardPackage = parseSubService(standardSubService);
-    const premiumPackage = parseSubService(premiumSubService);
+    try {
+      const basicPackage = parseSubService(basicSubService);
+      const standardPackage = parseSubService(standardSubService);
+      const premiumPackage = parseSubService(premiumSubService);
 
-    const uploadedFiles = await this.s3ServiceRepository.uploadImageArray(
-      "tune-up",
-      files
-    );
+      const uploadedFiles = await this.s3ServiceRepository.uploadImageArray(
+        "tune-up",
+        files
+      );
 
-    const service = new Service({
-      _id,
-      generalServiceId,
-      companyId,
-      selectedHours,
-      servicePlace,
-      servicesPerDay,
-      terms,
-      images: uploadedFiles,
-      basicPackage,
-      standardPackage,
-      premiumPackage,
-      isBlocked: false,
-    });
+      const service = new Service({
+        _id,
+        generalServiceId,
+        companyId,
+        selectedHours,
+        servicePlace,
+        servicesPerDay,
+        terms,
+        images: uploadedFiles,
+        basicPackage,
+        standardPackage,
+        premiumPackage,
+        isBlocked: false,
+      });
 
-    await this.serviceRepository.save(service);
+      await this.serviceRepository.save(service);
 
-    return true;
+      return true;
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

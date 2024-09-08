@@ -154,9 +154,9 @@ const OrderDetail: React.FC = () => {
               <h2 className="font-semibold font-bai-bold text-lg mb-2">
                 company details
               </h2>
-              <p className="mb-1">Name: {order?.data?.serviceInfo.company.name}</p>
-              <p className="mb-1">contact 1: {order?.data?.serviceInfo.company.contact1}</p>
-              <p className="mb-1">contact 2: {order?.data?.serviceInfo.company.contact2}</p>
+              <p className="mb-1">Name: {order?.data?.serviceInfo?.company?.name}</p>
+              <p className="mb-1">contact 1: {order?.data?.serviceInfo?.company?.contact1}</p>
+              <p className="mb-1">contact 2: {order?.data?.serviceInfo?.company?.contact2}</p>
             </div>
           </div>
           <div className="flex flex-col items-center text-center">
@@ -201,13 +201,13 @@ const OrderDetail: React.FC = () => {
               <div className="flex-1 border border-slate-200 bg-white rounded-lg shadow-sm divide-y divide-slate-200">
                 <div className="p-6">
                   <h2 className="text-xl leading-6 font-bai-bold text-slate-900 uppercase">
-                    ₹{order?.data?.serviceInfo.package.detail.price}
+                    ₹{order?.data?.serviceInfo?.package?.detail?.price}
                     <span className="text-base font-medium text-slate-500">
                       /service
                     </span>
                   </h2>
                   <p className="mt-4 text-gray-500">
-                    - takes {order?.data?.serviceInfo.package.detail.workingHours} hours
+                    - takes {order?.data?.serviceInfo?.package?.detail?.workingHours} hours
                   </p>
                 </div>
                 <div className="pt-6 pb-8 px-6">

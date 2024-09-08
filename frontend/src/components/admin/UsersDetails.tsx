@@ -45,7 +45,7 @@ const UsersDetails = () => {
       notifyError(errMessage);
     }
   };
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
 
   const currentPosts = posts?.slice(
     (currentPage - 1) * itemsPerPage,

@@ -50,7 +50,7 @@ export const getServiceDetails = (
 
     call.on('error', (error: any) => {
       console.error("gRPC stream error:", error);
-      reject(new BadRequestError("Error in gRPC stream: " + error.message));
+      reject(new BadRequestError("Error in gRPC stream: " + error));
     });
 
     call.on('end', () => {

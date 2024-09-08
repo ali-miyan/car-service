@@ -43,10 +43,10 @@ const getPackageStream = async (call: any) => {
     console.error("Error in getPackageStream:", error);
     call.emit('error', {
       code: grpc.status.INTERNAL,
-      message: "Internal server error: " + error.message,
+      message: "Internal server error: " + error,
     });
   }
-};
+};  
 
 const server = new grpc.Server();
 server.addService((bookingProto as any).StandardService.service, {

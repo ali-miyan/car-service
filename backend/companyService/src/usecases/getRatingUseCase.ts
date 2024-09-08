@@ -2,13 +2,20 @@ import { BadRequestError } from "tune-up-library";
 import { IRatingRepository } from "../repositories";
 
 export class GetRatingsUseCase {
-  constructor(private ratingepository: IRatingRepository) {}
+  constructor(private ratingRepository: IRatingRepository) {}
 
   async execute(id: string): Promise<any> {
-    const data = await this.ratingepository.getById(id);
-    if (!data) {
-      throw new BadRequestError("cant get ratings");
+    try {
+      const data = await this.ratingRepository.getById(id);
+      if (!data) {
+        throw new BadRequestError("Can't get ratings");
+      }
+      return data;
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-    return data;
   }
 }

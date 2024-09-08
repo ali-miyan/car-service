@@ -34,7 +34,7 @@ export class HandleStripeUseCase {
           const order = decompressObject(orderData);
           const booking = new Booking(order);
 
-          await this.bookingRepository.save(booking);
+          const bookingData = await this.bookingRepository.save(booking);
 
           io.emit("order_booked", {
             message: "Order has been booked",
@@ -45,12 +45,15 @@ export class HandleStripeUseCase {
           await this.rabbitMQService.sendServiceMessage({
             serviceId: order.serviceId,
             typeOfPackage: order.typeOfPackage,
-            orderId: order.id,
+            orderId: bookingData.id,
           });
         }
       }
     } catch (error) {
-      throw new BadRequestError("error in stripe" + error);
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
   }
 }

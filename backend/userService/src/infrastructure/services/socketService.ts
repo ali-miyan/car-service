@@ -3,11 +3,12 @@ import { Server as HttpServer } from "http";
 
 export function setupSocketServer(server: HttpServer): Server {
   const io = new Server(server, {
+    path: "/api/user/socket.io",
     cors: {
-      origin: "http://localhost:8080",
+      origin: "*",
       methods: ["GET", "POST"],
-      credentials: true,
     },
+    allowEIO3: true,
   });
 
   io.on("connection", (socket: Socket) => {

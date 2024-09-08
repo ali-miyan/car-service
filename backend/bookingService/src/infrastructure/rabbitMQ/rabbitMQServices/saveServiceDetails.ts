@@ -23,11 +23,17 @@ export class ConsumerService2 {
     this.channel.consume(rabbitMQConfig.queueName5, async (message) => {
       if (message) {
         try {
-          const serviveInfo = JSON.parse(message.content.toString());
-          const { orderId, ...serviceDetails } = serviveInfo;
+          const serviceInfo = JSON.parse(message.content.toString());
+          const { orderId, ...serviceDetails } = serviceInfo;
 
+          const booked = await bookingRepository.findById(orderId);
 
-          const booked = await bookingRepository.findById(serviveInfo.orderId);
+          console.log(booked,'get it from rabbitmq',orderId);
+          
+
+          if (!booked) {
+            throw new Error(`Booking not found for orderId ${orderId}`);
+          }
 
           booked.serviceInfo = serviceDetails;
           await booked.save();

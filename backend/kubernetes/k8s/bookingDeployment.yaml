@@ -15,6 +15,7 @@ spec:
       containers:
         - name: booking
           image: alimiyn/car-service-booking:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3003
             - containerPort: 6004

@@ -5,7 +5,7 @@ export interface RatingDocument extends Document {
   userId: string;
   username: string;
   email: string;
-  profileImg: string;
+  profileImg: string | null;
   stars: number;
   review: string;
   likes: {
@@ -24,7 +24,7 @@ const ratingSchema = new Schema<RatingDocument>(
     userId: { type: String, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
-    profileImg: { type: String, required: true },
+    profileImg: { type: String, default: null },
     stars: { type: Number, required: true },
     review: { type: String, required: true },
     likes: {

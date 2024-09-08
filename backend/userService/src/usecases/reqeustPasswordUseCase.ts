@@ -11,29 +11,36 @@ export class RequestPasswordUseCase {
   ) {}
 
   async execute(email: string): Promise<{}> {
-    if (!email) {
-      throw new BadRequestError("Email is required");
+    try {
+      if (!email) {
+        throw new BadRequestError("Email is required");
+      }
+
+      const user = await this.userRepository.findByEmail(email);
+      if (!user) {
+        throw new BadRequestError("User not found");
+      }
+
+      const token = TokenService.generateToken({
+        user: email,
+        role: "resetpassword",
+      });
+
+      await this.redisRepository.store(token, email, 3600);
+
+      const resetLink = process.env.CLIENT_URL + "/reset-password/" + token;
+      await this.otpRepository.sendMail(
+        email,
+        "Password Reset",
+        "Reset your password using this link: " + resetLink
+      );
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    const user = await this.userRepository.findByEmail(email);
-    if (!user) {
-      throw new BadRequestError("User not found");
-    }
-
-    const token = TokenService.generateToken({
-      user: email,
-      role: "resetpassword",
-    });
-
-    await this.redisRepository.store(token, email, 3600);
-
-    const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
-    await this.otpRepository.sendMail(
-      email,
-      "Password Reset",
-      `Reset your password using this link: ${resetLink}`
-    );
-
-    return { success: true };
   }
 }

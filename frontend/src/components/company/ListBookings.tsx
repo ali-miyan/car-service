@@ -76,7 +76,7 @@ const ListBooking = () => {
                   </td>
                 </tr>
               ) : currentPosts && currentPosts.length > 0 ? (
-                currentPosts.map((post: any, index: number) => (
+                currentPosts.reverse().map((post: any, index: number) => (
                   <tr
                     className="bg-white px-6 py-4 whitespace-nowrap"
                     key={post.id}

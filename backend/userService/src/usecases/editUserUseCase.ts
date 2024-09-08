@@ -18,23 +18,26 @@ export class EditUserUseCase {
     buffer?: Buffer,
     mimetype?: string
   ): Promise<any> {
-
-    const user = await this.userRepository.getById(id);
-
-    if (!user) {
-      throw new BadRequestError(`User with ID ${id} not found.`);
-    }
-
-    let profileImg: null | string = null;
-
     try {
+      const user = await this.userRepository.getById(id);
+
+      if (!user) {
+        throw new BadRequestError(`User with ID ${id} not found.`);
+      }
+
+      let profileImg: null | string = null;
+
       if (originalname && buffer && mimetype) {
-        profileImg = await this.s3ServiceRepository.uploadFile(
-          "tune-up",
-          originalname,
-          buffer,
-          mimetype
-        );
+        try {
+          profileImg = await this.s3ServiceRepository.uploadFile(
+            "tune-up",
+            originalname,
+            buffer,
+            mimetype
+          );
+        } catch (error) {
+          throw new BadRequestError("Error during image upload.");
+        }
       }
 
       await this.userRepository.updateCredentials(
@@ -43,19 +46,21 @@ export class EditUserUseCase {
         phone,
         profileImg
       );
+
+      await this.kafkaService.sendMessage("user-updated", {
+        userId: id,
+        username,
+        phone,
+        profileImg,
+        timestamp: new Date().toISOString(),
+      });
+
+      return { success: true };
     } catch (error) {
-      throw new BadRequestError("Error during image upload or user update.");
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    await this.kafkaService.sendMessage("user-updated", {
-      userId: id,
-      username,
-      phone,
-      profileImg,
-      timestamp: new Date().toISOString(),
-    });
-
-    return { success: true };
-    
   }
 }

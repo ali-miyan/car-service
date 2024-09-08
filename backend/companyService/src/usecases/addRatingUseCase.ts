@@ -15,18 +15,25 @@ export class AddRatingUseCase {
     stars,
     review,
   }: AddRatingParams): Promise<any> {
-    const rating = new Rating({
-      serviceId,
-      userId,
-      username,
-      email,
-      profileImg,
-      stars,
-      review,
-      likes: { count: 0, userIds: [] },
-      dislikes: { count: 0, userIds: [] },
-    });
+    try {
+      const rating = new Rating({
+        serviceId,
+        userId,
+        username,
+        email,
+        profileImg:profileImg ?? null,
+        stars,
+        review,
+        likes: { count: 0, userIds: [] },
+        dislikes: { count: 0, userIds: [] },
+      });
 
-    await this.ratingRepository.save(rating);
+      await this.ratingRepository.save(rating);
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

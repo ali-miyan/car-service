@@ -49,7 +49,10 @@ export class SaveBookedUsersChatUseCase {
         await this.chatRepository.save(newChat);
       }
     } catch (error) {
-      throw new BadRequestError("error in db" + error);
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
   }
 }

@@ -6,7 +6,6 @@ export class GetChatUseCase {
 
   async execute(userId: string, companyId: string): Promise<any> {
     try {
-
       if (!userId || !companyId) {
         throw new BadRequestError("invalid input");
       }
@@ -18,8 +17,10 @@ export class GetChatUseCase {
 
       return chat;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestError("error in db" + error);
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
   }
 }

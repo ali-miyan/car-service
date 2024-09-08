@@ -10,23 +10,30 @@ export class SignupUseCase {
   ) {}
 
   async execute(email: string): Promise<any> {
-    if (!email) {
-      throw new BadRequestError("Invalid input");
+    try {
+      if (!email) {
+        throw new BadRequestError("Invalid input");
+      }
+
+      const existingEmail = await this.userRepository.findByEmail(email);
+
+      if (existingEmail) {
+        throw new BadRequestError("User Email already registered");
+      }
+
+      const otp = this.otpRepository.generateOtp(4);
+
+      const subject = "Your OTP Code";
+      const message = "Your OTP code is " + otp;
+      await this.otpRepository.sendMail(email, subject, message);
+      await this.redisRepository.store(email, otp, 300);
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        throw new BadRequestError(error.message);
+      }
+      throw new Error("An unexpected error occurred");
     }
-
-    const existingEmail = await this.userRepository.findByEmail(email);
-
-    if (existingEmail) {
-      throw new BadRequestError("User Email already registered");
-    }
-
-    const otp = this.otpRepository.generateOtp(4);
-
-    const subject = "Your OTP Code";
-    const message = `Your OTP code is ${otp}`;
-    await this.otpRepository.sendMail(email, subject, message);
-    await this.redisRepository.store(email, otp, 300);
-
-    return { success: true };
   }
 }
