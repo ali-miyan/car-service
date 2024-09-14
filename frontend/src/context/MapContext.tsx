@@ -1,12 +1,6 @@
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import { createContext, useState, ReactNode, useContext } from "react";
 
 interface LocationContextProps {
-  search:
-    | string
-    | string[][]
-    | Record<string, string>
-    | URLSearchParams
-    | undefined;
   latitude: number;
   longitude: number;
   address: string;

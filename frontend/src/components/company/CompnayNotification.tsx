@@ -5,7 +5,7 @@ import "../../styles/SideBarNotification.css";
 import GeneralChat from "./GeneralChat";
 import "../../styles/Animation.css";
 
-const CompanyNotificationModal = ({ id, companyData }) => {
+const CompanyNotificationModal = ({ id, companyData }:any) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);

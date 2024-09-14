@@ -304,7 +304,7 @@ const NotificationModal = () => {
                   <div className="max-w-4xl mx-auto ">
                     <ul className="divide-y  divide-gray-200">
                       {data && data.length > 0 ? (
-                        data.map((company) => (
+                        data.map((company:any) => (
                           <li
                             key={company._id}
                             className="flex items-center  p-4 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out"

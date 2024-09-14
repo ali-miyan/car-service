@@ -4,11 +4,7 @@ const ListPackages = ({
   basic,
   standard,
   premium,
-}: {
-  basic: any;
-  standard: any;
-  premium: any;
-}) => {
+}:any) => {
 
   return (
     <div>
@@ -35,7 +31,7 @@ const ListPackages = ({
               <ul>
                 {basic.length === 0 && <p>no services have been added</p>}
                 {basic &&
-                  basic.subServices.map((val: any, index: number) => (
+                  basic.subServices.map((val: any) => (
                     <li
                       className="flex items-center space-x-3 text-sm "
                       key={val._id}
@@ -69,7 +65,7 @@ const ListPackages = ({
               <ul>
                 {standard.length === 0 && <p>no services have been added</p>}
                 {standard &&
-                  standard.subServices.map((val: any, index: number) => (
+                  standard.subServices.map((val: any) => (
                     <li
                       className="flex items-center space-x-3 text-sm "
                       key={val._id}
@@ -103,7 +99,7 @@ const ListPackages = ({
               <ul>
                 {premium.length === 0 && <p>no services have been added</p>}
                 {premium &&
-                  premium.subServices.map((val: any, index: number) => (
+                  premium.subServices.map((val: any) => (
                     <li
                       className="flex items-center space-x-3 text-sm "
                       key={val._id}

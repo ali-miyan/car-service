@@ -88,7 +88,7 @@ const VehicleService = () => {
       </p>
       <div className="mb-6 px-4 sm:px-8 lg:px-5">
         <Slider {...settings}>
-          {servicesData.map((brand, index) => (
+          {servicesData.map((brand:any, index:number) => (
             <Link to={`/services?company=${brand._id}`} key={index}>
               <div className="group p-3  bg-gray-100 cursor-pointer rounded-sm transition-all hover:rounded-3xl duration-300 mx-7 py-1">
                 <div className="lg:h-52 mx-auto flex items-center justify-center">

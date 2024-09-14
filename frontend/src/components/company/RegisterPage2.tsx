@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FormData, useForm } from "../../context/RegisterContext";
+import { useForm } from "../../context/RegisterContext";
 import "../../styles/companyRegister.css";
 import { validateInput } from "../../helpers/userValidation";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -123,7 +123,7 @@ const Page2: React.FC = () => {
               onClick={() => setOpenModal(true)}
             >
               <span className="font-bai-regular">
-              {Object.keys((formData.address as object)).length === 0
+              {Object.keys((formData.address)).length === 0
                 ? "Pick a location"
                 : `${((formData.address?.streetRegion) || "")}, ${((formData.address?.city) || "")}, ${
                   ((formData.address?.postcode) || "")

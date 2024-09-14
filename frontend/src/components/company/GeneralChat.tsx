@@ -51,7 +51,7 @@ const GeneralChat = ({
   }, [chatSocket]);
 
   const handleUserClick = (userId: string) => {
-    setSelectedUser(users.find((user) => user.user.userId === userId)?.user);
+    setSelectedUser(users.find((user:any) => user.user.userId === userId)?.user);
     const updatedUnreadMessages = { ...unreadMessages };
     delete updatedUnreadMessages[userId];
     localStorage.setItem(
@@ -84,7 +84,7 @@ const GeneralChat = ({
             <>
               <ul className="divide-y divide-gray-200">
                 {users && users.length > 0 ? (
-                  users.map((user, index) => (
+                  users.map((user:any, index:number) => (
                     <li
                       key={index}
                       className="flex items-center p-4 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out relative"

@@ -10,7 +10,7 @@ export default function App() {
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <CheckoutForm />
+      {/* <CheckoutForm /> */}
     </Elements>
   );
 };

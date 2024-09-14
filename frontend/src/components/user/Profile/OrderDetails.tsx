@@ -215,7 +215,7 @@ const OrderDetail: React.FC = () => {
                     What's included
                   </h3>
                   <ul role="list" className="mt-4 space-y-3">
-                    {order?.data?.serviceInfo.package.subServices?.map((val, index) => (
+                    {order?.data?.serviceInfo.package.subServices?.map((val:any, index:number) => (
                       <li className="flex items-center space-x-3" key={index}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

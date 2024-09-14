@@ -16,7 +16,7 @@ export interface FormData {
   password?: string;
   confirmPassword?: string;
   location?: string;
-  address?: object;
+  address?: any;
 }
 
 interface FormErrors {

@@ -1,4 +1,3 @@
-import React from "react";
 import CompanyDetails from "../../components/admin/CompanyDetails";
 import Dashboard from "../../components/admin/AdminWrapper";
 

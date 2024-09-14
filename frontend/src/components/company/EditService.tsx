@@ -77,7 +77,7 @@ const AddYourService: React.FC = () => {
   useEffect(() => {
     if (curretService && posts) {
       const sub = posts?.find(
-        (val) => val._id === curretService.generalServiceId
+        (val:any) => val._id === curretService.generalServiceId
       );
       setSelectedSubServicesOnLoad(sub.subServices);
 

@@ -88,7 +88,7 @@ const CustomerDetails = () => {
         </h1>
         <div className="flex flex-wrap justify-center w-full  mb-6">
           {posts?.car.length ? (
-            posts.car.map((car) => (
+            posts.car.map((car:any) => (
               <div
                 key={car._id}
                 className={`bg-white p-4 shadow-md mx-3 mb-4  w-60 cursor-pointer ${

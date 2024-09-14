@@ -1,4 +1,3 @@
-import React from "react";
 import MapboxMap from "./LiveMap";
 import { useGetLiveLocationQuery } from "../../../store/slices/orderApiSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";

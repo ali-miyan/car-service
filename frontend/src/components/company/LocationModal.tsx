@@ -10,7 +10,7 @@ const LocationModal: React.FC<{
 }> = ({ setIsAddressFilled, onClose, handleAddress }) => {
 
   const { address, latitude, longitude } = useLocation();
-  const { formData, setFormData } = useForm();
+  const { setFormData } = useForm();
 
   const [message, setMessage] = useState<string | null>(null);
   const [locationData, setLocationData] = useState<any>({

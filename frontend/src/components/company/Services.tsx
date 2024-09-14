@@ -62,7 +62,7 @@ const ServiceList = () => {
   }, [socket, posts]);
 
 
-  const handleModal = (basic, standard, premium) => {
+  const handleModal = (basic:any, standard:any, premium:any) => {
     setShowModal(true);
     setBasic(basic);
     setStandard(standard);

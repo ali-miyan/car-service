@@ -106,7 +106,7 @@ export interface LoadingButtonProps {
   isLoading: boolean;
   buttonText: string;
   color?:string;
-  onClick?: (e: FormEvent<HTMLFormElement>) => Promise<void> | (()=>void) | MouseEventHandler<HTMLButtonElement>;
+  onClick?: any;
   width: string;
   height: string;
 }

@@ -4,7 +4,7 @@ import { useMakeRatingMutation } from "../../../store/slices/userApiSlice";
 import { errMessage } from "../../../constants/errorMessage";
 import LoadingButton from "../../common/Loading";
 
-const StarRating = ({ rating, onRate }) => {
+const StarRating = ({ rating, onRate }:any) => {
   return (
     <div className="flex mx-auto space-x-1">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -25,7 +25,7 @@ const StarRating = ({ rating, onRate }) => {
   );
 };
 
-const ReviewModal = ({ isOpen, onClose, datas }) => {
+const ReviewModal = ({ isOpen, onClose, datas }:any) => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [rateService, { isLoading }] = useMakeRatingMutation();

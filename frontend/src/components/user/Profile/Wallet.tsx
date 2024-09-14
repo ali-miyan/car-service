@@ -36,7 +36,7 @@ const Wallet = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.walletHistory?.map((transaction, index) => (
+                {data?.walletHistory?.map((transaction:any, index:number) => (
                   <tr key={index} className="border-t">
                     <td className="px-6 py-4 whitespace-nowrap">
                       {new Date(transaction.date).toLocaleDateString()}

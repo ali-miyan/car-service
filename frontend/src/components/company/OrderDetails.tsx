@@ -10,7 +10,7 @@ import { notifySuccess } from "../common/Toast";
 import OrderDetailSkeleton from "../../layouts/skelotons/OrderDetailSkeleton";
 import PaymentModal from "./paymentModal";
 
-const Dropdown = memo(({ visible, onSelect, onClose, servicePlace }) => {
+const Dropdown = memo(({ visible, onSelect, servicePlace }:any) => {
   if (!visible) return null;
 
   const statuses =
@@ -205,7 +205,6 @@ const OrderDetail: React.FC = () => {
                 <Dropdown
                   visible={dropdownVisible}
                   onSelect={handleStatusSelect}
-                  onClose={() => setDropdownVisible(false)}
                   servicePlace={order?.data.servicePlace}
                 />
               </>
@@ -279,7 +278,7 @@ const OrderDetail: React.FC = () => {
                   What's included
                 </h3>
                 <ul role="list" className="mt-4 space-y-3">
-                  {order?.data?.serviceInfo?.package?.subServices?.map((val, index) => (
+                  {order?.data?.serviceInfo?.package?.subServices?.map((val:any, index:number) => (
                     <li className="flex items-center space-x-3" key={index}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

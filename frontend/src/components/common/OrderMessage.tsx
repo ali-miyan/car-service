@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Store } from "react-notifications-component";
 import { MdNotifications } from "react-icons/md";
 import { Link } from "react-router-dom";

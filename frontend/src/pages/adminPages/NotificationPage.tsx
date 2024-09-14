@@ -1,4 +1,3 @@
-import React from "react";
 import Notification from "../../components/admin/Notification";
 import Dashboard from "../../components/admin/AdminWrapper";
 

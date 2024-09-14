@@ -38,22 +38,22 @@ const SelectedService = () => {
   const [generalServiceDetials, setGeneralServiceDetails] = useState<any>();
   const { generalServiceId, serviceData } = location.state || {};
 
-  const scrollRef = useRef(null);
+  const scrollRef:any = useRef(null);
 
   const totalRatings = rating?.length;
-  const averageRating = totalRatings
+  const averageRating:any = totalRatings
     ? (
-        rating.reduce((acc, { stars }) => acc + stars, 0) / totalRatings
+        rating.reduce((acc:any, { stars }:any) => acc + stars, 0) / totalRatings
       ).toFixed(1)
     : 0;
   const starCounts = [1, 2, 3, 4, 5].reduce((acc: any, star: any) => {
-    acc[star] = rating?.filter((val) => val.stars === star)?.length;
+    acc[star] = rating?.filter((val:any) => val.stars === star)?.length;
     return acc;
   }, {});
 
   useEffect(() => {
     if (serviceData && generalServiceId) {
-      const details = serviceData.find((val) => val.id === generalServiceId);
+      const details = serviceData.find((val:any) => val.id === generalServiceId);
       setGeneralServiceDetails(details);
     }
   }, [serviceData, generalServiceId]);
@@ -110,7 +110,7 @@ const SelectedService = () => {
             />
 
             <div className="flex lg:hidden space-x-2 py-4">
-              {posts?.images?.map((image, index) => (
+              {posts?.images?.map((image:any, index:number) => (
                 <img
                   key={index}
                   src={image}
@@ -193,7 +193,7 @@ const SelectedService = () => {
             </div>
 
             <div className="space-x-2 lg:space-x-4 hidden lg:flex py-8 lg:py-6">
-              {posts?.images?.map((image, index) => (
+              {posts?.images?.map((image:any, index:number) => (
                 <img
                   key={index}
                   src={image}
@@ -509,7 +509,7 @@ const SelectedService = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {rating &&
-                  rating.map((val) => (
+                  rating.map((val:any) => (
                     <div
                       key={val._id}
                       className="flex flex-col border border-gray-200 bg-white p-6"

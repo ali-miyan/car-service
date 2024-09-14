@@ -1,4 +1,3 @@
-import React from "react";
 import Sidebar from "../../components/company/SideBar";
 import AddService from "../../components/company/AddService";
 

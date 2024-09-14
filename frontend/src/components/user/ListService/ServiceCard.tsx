@@ -17,16 +17,16 @@ const ServiceCard = ({
   serviceData,
   servicePackage,
   ratings,
-}) => {
+}:any) => {
   const service = React.useMemo(
-    () => serviceData.find((service) => service.id === id),
+    () => serviceData.find((service:any) => service.id === id),
     [id, serviceData]
   );
 
   const totalRatings = ratings?.length;
   const averageRating = totalRatings
     ? (
-        ratings.reduce((acc, { stars }) => acc + stars, 0) / totalRatings
+        ratings.reduce((acc:any, { stars }:any) => acc + stars, 0) / totalRatings
       ).toFixed(1)
     : 0;
 

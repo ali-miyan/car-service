@@ -1,4 +1,3 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -40,7 +39,7 @@ const Dashboard = () => {
     return item ? parseFloat(item.totalRevenue) : 0;
   });
 
-  const data = {
+  const data:any = {
     labels: months,
     datasets: [
       {
@@ -53,13 +52,13 @@ const Dashboard = () => {
     ],
   };
 
-  const options = {
+  const options:any = {
     responsive: true,
     plugins: {
       legend: { position: "top" },
       tooltip: {
         callbacks: {
-          label: ({ raw }) => `Revenue: ₹${raw}`,
+          label: ({ raw }:any) => `Revenue: ₹${raw}`,
         },
       },
     },

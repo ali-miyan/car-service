@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaCar,
   FaUsers,
@@ -65,7 +64,7 @@ const Features = () => {
   );
 };
 
-const Feature = ({ icon, title, description }) => {
+const Feature = ({ icon, title, description }:any) => {
   return (
     <div className="flex items-start">
       <div className="bg-[#ab0000] text-white rounded-full p-5 mr-4">

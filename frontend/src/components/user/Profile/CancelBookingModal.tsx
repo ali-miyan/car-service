@@ -3,7 +3,7 @@ import { useCancelBookingMutation } from "../../../store/slices/orderApiSlice";
 import { notifySuccess } from "../../common/Toast";
 import LoadingButton from "../../common/Loading";
 
-const CancelBookingModal = ({ orderId, refetch, setShowCancelModal }) => {
+const CancelBookingModal = ({ orderId, refetch, setShowCancelModal }:any) => {
   const [cancelBooking, { isLoading }] = useCancelBookingMutation();
 
   

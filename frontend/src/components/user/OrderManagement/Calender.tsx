@@ -16,7 +16,7 @@ const BookingCalendar = ({ setDateChange }: any) => {
   const [selectedDates, setSelectedDates] = useState<any>(date || []);
   const dispatch = useDispatch();
 
-  const handleDateChange = (newDates) => {
+  const handleDateChange = (newDates:any) => {
     setDateChange(true);
     setSelectedDates(newDates);
     dispatch(setDate(newDates));

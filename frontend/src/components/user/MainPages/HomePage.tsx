@@ -33,7 +33,7 @@ const HomePage = () => {
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {services &&
-                    services.map((service, index) => (
+                    services.map((service:any, index:number) => (
                       <Link key={index} to={`/services?service=${service._id}`}>
                         <div
                           key={index}

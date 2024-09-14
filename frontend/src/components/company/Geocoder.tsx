@@ -7,13 +7,13 @@ const Geocoder = () => {
 
   const { setLatitude, setLongitude,setAddress } = useLocation();
 
-  const ctrl = new MapBoxGeocoder({
+  const ctrl:any = new MapBoxGeocoder({
     accessToken: "pk.eyJ1IjoiYWxpbWl5biIsImEiOiJjbHk2d2Y4MGowZGl1MnZyMWoyZzl1MWE2In0.--JAm0FRN6RoZuoIHsldUA",
     marker: false,
     collapsed: true,
   });
   useControl(() => ctrl);
-  ctrl.on('result', (e) => {
+  ctrl.on('result', (e:any) => {
     const {center,place_name} = e.result;
     console.log(e.result,'centererer',place_name);
     setLatitude(center[1])

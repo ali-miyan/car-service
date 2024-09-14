@@ -39,17 +39,19 @@ const Dashboard = () => {
 
   dashboard?.monthlyCount?.forEach((company: any) => {
     const [year, month] = company.month.split("-");
+    console.log(year);
     const monthIndex = parseInt(month, 10) - 1;
     countsCompanies[monthIndex] = company.count;
   });
 
   users?.monthlyUsers?.forEach((user: any) => {
     const [year, month] = user.month.split("-");
+    console.log(year);
     const monthIndex = parseInt(month, 10) - 1;
     countsUsers[monthIndex] = user.count;
   });
 
-  const data = {
+  const data:any = {
     labels: months,
     datasets: [
       {
@@ -69,7 +71,7 @@ const Dashboard = () => {
     ],
   };
 
-  const options = {
+  const options:any = {
     responsive: true,
     plugins: {
       legend: {
@@ -77,7 +79,7 @@ const Dashboard = () => {
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
+          label: function (tooltipItem:any) {
             return `Count: ${tooltipItem.raw}`;
           },
         },
@@ -149,7 +151,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {dashboard?.companies.map((item, index) => (
+              {dashboard?.companies.map((item:any, index:number) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <img src={item.logo} alt="" className="w-16" />

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from "axios";
 import polyline from "polyline";
@@ -80,7 +80,7 @@ const MapboxMap = ({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    const mapInstance = new mapboxgl.Map({
+    const mapInstance:any = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
       center: [userDetails.longitude, userDetails.latitude],

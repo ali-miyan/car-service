@@ -49,7 +49,7 @@ const ProfileSettings: React.FC = () => {
       !confirmNewPasswordError
     ) {
       try {
-        const res = await changePassword({
+        await changePassword({
           userId,
           currentPassword,
           newPassword,

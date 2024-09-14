@@ -20,7 +20,7 @@ const ServiceHeader = () => {
 
   useEffect(() => {
     if (services) {
-      const transformedData = services.map((service) => ({
+      const transformedData = services.map((service:any) => ({
         id: service._id,
         name: service.serviceName,
         image: service.logoUrl,
@@ -73,7 +73,7 @@ const ServiceHeader = () => {
       <div className="p-4 mx-20 font-bai-regular">
         <Slider {...settings} className="service-slider">
           {services && services.length > 0 ? (
-            services.map((service, index) => (
+            services.map((service:any, index:number) => (
               <div key={index}>
                 <div
                   className={`flex flex-col items-center space-y-1 p-2 hover:bg-red-50 border rounded-lg min-w-[120px] md:min-w-[150px] ${
@@ -107,7 +107,7 @@ const ServiceHeader = () => {
   );
 };
 
-export function SampleNextArrow(props) {
+export function SampleNextArrow(props:any) {
   const { className, style, onClick } = props;
 
   return (
@@ -135,7 +135,7 @@ export function SampleNextArrow(props) {
   );
 }
 
-export function SamplePrevArrow(props) {
+export function SamplePrevArrow(props:any) {
   const { className, style, onClick } = props;
 
   return (

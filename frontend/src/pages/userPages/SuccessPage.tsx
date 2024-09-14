@@ -1,4 +1,3 @@
-import React from "react";
 import Success from "../../components/user/OrderManagement/Success";
 
 const SuccessPage = () => {

@@ -28,7 +28,6 @@ const ServiceMap: React.FC = () => {
   const mapRef = useRef<any>(null);
   const routeRef = useRef<any>(null);
 
-  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [sortedPosts, setSortedPosts] = useState<any[]>([]);
   const [selectedCenter, setSelectedCenter] = useState<any | null>(null);
 
