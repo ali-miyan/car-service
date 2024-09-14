@@ -17,7 +17,7 @@ const HomePage = () => {
           <div className="flex flex-col font-bai-regular items-center justify-center min-h-screen">
             <div className="w-full">
               <img
-                src="../../../public/assets/item-1.jpg"
+                src="/assets/item-1.jpg"
                 alt="Banner"
                 className="w-full  object-cover md:mt-20"
               />

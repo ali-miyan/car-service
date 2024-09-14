@@ -36,7 +36,7 @@ const Features = () => {
 
         <div className="w-full md:w-1/3 my-8 md:my-0">
           <img
-            src="../../../../public/assets/white-midsize-city-suv-family-white-background.png"
+            src="/assets/white-midsize-city-suv-family-white-background.png"
             alt="Car top view"
             className="w-full h-auto"
           />

@@ -23,12 +23,12 @@ const AboutUs = () => {
         <div className="grid grid-cols-2 gap-4 mt-8">
           <img
             className="w-full rounded-lg"
-            src="/public/assets/erik-mclean-3uHlGFnzPDU-unsplash.jpg"
+            src="/assets/erik-mclean-3uHlGFnzPDU-unsplash.jpg"
             alt="office content 1"
           />
           <img
             className="mt-4 w-full lg:mt-10 rounded-lg"
-            src="/public/assets/markus-spiske-Ct__HLBjgJE-unsplash.jpg"
+            src="/assets/markus-spiske-Ct__HLBjgJE-unsplash.jpg"
             alt="office content 2"
           />
         </div>
